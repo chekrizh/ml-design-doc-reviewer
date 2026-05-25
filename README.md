@@ -67,7 +67,7 @@ Planned initial surfaces:
 - GitHub Action for pull request review;
 - structured JSON output for automation;
 - human-readable Markdown report;
-- evaluation harness for regression testing reviewer quality;
+
 
 ## Installation
 

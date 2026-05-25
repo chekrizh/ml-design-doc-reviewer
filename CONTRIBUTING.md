@@ -10,27 +10,15 @@ The easiest way to contribute is to share ideas, open issues, suggest feature re
 
 Useful contributions may include:
 
-- reporting unclear or incorrect reviewer behavior;
 - proposing feature requests and product improvements;
 - improving documentation and examples;
-- sharing useful references for ML system design review, evaluation, or tutoring;
-- adding realistic ML system design documents for examples or evaluation;
-- adding evaluation cases for reviewer quality;
-- improving prompts, review policies, and output schemas;
+- adding good ML system design documents for examples or evaluation;
 - contributing fixes or enhancements through pull requests.
 
 ## Before You Start
 
 Before opening a larger pull request, please consider opening an issue or discussion first.
 
-Good topics for early discussion:
-
-- finding schema changes;
-- reviewer behavior changes;
-- evaluation metrics;
-- model/provider choices;
-- new document templates;
-- changes that affect public APIs or GitHub Action inputs.
 
 ## Development Setup
 
@@ -46,13 +34,6 @@ cd ml-design-doc-reviewer
 
 TBD
 
-Expected areas:
-
-- `src/` - application code;
-- `examples/` - sample design documents and review outputs;
-- `evals/` - golden examples and evaluation configuration;
-- `.github/` - GitHub Action and CI workflows;
-- `docs/` - additional project documentation.
 
 ## Running Tests
 
@@ -67,10 +48,6 @@ make test
 
 TBD
 
-```bash
-# Placeholder
-make eval
-```
 
 ## Pull Request Guidelines
 
@@ -83,44 +60,6 @@ Before opening a PR:
 - update documentation when public behavior changes;
 - avoid unrelated refactors;
 - call out known limitations or follow-up work.
-
-## Reviewer Behavior Changes
-
-Changes to reviewer behavior should be treated carefully.
-
-Please include:
-
-- examples of documents affected by the change;
-- before/after review output when possible;
-- expected impact on false critiques;
-- expected impact on direct-answer leakage;
-- any new evaluation cases.
-
-## Adding Examples
-
-TBD
-
-Example documents should be realistic enough to exercise ML system design reasoning, but should not include private or proprietary information.
-
-## Adding Evaluation Cases
-
-TBD
-
-Evaluation cases should make it clear:
-
-- what document is being reviewed;
-- what issue should be found;
-- what should not be said;
-- what direct answer leakage would look like;
-- what makes the expected feedback useful.
-
-## Code Style
-
-TBD
-
-## Commit Messages
-
-TBD
 
 ## Reporting Issues
 
