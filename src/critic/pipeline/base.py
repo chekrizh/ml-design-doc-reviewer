@@ -15,6 +15,7 @@ class ReviewContext(BaseModel):
     relevant: bool = True
     message: str | None = None
     notes: list[RankedNote] = Field(default_factory=list)
+    llm_duration_ms: int | None = Field(default=None, ge=0)
 
 
 class Stage(Protocol):

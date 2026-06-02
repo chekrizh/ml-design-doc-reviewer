@@ -1,25 +1,11 @@
 import json
 from pathlib import Path
 
-from pydantic import BaseModel
+from fakes import FakeLLMClient
 
 from critic.domain.checklist import load_default_checklist
-from critic.domain.critique import CriticOutput, ItemAssessment
 from critic.logging import JsonlInferenceLogger, configure_file_logging
 from critic.service import ReviewService
-
-
-class FakeLLMClient:
-    async def parse(
-        self,
-        system_prompt: str,
-        user_prompt: str,
-        schema: type[BaseModel],
-    ) -> CriticOutput:
-        return CriticOutput(
-            relevant=True,
-            items=[ItemAssessment(item_id=item_id, score=1) for item_id in range(1, 39)],
-        )
 
 
 def test_configure_file_logging_writes_to_log_file(tmp_path: Path) -> None:
@@ -96,6 +82,7 @@ async def test_review_service_writes_structured_inference_log_with_json_snapshot
     assert len(record["critic_output"]["items"]) == 38
     assert record["top_n_notes"] == []
     assert record["final_result"]["model"] == "test-model"
+    assert record["timings"]["llm_duration_ms"] >= 0
 
 
 async def test_review_service_can_redact_input_snapshot_in_inference_log(tmp_path: Path) -> None:

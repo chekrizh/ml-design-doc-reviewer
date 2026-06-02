@@ -1,48 +1,15 @@
-from pydantic import BaseModel
+from fakes import FakeLLMClient, make_review_context
 
 from critic.domain.checklist import load_default_checklist
+from critic.domain.critic_validation import CriticOutputValidationError
 from critic.domain.critique import CriticOutput, ItemAssessment
 from critic.pipeline.base import Pipeline, ReviewContext
-from critic.pipeline.critic import CriticOutputValidationError, CriticStage
-
-
-class FakeLLMClient:
-    def __init__(self, output: CriticOutput | None = None) -> None:
-        self.output = output or CriticOutput(
-            relevant=True,
-            items=[
-                ItemAssessment(
-                    item_id=item_id,
-                    score=0.5,
-                    remark=f"Problem for item {item_id}.",
-                )
-                for item_id in range(1, 39)
-            ],
-        )
-        self.system_prompt: str | None = None
-        self.user_prompt: str | None = None
-        self.schema: type[BaseModel] | None = None
-
-    async def parse(
-        self,
-        system_prompt: str,
-        user_prompt: str,
-        schema: type[BaseModel],
-    ) -> CriticOutput:
-        self.system_prompt = system_prompt
-        self.user_prompt = user_prompt
-        self.schema = schema
-        return self.output
+from critic.pipeline.critic import CriticStage
 
 
 async def test_critic_stage_renders_prompt_and_stores_output() -> None:
     llm = FakeLLMClient()
-    context = ReviewContext(
-        document="My ML design doc",
-        checklist=load_default_checklist(),
-        model="test-model",
-        top_n=5,
-    )
+    context = make_review_context()
 
     updated = await CriticStage(llm).run(context)
 
@@ -51,6 +18,16 @@ async def test_critic_stage_renders_prompt_and_stores_output() -> None:
     assert llm.schema is CriticOutput
     assert llm.user_prompt is not None
     assert "My ML design doc" in llm.user_prompt
+
+
+async def test_critic_stage_records_llm_duration_ms() -> None:
+    llm = FakeLLMClient()
+    clock_values = iter([10.0, 10.1234])
+    context = make_review_context()
+
+    updated = await CriticStage(llm, clock=lambda: next(clock_values)).run(context)
+
+    assert updated.llm_duration_ms == 123
 
 
 async def test_critic_stage_rejects_unknown_checklist_item_ids() -> None:
@@ -63,12 +40,7 @@ async def test_critic_stage_rejects_unknown_checklist_item_ids() -> None:
             ],
         )
     )
-    context = ReviewContext(
-        document="My ML design doc",
-        checklist=load_default_checklist(),
-        model="test-model",
-        top_n=5,
-    )
+    context = make_review_context()
 
     try:
         await CriticStage(llm).run(context)
@@ -85,12 +57,7 @@ async def test_critic_stage_rejects_partial_relevant_checklist_scores() -> None:
             items=[ItemAssessment(item_id=1, score=1)],
         )
     )
-    context = ReviewContext(
-        document="My ML design doc",
-        checklist=load_default_checklist(),
-        model="test-model",
-        top_n=5,
-    )
+    context = make_review_context()
 
     try:
         await CriticStage(llm).run(context)
@@ -107,12 +74,7 @@ async def test_critic_stage_rejects_irrelevant_output_with_items() -> None:
             items=[ItemAssessment(item_id=1, score=0, remark="Should not be scored.")],
         )
     )
-    context = ReviewContext(
-        document="spam",
-        checklist=load_default_checklist(),
-        model="test-model",
-        top_n=5,
-    )
+    context = make_review_context(document="spam")
 
     try:
         await CriticStage(llm).run(context)

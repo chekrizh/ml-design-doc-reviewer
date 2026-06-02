@@ -1,3 +1,5 @@
+import logging
+
 from pydantic import BaseModel
 
 from critic.llm.openai_client import OpenAILLMClient
@@ -77,9 +79,35 @@ class _FallbackClient:
         self.chat = type("Chat", (), {"completions": completions})()
 
 
-def test_openai_client_falls_back_to_json_mode_with_one_retry() -> None:
+def test_openai_client_falls_back_to_json_mode_with_one_retry(caplog) -> None:
     raw_client = _FallbackClient()
     client = OpenAILLMClient(raw_client=raw_client, model="test-model")
+
+    with caplog.at_level(logging.WARNING, logger="critic"):
+        result = client.parse_sync("system", "user", Output)
+
+    assert result == Output(value=7)
+    assert "llm_invalid_json_response" in caplog.text
+    assert '{"value": "bad"}' in caplog.text
+
+
+class _FencedJsonCompletions:
+    async def parse(self, **kwargs: object) -> object:
+        raise Output.model_validate_json('```json\n{"value": 7}\n```')
+
+    async def create(self, **kwargs: object) -> _ContentResponse:
+        return _ContentResponse('```json\n{"value": 7}\n```')
+
+
+class _FencedJsonClient:
+    def __init__(self) -> None:
+        completions = _FencedJsonCompletions()
+        self.beta = type("Beta", (), {"chat": type("Chat", (), {"completions": completions})()})()
+        self.chat = type("Chat", (), {"completions": completions})()
+
+
+def test_openai_client_accepts_markdown_fenced_json_after_native_parse_failure() -> None:
+    client = OpenAILLMClient(raw_client=_FencedJsonClient(), model="test-model")
 
     result = client.parse_sync("system", "user", Output)
 

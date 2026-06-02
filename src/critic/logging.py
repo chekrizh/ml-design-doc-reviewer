@@ -52,6 +52,7 @@ class InferenceLogger(Protocol):
         top_n_notes: list[RankedNote],
         final_result: ReviewResult,
         top_n: int,
+        llm_duration_ms: int | None,
     ) -> str:
         """Write a structured inference log entry and return its id."""
 
@@ -69,6 +70,7 @@ class JsonlInferenceLogger:
         top_n_notes: list[RankedNote],
         final_result: ReviewResult,
         top_n: int,
+        llm_duration_ms: int | None,
     ) -> str:
         self._log_file.parent.mkdir(parents=True, exist_ok=True)
         inference_id = str(uuid4())
@@ -80,6 +82,9 @@ class JsonlInferenceLogger:
             "model": final_result.model,
             "checklist_version": final_result.checklist_version,
             "top_n": top_n,
+            "timings": {
+                "llm_duration_ms": llm_duration_ms,
+            },
             "input": build_input_log_entry(
                 input_document,
                 include_snapshot=self._include_input_snapshot,

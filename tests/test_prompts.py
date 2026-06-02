@@ -23,6 +23,8 @@ def test_render_critic_prompts_includes_guardrail_and_no_direct_answer_rules() -
     assert "не выдавай готовое решение" in prompts.system_prompt.lower()
     assert "нерелевант" in prompts.system_prompt.lower()
     assert '"relevant": false' in prompts.system_prompt
+    assert "без markdown" in prompts.system_prompt.lower()
+    assert "```json" in prompts.system_prompt
     assert "ID 1" in prompts.user_prompt
     assert "Сформулирована ли бизнес-проблема?" in prompts.user_prompt
     assert "## Design doc\nSome content" in prompts.user_prompt

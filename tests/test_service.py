@@ -1,37 +1,14 @@
-from pydantic import BaseModel
+from fakes import FakeLLMClient, complete_critic_output
 
 from critic.domain.checklist import load_default_checklist
 from critic.domain.critique import CriticOutput, ItemAssessment
 from critic.service import ReviewService
 
 
-class FakeLLMClient:
-    def __init__(self, output: CriticOutput) -> None:
-        self.output = output
-
-    async def parse(
-        self,
-        system_prompt: str,
-        user_prompt: str,
-        schema: type[BaseModel],
-    ) -> CriticOutput:
-        return self.output
-
-
-def _complete_critic_output(*overrides: ItemAssessment) -> CriticOutput:
-    by_id = {assessment.item_id: assessment for assessment in overrides}
-    return CriticOutput(
-        relevant=True,
-        items=[
-            by_id.get(item_id, ItemAssessment(item_id=item_id, score=1)) for item_id in range(1, 39)
-        ],
-    )
-
-
 async def test_review_service_returns_ranked_review_result() -> None:
     service = ReviewService(
         llm_client=FakeLLMClient(
-            _complete_critic_output(
+            complete_critic_output(
                 ItemAssessment(item_id=16, score=0.5, remark="Constant baseline is missing."),
                 ItemAssessment(
                     item_id=34,

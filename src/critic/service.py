@@ -55,10 +55,11 @@ class ReviewService:
                 model=self._model,
             )
             self._logger.info(
-                "review_completed model=%s relevant=%s notes_count=%d",
+                "review_completed model=%s relevant=%s notes_count=%d llm_duration_ms=%s",
                 self._model,
                 result.relevant,
                 len(result.notes),
+                result_context.llm_duration_ms,
             )
             if self._inference_logger is not None:
                 self._inference_logger.write(
@@ -67,6 +68,7 @@ class ReviewService:
                     top_n_notes=result_context.notes,
                     final_result=result,
                     top_n=self._top_n,
+                    llm_duration_ms=result_context.llm_duration_ms,
                 )
             return result
         except Exception:
