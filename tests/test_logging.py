@@ -66,8 +66,16 @@ async def test_review_service_writes_structured_inference_log_with_json_snapshot
     document_snapshot = {
         "version_id": "draft-7",
         "blocks": [
-            {"type": "text", "content": "Need model baseline"},
-            {"type": "image", "path": "s3://bucket/architecture.png"},
+            {
+                "title": "Baseline Solution",
+                "type": "text",
+                "content": "Need model baseline",
+            },
+            {
+                "title": "Problem definition",
+                "type": "image",
+                "path": "s3://bucket/architecture.png",
+            },
         ],
     }
 

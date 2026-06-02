@@ -40,8 +40,8 @@ def test_cli_accepts_json_design_doc_snapshot(tmp_path: Path, capsys) -> None:
         {
           "version_id": "draft-7",
           "blocks": [
-            {"type": "text", "content": "Need model baseline"},
-            {"type": "image", "path": "s3://bucket/architecture.png"}
+            {"title": "Baseline Solution", "type": "text", "content": "Need model baseline"},
+            {"title": "Problem definition", "type": "image", "path": "s3://bucket/architecture.png"}
           ]
         }
         """,
@@ -56,8 +56,16 @@ def test_cli_accepts_json_design_doc_snapshot(tmp_path: Path, capsys) -> None:
     assert service.document == {
         "version_id": "draft-7",
         "blocks": [
-            {"type": "text", "content": "Need model baseline"},
-            {"type": "image", "path": "s3://bucket/architecture.png"},
+            {
+                "title": "Baseline Solution",
+                "type": "text",
+                "content": "Need model baseline",
+            },
+            {
+                "title": "Problem definition",
+                "type": "image",
+                "path": "s3://bucket/architecture.png",
+            },
         ],
     }
     assert '"relevant": true' in captured.out
