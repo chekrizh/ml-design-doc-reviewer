@@ -21,6 +21,14 @@ class Settings(BaseSettings):
         default=Path("logs/critic.log"),
         validation_alias=AliasChoices("CRITIC_LOG_FILE", "log_file"),
     )
+    inference_log_file: Path = Field(
+        default=Path("logs/inference.jsonl"),
+        validation_alias=AliasChoices("CRITIC_INFERENCE_LOG_FILE", "inference_log_file"),
+    )
+    log_input_snapshot: bool = Field(
+        default=True,
+        validation_alias=AliasChoices("CRITIC_LOG_INPUT_SNAPSHOT", "log_input_snapshot"),
+    )
     checklist_path: Path | None = Field(
         default=None,
         validation_alias=AliasChoices("CRITIC_CHECKLIST_PATH", "checklist_path"),

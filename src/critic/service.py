@@ -3,9 +3,10 @@ import logging
 from critic.config import Settings
 from critic.domain.checklist import Checklist, load_default_checklist
 from critic.domain.critique import ReviewResult
+from critic.domain.document import DesignDocumentInput, render_design_document_for_prompt
 from critic.llm.base import LLMClient
 from critic.llm.openai_client import OpenAILLMClient
-from critic.logging import configure_file_logging
+from critic.logging import InferenceLogger, JsonlInferenceLogger, configure_file_logging
 from critic.pipeline.base import Pipeline, ReviewContext
 from critic.pipeline.critic import CriticStage
 from critic.pipeline.ranker import RankerStage
@@ -20,23 +21,26 @@ class ReviewService:
         model: str,
         top_n: int,
         logger: logging.Logger | None = None,
+        inference_logger: InferenceLogger | None = None,
     ) -> None:
         self._checklist = checklist
         self._model = model
         self._top_n = top_n
         self._logger = logger or logging.getLogger("critic")
+        self._inference_logger = inference_logger
         self._pipeline = Pipeline([CriticStage(llm_client), RankerStage()])
 
-    async def review(self, document: str) -> ReviewResult:
+    async def review(self, document: DesignDocumentInput) -> ReviewResult:
+        document_for_prompt = render_design_document_for_prompt(document)
         self._logger.info(
             "review_started model=%s checklist_version=%s document_length=%d top_n=%d",
             self._model,
             self._checklist.version,
-            len(document),
+            len(document_for_prompt),
             self._top_n,
         )
         context = ReviewContext(
-            document=document,
+            document=document_for_prompt,
             checklist=self._checklist,
             model=self._model,
             top_n=self._top_n,
@@ -56,6 +60,14 @@ class ReviewService:
                 result.relevant,
                 len(result.notes),
             )
+            if self._inference_logger is not None:
+                self._inference_logger.write(
+                    input_document=document,
+                    critic_output=result_context.critic_output,
+                    top_n_notes=result_context.notes,
+                    final_result=result,
+                    top_n=self._top_n,
+                )
             return result
         except Exception:
             self._logger.exception("review_failed model=%s", self._model)
@@ -79,4 +91,8 @@ class ReviewService:
             model=settings.model,
             top_n=settings.top_n,
             logger=configure_file_logging(settings.log_file),
+            inference_logger=JsonlInferenceLogger(
+                settings.inference_log_file,
+                include_input_snapshot=settings.log_input_snapshot,
+            ),
         )

@@ -34,3 +34,13 @@ def test_settings_accepts_log_file_override(monkeypatch) -> None:
     settings = Settings(openai_api_key="test-key")
 
     assert str(settings.log_file) == "tmp/custom.log"
+
+
+def test_settings_accepts_inference_log_overrides(monkeypatch) -> None:
+    monkeypatch.setenv("CRITIC_INFERENCE_LOG_FILE", "tmp/inference.jsonl")
+    monkeypatch.setenv("CRITIC_LOG_INPUT_SNAPSHOT", "false")
+
+    settings = Settings(openai_api_key="test-key")
+
+    assert str(settings.inference_log_file) == "tmp/inference.jsonl"
+    assert settings.log_input_snapshot is False
