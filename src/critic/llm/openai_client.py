@@ -6,9 +6,9 @@ from typing import Any
 from openai import AsyncOpenAI, BadRequestError
 from pydantic import ValidationError
 
-from critic.logging import LOGGER_NAME
 from critic.llm.base import SchemaT
 from critic.llm.json_response import extract_json_payload
+from critic.logging import LOGGER_NAME
 
 
 class OpenAILLMClient:

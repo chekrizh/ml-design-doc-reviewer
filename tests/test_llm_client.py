@@ -3,8 +3,8 @@ from types import SimpleNamespace
 
 from pydantic import BaseModel
 
-from critic.logging import LOGGER_NAME
 from critic.llm.openai_client import OpenAILLMClient
+from critic.logging import LOGGER_NAME
 
 
 class Output(BaseModel):
@@ -110,7 +110,10 @@ class _RuntimeFailureCompletions:
 
 
 async def test_openai_client_does_not_mask_runtime_errors_with_json_fallback() -> None:
-    client = OpenAILLMClient(raw_client=_raw_client(_RuntimeFailureCompletions()), model="test-model")
+    client = OpenAILLMClient(
+        raw_client=_raw_client(_RuntimeFailureCompletions()),
+        model="test-model",
+    )
 
     try:
         await client.parse("system", "user", Output)
