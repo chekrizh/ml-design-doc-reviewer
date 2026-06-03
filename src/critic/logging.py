@@ -93,6 +93,8 @@ class JsonlInferenceLogger:
     def _persist(self, record: dict) -> str:
         self._log_file.parent.mkdir(parents=True, exist_ok=True)
         inference_id = str(uuid4())
+        # TODO(design-doc): add document/version lineage when partial snapshots
+        # and dataset accumulation are introduced. For now this is a run id.
         entry = {
             "schema_version": INFERENCE_LOG_SCHEMA_VERSION,
             "inference_id": inference_id,
@@ -105,6 +107,8 @@ class JsonlInferenceLogger:
 
 
 def _input_log_entry(document: str) -> dict[str, object]:
+    # The baseline treats the submitted file as the current document snapshot.
+    # Snapshot metadata such as parent document id and completion percent is future work.
     return {
         "kind": "text",
         "document_length": len(document),

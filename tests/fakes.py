@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 
+from critic.domain.checklist import Checklist, load_default_checklist
 from critic.domain.critique import CriticOutput, ItemAssessment
 
 
@@ -22,11 +23,16 @@ class FakeLLMClient:
         return self.output
 
 
-def complete_critic_output(*overrides: ItemAssessment) -> CriticOutput:
+def complete_critic_output(
+    *overrides: ItemAssessment,
+    checklist: Checklist | None = None,
+) -> CriticOutput:
+    checklist = checklist or load_default_checklist()
     by_id = {assessment.item_id: assessment for assessment in overrides}
     return CriticOutput(
         relevant=True,
         items=[
-            by_id.get(item_id, ItemAssessment(item_id=item_id, score=1)) for item_id in range(1, 39)
+            by_id.get(item.id, ItemAssessment(item_id=item.id, score=1))
+            for item in checklist.items
         ],
     )

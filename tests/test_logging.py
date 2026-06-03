@@ -1,4 +1,5 @@
 import json
+import logging
 from pathlib import Path
 
 import pytest
@@ -7,7 +8,11 @@ from fakes import FakeLLMClient
 from critic.domain.checklist import load_default_checklist
 from critic.domain.critic_validation import CriticOutputValidationError
 from critic.domain.critique import CriticOutput, ItemAssessment
-from critic.logging import JsonlInferenceLogger, configure_file_logging
+from critic.logging import (
+    INFERENCE_LOG_SCHEMA_VERSION,
+    JsonlInferenceLogger,
+    configure_file_logging,
+)
 from critic.service import ReviewService
 
 
@@ -44,10 +49,11 @@ async def test_review_service_logs_lifecycle_without_document_content(tmp_path: 
 async def test_review_service_writes_structured_inference_log_with_text_snapshot(
     tmp_path: Path,
 ) -> None:
+    checklist = load_default_checklist()
     inference_log_file = tmp_path / "inference.jsonl"
     service = ReviewService(
         llm_client=FakeLLMClient(),
-        checklist=load_default_checklist(),
+        checklist=checklist,
         model="test-model",
         top_n=5,
         inference_logger=JsonlInferenceLogger(inference_log_file),
@@ -63,17 +69,40 @@ async def test_review_service_writes_structured_inference_log_with_text_snapshot
     ]
     assert len(records) == 1
     record = records[0]
-    assert record["schema_version"] == "critic-inference-log-v1"
+    assert record["schema_version"] == INFERENCE_LOG_SCHEMA_VERSION
     assert record["input"] == {
         "kind": "text",
         "document_length": len(document),
         "snapshot": document,
     }
     assert record["critic_output"]["relevant"] is True
-    assert len(record["critic_output"]["items"]) == 38
+    assert len(record["critic_output"]["items"]) == len(checklist.items)
     assert record["top_n_notes"] == []
     assert record["final_result"]["model"] == "test-model"
     assert record["timings"]["llm_duration_ms"] >= 0
+
+
+async def test_review_service_returns_result_when_inference_log_write_fails(
+    tmp_path: Path,
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    logger = logging.getLogger("test.inference_log_failure")
+    service = ReviewService(
+        llm_client=FakeLLMClient(),
+        checklist=load_default_checklist(),
+        model="test-model",
+        top_n=5,
+        logger=logger,
+        inference_logger=JsonlInferenceLogger(tmp_path),
+    )
+
+    with caplog.at_level(logging.WARNING, logger=logger.name):
+        result = await service.review("Design doc")
+
+    assert result.relevant is True
+    assert result.model == "test-model"
+    assert "inference_log_failed" in caplog.text
+    assert str(tmp_path) in caplog.text
 
 
 async def test_review_service_writes_inference_log_on_critic_validation_failure(

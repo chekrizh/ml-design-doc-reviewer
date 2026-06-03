@@ -1,11 +1,6 @@
 from critic.domain.checklist import Checklist, ChecklistItem, Severity
 from critic.domain.critique import CriticOutput, RankedNote
 
-IRRELEVANT_DOCUMENT_MESSAGE = (
-    "Пожалуйста, отправьте документ в рамках ML System Design: problem statement, "
-    "цели, метрики, данные, validation, baseline, serving, monitoring и эксплуатацию."
-)
-
 
 def rank_notes(output: CriticOutput, checklist: Checklist, *, top_n: int) -> list[RankedNote]:
     if not output.relevant:
@@ -28,10 +23,14 @@ def rank_notes(output: CriticOutput, checklist: Checklist, *, top_n: int) -> lis
             )
         )
 
+    # The design doc allows tie-breaking by model confidence, but the baseline
+    # LLM contract has no confidence field, so item_id keeps the order stable.
     return sorted(notes, key=lambda note: (-note.priority, note.item_id))[:top_n]
 
 
 def _priority(item: ChecklistItem) -> float:
+    # TODO(design-doc): switch to explicit Critical/Warning/Nice-to-have weights
+    # if the checklist starts storing those categories directly.
     return item.block_weight + item.question_weight / 10
 
 

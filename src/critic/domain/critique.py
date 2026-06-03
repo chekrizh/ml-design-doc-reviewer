@@ -5,6 +5,10 @@ from pydantic import BaseModel, Field, model_validator
 from critic.domain.checklist import Severity
 
 Score = Literal[0, 0.5, 1]
+IRRELEVANT_DOCUMENT_MESSAGE = (
+    "Пожалуйста, отправьте документ в рамках ML System Design: problem statement, "
+    "цели, метрики, данные, validation, baseline, serving, monitoring и эксплуатацию."
+)
 
 
 class ItemAssessment(BaseModel):
@@ -38,5 +42,7 @@ class ReviewResult(BaseModel):
     relevant: bool
     message: str | None = None
     notes: list[RankedNote] = Field(default_factory=list)
+    # TODO(design-doc): add an aggregate document score when Progression Delta
+    # becomes part of the public API. The baseline returns only top-N notes.
     checklist_version: str
     model: str

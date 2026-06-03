@@ -1,14 +1,14 @@
 from __future__ import annotations
 
 import logging
-from typing import Any, TypeVar
+from typing import Any
 
 from openai import AsyncOpenAI, BadRequestError
-from pydantic import BaseModel, ValidationError
+from pydantic import ValidationError
 
+from critic.logging import LOGGER_NAME
+from critic.llm.base import SchemaT
 from critic.llm.json_response import extract_json_payload
-
-SchemaT = TypeVar("SchemaT", bound=BaseModel)
 
 
 class OpenAILLMClient:
@@ -24,7 +24,7 @@ class OpenAILLMClient:
         self._client = raw_client or AsyncOpenAI(api_key=api_key, base_url=base_url)
         self._model = model
         self._temperature = temperature
-        self._logger = logging.getLogger("critic")
+        self._logger = logging.getLogger(LOGGER_NAME)
 
     async def parse(self, system_prompt: str, user_prompt: str, schema: type[SchemaT]) -> SchemaT:
         try:

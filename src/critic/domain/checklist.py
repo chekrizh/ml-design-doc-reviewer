@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from enum import StrEnum
 from importlib import resources
+from importlib.resources.abc import Traversable
 from pathlib import Path
 
 from pydantic import BaseModel, Field, model_validator
@@ -41,11 +42,14 @@ class Checklist(BaseModel):
 
     @classmethod
     def load(cls, path: Path) -> Checklist:
-        with path.open(encoding="utf-8") as file:
-            return cls.model_validate(json.load(file))
+        return _load_checklist(path)
 
 
 def load_default_checklist() -> Checklist:
     checklist_path = resources.files("critic.data").joinpath("critic_checklist.json")
-    with checklist_path.open(encoding="utf-8") as file:
+    return _load_checklist(checklist_path)
+
+
+def _load_checklist(source: Path | Traversable) -> Checklist:
+    with source.open(encoding="utf-8") as file:
         return Checklist.model_validate(json.load(file))

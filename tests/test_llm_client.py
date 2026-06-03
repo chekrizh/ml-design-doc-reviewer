@@ -1,12 +1,19 @@
 import logging
+from types import SimpleNamespace
 
 from pydantic import BaseModel
 
+from critic.logging import LOGGER_NAME
 from critic.llm.openai_client import OpenAILLMClient
 
 
 class Output(BaseModel):
     value: int
+
+
+def _raw_client(completions: object) -> object:
+    chat = SimpleNamespace(completions=completions)
+    return SimpleNamespace(beta=SimpleNamespace(chat=chat), chat=chat)
 
 
 class _ParsedMessage:
@@ -27,17 +34,8 @@ class _NativeCompletions:
         return _ParsedResponse()
 
 
-class _NativeClient:
-    def __init__(self) -> None:
-        self.beta = type(
-            "Beta",
-            (),
-            {"chat": type("Chat", (), {"completions": _NativeCompletions()})()},
-        )()
-
-
 async def test_openai_client_uses_native_structured_parse() -> None:
-    raw_client = _NativeClient()
+    raw_client = _raw_client(_NativeCompletions())
     client = OpenAILLMClient(raw_client=raw_client, model="test-model")
 
     result = await client.parse("system", "user", Output)
@@ -72,22 +70,15 @@ class _FallbackCompletions:
         return _ContentResponse(self.contents.pop(0))
 
 
-class _FallbackClient:
-    def __init__(self) -> None:
-        completions = _FallbackCompletions()
-        self.beta = type("Beta", (), {"chat": type("Chat", (), {"completions": completions})()})()
-        self.chat = type("Chat", (), {"completions": completions})()
-
-
 async def test_openai_client_falls_back_to_json_mode_with_one_retry(caplog) -> None:
-    raw_client = _FallbackClient()
+    raw_client = _raw_client(_FallbackCompletions())
     client = OpenAILLMClient(raw_client=raw_client, model="test-model")
-    logger = logging.getLogger("critic")
+    logger = logging.getLogger(LOGGER_NAME)
     previous_propagate = logger.propagate
 
     try:
         logger.propagate = True
-        with caplog.at_level(logging.WARNING, logger="critic"):
+        with caplog.at_level(logging.WARNING, logger=LOGGER_NAME):
             result = await client.parse("system", "user", Output)
     finally:
         logger.propagate = previous_propagate
@@ -105,15 +96,8 @@ class _FencedJsonCompletions:
         return _ContentResponse('```json\n{"value": 7}\n```')
 
 
-class _FencedJsonClient:
-    def __init__(self) -> None:
-        completions = _FencedJsonCompletions()
-        self.beta = type("Beta", (), {"chat": type("Chat", (), {"completions": completions})()})()
-        self.chat = type("Chat", (), {"completions": completions})()
-
-
 async def test_openai_client_accepts_markdown_fenced_json_after_native_parse_failure() -> None:
-    client = OpenAILLMClient(raw_client=_FencedJsonClient(), model="test-model")
+    client = OpenAILLMClient(raw_client=_raw_client(_FencedJsonCompletions()), model="test-model")
 
     result = await client.parse("system", "user", Output)
 
@@ -125,17 +109,8 @@ class _RuntimeFailureCompletions:
         raise RuntimeError("transport failed")
 
 
-class _RuntimeFailureClient:
-    def __init__(self) -> None:
-        self.beta = type(
-            "Beta",
-            (),
-            {"chat": type("Chat", (), {"completions": _RuntimeFailureCompletions()})()},
-        )()
-
-
 async def test_openai_client_does_not_mask_runtime_errors_with_json_fallback() -> None:
-    client = OpenAILLMClient(raw_client=_RuntimeFailureClient(), model="test-model")
+    client = OpenAILLMClient(raw_client=_raw_client(_RuntimeFailureCompletions()), model="test-model")
 
     try:
         await client.parse("system", "user", Output)

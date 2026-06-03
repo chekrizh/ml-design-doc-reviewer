@@ -74,7 +74,8 @@ uv sync
 ## Usage
 
 ```bash
-export OPENAI_API_KEY=...
+cp .env.example .env
+# in .env, set OPENAI_API_KEY=your-key-here
 uv run critic review design-doc.md
 ```
 

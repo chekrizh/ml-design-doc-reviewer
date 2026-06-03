@@ -1,11 +1,12 @@
 from fakes import FakeLLMClient, complete_critic_output
 
 from critic.domain.checklist import load_default_checklist
-from critic.domain.critique import CriticOutput, ItemAssessment
+from critic.domain.critique import IRRELEVANT_DOCUMENT_MESSAGE, CriticOutput, ItemAssessment
 from critic.service import ReviewService
 
 
 async def test_review_service_returns_ranked_review_result() -> None:
+    checklist = load_default_checklist()
     service = ReviewService(
         llm_client=FakeLLMClient(
             complete_critic_output(
@@ -17,7 +18,7 @@ async def test_review_service_returns_ranked_review_result() -> None:
                 ),
             )
         ),
-        checklist=load_default_checklist(),
+        checklist=checklist,
         model="test-model",
         top_n=1,
     )
@@ -26,7 +27,7 @@ async def test_review_service_returns_ranked_review_result() -> None:
 
     assert result.relevant is True
     assert result.model == "test-model"
-    assert result.checklist_version == "critic-checklist-v1"
+    assert result.checklist_version == checklist.version
     assert [note.item_id for note in result.notes] == [34]
 
 
@@ -42,4 +43,4 @@ async def test_review_service_returns_message_for_irrelevant_document() -> None:
 
     assert result.relevant is False
     assert result.notes == []
-    assert result.message is not None
+    assert result.message == IRRELEVANT_DOCUMENT_MESSAGE
