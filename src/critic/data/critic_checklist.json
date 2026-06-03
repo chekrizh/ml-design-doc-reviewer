@@ -6,342 +6,266 @@
       "section": "1. Определение проблемы",
       "question": "Сформулирована ли бизнес-проблема в терминах ML (классификация, регрессия, ранжирование и т.д.)?",
       "block_weight": 10,
-      "b_flag": 0,
-      "question_weight": 2,
-      "q_flag": 0
+      "question_weight": 2
     },
     {
       "id": 2,
       "section": "1. Определение проблемы",
       "question": "Проведен ли анализ причин возникновения проблемы (метод «Пяти почему» или «перевернутая пирамида»)?",
       "block_weight": 10,
-      "b_flag": 0,
-      "question_weight": 1,
-      "q_flag": 0
+      "question_weight": 1
     },
     {
       "id": 3,
       "section": "2. Цели и антицели",
       "question": "Определены ли конкретные бизнес-KPI, на которые должна повлиять система?",
       "block_weight": 9,
-      "b_flag": 1,
-      "question_weight": 1,
-      "q_flag": 1
+      "question_weight": 1
     },
     {
       "id": 4,
       "section": "2. Цели и антицели",
       "question": "Указаны ли «антицели» (то, что система НЕ должна делать или оптимизировать)?",
       "block_weight": 9,
-      "b_flag": 1,
-      "question_weight": 2,
-      "q_flag": 1
+      "question_weight": 2
     },
     {
       "id": 5,
       "section": "3. Риски и ограничения",
       "question": "Перечислены ли нефункциональные требования (SLA по задержке, стоимость ошибки, безопасность)?",
       "block_weight": 2,
-      "b_flag": 1,
-      "question_weight": 1,
-      "q_flag": 1
+      "question_weight": 1
     },
     {
       "id": 6,
       "section": "3. Риски и ограничения",
       "question": "Описана ли модель рисков (худшие сценарии, которых нужно избежать)?",
       "block_weight": 2,
-      "b_flag": 1,
-      "question_weight": 2,
-      "q_flag": 0
+      "question_weight": 2
     },
     {
       "id": 7,
       "section": "4. Метрики и функции потерь",
       "question": "Разделены ли метрики на онлайн (бизнес-метрики) и офлайн (технические)?",
       "block_weight": 7,
-      "b_flag": 1,
-      "question_weight": 3,
-      "q_flag": 1
+      "question_weight": 3
     },
     {
       "id": 8,
       "section": "4. Метрики и функции потерь",
       "question": "Является ли выбранная функция потерь дифференцируемой и подходящей для оптимизации алгоритма?",
       "block_weight": 7,
-      "b_flag": 1,
-      "question_weight": 2,
-      "q_flag": 0
+      "question_weight": 2
     },
     {
       "id": 9,
       "section": "4. Метрики и функции потерь",
       "question": "Построена ли иерархия метрик (связь прокси-метрик с финальными целями)?",
       "block_weight": 7,
-      "b_flag": 1,
-      "question_weight": 1,
-      "q_flag": 0
+      "question_weight": 1
     },
     {
       "id": 10,
       "section": "5. Данные (Dataset)",
       "question": "Перечислены ли все источники данных (внутренние и внешние) с указанием метаданных?",
       "block_weight": 8,
-      "b_flag": 0,
-      "question_weight": 1,
-      "q_flag": 0
+      "question_weight": 1
     },
     {
       "id": 11,
       "section": "5. Данные (Dataset)",
       "question": "Описан ли процесс фильтрации данных и обработки пропусков/дубликатов?",
       "block_weight": 8,
-      "b_flag": 0,
-      "question_weight": 2,
-      "q_flag": 0
+      "question_weight": 2
     },
     {
       "id": 12,
       "section": "5. Данные (Dataset)",
       "question": "Определена ли стратегия разметки данных (команда, платформа, контроль качества)?",
       "block_weight": 8,
-      "b_flag": 0,
-      "question_weight": 3,
-      "q_flag": 0
+      "question_weight": 3
     },
     {
       "id": 13,
       "section": "6. Схема валидации",
       "question": "Соответствует ли схема валидации способу применения модели в реальности (например, временной сплит для временных рядов)?",
       "block_weight": 5,
-      "b_flag": 1,
-      "question_weight": 3,
-      "q_flag": 1
+      "question_weight": 3
     },
     {
       "id": 14,
       "section": "6. Схема валидации",
       "question": "Выделен ли независимый тестовый набор («золотой сет») для финальной оценки?",
       "block_weight": 5,
-      "b_flag": 1,
-      "question_weight": 1,
-      "q_flag": 0
+      "question_weight": 1
     },
     {
       "id": 15,
       "section": "6. Схема валидации",
       "question": "Исключена ли возможность утечки данных (data leakage), например, через группировку по ID пользователя?",
       "block_weight": 5,
-      "b_flag": 1,
-      "question_weight": 2,
-      "q_flag": 1
+      "question_weight": 2
     },
     {
       "id": 16,
       "section": "7. Базовое решение (Baseline)",
       "question": "Описан ли константный baseline (медиана, среднее или случайный ответ) для сравнения?",
       "block_weight": 6,
-      "b_flag": 0,
-      "question_weight": 2,
-      "q_flag": 0
+      "question_weight": 2
     },
     {
       "id": 17,
       "section": "7. Базовое решение (Baseline)",
       "question": "Предложен ли простой ML-baseline (линейная модель или эвристика) перед переходом к сложным моделям?",
       "block_weight": 6,
-      "b_flag": 0,
-      "question_weight": 1,
-      "q_flag": 0
+      "question_weight": 1
     },
     {
       "id": 18,
       "section": "8. Ошибки и их анализ",
       "question": "Предусмотрен ли план анализа кривых обучения (подбор размера данных, детекция переобучения)?",
       "block_weight": 4,
-      "b_flag": 0,
-      "question_weight": 2,
-      "q_flag": 0
+      "question_weight": 2
     },
     {
       "id": 19,
       "section": "8. Ошибки и их анализ",
       "question": "Описан ли план анализа остатков (residuals) и поиска закономерностей в ошибках?",
       "block_weight": 4,
-      "b_flag": 0,
-      "question_weight": 3,
-      "q_flag": 0
+      "question_weight": 3
     },
     {
       "id": 20,
       "section": "8. Ошибки и их анализ",
       "question": "Определены ли сценарии для анализа «краевых случаев» (corner cases)?",
       "block_weight": 4,
-      "b_flag": 0,
-      "question_weight": 1,
-      "q_flag": 0
+      "question_weight": 1
     },
     {
       "id": 21,
       "section": "9. Пайплайны обучения",
       "question": "Описаны ли шаги обеспечения воспроизводимости (версионирование кода, данных, конфигураций)?",
       "block_weight": 3,
-      "b_flag": 0,
-      "question_weight": 2,
-      "q_flag": 0
+      "question_weight": 2
     },
     {
       "id": 22,
       "section": "9. Пайплайны обучения",
       "question": "Предусмотрены ли «дымовые тесты» (smoke tests) для быстрой проверки работоспособности пайплайна?",
       "block_weight": 3,
-      "b_flag": 0,
-      "question_weight": 1,
-      "q_flag": 0
+      "question_weight": 1
     },
     {
       "id": 23,
       "section": "10. Признаки (Features)",
       "question": "Оценена ли важность признаков (feature importance) и их вклад в объяснимость модели?",
       "block_weight": 2,
-      "b_flag": 1,
-      "question_weight": 1,
-      "q_flag": 0
+      "question_weight": 1
     },
     {
       "id": 24,
       "section": "10. Признаки (Features)",
       "question": "Описаны ли тесты на корректность признаков (диапазоны значений, корреляции)?",
       "block_weight": 2,
-      "b_flag": 1,
-      "question_weight": 2,
-      "q_flag": 1
+      "question_weight": 2
     },
     {
       "id": 25,
       "section": "11. Измерение результатов",
       "question": "Сформулирована ли гипотеза для A/B-тестирования (что меняем, на что влияем, ожидаемый эффект)?",
       "block_weight": 3,
-      "b_flag": 0,
-      "question_weight": 2,
-      "q_flag": 0
+      "question_weight": 2
     },
     {
       "id": 26,
       "section": "11. Измерение результатов",
       "question": "Рассчитан ли минимально обнаруживаемый эффект (MDE) и длительность эксперимента?",
       "block_weight": 3,
-      "b_flag": 0,
-      "question_weight": 1,
-      "q_flag": 0
+      "question_weight": 1
     },
     {
       "id": 27,
       "section": "12. Интеграция и Serving",
       "question": "Описан ли дизайн API (формат запросов и ответов, версионирование)?",
       "block_weight": 2,
-      "b_flag": 1,
-      "question_weight": 3,
-      "q_flag": 1
+      "question_weight": 3
     },
     {
       "id": 28,
       "section": "12. Интеграция и Serving",
       "question": "Определена ли стратегия отката (fallbacks) в случае отказа основной модели?",
       "block_weight": 2,
-      "b_flag": 1,
-      "question_weight": 2,
-      "q_flag": 1
+      "question_weight": 2
     },
     {
       "id": 29,
       "section": "12. Интеграция и Serving",
       "question": "Описан ли цикл релизов (blue-green или canary deployment)?",
       "block_weight": 2,
-      "b_flag": 1,
-      "question_weight": 1,
-      "q_flag": 1
+      "question_weight": 1
     },
     {
       "id": 30,
       "section": "13. Мониторинг",
       "question": "Настроены ли алерты на техническое здоровье (задержка, ошибки) и на дрейф данных (data drift)?",
       "block_weight": 4,
-      "b_flag": 1,
-      "question_weight": 2,
-      "q_flag": 0
+      "question_weight": 2
     },
     {
       "id": 31,
       "section": "13. Мониторинг",
       "question": "Предусмотрено ли логирование предсказаний для последующего дообучения и анализа?",
       "block_weight": 4,
-      "b_flag": 1,
-      "question_weight": 1,
-      "q_flag": 1
+      "question_weight": 1
     },
     {
       "id": 32,
       "section": "14. Эксплуатация",
       "question": "Составлена ли матрица ответственности (RACI) для поддержки системы после запуска?",
       "block_weight": 2,
-      "b_flag": 1,
-      "question_weight": 2,
-      "q_flag": 0
+      "question_weight": 2
     },
     {
       "id": 33,
       "section": "14. Эксплуатация",
       "question": "Подготовлен ли план «на случай пожара» (runbook) для дежурных инженеров?",
       "block_weight": 2,
-      "b_flag": 1,
-      "question_weight": 1,
-      "q_flag": 1
+      "question_weight": 1
     },
     {
       "id": 34,
       "section": "15. между разделами",
       "question": "Цели vs Метрики: Напрямую ли технические офлайн-метрики коррелируют с бизнес-KPI, указанными в целях?",
       "block_weight": 10,
-      "b_flag": 1,
-      "question_weight": 5,
-      "q_flag": 1
+      "question_weight": 5
     },
     {
       "id": 35,
       "section": "15. между разделами",
       "question": "Риски vs Fallback: Предусмотрены ли в разделе интеграции стратегии отката именно для тех рисков, что описаны в начале документа?",
       "block_weight": 10,
-      "b_flag": 1,
-      "question_weight": 4,
-      "q_flag": 1
+      "question_weight": 4
     },
     {
       "id": 36,
       "section": "15. между разделами",
       "question": "Baseline vs Fallback: Используется ли простейший baseline из соответствующего раздела в качестве одного из уровней fallback-стратегии?",
       "block_weight": 10,
-      "b_flag": 1,
-      "question_weight": 3,
-      "q_flag": 0
+      "question_weight": 3
     },
     {
       "id": 37,
       "section": "15. между разделами",
       "question": "Данные vs Признаки: Соответствуют ли признаки, описанные в разделе Feature Engineering, доступным полям в описанных источниках данных?",
       "block_weight": 10,
-      "b_flag": 1,
-      "question_weight": 2,
-      "q_flag": 0
+      "question_weight": 2
     },
     {
       "id": 38,
       "section": "15. между разделами",
       "question": "Валидация vs Мониторинг: Совпадают ли пороги метрик, считающиеся «нормой» при валидации, с порогами срабатывания алертов в мониторинге?",
       "block_weight": 10,
-      "b_flag": 1,
-      "question_weight": 1,
-      "q_flag": 0
+      "question_weight": 1
     }
   ]
 }

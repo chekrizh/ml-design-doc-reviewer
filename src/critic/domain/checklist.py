@@ -20,8 +20,6 @@ class ChecklistItem(BaseModel):
     question: str = Field(min_length=1)
     block_weight: int = Field(ge=1, le=10)
     question_weight: int = Field(ge=1, le=5)
-    b_flag: int = Field(ge=0, le=1)
-    q_flag: int = Field(ge=0, le=1)
 
 
 class Checklist(BaseModel):

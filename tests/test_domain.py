@@ -12,8 +12,6 @@ def test_checklist_rejects_duplicate_item_ids() -> None:
         question="Is the business problem connected to an ML task?",
         block_weight=10,
         question_weight=2,
-        b_flag=0,
-        q_flag=0,
     )
 
     with pytest.raises(ValidationError, match="duplicate checklist item id"):
@@ -27,8 +25,6 @@ def test_checklist_finds_item_by_id() -> None:
         question="Are online and offline metrics separated?",
         block_weight=7,
         question_weight=3,
-        b_flag=1,
-        q_flag=1,
     )
 
     checklist = Checklist(version="test", items=[item])

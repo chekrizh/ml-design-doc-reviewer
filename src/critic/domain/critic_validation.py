@@ -1,3 +1,5 @@
+from collections import Counter
+
 from critic.domain.checklist import Checklist
 from critic.domain.critique import CriticOutput
 
@@ -5,18 +7,32 @@ from critic.domain.critique import CriticOutput
 class CriticOutputValidationError(ValueError):
     """Raised when the LLM output violates the checklist contract."""
 
+    def __init__(
+        self,
+        message: str,
+        *,
+        critic_output: CriticOutput | None = None,
+        llm_duration_ms: int | None = None,
+    ) -> None:
+        super().__init__(message)
+        self.critic_output = critic_output
+        self.llm_duration_ms = llm_duration_ms
+
 
 def validate_critic_output(output: CriticOutput, checklist: Checklist) -> None:
     if not output.relevant:
         if output.items:
-            raise CriticOutputValidationError("irrelevant output must not include checklist items")
+            raise CriticOutputValidationError(
+                "irrelevant output must not include checklist items",
+                critic_output=output,
+            )
         return
 
     expected_ids = {item.id for item in checklist.items}
     actual_ids = [item.item_id for item in output.items]
     actual_id_set = set(actual_ids)
 
-    duplicate_ids = sorted({item_id for item_id in actual_ids if actual_ids.count(item_id) > 1})
+    duplicate_ids = sorted(id for id, count in Counter(actual_ids).items() if count > 1)
     unknown_ids = sorted(actual_id_set - expected_ids)
     missing_ids = sorted(expected_ids - actual_id_set)
 
@@ -29,7 +45,7 @@ def validate_critic_output(output: CriticOutput, checklist: Checklist) -> None:
         problems.append(f"missing item ids: {_format_ids(missing_ids)}")
 
     if problems:
-        raise CriticOutputValidationError("; ".join(problems))
+        raise CriticOutputValidationError("; ".join(problems), critic_output=output)
 
 
 def _format_ids(item_ids: list[int]) -> str:

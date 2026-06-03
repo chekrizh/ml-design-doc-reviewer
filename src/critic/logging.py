@@ -2,15 +2,9 @@ import json
 import logging
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Protocol
 from uuid import uuid4
 
 from critic.domain.critique import CriticOutput, RankedNote, ReviewResult
-from critic.domain.document import (
-    PROVISIONAL_JSON_INPUT_CONTRACT_STATUS,
-    DesignDocumentInput,
-    build_input_log_entry,
-)
 
 LOGGER_NAME = "critic"
 INFERENCE_LOG_SCHEMA_VERSION = "critic-inference-log-v1"
@@ -43,56 +37,76 @@ def _has_file_handler(logger: logging.Logger, log_file: Path) -> bool:
     return False
 
 
-class InferenceLogger(Protocol):
-    def write(
-        self,
-        *,
-        input_document: DesignDocumentInput,
-        critic_output: CriticOutput | None,
-        top_n_notes: list[RankedNote],
-        final_result: ReviewResult,
-        top_n: int,
-        llm_duration_ms: int | None,
-    ) -> str:
-        """Write a structured inference log entry and return its id."""
-
-
 class JsonlInferenceLogger:
-    def __init__(self, log_file: Path, *, include_input_snapshot: bool = True) -> None:
+    def __init__(self, log_file: Path) -> None:
         self._log_file = log_file
-        self._include_input_snapshot = include_input_snapshot
 
     def write(
         self,
         *,
-        input_document: DesignDocumentInput,
+        input_document: str,
         critic_output: CriticOutput | None,
         top_n_notes: list[RankedNote],
         final_result: ReviewResult,
         top_n: int,
         llm_duration_ms: int | None,
     ) -> str:
+        return self._persist(
+            {
+                "model": final_result.model,
+                "checklist_version": final_result.checklist_version,
+                "top_n": top_n,
+                "timings": {"llm_duration_ms": llm_duration_ms},
+                "input": _input_log_entry(input_document),
+                "critic_output": critic_output.model_dump(mode="json") if critic_output else None,
+                "top_n_notes": [note.model_dump(mode="json") for note in top_n_notes],
+                "final_result": final_result.model_dump(mode="json"),
+            }
+        )
+
+    def write_failure(
+        self,
+        *,
+        input_document: str,
+        critic_output: CriticOutput | None,
+        model: str,
+        checklist_version: str,
+        top_n: int,
+        llm_duration_ms: int | None,
+        error: Exception,
+    ) -> str:
+        return self._persist(
+            {
+                "status": "failed",
+                "model": model,
+                "checklist_version": checklist_version,
+                "top_n": top_n,
+                "timings": {"llm_duration_ms": llm_duration_ms},
+                "input": _input_log_entry(input_document),
+                "critic_output": critic_output.model_dump(mode="json") if critic_output else None,
+                "top_n_notes": [],
+                "final_result": None,
+                "error": {"type": type(error).__name__, "message": str(error)},
+            }
+        )
+
+    def _persist(self, record: dict) -> str:
         self._log_file.parent.mkdir(parents=True, exist_ok=True)
         inference_id = str(uuid4())
-        record = {
+        entry = {
             "schema_version": INFERENCE_LOG_SCHEMA_VERSION,
             "inference_id": inference_id,
             "created_at": datetime.now(UTC).isoformat(),
-            "input_contract_status": PROVISIONAL_JSON_INPUT_CONTRACT_STATUS,
-            "model": final_result.model,
-            "checklist_version": final_result.checklist_version,
-            "top_n": top_n,
-            "timings": {
-                "llm_duration_ms": llm_duration_ms,
-            },
-            "input": build_input_log_entry(
-                input_document,
-                include_snapshot=self._include_input_snapshot,
-            ),
-            "critic_output": critic_output.model_dump(mode="json") if critic_output else None,
-            "top_n_notes": [note.model_dump(mode="json") for note in top_n_notes],
-            "final_result": final_result.model_dump(mode="json"),
+            **record,
         }
         with self._log_file.open("a", encoding="utf-8") as file:
-            file.write(json.dumps(record, ensure_ascii=False) + "\n")
+            file.write(json.dumps(entry, ensure_ascii=False) + "\n")
         return inference_id
+
+
+def _input_log_entry(document: str) -> dict[str, object]:
+    return {
+        "kind": "text",
+        "document_length": len(document),
+        "snapshot": document,
+    }

@@ -22,15 +22,11 @@ The project is currently in early design. The first implementation will focus on
 
 ## Quick Start
 
-The implementation is not available yet. The project is expected to support two primary usage modes.
+The current baseline reviews a plain text or Markdown ML design document from the CLI.
 
-### Docker API
-
-TBD
-
-### GitHub Action
-
-TBD
+```bash
+uv run critic review path/to/design-doc.md
+```
 
 ## Why This Exists
 
@@ -59,35 +55,42 @@ The reviewer is intended for ML system design documents that cover topics such a
 
 ## Status
 
-This repository is currently a project scaffold. The implementation is not available yet.
+This repository is an early baseline implementation.
 
-Planned initial surfaces:
+Current scope:
 
-- Dockerized API for reviewing design documents;
-- GitHub Action for pull request review;
+- text or Markdown document input;
+- one LLM call that scores the full critic checklist and writes remarks;
+- deterministic ranking of the most important remarks;
 - structured JSON output for automation;
-- human-readable Markdown report;
 
 
 ## Installation
 
-Not available yet.
-
 ```bash
-TBD
+uv sync
 ```
 
 ## Usage
 
-Not available yet.
-
 ```bash
-TBD
+export OPENAI_API_KEY=...
+uv run critic review design-doc.md
 ```
 
 ## Architecture
 
-TBD
+The baseline keeps the review loop deliberately small:
+
+1. `critic.cli` reads the design document as text.
+2. `ReviewService` calls `critique()` with the document and checklist.
+3. `critique()` renders the prompt, asks the LLM for structured JSON, and validates that every checklist item was scored.
+4. `rank_notes()` keeps only incomplete items, orders them by checklist importance, and returns the top-N notes.
+5. The service returns a `ReviewResult` JSON object and writes optional lifecycle/inference logs.
+
+No RAG, verifier, chat history, JSON document schema, or partial-document snapshots are part of this baseline.
+
+Inference logs include the submitted document text. Treat `logs/inference.jsonl` as sensitive data.
 
 ## License
 

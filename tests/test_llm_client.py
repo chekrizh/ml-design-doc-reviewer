@@ -36,11 +36,11 @@ class _NativeClient:
         )()
 
 
-def test_openai_client_uses_native_structured_parse() -> None:
+async def test_openai_client_uses_native_structured_parse() -> None:
     raw_client = _NativeClient()
     client = OpenAILLMClient(raw_client=raw_client, model="test-model")
 
-    result = client.parse_sync("system", "user", Output)
+    result = await client.parse("system", "user", Output)
 
     assert result == Output(value=42)
 
@@ -79,12 +79,18 @@ class _FallbackClient:
         self.chat = type("Chat", (), {"completions": completions})()
 
 
-def test_openai_client_falls_back_to_json_mode_with_one_retry(caplog) -> None:
+async def test_openai_client_falls_back_to_json_mode_with_one_retry(caplog) -> None:
     raw_client = _FallbackClient()
     client = OpenAILLMClient(raw_client=raw_client, model="test-model")
+    logger = logging.getLogger("critic")
+    previous_propagate = logger.propagate
 
-    with caplog.at_level(logging.WARNING, logger="critic"):
-        result = client.parse_sync("system", "user", Output)
+    try:
+        logger.propagate = True
+        with caplog.at_level(logging.WARNING, logger="critic"):
+            result = await client.parse("system", "user", Output)
+    finally:
+        logger.propagate = previous_propagate
 
     assert result == Output(value=7)
     assert "llm_invalid_json_response" in caplog.text
@@ -106,10 +112,10 @@ class _FencedJsonClient:
         self.chat = type("Chat", (), {"completions": completions})()
 
 
-def test_openai_client_accepts_markdown_fenced_json_after_native_parse_failure() -> None:
+async def test_openai_client_accepts_markdown_fenced_json_after_native_parse_failure() -> None:
     client = OpenAILLMClient(raw_client=_FencedJsonClient(), model="test-model")
 
-    result = client.parse_sync("system", "user", Output)
+    result = await client.parse("system", "user", Output)
 
     assert result == Output(value=7)
 
@@ -128,11 +134,11 @@ class _RuntimeFailureClient:
         )()
 
 
-def test_openai_client_does_not_mask_runtime_errors_with_json_fallback() -> None:
+async def test_openai_client_does_not_mask_runtime_errors_with_json_fallback() -> None:
     client = OpenAILLMClient(raw_client=_RuntimeFailureClient(), model="test-model")
 
     try:
-        client.parse_sync("system", "user", Output)
+        await client.parse("system", "user", Output)
     except RuntimeError as exc:
         assert "transport failed" in str(exc)
     else:

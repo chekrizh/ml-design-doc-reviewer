@@ -1,8 +1,6 @@
 from pydantic import BaseModel
 
-from critic.domain.checklist import Checklist, load_default_checklist
 from critic.domain.critique import CriticOutput, ItemAssessment
-from critic.pipeline.base import ReviewContext
 
 
 class FakeLLMClient:
@@ -29,22 +27,6 @@ def complete_critic_output(*overrides: ItemAssessment) -> CriticOutput:
     return CriticOutput(
         relevant=True,
         items=[
-            by_id.get(item_id, ItemAssessment(item_id=item_id, score=1))
-            for item_id in range(1, 39)
+            by_id.get(item_id, ItemAssessment(item_id=item_id, score=1)) for item_id in range(1, 39)
         ],
-    )
-
-
-def make_review_context(
-    *,
-    document: str = "My ML design doc",
-    checklist: Checklist | None = None,
-    model: str = "test-model",
-    top_n: int = 5,
-) -> ReviewContext:
-    return ReviewContext(
-        document=document,
-        checklist=checklist or load_default_checklist(),
-        model=model,
-        top_n=top_n,
     )

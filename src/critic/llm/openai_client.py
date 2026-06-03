@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import asyncio
 import logging
 from typing import Any, TypeVar
 
@@ -32,9 +31,6 @@ class OpenAILLMClient:
             return await self._parse_native(system_prompt, user_prompt, schema)
         except (AttributeError, TypeError, NotImplementedError, BadRequestError, ValidationError):
             return await self._parse_json_fallback(system_prompt, user_prompt, schema)
-
-    def parse_sync(self, system_prompt: str, user_prompt: str, schema: type[SchemaT]) -> SchemaT:
-        return asyncio.run(self.parse(system_prompt, user_prompt, schema))
 
     async def _parse_native(
         self,

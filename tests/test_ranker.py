@@ -1,16 +1,11 @@
 from critic.domain.checklist import load_default_checklist
 from critic.domain.critique import CriticOutput, ItemAssessment
-from critic.pipeline.base import ReviewContext
-from critic.pipeline.ranker import RankerStage
+from critic.ranker import IRRELEVANT_DOCUMENT_MESSAGE, rank_notes
 
 
-async def test_ranker_orders_incomplete_items_by_block_and_question_weight() -> None:
-    context = ReviewContext(
-        document="doc",
-        checklist=load_default_checklist(),
-        model="test-model",
-        top_n=3,
-        critic_output=CriticOutput(
+def test_ranker_orders_incomplete_items_by_block_and_question_weight() -> None:
+    notes = rank_notes(
+        CriticOutput(
             relevant=True,
             items=[
                 ItemAssessment(item_id=12, score=0.5, remark="Data labeling is unclear."),
@@ -19,27 +14,17 @@ async def test_ranker_orders_incomplete_items_by_block_and_question_weight() -> 
                 ItemAssessment(item_id=7, score=1),
             ],
         ),
+        load_default_checklist(),
+        top_n=3,
     )
 
-    updated = await RankerStage().run(context)
-
-    assert [note.item_id for note in updated.notes] == [34, 36, 12]
-    assert [note.severity.value for note in updated.notes] == ["critical", "critical", "critical"]
-    assert updated.notes[0].priority > updated.notes[1].priority > updated.notes[2].priority
+    assert [note.item_id for note in notes] == [34, 36, 12]
+    assert [note.severity.value for note in notes] == ["critical", "critical", "critical"]
+    assert notes[0].priority > notes[1].priority > notes[2].priority
 
 
-async def test_ranker_returns_standard_message_for_irrelevant_documents() -> None:
-    context = ReviewContext(
-        document="spam",
-        checklist=load_default_checklist(),
-        model="test-model",
-        top_n=5,
-        critic_output=CriticOutput(relevant=False, items=[]),
-    )
+def test_ranker_returns_no_notes_for_irrelevant_documents() -> None:
+    notes = rank_notes(CriticOutput(relevant=False, items=[]), load_default_checklist(), top_n=5)
 
-    updated = await RankerStage().run(context)
-
-    assert updated.notes == []
-    assert updated.relevant is False
-    assert updated.message is not None
-    assert "ML System Design" in updated.message
+    assert notes == []
+    assert "ML System Design" in IRRELEVANT_DOCUMENT_MESSAGE

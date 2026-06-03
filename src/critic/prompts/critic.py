@@ -44,8 +44,8 @@ Checklist version: {{ checklist.version }}
 
 Critic checklist:
 {% for item in checklist.items -%}
-ID {{ item.id }} | section: {{ item.section }} | Bi={{ item.block_weight }} |
-Qi={{ item.question_weight }} | B_T_F={{ item.b_flag }} | Q_T_F={{ item.q_flag }}
+ID {{ item.id }} | section: {{ item.section }}
+Importance: block {{ item.block_weight }}/10, question {{ item.question_weight }}/5
 Question: {{ item.question }}
 
 {% endfor %}

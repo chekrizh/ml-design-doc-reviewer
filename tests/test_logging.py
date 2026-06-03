@@ -1,9 +1,12 @@
 import json
 from pathlib import Path
 
+import pytest
 from fakes import FakeLLMClient
 
 from critic.domain.checklist import load_default_checklist
+from critic.domain.critic_validation import CriticOutputValidationError
+from critic.domain.critique import CriticOutput, ItemAssessment
 from critic.logging import JsonlInferenceLogger, configure_file_logging
 from critic.service import ReviewService
 
@@ -38,7 +41,7 @@ async def test_review_service_logs_lifecycle_without_document_content(tmp_path: 
     assert "SECRET user design doc content" not in log_content
 
 
-async def test_review_service_writes_structured_inference_log_with_json_snapshot(
+async def test_review_service_writes_structured_inference_log_with_text_snapshot(
     tmp_path: Path,
 ) -> None:
     inference_log_file = tmp_path / "inference.jsonl"
@@ -49,23 +52,9 @@ async def test_review_service_writes_structured_inference_log_with_json_snapshot
         top_n=5,
         inference_logger=JsonlInferenceLogger(inference_log_file),
     )
-    document_snapshot = {
-        "version_id": "draft-7",
-        "blocks": [
-            {
-                "title": "Baseline Solution",
-                "type": "text",
-                "content": "Need model baseline",
-            },
-            {
-                "title": "Problem definition",
-                "type": "image",
-                "path": "s3://bucket/architecture.png",
-            },
-        ],
-    }
+    document = "Need model baseline"
 
-    await service.review(document_snapshot)
+    await service.review(document)
 
     records = [
         json.loads(line)
@@ -75,9 +64,11 @@ async def test_review_service_writes_structured_inference_log_with_json_snapshot
     assert len(records) == 1
     record = records[0]
     assert record["schema_version"] == "critic-inference-log-v1"
-    assert record["input_contract_status"] == "provisional_requires_product_alignment"
-    assert record["input"]["kind"] == "design_doc_json"
-    assert record["input"]["snapshot"] == document_snapshot
+    assert record["input"] == {
+        "kind": "text",
+        "document_length": len(document),
+        "snapshot": document,
+    }
     assert record["critic_output"]["relevant"] is True
     assert len(record["critic_output"]["items"]) == 38
     assert record["top_n_notes"] == []
@@ -85,21 +76,35 @@ async def test_review_service_writes_structured_inference_log_with_json_snapshot
     assert record["timings"]["llm_duration_ms"] >= 0
 
 
-async def test_review_service_can_redact_input_snapshot_in_inference_log(tmp_path: Path) -> None:
+async def test_review_service_writes_inference_log_on_critic_validation_failure(
+    tmp_path: Path,
+) -> None:
     inference_log_file = tmp_path / "inference.jsonl"
     service = ReviewService(
-        llm_client=FakeLLMClient(),
+        llm_client=FakeLLMClient(
+            CriticOutput(
+                relevant=True,
+                items=[ItemAssessment(item_id=1, score=1)],
+            )
+        ),
         checklist=load_default_checklist(),
         model="test-model",
         top_n=5,
-        inference_logger=JsonlInferenceLogger(inference_log_file, include_input_snapshot=False),
+        inference_logger=JsonlInferenceLogger(inference_log_file),
     )
 
-    await service.review("SECRET user design doc content")
+    with pytest.raises(CriticOutputValidationError):
+        await service.review("Design doc")
 
-    record = json.loads(inference_log_file.read_text(encoding="utf-8"))
-    assert record["input"]["kind"] == "text"
-    assert record["input"]["snapshot"] is None
-    assert record["input"]["redacted"] is True
-    assert record["input"]["document_length"] == 30
-    assert "SECRET user design doc content" not in inference_log_file.read_text(encoding="utf-8")
+    records = [
+        json.loads(line)
+        for line in inference_log_file.read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
+    assert len(records) == 1
+    record = records[0]
+    assert record["status"] == "failed"
+    assert record["error"]["type"] == "CriticOutputValidationError"
+    assert "missing item ids" in record["error"]["message"]
+    assert record["critic_output"]["items"] == [{"item_id": 1, "score": 1, "remark": None}]
+    assert record["final_result"] is None
