@@ -1,28 +1,40 @@
 import json
-import re
+from collections.abc import Iterator
+from dataclasses import dataclass
 
-_JSON_FENCE_RE = re.compile(r"```(?:json)?\s*(.*?)\s*```", re.DOTALL | re.IGNORECASE)
+
+@dataclass(frozen=True)
+class _JsonObjectCandidate:
+    payload: str
+    start: int
+    end: int
 
 
 def extract_json_payload(content: str) -> str:
+    """Extract the best JSON object from a noisy LLM response.
+
+    LLMs may include prompt/schema examples after the actual answer. Prefer a
+    JSON object that stands on its own line/block; inline objects are usually
+    examples embedded in prose. If there is no standalone object, keep the
+    conservative fallback of returning the last parseable JSON object.
+    """
     stripped = content.strip()
-    fenced_matches = list(_JSON_FENCE_RE.finditer(stripped))
-    if fenced_matches:
-        stripped = fenced_matches[-1].group(1).strip()
+    candidates = list(_iter_valid_json_objects(stripped))
+    if not candidates:
+        return stripped
 
-    json_object = _last_valid_json_object(stripped)
-    if json_object is not None:
-        return json_object
-    return stripped
+    for candidate in candidates:
+        if _is_standalone_json_block(stripped, candidate):
+            return candidate.payload
+
+    return candidates[-1].payload
 
 
-def _last_valid_json_object(content: str) -> str | None:
+def _iter_valid_json_objects(content: str) -> Iterator[_JsonObjectCandidate]:
     decoder = json.JSONDecoder()
-    last_match: str | None = None
     object_start = 0
     while object_start < len(content):
-        character = content[object_start]
-        if character != "{":
+        if content[object_start] != "{":
             object_start += 1
             continue
         try:
@@ -30,6 +42,17 @@ def _last_valid_json_object(content: str) -> str | None:
         except json.JSONDecodeError:
             object_start += 1
             continue
-        last_match = content[object_start : object_start + object_end]
-        object_start += object_end
-    return last_match
+        end = object_start + object_end
+        yield _JsonObjectCandidate(payload=content[object_start:end], start=object_start, end=end)
+        object_start = end
+
+
+def _is_standalone_json_block(content: str, candidate: _JsonObjectCandidate) -> bool:
+    line_start = content.rfind("\n", 0, candidate.start) + 1
+    line_end = content.find("\n", candidate.end)
+    if line_end == -1:
+        line_end = len(content)
+
+    prefix = content[line_start : candidate.start]
+    suffix = content[candidate.end : line_end]
+    return not prefix.strip() and not suffix.strip()
