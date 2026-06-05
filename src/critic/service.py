@@ -134,13 +134,16 @@ class ReviewService:
             base_url=settings.openai_base_url,
             model=settings.model,
         )
+        inference_logger = (
+            JsonlInferenceLogger(settings.inference_log_file)
+            if settings.inference_log_file is not None
+            else None
+        )
         return cls(
             llm_client=llm_client,
             checklist=checklist,
             model=settings.model,
             top_n=settings.top_n,
             logger=configure_file_logging(settings.log_file),
-            inference_logger=JsonlInferenceLogger(
-                settings.inference_log_file,
-            ),
+            inference_logger=inference_logger,
         )

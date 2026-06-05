@@ -1,5 +1,6 @@
 from fakes import FakeLLMClient, complete_critic_output
 
+from critic.config import Settings
 from critic.domain.checklist import load_default_checklist
 from critic.domain.critique import IRRELEVANT_DOCUMENT_MESSAGE, CriticOutput, ItemAssessment
 from critic.service import ReviewService
@@ -44,3 +45,18 @@ async def test_review_service_returns_message_for_irrelevant_document() -> None:
     assert result.relevant is False
     assert result.notes == []
     assert result.message == IRRELEVANT_DOCUMENT_MESSAGE
+
+
+def test_review_service_from_settings_disables_inference_logging_by_default(tmp_path) -> None:
+    service = ReviewService.from_settings(
+        Settings(
+            openai_api_key="test-key",
+            openai_base_url="https://openrouter.ai/api/v1",
+            model="test-model",
+            top_n=5,
+            log_file=tmp_path / "critic.log",
+            _env_file=None,
+        )
+    )
+
+    assert service._inference_logger is None

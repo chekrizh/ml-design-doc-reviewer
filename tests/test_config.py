@@ -9,7 +9,6 @@ def _set_required_env(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("CRITIC_MODEL", "openai/gpt-4o-mini")
     monkeypatch.setenv("CRITIC_TOP_N", "5")
     monkeypatch.setenv("CRITIC_LOG_FILE", "logs/critic.log")
-    monkeypatch.setenv("CRITIC_INFERENCE_LOG_FILE", "logs/inference.jsonl")
 
 
 def test_settings_reads_values_from_environment(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -21,6 +20,7 @@ def test_settings_reads_values_from_environment(monkeypatch: pytest.MonkeyPatch)
     assert settings.model == "openai/gpt-4o-mini"
     assert settings.top_n == 5
     assert settings.log_file.name == "critic.log"
+    assert settings.inference_log_file is None
 
 
 def test_settings_requires_env_values(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -29,7 +29,6 @@ def test_settings_requires_env_values(monkeypatch: pytest.MonkeyPatch) -> None:
         "CRITIC_MODEL",
         "CRITIC_TOP_N",
         "CRITIC_LOG_FILE",
-        "CRITIC_INFERENCE_LOG_FILE",
     ):
         monkeypatch.delenv(name, raising=False)
 
