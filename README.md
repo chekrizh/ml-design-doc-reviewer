@@ -64,6 +64,11 @@ Current scope:
 - deterministic ranking of the most important remarks;
 - structured JSON output for automation;
 
+Planned initial surfaces:
+
+- Dockerized API for reviewing design documents;
+- human-readable Markdown report;
+
 
 ## Installation
 
@@ -90,8 +95,6 @@ The baseline keeps the review loop deliberately small:
 5. The service returns a `ReviewResult` JSON object and writes optional lifecycle/inference logs.
 
 No RAG, verifier, chat history, JSON document schema, or partial-document snapshots are part of this baseline.
-
-Inference logs include the submitted document text. Treat `logs/inference.jsonl` as sensitive data.
 
 ## License
 
