@@ -61,13 +61,21 @@ Current scope:
 
 - text or Markdown document input;
 - one LLM call that scores the full critic checklist and writes remarks;
+- prompt-level input relevance guardrail;
+- document-grounded, pedagogical critique without ready-made solutions;
 - deterministic ranking of the most important remarks;
 - structured JSON output for automation;
 
 Planned initial surfaces:
 
-- Dockerized API for reviewing design documents;
+- Dockerized FastAPI service for reviewing design documents;
+- simple web UI for submitting documents and reading critique;
+- structured JSON input in addition to plain text and Markdown;
+- image input support in addition to the current text-only flow;
 - human-readable Markdown report;
+- offline evaluation harness for WCS, direct-answer violations, and false critique rate;
+- golden and synthetic dataset workflow for repeatable critic evaluation;
+- experiment observability for prompt, checklist, model, latency, and cost tracking;
 
 
 ## Installation
