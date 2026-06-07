@@ -1,6 +1,0 @@
-{
-  "sample_id": "case_050",
-  "title": "How We Estimate Food Debarkation Time With 'Tensoba'",
-  "url": "https://www.gojek.io/blog/food-debarkation-tensoba",
-  "error": "Client error '429 Too Many Requests' for url 'https://www.gojek.io/blog/food-debarkation-tensoba'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
-}

@@ -1,6 +1,0 @@
-{
-  "sample_id": "case_071",
-  "title": "Building a Resilient Embedding System for Semantic Search at Airtable",
-  "url": "https://medium.com/airtable-eng/building-a-resilient-embedding-system-for-semantic-search-at-airtable-d5fdf27807e2",
-  "error": "Client error '403 Forbidden' for url 'https://medium.com/airtable-eng/building-a-resilient-embedding-system-for-semantic-search-at-airtable-d5fdf27807e2'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
-}
