@@ -1,0 +1,6 @@
+{
+  "sample_id": "case_077",
+  "title": "How Gojek Uses NLP to Name Pickup Locations at Scale",
+  "url": "https://www.gojek.io/blog/nlp-cartobert",
+  "error": "Client error '429 Too Many Requests' for url 'https://www.gojek.io/blog/nlp-cartobert'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+}

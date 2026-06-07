@@ -1,0 +1,6 @@
+{
+  "sample_id": "case_070",
+  "title": "Classifying restaurant cuisines with subjective labels",
+  "url": "https://medium.com/foodpanda-data/classifying-restaurant-cuisines-with-subjective-labels-fa10012d18a9 ",
+  "error": "Client error '403 Forbidden' for url 'https://medium.com/foodpanda-data/classifying-restaurant-cuisines-with-subjective-labels-fa10012d18a9%20'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
+}

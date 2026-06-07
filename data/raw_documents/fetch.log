@@ -1,0 +1,797 @@
+Fetching:   0%|          | 0/100 [00:00<?, ?it/s]2026-06-02 02:12:53,997 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_000
+2026-06-02 02:12:53,998 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_001
+2026-06-02 02:12:53,998 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_002
+2026-06-02 02:12:53,998 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_003
+2026-06-02 02:12:54,415 [INFO] httpx: HTTP Request: GET https://medium.com/expedia-group-tech/traveling-just-got-a-whole-lot-smarter-with-romie-dfb9b21c07c5 "HTTP/1.1 403 Forbidden"
+2026-06-02 02:12:54,420 [ERROR] prepare_data.fetch_content: Failed to fetch case_004 (https://medium.com/expedia-group-tech/traveling-just-got-a-whole-lot-smarter-with-romie-dfb9b21c07c5)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 198, in fetch_single_case
+    text = fetch_article_text(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 119, in fetch_article_text
+    html = fetch_html(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 89, in fetch_html
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '403 Forbidden' for url 'https://medium.com/expedia-group-tech/traveling-just-got-a-whole-lot-smarter-with-romie-dfb9b21c07c5'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+Fetching:   5%|▌         | 5/100 [00:01<00:27,  3.47it/s]2026-06-02 02:12:56,941 [INFO] prepare_data.transcribe: No captions for https://www.youtube.com/watch?v=XGJOU2sysjg, falling back to Whisper via yt-dlp
+2026-06-02 02:12:56,944 [INFO] prepare_data.transcribe: Downloading audio: https://www.youtube.com/watch?v=XGJOU2sysjg
+2026-06-02 02:12:58,714 [ERROR] prepare_data.fetch_content: Failed to fetch case_005 (https://www.youtube.com/watch?v=XGJOU2sysjg)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 188, in fetch_single_case
+    text, transcript_meta = transcribe_youtube_url(
+                            ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/transcribe.py", line 158, in transcribe_youtube_url
+    audio_path = download_youtube_audio(url, tmp_path)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/transcribe.py", line 55, in download_youtube_audio
+    raise RuntimeError(
+RuntimeError: yt-dlp failed for https://www.youtube.com/watch?v=XGJOU2sysjg: WARNING: [youtube] No supported JavaScript runtime could be found. Only deno is enabled by default; to use another runtime add  --js-runtimes RUNTIME[:PATH]  to your command/config. YouTube extraction without a JS runtime has been deprecated, and some formats may be missing. See  https://github.com/yt-dlp/yt-dlp/wiki/EJS  for details on installing one
+WARNING: [youtube] No title found in player responses; falling back to title from initial data. Other metadata may also be missing
+ERROR: [youtube] XGJOU2sysjg: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+Fetching:   6%|▌         | 6/100 [00:05<01:50,  1.18s/it]2026-06-02 02:12:59,722 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_006
+2026-06-02 02:12:59,723 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_007
+2026-06-02 02:12:59,978 [INFO] httpx: HTTP Request: GET https://medium.com/bumble-tech/image-detection-as-a-service-9bd463f74f43 "HTTP/1.1 403 Forbidden"
+2026-06-02 02:12:59,981 [ERROR] prepare_data.fetch_content: Failed to fetch case_008 (https://medium.com/bumble-tech/image-detection-as-a-service-9bd463f74f43)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 198, in fetch_single_case
+    text = fetch_article_text(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 119, in fetch_article_text
+    html = fetch_html(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 89, in fetch_html
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '403 Forbidden' for url 'https://medium.com/bumble-tech/image-detection-as-a-service-9bd463f74f43'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+Fetching:   9%|▉         | 9/100 [00:06<01:13,  1.24it/s]2026-06-02 02:13:00,985 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_009
+2026-06-02 02:13:01,208 [INFO] httpx: HTTP Request: GET https://medium.com/glassdoor-engineering/personalized-fishbowl-recommendations-with-learned-embeddings-part-2-78a16b04d396 "HTTP/1.1 403 Forbidden"
+2026-06-02 02:13:01,210 [ERROR] prepare_data.fetch_content: Failed to fetch case_010 (https://medium.com/glassdoor-engineering/personalized-fishbowl-recommendations-with-learned-embeddings-part-2-78a16b04d396)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 198, in fetch_single_case
+    text = fetch_article_text(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 119, in fetch_article_text
+    html = fetch_html(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 89, in fetch_html
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '403 Forbidden' for url 'https://medium.com/glassdoor-engineering/personalized-fishbowl-recommendations-with-learned-embeddings-part-2-78a16b04d396'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+Fetching:  11%|█         | 11/100 [00:08<01:06,  1.34it/s]2026-06-02 02:13:02,219 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_011
+2026-06-02 02:13:02,451 [INFO] httpx: HTTP Request: GET https://medium.com/manomano-tech/compatibility-challenges-in-recommendation-system-4d233c676d35 "HTTP/1.1 403 Forbidden"
+2026-06-02 02:13:02,453 [ERROR] prepare_data.fetch_content: Failed to fetch case_012 (https://medium.com/manomano-tech/compatibility-challenges-in-recommendation-system-4d233c676d35)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 198, in fetch_single_case
+    text = fetch_article_text(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 119, in fetch_article_text
+    html = fetch_html(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 89, in fetch_html
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '403 Forbidden' for url 'https://medium.com/manomano-tech/compatibility-challenges-in-recommendation-system-4d233c676d35'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+Fetching:  13%|█▎        | 13/100 [00:09<01:01,  1.41it/s]2026-06-02 02:13:03,740 [INFO] httpx: HTTP Request: GET https://medium.com/airbnb-engineering/machine-learning-powered-search-ranking-of-airbnb-experiences-110b4b1a0789 "HTTP/1.1 403 Forbidden"
+2026-06-02 02:13:03,743 [ERROR] prepare_data.fetch_content: Failed to fetch case_013 (https://medium.com/airbnb-engineering/machine-learning-powered-search-ranking-of-airbnb-experiences-110b4b1a0789)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 198, in fetch_single_case
+    text = fetch_article_text(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 119, in fetch_article_text
+    html = fetch_html(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 89, in fetch_html
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '403 Forbidden' for url 'https://medium.com/airbnb-engineering/machine-learning-powered-search-ranking-of-airbnb-experiences-110b4b1a0789'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+Fetching:  14%|█▍        | 14/100 [00:10<01:10,  1.23it/s]2026-06-02 02:13:04,751 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_014
+2026-06-02 02:13:04,752 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_015
+2026-06-02 02:13:04,754 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_016
+2026-06-02 02:13:04,755 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_017
+2026-06-02 02:13:04,756 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_018
+2026-06-02 02:13:04,756 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_019
+2026-06-02 02:13:04,982 [INFO] httpx: HTTP Request: GET https://medium.com/criteo-engineering/improving-consistency-models-with-generator-augmented-flows-abc2ae135506 "HTTP/1.1 403 Forbidden"
+2026-06-02 02:13:04,983 [ERROR] prepare_data.fetch_content: Failed to fetch case_020 (https://medium.com/criteo-engineering/improving-consistency-models-with-generator-augmented-flows-abc2ae135506)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 127, in __iter__
+    for part in self._httpcore_stream:
+                ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py", line 407, in __iter__
+    raise exc from None
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py", line 403, in __iter__
+    for part in self._stream:
+                ^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpcore/_sync/http11.py", line 342, in __iter__
+    raise exc
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpcore/_sync/http11.py", line 334, in __iter__
+    for chunk in self._connection._receive_response_body(**kwargs):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpcore/_sync/http11.py", line 203, in _receive_response_body
+    event = self._receive_event(timeout=timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpcore/_sync/http11.py", line 217, in _receive_event
+    data = self._network_stream.read(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpcore/_backends/sync.py", line 126, in read
+    with map_exceptions(exc_map):
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/.local/share/uv/python/cpython-3.12.13-macos-aarch64-none/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ReadError: [SSL] record layer failure (_ssl.c:2580)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 198, in fetch_single_case
+    text = fetch_article_text(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 119, in fetch_article_text
+    html = fetch_html(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 72, in fetch_html
+    response = client.get(url)
+               ^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_client.py", line 1053, in get
+    return self.request(
+           ^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_client.py", line 825, in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_client.py", line 928, in send
+    raise exc
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_client.py", line 922, in send
+    response.read()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 881, in read
+    self._content = b"".join(self.iter_bytes())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 897, in iter_bytes
+    for raw_bytes in self.iter_raw():
+                     ^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 951, in iter_raw
+    for raw_stream_bytes in self.stream:
+                            ^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_client.py", line 153, in __iter__
+    for chunk in self._stream:
+                 ^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 126, in __iter__
+    with map_httpcore_exceptions():
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/.local/share/uv/python/cpython-3.12.13-macos-aarch64-none/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ReadError: [SSL] record layer failure (_ssl.c:2580)
+Fetching:  21%|██        | 21/100 [00:12<00:31,  2.48it/s]2026-06-02 02:13:05,995 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_021
+2026-06-02 02:13:05,996 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_022
+2026-06-02 02:13:06,262 [INFO] httpx: HTTP Request: GET https://medium.com/pinterest-engineering/the-machine-learning-behind-delivering-relevant-ads-8987fc5ba1c0 "HTTP/1.1 403 Forbidden"
+2026-06-02 02:13:06,265 [ERROR] prepare_data.fetch_content: Failed to fetch case_023 (https://medium.com/pinterest-engineering/the-machine-learning-behind-delivering-relevant-ads-8987fc5ba1c0)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 198, in fetch_single_case
+    text = fetch_article_text(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 119, in fetch_article_text
+    html = fetch_html(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 89, in fetch_html
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '403 Forbidden' for url 'https://medium.com/pinterest-engineering/the-machine-learning-behind-delivering-relevant-ads-8987fc5ba1c0'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+Fetching:  24%|██▍       | 24/100 [00:13<00:31,  2.44it/s]2026-06-02 02:13:07,555 [INFO] httpx: HTTP Request: GET https://medium.com/walmartglobaltech/using-predictive-and-gen-ai-to-improve-product-categorization-at-walmart-dc9821c6a481 "HTTP/1.1 403 Forbidden"
+2026-06-02 02:13:07,556 [ERROR] prepare_data.fetch_content: Failed to fetch case_024 (https://medium.com/walmartglobaltech/using-predictive-and-gen-ai-to-improve-product-categorization-at-walmart-dc9821c6a481)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 198, in fetch_single_case
+    text = fetch_article_text(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 119, in fetch_article_text
+    html = fetch_html(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 89, in fetch_html
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '403 Forbidden' for url 'https://medium.com/walmartglobaltech/using-predictive-and-gen-ai-to-improve-product-categorization-at-walmart-dc9821c6a481'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+Fetching:  25%|██▌       | 25/100 [00:14<00:38,  1.94it/s]2026-06-02 02:13:08,917 [INFO] httpx: HTTP Request: GET https://careersatdoordash.com/blog/doordash-llm-chatbot-knowledge-with-ugc/ "HTTP/1.1 403 Forbidden"
+2026-06-02 02:13:09,053 [ERROR] prepare_data.fetch_content: Failed to fetch case_025 (https://careersatdoordash.com/blog/doordash-llm-chatbot-knowledge-with-ugc/)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 198, in fetch_single_case
+    text = fetch_article_text(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 119, in fetch_article_text
+    html = fetch_html(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 89, in fetch_html
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '403 Forbidden' for url 'https://careersatdoordash.com/blog/doordash-llm-chatbot-knowledge-with-ugc/'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+Fetching:  26%|██▌       | 26/100 [00:16<00:48,  1.52it/s]2026-06-02 02:13:10,326 [INFO] httpx: HTTP Request: GET https://medium.com/mercadolibre-tech/how-we-design-our-push-notifications-strategy-so-that-customers-interact-with-our-product-fda8a3c4be01 "HTTP/1.1 403 Forbidden"
+2026-06-02 02:13:10,329 [ERROR] prepare_data.fetch_content: Failed to fetch case_026 (https://medium.com/mercadolibre-tech/how-we-design-our-push-notifications-strategy-so-that-customers-interact-with-our-product-fda8a3c4be01)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 198, in fetch_single_case
+    text = fetch_article_text(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 119, in fetch_article_text
+    html = fetch_html(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 89, in fetch_html
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '403 Forbidden' for url 'https://medium.com/mercadolibre-tech/how-we-design-our-push-notifications-strategy-so-that-customers-interact-with-our-product-fda8a3c4be01'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+Fetching:  27%|██▋       | 27/100 [00:17<00:55,  1.31it/s]2026-06-02 02:13:11,335 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_027
+2026-06-02 02:13:11,335 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_028
+2026-06-02 02:13:13,002 [INFO] prepare_data.transcribe: No captions for https://www.youtube.com/watch?v=_Rqo6nooKKE, falling back to Whisper via yt-dlp
+2026-06-02 02:13:13,003 [INFO] prepare_data.transcribe: Downloading audio: https://www.youtube.com/watch?v=_Rqo6nooKKE
+2026-06-02 02:13:14,754 [ERROR] prepare_data.fetch_content: Failed to fetch case_029 (https://www.youtube.com/watch?v=_Rqo6nooKKE)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 188, in fetch_single_case
+    text, transcript_meta = transcribe_youtube_url(
+                            ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/transcribe.py", line 158, in transcribe_youtube_url
+    audio_path = download_youtube_audio(url, tmp_path)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/transcribe.py", line 55, in download_youtube_audio
+    raise RuntimeError(
+RuntimeError: yt-dlp failed for https://www.youtube.com/watch?v=_Rqo6nooKKE: WARNING: [youtube] No supported JavaScript runtime could be found. Only deno is enabled by default; to use another runtime add  --js-runtimes RUNTIME[:PATH]  to your command/config. YouTube extraction without a JS runtime has been deprecated, and some formats may be missing. See  https://github.com/yt-dlp/yt-dlp/wiki/EJS  for details on installing one
+WARNING: [youtube] No title found in player responses; falling back to title from initial data. Other metadata may also be missing
+ERROR: [youtube] _Rqo6nooKKE: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+Fetching:  30%|███       | 30/100 [00:21<01:14,  1.06s/it]2026-06-02 02:13:16,008 [INFO] httpx: HTTP Request: GET https://medium.com/@playtika-tech-ai/lessons-learned-from-multi-armed-bandits-in-real-time-production-777f2bdd4f5f "HTTP/1.1 403 Forbidden"
+2026-06-02 02:13:16,009 [ERROR] prepare_data.fetch_content: Failed to fetch case_030 (https://medium.com/@playtika-tech-ai/lessons-learned-from-multi-armed-bandits-in-real-time-production-777f2bdd4f5f)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 198, in fetch_single_case
+    text = fetch_article_text(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 119, in fetch_article_text
+    html = fetch_html(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 89, in fetch_html
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '403 Forbidden' for url 'https://medium.com/@playtika-tech-ai/lessons-learned-from-multi-armed-bandits-in-real-time-production-777f2bdd4f5f'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+Fetching:  31%|███       | 31/100 [00:23<01:15,  1.10s/it]2026-06-02 02:13:17,281 [INFO] httpx: HTTP Request: GET https://arxiv.org/pdf/2404.17723 "HTTP/1.1 200 OK"
+2026-06-02 02:13:17,501 [ERROR] trafilatura.utils: parsed tree length: 1, wrong data type or not valid HTML
+2026-06-02 02:13:17,502 [ERROR] trafilatura.core: empty HTML tree: None
+2026-06-02 02:13:17,502 [WARNING] trafilatura.core: discarding data: https://arxiv.org/pdf/2404.17723
+2026-06-02 02:13:17,502 [ERROR] prepare_data.fetch_content: Failed to fetch case_031 (https://arxiv.org/pdf/2404.17723)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 198, in fetch_single_case
+    text = fetch_article_text(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 129, in fetch_article_text
+    raise RuntimeError(f"Extracted text too short or empty for URL: {url}")
+RuntimeError: Extracted text too short or empty for URL: https://arxiv.org/pdf/2404.17723
+Fetching:  32%|███▏      | 32/100 [00:24<01:19,  1.17s/it]2026-06-02 02:13:18,508 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_032
+2026-06-02 02:13:18,509 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_033
+2026-06-02 02:13:18,509 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_034
+2026-06-02 02:13:18,510 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_035
+2026-06-02 02:13:18,510 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_036
+2026-06-02 02:13:18,510 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_037
+2026-06-02 02:13:18,511 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_038
+2026-06-02 02:13:18,753 [INFO] httpx: HTTP Request: GET https://medium.com/leboncoin-tech-blog/once-upon-a-chat-bot-the-ada-story-at-leboncoin-1a4c52000d82 "HTTP/1.1 403 Forbidden"
+2026-06-02 02:13:18,756 [ERROR] prepare_data.fetch_content: Failed to fetch case_039 (https://medium.com/leboncoin-tech-blog/once-upon-a-chat-bot-the-ada-story-at-leboncoin-1a4c52000d82)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 198, in fetch_single_case
+    text = fetch_article_text(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 119, in fetch_article_text
+    html = fetch_html(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 89, in fetch_html
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '403 Forbidden' for url 'https://medium.com/leboncoin-tech-blog/once-upon-a-chat-bot-the-ada-story-at-leboncoin-1a4c52000d82'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+Fetching:  40%|████      | 40/100 [00:25<00:28,  2.11it/s]2026-06-02 02:13:19,975 [INFO] httpx: HTTP Request: GET https://medium.com/inside-sumup/evaluating-the-performance-of-an-llm-application-that-generates-free-text-narratives-in-the-context-c402a0136518 "HTTP/1.1 403 Forbidden"
+2026-06-02 02:13:19,978 [ERROR] prepare_data.fetch_content: Failed to fetch case_040 (https://medium.com/inside-sumup/evaluating-the-performance-of-an-llm-application-that-generates-free-text-narratives-in-the-context-c402a0136518)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 198, in fetch_single_case
+    text = fetch_article_text(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 119, in fetch_article_text
+    html = fetch_html(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 89, in fetch_html
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '403 Forbidden' for url 'https://medium.com/inside-sumup/evaluating-the-performance-of-an-llm-application-that-generates-free-text-narratives-in-the-context-c402a0136518'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+Fetching:  41%|████      | 41/100 [00:26<00:32,  1.80it/s]2026-06-02 02:13:21,295 [INFO] httpx: HTTP Request: GET https://tech.deliveryhero.com/blog/how-delivery-hero-uses-agentic-ai-for-building-a-product-knowledge-base/ "HTTP/1.1 403 Forbidden"
+2026-06-02 02:13:21,299 [ERROR] prepare_data.fetch_content: Failed to fetch case_041 (https://tech.deliveryhero.com/blog/how-delivery-hero-uses-agentic-ai-for-building-a-product-knowledge-base/)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 198, in fetch_single_case
+    text = fetch_article_text(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 119, in fetch_article_text
+    html = fetch_html(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 89, in fetch_html
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '403 Forbidden' for url 'https://tech.deliveryhero.com/blog/how-delivery-hero-uses-agentic-ai-for-building-a-product-knowledge-base/'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+Fetching:  42%|████▏     | 42/100 [00:28<00:38,  1.52it/s]2026-06-02 02:13:22,609 [INFO] httpx: HTTP Request: GET https://www.etsy.com/uk/codeascraft/leveraging-real-time-user-actions-to-personalize-etsy-ads "HTTP/1.1 403 Forbidden"
+2026-06-02 02:13:22,609 [ERROR] prepare_data.fetch_content: Failed to fetch case_042 (https://www.etsy.com/uk/codeascraft/leveraging-real-time-user-actions-to-personalize-etsy-ads)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 198, in fetch_single_case
+    text = fetch_article_text(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 119, in fetch_article_text
+    html = fetch_html(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 89, in fetch_html
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '403 Forbidden' for url 'https://www.etsy.com/uk/codeascraft/leveraging-real-time-user-actions-to-personalize-etsy-ads'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+Fetching:  43%|████▎     | 43/100 [00:29<00:43,  1.31it/s]2026-06-02 02:13:24,154 [INFO] httpx: HTTP Request: GET https://doordash.engineering/2024/03/12/improving-etas-with-multi-task-models-deep-learning-and-probabilistic-forecasts/ "HTTP/1.1 302 Found"
+2026-06-02 02:13:24,411 [INFO] httpx: HTTP Request: GET https://careersatdoordash.com/blog/improving-etas-with-multi-task-models-deep-learning-and-probabilistic-forecasts/ "HTTP/1.1 403 Forbidden"
+2026-06-02 02:13:24,546 [ERROR] prepare_data.fetch_content: Failed to fetch case_043 (https://doordash.engineering/2024/03/12/improving-etas-with-multi-task-models-deep-learning-and-probabilistic-forecasts/)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 198, in fetch_single_case
+    text = fetch_article_text(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 119, in fetch_article_text
+    html = fetch_html(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 89, in fetch_html
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '403 Forbidden' for url 'https://careersatdoordash.com/blog/improving-etas-with-multi-task-models-deep-learning-and-probabilistic-forecasts/'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+Fetching:  44%|████▍     | 44/100 [00:31<00:55,  1.02it/s]2026-06-02 02:13:25,552 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_044
+2026-06-02 02:13:25,781 [INFO] httpx: HTTP Request: GET https://www.upwork.com/blog/why-upwork-relies-on-in-house-ai-research-to-power-uma-upworks-mindful-ai "HTTP/1.1 403 Forbidden"
+2026-06-02 02:13:26,002 [ERROR] prepare_data.fetch_content: Failed to fetch case_045 (https://www.upwork.com/blog/why-upwork-relies-on-in-house-ai-research-to-power-uma-upworks-mindful-ai)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 198, in fetch_single_case
+    text = fetch_article_text(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 119, in fetch_article_text
+    html = fetch_html(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 89, in fetch_html
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '403 Forbidden' for url 'https://www.upwork.com/blog/why-upwork-relies-on-in-house-ai-research-to-power-uma-upworks-mindful-ai'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+Fetching:  46%|████▌     | 46/100 [00:33<00:48,  1.12it/s]2026-06-02 02:13:27,010 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_046
+2026-06-02 02:13:27,011 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_047
+2026-06-02 02:13:27,012 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_048
+2026-06-02 02:13:27,261 [INFO] httpx: HTTP Request: GET https://medium.com/trusted-data-science-haleon/using-reinforcement-learning-to-track-marketing-spend-db67e843476b "HTTP/1.1 403 Forbidden"
+2026-06-02 02:13:27,262 [ERROR] prepare_data.fetch_content: Failed to fetch case_049 (https://medium.com/trusted-data-science-haleon/using-reinforcement-learning-to-track-marketing-spend-db67e843476b)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 198, in fetch_single_case
+    text = fetch_article_text(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 119, in fetch_article_text
+    html = fetch_html(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 89, in fetch_html
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '403 Forbidden' for url 'https://medium.com/trusted-data-science-haleon/using-reinforcement-learning-to-track-marketing-spend-db67e843476b'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+Fetching:  50%|█████     | 50/100 [00:34<00:30,  1.65it/s]2026-06-02 02:13:28,525 [INFO] httpx: HTTP Request: GET https://www.gojek.io/blog/food-debarkation-tensoba "HTTP/1.1 429 Too Many Requests"
+2026-06-02 02:13:28,569 [WARNING] prepare_data.fetch_content: HTTP 429 for https://www.gojek.io/blog/food-debarkation-tensoba, retrying in 2s (attempt 1/4)
+2026-06-02 02:13:30,806 [INFO] httpx: HTTP Request: GET https://www.gojek.io/blog/food-debarkation-tensoba "HTTP/1.1 429 Too Many Requests"
+2026-06-02 02:13:30,853 [WARNING] prepare_data.fetch_content: HTTP 429 for https://www.gojek.io/blog/food-debarkation-tensoba, retrying in 3s (attempt 2/4)
+2026-06-02 02:13:34,111 [INFO] httpx: HTTP Request: GET https://www.gojek.io/blog/food-debarkation-tensoba "HTTP/1.1 429 Too Many Requests"
+2026-06-02 02:13:34,161 [WARNING] prepare_data.fetch_content: HTTP 429 for https://www.gojek.io/blog/food-debarkation-tensoba, retrying in 5s (attempt 3/4)
+2026-06-02 02:13:39,428 [INFO] httpx: HTTP Request: GET https://www.gojek.io/blog/food-debarkation-tensoba "HTTP/1.1 429 Too Many Requests"
+2026-06-02 02:13:39,483 [ERROR] prepare_data.fetch_content: Failed to fetch case_050 (https://www.gojek.io/blog/food-debarkation-tensoba)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 198, in fetch_single_case
+    text = fetch_article_text(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 119, in fetch_article_text
+    html = fetch_html(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 89, in fetch_html
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://www.gojek.io/blog/food-debarkation-tensoba'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Fetching:  51%|█████     | 51/100 [00:46<01:55,  2.36s/it]2026-06-02 02:13:40,491 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_051
+2026-06-02 02:13:40,781 [INFO] httpx: HTTP Request: GET https://medium.com/lifen-engineering/visual-explainable-nlp-lifen-4d4dd5007205 "HTTP/1.1 403 Forbidden"
+2026-06-02 02:13:41,065 [ERROR] prepare_data.fetch_content: Failed to fetch case_052 (https://medium.com/lifen-engineering/visual-explainable-nlp-lifen-4d4dd5007205)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 198, in fetch_single_case
+    text = fetch_article_text(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 119, in fetch_article_text
+    html = fetch_html(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 89, in fetch_html
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '403 Forbidden' for url 'https://medium.com/lifen-engineering/visual-explainable-nlp-lifen-4d4dd5007205'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+Fetching:  53%|█████▎    | 53/100 [00:48<01:28,  1.89s/it]2026-06-02 02:13:42,068 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_053
+2026-06-02 02:13:42,069 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_054
+2026-06-02 02:13:42,069 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_055
+2026-06-02 02:13:42,070 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_056
+2026-06-02 02:13:42,282 [INFO] httpx: HTTP Request: GET https://medium.com/whatnot-engineering/enhancing-search-using-large-language-models-f9dcb988bdb9 "HTTP/1.1 403 Forbidden"
+2026-06-02 02:13:42,286 [ERROR] prepare_data.fetch_content: Failed to fetch case_057 (https://medium.com/whatnot-engineering/enhancing-search-using-large-language-models-f9dcb988bdb9)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 198, in fetch_single_case
+    text = fetch_article_text(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 119, in fetch_article_text
+    html = fetch_html(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 89, in fetch_html
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '403 Forbidden' for url 'https://medium.com/whatnot-engineering/enhancing-search-using-large-language-models-f9dcb988bdb9'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+Fetching:  58%|█████▊    | 58/100 [00:49<00:43,  1.04s/it]2026-06-02 02:13:43,685 [INFO] httpx: HTTP Request: GET https://www.uber.com/en-GB/blog/personalized-marketing-at-scale/%20 "HTTP/1.1 301 Moved Permanently"
+2026-06-02 02:13:44,039 [INFO] httpx: HTTP Request: GET https://www.uber.com/GB/en/blog/personalized-marketing-at-scale/ "HTTP/1.1 406 Not Acceptable"
+2026-06-02 02:13:44,039 [ERROR] prepare_data.fetch_content: Failed to fetch case_058 (https://www.uber.com/en-GB/blog/personalized-marketing-at-scale/ )
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 198, in fetch_single_case
+    text = fetch_article_text(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 119, in fetch_article_text
+    html = fetch_html(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 89, in fetch_html
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '406 Not Acceptable' for url 'https://www.uber.com/GB/en/blog/personalized-marketing-at-scale/'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/406
+Fetching:  59%|█████▉    | 59/100 [00:51<00:46,  1.13s/it]2026-06-02 02:13:45,283 [INFO] httpx: HTTP Request: GET https://medium.com/vimeo-engineering-blog/from-idea-to-reality-elevating-our-customer-support-through-generative-ai-101a2c5ea680 "HTTP/1.1 403 Forbidden"
+2026-06-02 02:13:45,286 [ERROR] prepare_data.fetch_content: Failed to fetch case_059 (https://medium.com/vimeo-engineering-blog/from-idea-to-reality-elevating-our-customer-support-through-generative-ai-101a2c5ea680)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 198, in fetch_single_case
+    text = fetch_article_text(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 119, in fetch_article_text
+    html = fetch_html(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 89, in fetch_html
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '403 Forbidden' for url 'https://medium.com/vimeo-engineering-blog/from-idea-to-reality-elevating-our-customer-support-through-generative-ai-101a2c5ea680'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+Fetching:  60%|██████    | 60/100 [00:52<00:45,  1.15s/it]2026-06-02 02:13:46,293 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_060
+2026-06-02 02:13:46,294 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_061
+2026-06-02 02:13:46,294 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_062
+2026-06-02 02:13:46,574 [INFO] httpx: HTTP Request: GET https://doordash.engineering/2021/11/03/how-doordash-quickly-spins-up-multiple-image-recognition-use-cases/ "HTTP/1.1 302 Found"
+2026-06-02 02:13:46,805 [INFO] httpx: HTTP Request: GET https://careersatdoordash.com/blog/how-doordash-quickly-spins-up-multiple-image-recognition-use-cases/ "HTTP/1.1 403 Forbidden"
+2026-06-02 02:13:47,025 [ERROR] prepare_data.fetch_content: Failed to fetch case_063 (https://doordash.engineering/2021/11/03/how-doordash-quickly-spins-up-multiple-image-recognition-use-cases/)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 198, in fetch_single_case
+    text = fetch_article_text(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 119, in fetch_article_text
+    html = fetch_html(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 89, in fetch_html
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '403 Forbidden' for url 'https://careersatdoordash.com/blog/how-doordash-quickly-spins-up-multiple-image-recognition-use-cases/'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+Fetching:  64%|██████▍   | 64/100 [00:54<00:29,  1.23it/s]2026-06-02 02:13:48,031 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_064
+2026-06-02 02:13:49,556 [INFO] prepare_data.transcribe: No captions for https://www.youtube.com/watch?v=VTrJqRfJ5gk, falling back to Whisper via yt-dlp
+2026-06-02 02:13:49,557 [INFO] prepare_data.transcribe: Downloading audio: https://www.youtube.com/watch?v=VTrJqRfJ5gk
+2026-06-02 02:13:51,010 [ERROR] prepare_data.fetch_content: Failed to fetch case_065 (https://www.youtube.com/watch?v=VTrJqRfJ5gk)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 188, in fetch_single_case
+    text, transcript_meta = transcribe_youtube_url(
+                            ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/transcribe.py", line 158, in transcribe_youtube_url
+    audio_path = download_youtube_audio(url, tmp_path)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/transcribe.py", line 55, in download_youtube_audio
+    raise RuntimeError(
+RuntimeError: yt-dlp failed for https://www.youtube.com/watch?v=VTrJqRfJ5gk: WARNING: [youtube] No supported JavaScript runtime could be found. Only deno is enabled by default; to use another runtime add  --js-runtimes RUNTIME[:PATH]  to your command/config. YouTube extraction without a JS runtime has been deprecated, and some formats may be missing. See  https://github.com/yt-dlp/yt-dlp/wiki/EJS  for details on installing one
+WARNING: [youtube] No title found in player responses; falling back to title from initial data. Other metadata may also be missing
+ERROR: [youtube] VTrJqRfJ5gk: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+Fetching:  66%|██████▌   | 66/100 [00:58<00:37,  1.11s/it]2026-06-02 02:13:52,017 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_066
+2026-06-02 02:13:52,018 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_067
+2026-06-02 02:13:52,018 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_068
+2026-06-02 02:13:52,262 [INFO] httpx: HTTP Request: GET https://medium.com/airbnb-engineering/how-ai-text-generation-models-are-reshaping-customer-support-at-airbnb-a851db0b4fa3 "HTTP/1.1 403 Forbidden"
+2026-06-02 02:13:52,263 [ERROR] prepare_data.fetch_content: Failed to fetch case_069 (https://medium.com/airbnb-engineering/how-ai-text-generation-models-are-reshaping-customer-support-at-airbnb-a851db0b4fa3)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 198, in fetch_single_case
+    text = fetch_article_text(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 119, in fetch_article_text
+    html = fetch_html(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 89, in fetch_html
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '403 Forbidden' for url 'https://medium.com/airbnb-engineering/how-ai-text-generation-models-are-reshaping-customer-support-at-airbnb-a851db0b4fa3'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+Fetching:  70%|███████   | 70/100 [00:59<00:23,  1.29it/s]2026-06-02 02:13:53,498 [INFO] httpx: HTTP Request: GET https://medium.com/foodpanda-data/classifying-restaurant-cuisines-with-subjective-labels-fa10012d18a9%20 "HTTP/1.1 403 Forbidden"
+2026-06-02 02:13:53,501 [ERROR] prepare_data.fetch_content: Failed to fetch case_070 (https://medium.com/foodpanda-data/classifying-restaurant-cuisines-with-subjective-labels-fa10012d18a9 )
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 198, in fetch_single_case
+    text = fetch_article_text(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 119, in fetch_article_text
+    html = fetch_html(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 89, in fetch_html
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '403 Forbidden' for url 'https://medium.com/foodpanda-data/classifying-restaurant-cuisines-with-subjective-labels-fa10012d18a9%20'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+Fetching:  71%|███████   | 71/100 [01:00<00:24,  1.20it/s]2026-06-02 02:13:54,721 [INFO] httpx: HTTP Request: GET https://medium.com/airtable-eng/building-a-resilient-embedding-system-for-semantic-search-at-airtable-d5fdf27807e2 "HTTP/1.1 403 Forbidden"
+2026-06-02 02:13:54,724 [ERROR] prepare_data.fetch_content: Failed to fetch case_071 (https://medium.com/airtable-eng/building-a-resilient-embedding-system-for-semantic-search-at-airtable-d5fdf27807e2)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 198, in fetch_single_case
+    text = fetch_article_text(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 119, in fetch_article_text
+    html = fetch_html(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 89, in fetch_html
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '403 Forbidden' for url 'https://medium.com/airtable-eng/building-a-resilient-embedding-system-for-semantic-search-at-airtable-d5fdf27807e2'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+Fetching:  72%|███████▏  | 72/100 [01:01<00:25,  1.12it/s]2026-06-02 02:13:55,729 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_072
+2026-06-02 02:13:55,729 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_073
+2026-06-02 02:13:55,730 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_074
+2026-06-02 02:13:55,961 [INFO] httpx: HTTP Request: GET https://tech.deliveryhero.com/personalisation-delivery-hero-ranking-restaurants-for-new-users/ "HTTP/1.1 403 Forbidden"
+2026-06-02 02:13:55,964 [ERROR] prepare_data.fetch_content: Failed to fetch case_075 (https://tech.deliveryhero.com/personalisation-delivery-hero-ranking-restaurants-for-new-users/)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 198, in fetch_single_case
+    text = fetch_article_text(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 119, in fetch_article_text
+    html = fetch_html(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 89, in fetch_html
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '403 Forbidden' for url 'https://tech.deliveryhero.com/personalisation-delivery-hero-ranking-restaurants-for-new-users/'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+Fetching:  76%|███████▌  | 76/100 [01:02<00:14,  1.61it/s]2026-06-02 02:13:56,972 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_076
+2026-06-02 02:13:57,277 [INFO] httpx: HTTP Request: GET https://www.gojek.io/blog/nlp-cartobert "HTTP/1.1 429 Too Many Requests"
+2026-06-02 02:13:57,323 [WARNING] prepare_data.fetch_content: HTTP 429 for https://www.gojek.io/blog/nlp-cartobert, retrying in 2s (attempt 1/4)
+2026-06-02 02:13:59,563 [INFO] httpx: HTTP Request: GET https://www.gojek.io/blog/nlp-cartobert "HTTP/1.1 429 Too Many Requests"
+2026-06-02 02:13:59,712 [WARNING] prepare_data.fetch_content: HTTP 429 for https://www.gojek.io/blog/nlp-cartobert, retrying in 3s (attempt 2/4)
+2026-06-02 02:14:02,967 [INFO] httpx: HTTP Request: GET https://www.gojek.io/blog/nlp-cartobert "HTTP/1.1 429 Too Many Requests"
+2026-06-02 02:14:03,018 [WARNING] prepare_data.fetch_content: HTTP 429 for https://www.gojek.io/blog/nlp-cartobert, retrying in 5s (attempt 3/4)
+2026-06-02 02:14:08,306 [INFO] httpx: HTTP Request: GET https://www.gojek.io/blog/nlp-cartobert "HTTP/1.1 429 Too Many Requests"
+2026-06-02 02:14:08,455 [ERROR] prepare_data.fetch_content: Failed to fetch case_077 (https://www.gojek.io/blog/nlp-cartobert)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 198, in fetch_single_case
+    text = fetch_article_text(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 119, in fetch_article_text
+    html = fetch_html(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 89, in fetch_html
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://www.gojek.io/blog/nlp-cartobert'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Fetching:  78%|███████▊  | 78/100 [01:15<00:44,  2.04s/it]2026-06-02 02:14:09,730 [INFO] httpx: HTTP Request: GET https://www.binance.com/en/blog/tech/7256282002014933080 "HTTP/1.1 202 Accepted"
+2026-06-02 02:14:09,730 [ERROR] trafilatura.utils: lxml parsing failed: Document is empty
+2026-06-02 02:14:09,730 [ERROR] trafilatura.utils: lxml parser bytestring Document is empty
+2026-06-02 02:14:09,730 [ERROR] trafilatura.core: empty HTML tree: None
+2026-06-02 02:14:09,731 [WARNING] trafilatura.core: discarding data: https://www.binance.com/en/blog/tech/7256282002014933080
+2026-06-02 02:14:09,731 [ERROR] prepare_data.fetch_content: Failed to fetch case_078 (https://www.binance.com/en/blog/tech/7256282002014933080)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 198, in fetch_single_case
+    text = fetch_article_text(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 129, in fetch_article_text
+    raise RuntimeError(f"Extracted text too short or empty for URL: {url}")
+RuntimeError: Extracted text too short or empty for URL: https://www.binance.com/en/blog/tech/7256282002014933080
+Fetching:  79%|███████▉  | 79/100 [01:16<00:40,  1.92s/it]2026-06-02 02:14:10,737 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_079
+2026-06-02 02:14:11,023 [INFO] httpx: HTTP Request: GET https://www.coinbase.com/blog/how-coinbase-is-using-machine-learning-to-predict "HTTP/1.1 403 Forbidden"
+2026-06-02 02:14:11,026 [ERROR] prepare_data.fetch_content: Failed to fetch case_080 (https://www.coinbase.com/blog/how-coinbase-is-using-machine-learning-to-predict)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 198, in fetch_single_case
+    text = fetch_article_text(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 119, in fetch_article_text
+    html = fetch_html(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 89, in fetch_html
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '403 Forbidden' for url 'https://www.coinbase.com/blog/how-coinbase-is-using-machine-learning-to-predict'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+Fetching:  81%|████████  | 81/100 [01:18<00:29,  1.54s/it]2026-06-02 02:14:12,035 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_081
+2026-06-02 02:14:12,036 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_082
+2026-06-02 02:14:13,805 [INFO] prepare_data.transcribe: No captions for https://www.youtube.com/watch?v=1oicrAfrEIk, falling back to Whisper via yt-dlp
+2026-06-02 02:14:13,806 [INFO] prepare_data.transcribe: Downloading audio: https://www.youtube.com/watch?v=1oicrAfrEIk
+2026-06-02 02:14:15,286 [ERROR] prepare_data.fetch_content: Failed to fetch case_083 (https://www.youtube.com/watch?v=1oicrAfrEIk)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 188, in fetch_single_case
+    text, transcript_meta = transcribe_youtube_url(
+                            ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/transcribe.py", line 158, in transcribe_youtube_url
+    audio_path = download_youtube_audio(url, tmp_path)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/transcribe.py", line 55, in download_youtube_audio
+    raise RuntimeError(
+RuntimeError: yt-dlp failed for https://www.youtube.com/watch?v=1oicrAfrEIk: WARNING: [youtube] No supported JavaScript runtime could be found. Only deno is enabled by default; to use another runtime add  --js-runtimes RUNTIME[:PATH]  to your command/config. YouTube extraction without a JS runtime has been deprecated, and some formats may be missing. See  https://github.com/yt-dlp/yt-dlp/wiki/EJS  for details on installing one
+WARNING: [youtube] No title found in player responses; falling back to title from initial data. Other metadata may also be missing
+ERROR: [youtube] 1oicrAfrEIk: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+Fetching:  84%|████████▍ | 84/100 [01:22<00:23,  1.49s/it]2026-06-02 02:14:16,509 [INFO] httpx: HTTP Request: GET https://www.etsy.com/codeascraft/from-image-classification-to-multitask-modeling-building-etsys-search-by-image-feature "HTTP/1.1 403 Forbidden"
+2026-06-02 02:14:16,509 [ERROR] prepare_data.fetch_content: Failed to fetch case_084 (https://www.etsy.com/codeascraft/from-image-classification-to-multitask-modeling-building-etsys-search-by-image-feature)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 198, in fetch_single_case
+    text = fetch_article_text(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 119, in fetch_article_text
+    html = fetch_html(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 89, in fetch_html
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '403 Forbidden' for url 'https://www.etsy.com/codeascraft/from-image-classification-to-multitask-modeling-building-etsys-search-by-image-feature'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+Fetching:  85%|████████▌ | 85/100 [01:23<00:21,  1.45s/it]2026-06-02 02:14:17,751 [INFO] httpx: HTTP Request: GET https://medium.com/dailymotion/how-we-used-cross-lingual-transfer-learning-to-categorize-our-content-c8e0f9c1c6c3 "HTTP/1.1 403 Forbidden"
+2026-06-02 02:14:17,753 [ERROR] prepare_data.fetch_content: Failed to fetch case_085 (https://medium.com/dailymotion/how-we-used-cross-lingual-transfer-learning-to-categorize-our-content-c8e0f9c1c6c3)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 198, in fetch_single_case
+    text = fetch_article_text(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 119, in fetch_article_text
+    html = fetch_html(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 89, in fetch_html
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '403 Forbidden' for url 'https://medium.com/dailymotion/how-we-used-cross-lingual-transfer-learning-to-categorize-our-content-c8e0f9c1c6c3'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+Fetching:  86%|████████▌ | 86/100 [01:24<00:19,  1.41s/it]2026-06-02 02:14:18,756 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_086
+2026-06-02 02:14:20,217 [INFO] prepare_data.transcribe: No captions for https://www.youtube.com/watch?v=uevJBcXKLlQ, falling back to Whisper via yt-dlp
+2026-06-02 02:14:20,218 [INFO] prepare_data.transcribe: Downloading audio: https://www.youtube.com/watch?v=uevJBcXKLlQ
+2026-06-02 02:14:21,621 [ERROR] prepare_data.fetch_content: Failed to fetch case_087 (https://www.youtube.com/watch?v=uevJBcXKLlQ)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 188, in fetch_single_case
+    text, transcript_meta = transcribe_youtube_url(
+                            ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/transcribe.py", line 158, in transcribe_youtube_url
+    audio_path = download_youtube_audio(url, tmp_path)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/transcribe.py", line 55, in download_youtube_audio
+    raise RuntimeError(
+RuntimeError: yt-dlp failed for https://www.youtube.com/watch?v=uevJBcXKLlQ: WARNING: [youtube] No supported JavaScript runtime could be found. Only deno is enabled by default; to use another runtime add  --js-runtimes RUNTIME[:PATH]  to your command/config. YouTube extraction without a JS runtime has been deprecated, and some formats may be missing. See  https://github.com/yt-dlp/yt-dlp/wiki/EJS  for details on installing one
+WARNING: [youtube] No title found in player responses; falling back to title from initial data. Other metadata may also be missing
+ERROR: [youtube] uevJBcXKLlQ: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+Fetching:  88%|████████▊ | 88/100 [01:28<00:19,  1.59s/it]2026-06-02 02:14:22,629 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_088
+2026-06-02 02:14:23,040 [INFO] httpx: HTTP Request: GET https://engineering.ramp.com/post/how-to-build-agents-users-can-trust "HTTP/1.1 200 OK"
+2026-06-02 02:14:23,140 [WARNING] trafilatura.core: discarding data: https://engineering.ramp.com/post/how-to-build-agents-users-can-trust
+2026-06-02 02:14:23,140 [ERROR] prepare_data.fetch_content: Failed to fetch case_089 (https://engineering.ramp.com/post/how-to-build-agents-users-can-trust)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 198, in fetch_single_case
+    text = fetch_article_text(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 129, in fetch_article_text
+    raise RuntimeError(f"Extracted text too short or empty for URL: {url}")
+RuntimeError: Extracted text too short or empty for URL: https://engineering.ramp.com/post/how-to-build-agents-users-can-trust
+Fetching:  90%|█████████ | 90/100 [01:30<00:13,  1.32s/it]2026-06-02 02:14:25,910 [INFO] prepare_data.transcribe: No captions for https://www.youtube.com/watch?v=HOYLZ7IVgJo, falling back to Whisper via yt-dlp
+2026-06-02 02:14:25,911 [INFO] prepare_data.transcribe: Downloading audio: https://www.youtube.com/watch?v=HOYLZ7IVgJo
+2026-06-02 02:14:27,589 [ERROR] prepare_data.fetch_content: Failed to fetch case_090 (https://www.youtube.com/watch?v=HOYLZ7IVgJo)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 188, in fetch_single_case
+    text, transcript_meta = transcribe_youtube_url(
+                            ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/transcribe.py", line 158, in transcribe_youtube_url
+    audio_path = download_youtube_audio(url, tmp_path)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/transcribe.py", line 55, in download_youtube_audio
+    raise RuntimeError(
+RuntimeError: yt-dlp failed for https://www.youtube.com/watch?v=HOYLZ7IVgJo: WARNING: [youtube] No supported JavaScript runtime could be found. Only deno is enabled by default; to use another runtime add  --js-runtimes RUNTIME[:PATH]  to your command/config. YouTube extraction without a JS runtime has been deprecated, and some formats may be missing. See  https://github.com/yt-dlp/yt-dlp/wiki/EJS  for details on installing one
+WARNING: [youtube] No title found in player responses; falling back to title from initial data. Other metadata may also be missing
+ERROR: [youtube] HOYLZ7IVgJo: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+Fetching:  91%|█████████ | 91/100 [01:34<00:17,  1.91s/it]2026-06-02 02:14:28,850 [INFO] httpx: HTTP Request: GET https://medium.com/tr-labs-ml-engineering-blog/better-customer-support-using-retrieval-augmented-generation-rag-at-thomson-reuters-4d140a6044c3 "HTTP/1.1 403 Forbidden"
+2026-06-02 02:14:28,851 [ERROR] prepare_data.fetch_content: Failed to fetch case_091 (https://medium.com/tr-labs-ml-engineering-blog/better-customer-support-using-retrieval-augmented-generation-rag-at-thomson-reuters-4d140a6044c3)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 198, in fetch_single_case
+    text = fetch_article_text(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 119, in fetch_article_text
+    html = fetch_html(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 89, in fetch_html
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '403 Forbidden' for url 'https://medium.com/tr-labs-ml-engineering-blog/better-customer-support-using-retrieval-augmented-generation-rag-at-thomson-reuters-4d140a6044c3'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+Fetching:  92%|█████████▏| 92/100 [01:35<00:14,  1.77s/it]2026-06-02 02:14:29,858 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_092
+2026-06-02 02:14:29,859 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_093
+2026-06-02 02:14:29,859 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_094
+2026-06-02 02:14:30,112 [INFO] httpx: HTTP Request: GET https://medium.com/foodpanda-data/introduction-optimising-budget-through-data-analysis-030b2f39ad0c "HTTP/1.1 403 Forbidden"
+2026-06-02 02:14:30,113 [ERROR] prepare_data.fetch_content: Failed to fetch case_095 (https://medium.com/foodpanda-data/introduction-optimising-budget-through-data-analysis-030b2f39ad0c)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 198, in fetch_single_case
+    text = fetch_article_text(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 119, in fetch_article_text
+    html = fetch_html(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 89, in fetch_html
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '403 Forbidden' for url 'https://medium.com/foodpanda-data/introduction-optimising-budget-through-data-analysis-030b2f39ad0c'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+Fetching:  96%|█████████▌| 96/100 [01:37<00:03,  1.03it/s]2026-06-02 02:14:31,122 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_096
+2026-06-02 02:14:31,346 [INFO] httpx: HTTP Request: GET https://medium.com/kingfisher-technology/uncovering-hidden-insights-in-customer-feedback-824daa16fa37 "HTTP/1.1 403 Forbidden"
+2026-06-02 02:14:31,348 [ERROR] prepare_data.fetch_content: Failed to fetch case_097 (https://medium.com/kingfisher-technology/uncovering-hidden-insights-in-customer-feedback-824daa16fa37)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 198, in fetch_single_case
+    text = fetch_article_text(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 119, in fetch_article_text
+    html = fetch_html(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 89, in fetch_html
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '403 Forbidden' for url 'https://medium.com/kingfisher-technology/uncovering-hidden-insights-in-customer-feedback-824daa16fa37'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+Fetching:  98%|█████████▊| 98/100 [01:38<00:01,  1.15it/s]2026-06-02 02:14:32,357 [INFO] prepare_data.fetch_content: Skipping existing raw document for case_098
+2026-06-02 02:14:32,582 [INFO] httpx: HTTP Request: GET https://medium.com/trusted-data-science-haleon/deriving-insights-from-customer-queries-on-haleon-brands-86f7e01b912c "HTTP/1.1 403 Forbidden"
+2026-06-02 02:14:32,584 [ERROR] prepare_data.fetch_content: Failed to fetch case_099 (https://medium.com/trusted-data-science-haleon/deriving-insights-from-customer-queries-on-haleon-brands-86f7e01b912c)
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 198, in fetch_single_case
+    text = fetch_article_text(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 119, in fetch_article_text
+    html = fetch_html(url, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/fetch_content.py", line 89, in fetch_html
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '403 Forbidden' for url 'https://medium.com/trusted-data-science-haleon/deriving-insights-from-customer-queries-on-haleon-brands-86f7e01b912c'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+Fetching: 100%|██████████| 100/100 [01:39<00:00,  1.25it/s]Fetching: 100%|██████████| 100/100 [01:39<00:00,  1.00it/s]
+2026-06-02 02:14:33,597 [INFO] prepare_data.fetch_content: Fetch complete: 0/45 succeeded

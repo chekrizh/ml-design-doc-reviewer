@@ -1,0 +1,6 @@
+{
+  "sample_id": "case_084",
+  "title": "From Image Classification to Multitask Modeling: Building Etsy\u2019s Search by Image Feature",
+  "url": "https://www.etsy.com/codeascraft/from-image-classification-to-multitask-modeling-building-etsys-search-by-image-feature",
+  "error": "Client error '403 Forbidden' for url 'https://www.etsy.com/codeascraft/from-image-classification-to-multitask-modeling-building-etsys-search-by-image-feature'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
+}

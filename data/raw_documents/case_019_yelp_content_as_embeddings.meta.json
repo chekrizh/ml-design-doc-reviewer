@@ -1,0 +1,8 @@
+{
+  "sample_id": "case_019",
+  "title": "Yelp Content As Embeddings",
+  "url": "https://engineeringblog.yelp.com/2023/04/yelp-content-as-embeddings.html",
+  "content_type": "article",
+  "text_path": "ml-design-doc-reviewer/data/raw_documents/case_019_yelp_content_as_embeddings.md",
+  "char_count": 19377
+}

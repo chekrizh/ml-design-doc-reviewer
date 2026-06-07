@@ -1,0 +1,6 @@
+{
+  "sample_id": "case_008",
+  "title": "Image detection as a service",
+  "url": "https://medium.com/bumble-tech/image-detection-as-a-service-9bd463f74f43",
+  "error": "Client error '403 Forbidden' for url 'https://medium.com/bumble-tech/image-detection-as-a-service-9bd463f74f43'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
+}

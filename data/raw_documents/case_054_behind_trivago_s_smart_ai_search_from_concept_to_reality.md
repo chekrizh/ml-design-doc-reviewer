@@ -1,0 +1,35 @@
+# Behind trivago's Smart AI Search: From Concept to Reality
+
+- **Sample ID**: case_054
+- **Source URL**: https://tech.trivago.com/post/2024-12-17-behind-trivagos-ai-search-from-concept-to-reality
+- **Content type**: article
+
+---
+
+Are you passionate about AI and its potential to transform the travel industry? Then dive into our interview with Sören Weber, Senior Product Manager at trivago, as he reveals the journey from concept to reality behind trivago’s innovative Smart AI Search feature. And learn how trivago’s unique approach and deep integration of AI, set us apart.
+Could you tell us about what motivated the development of this feature?
+Sören: At trivago, innovation has always been part of our DNA. When generative AI made its breakthrough, we saw an opportunity to apply it to our hotel search. Our journey with free-text search actually started in 2014, but the technology wasn’t ready at the time. With recent advances in Large Language Models (LLMs), we finally had the tools to make this vision a reality.
+Despite an uncertain ROI, we made a strategic decision to invest in AI technology. This is in line with our balanced approach to product development: continually optimizing our core product while pursuing innovations with greater impact.
+The result was AI Search, a feature that can understand natural language queries - something that would not have been possible without recent advances in AI technology.
+When developing Smart AI Search, what challenges did the team face?
+Sören: We faced three main challenges during development. First, we had a limited understanding of the technology. While we had strong engineering skills, this cutting-edge AI technology required a different kind of expertise. Our early prototypes showed promise but also revealed limitations. We had to trust in our team’s ability to learn quickly and bet on the rapid evolution of AI capabilities.
+Second, we needed to find the right partnership approach. Building AI applications from scratch requires significant AI expertise and computing resources. As an existing Google partner with a proven track record, they were the natural choice for this collaboration.
+The third challenge was to integrate it into our existing product without disrupting our regular search experience. Our existing search functionality is highly optimized and the result of years of refinement. Introducing a conversational search interface required careful user education and UX design.
+How is Smart AI Search different from what the competition is currently offering live?
+Sören: Many travel companies have embraced AI technology. So far, the focus has been on small improvements such as filter translation (converting free text into pre-defined search parameters) or chatbots focused primarily on travel inspiration. Our approach goes further. Instead of treating AI as an add-on feature, we’re integrating it deeply into our core value proposition: building the world’s best hotel search experience.
+Our solution enables users to find hotels that match specific preferences expressed in natural language. For example, instead of toggling multiple filters, users can simply type in ‘a quiet boutique hotel near the old town with a rooftop pool and good workspace’ and get relevant results. This is more than just a small tweak - it’s about understanding the intent and context behind each search.
+We need to recognize that the AI space is very dynamic, with new use cases emerging every day. This isn’t just coming from traditional competitors but also from startups and the big LLM providers. However, our deep integration of AI with our extensive hotel search expertise gives us a unique position in the market.
+Can you tell us about the Smart AI Search development process?
+Sören: Our development journey started with a focused “tiger team” approach. We assembled a small, agile group consisting of backend engineers and data scientists who worked closely with our Google partners to develop the initial prototype. As Google’s pilot customer for Vertex AI Search in travel, this collaboration was critical to tailoring the technology specifically for hotel search.
+Once we had validated the core technology, we broadened the scope to build a complete product experience. This meant bringing in UX researchers, designers, and front-end engineers to create an intuitive interface that would make AI-powered search accessible to all of our users. This cross-functional collaboration was crucial. We needed to balance technical capabilities with user experience to ensure that the power of AI translated into real user value.
+Were there any surprising outcomes during the development of Smart AI Search?
+Sören: One surprising discovery came from user testing. Despite providing clear examples and explaining the new AI Search feature, many users initially struggled to articulate their hotel preferences in free text. It seems like users often need to look at hotels first before they can fully express their preferences.
+We realized that the technical challenge of translating free text into meaningful hotel results was only half the equation. The other challenge was to design an interaction model that would help users unlock the full potential of AI search while feeling natural and intuitive.
+What key learnings did you gain from the development and implementation of Smart AI Search?
+Sören: A key takeaway is: While AI is undoubtedly transformative, it’s not a magic solution. Creating an effective search experience requires a combination of multiple technologies and components. We combine the AI-powered semantic search piece with traditional keyword matching, filtering, data pre-processing, and post-filtering to deliver accurate and relevant results. Another key is data, the output is only as good as the data available and how we process it.
+Another lesson is that choosing a cloud-based solution gave us significant advantages in terms of speed to market and scalability. However, it also meant working within certain constraints. Fortunately, our strong partnership with Google has enabled us to collaboratively address limitations and shape the technology to better serve our specific use case.
+See Smart AI Search in action ▶️
+Thank you, Sören, for sharing the journey that you and your team have taken to bring this exciting feature to life.
+We invite you to experience this new functionality for yourself and see how we are making travel planning smarter, faster and more intuitive than ever before. Explore “Smart AI Search”* and join us in redefining how travelers find their ideal hotels. Visit http://ai.trivago.com to experience our AI-powered free text search.
+Interested to know more? Read our in-depth article here: trivago Unveils New Smart AI Search: Redefining How You Find Hotels.
+* ”Smart AI Search” is a beta version and will be refined based on user data and insights. The feature is currently only available on desktop.

@@ -1,0 +1,46 @@
+document_id,error_id,scope,category,error_name,primary_section,primary_section_name,secondary_section,secondary_section_name,injection_location,injection_detail
+case_000,S13,sectional,problem,underspecified_problem,1,Problem definition,,,Problem definition,Removed quantitative scale and impact details from the problem statement.
+case_000,X09,cross_sectional,consistency,anti_goal_feature_conflict,2,Goals and anti-goals,10,Features,Goals and anti-goals + Features,Anti-goals forbid personalization while features add per-user behavioral embeddings.
+case_000,S14,sectional,training,missing_experiment_tracking,9,Training pipelines,,,Training pipelines,Removed experiment tracking references and added local-only artifact storage.
+case_000,X02,cross_sectional,consistency,dataset_validation_mismatch,5,Data (Dataset),6,Validation schema,Data (Dataset) + Validation schema,Dataset claims daily refresh while validation uses a never-refreshed static holdout.
+case_000,S09,sectional,data,dataset_contradiction,5,Data (Dataset),,,Data (Dataset),Added contradictory label freshness and feature refresh cadence in the same section.
+case_000,X01,cross_sectional,consistency,goals_metrics_mismatch,2,Goals and anti-goals,4,Metrics and loss functions,Goals and anti-goals + Metrics and loss functions,Added cost-minimization goals while optimizing for CTR regardless of cost.
+case_001,S01,sectional,completeness,missing_metric_definitions,4,Metrics and loss functions,,,Metrics and loss functions,Removed explicit metric definitions and added informal qualitative evaluation language.
+case_001,S03,sectional,validation,data_leakage_blind_spot,6,Validation schema,,,Validation schema,Inserted random split and test-set reuse that causes temporal leakage.
+case_001,S14,sectional,training,missing_experiment_tracking,9,Training pipelines,,,Training pipelines,Removed experiment tracking references and added local-only artifact storage.
+case_001,S15,sectional,measurement,missing_ab_protocol,11,Measuring results,,,Measuring results,Replaced measurement protocol with informal post-launch comparison language.
+case_001,S07,sectional,monitoring,monitoring_gap,13,Monitoring,,,Monitoring,Removed concrete monitoring signals and left only generic logging.
+case_002,X07,cross_sectional,consistency,risk_without_mitigation,3,Risks and constraints,13,Monitoring,Risks and constraints + Monitoring,Added vendor outage risk without monitoring or mitigation coverage.
+case_002,S08,sectional,analysis,shallow_error_analysis,8,Errors and their analysis,,,Errors and their analysis,Replaced structured error taxonomy with a generic one-line statement.
+case_002,S04,sectional,validation,missing_validation_details,6,Validation schema,,,Validation schema,Replaced concrete validation protocol with unspecified sampling language.
+case_002,S13,sectional,problem,underspecified_problem,1,Problem definition,,,Problem definition,Removed quantitative scale and impact details from the problem statement.
+case_002,S01,sectional,completeness,missing_metric_definitions,4,Metrics and loss functions,,,Metrics and loss functions,Removed explicit metric definitions and added informal qualitative evaluation language.
+case_002,S15,sectional,measurement,missing_ab_protocol,11,Measuring results,,,Measuring results,Replaced measurement protocol with informal post-launch comparison language.
+case_002,S12,sectional,features,feature_without_source,10,Features,,,Features,Added a feature that depends on external competitor pricing data.
+case_002,S02,sectional,completeness,missing_baseline,7,Baseline solution,,,Baseline solution,Replaced baseline description with a dismissal of baseline comparison.
+case_003,S02,sectional,completeness,missing_baseline,7,Baseline solution,,,Baseline solution,Replaced baseline description with a dismissal of baseline comparison.
+case_003,X08,cross_sectional,consistency,baseline_results_contradiction,7,Baseline solution,11,Measuring results,Baseline solution + Measuring results,Baseline is claimed stronger than production while measuring reports production uplift.
+case_003,X09,cross_sectional,consistency,anti_goal_feature_conflict,2,Goals and anti-goals,10,Features,Goals and anti-goals + Features,Anti-goals forbid personalization while features add per-user behavioral embeddings.
+case_003,X05,cross_sectional,consistency,latency_goal_serving_mismatch,1,Problem definition,12,Integration and Serving,Problem definition + Integration and Serving,Problem requires interactive latency but serving is daily batch email delivery.
+case_003,S14,sectional,training,missing_experiment_tracking,9,Training pipelines,,,Training pipelines,Removed experiment tracking references and added local-only artifact storage.
+case_003,S15,sectional,measurement,missing_ab_protocol,11,Measuring results,,,Measuring results,Replaced measurement protocol with informal post-launch comparison language.
+case_003,X01,cross_sectional,consistency,goals_metrics_mismatch,2,Goals and anti-goals,4,Metrics and loss functions,Goals and anti-goals + Metrics and loss functions,Added cost-minimization goals while optimizing for CTR regardless of cost.
+case_003,X06,cross_sectional,consistency,feature_data_mismatch,10,Features,5,Data (Dataset),Features + Data (Dataset),Features require paid weather API data while dataset policy allows internal logs only.
+case_011,S14,sectional,training,missing_experiment_tracking,9,Training pipelines,,,Training pipelines,Removed experiment tracking references and added local-only artifact storage.
+case_011,S12,sectional,features,feature_without_source,10,Features,,,Features,Added a feature that depends on external competitor pricing data.
+case_011,S02,sectional,completeness,missing_baseline,7,Baseline solution,,,Baseline solution,Replaced baseline description with a dismissal of baseline comparison.
+case_011,S08,sectional,analysis,shallow_error_analysis,8,Errors and their analysis,,,Errors and their analysis,Replaced structured error taxonomy with a generic one-line statement.
+case_011,S04,sectional,validation,missing_validation_details,6,Validation schema,,,Validation schema,Replaced concrete validation protocol with unspecified sampling language.
+case_014,S12,sectional,features,feature_without_source,10,Features,,,Features,Added a feature that depends on external competitor pricing data.
+case_014,S11,sectional,metrics,metric_loss_mismatch,4,Metrics and loss functions,,,Metrics and loss functions,Added MSE as the primary loss for ranking/classification-style problems.
+case_014,S06,sectional,integration,unrealistic_sla,12,Integration and Serving,,,Integration and Serving,Added unrealistic latency and availability SLA claims.
+case_014,S15,sectional,measurement,missing_ab_protocol,11,Measuring results,,,Measuring results,Replaced measurement protocol with informal post-launch comparison language.
+case_015,X06,cross_sectional,consistency,feature_data_mismatch,10,Features,5,Data (Dataset),Features + Data (Dataset),Features require paid weather API data while dataset policy allows internal logs only.
+case_015,S12,sectional,features,feature_without_source,10,Features,,,Features,Added a feature that depends on external competitor pricing data.
+case_015,X07,cross_sectional,consistency,risk_without_mitigation,3,Risks and constraints,13,Monitoring,Risks and constraints + Monitoring,Added vendor outage risk without monitoring or mitigation coverage.
+case_015,X04,cross_sectional,consistency,metrics_monitoring_mismatch,4,Metrics and loss functions,13,Monitoring,Metrics and loss functions + Monitoring,Offline metric optimizes Recall@10 but monitoring omits retrieval quality.
+case_015,S08,sectional,analysis,shallow_error_analysis,8,Errors and their analysis,,,Errors and their analysis,Replaced structured error taxonomy with a generic one-line statement.
+case_018,X08,cross_sectional,consistency,baseline_results_contradiction,7,Baseline solution,11,Measuring results,Baseline solution + Measuring results,Baseline is claimed stronger than production while measuring reports production uplift.
+case_019,X02,cross_sectional,consistency,dataset_validation_mismatch,5,Data (Dataset),6,Validation schema,Data (Dataset) + Validation schema,Dataset claims daily refresh while validation uses a never-refreshed static holdout.
+case_019,X05,cross_sectional,consistency,latency_goal_serving_mismatch,1,Problem definition,12,Integration and Serving,Problem definition + Integration and Serving,Problem requires interactive latency but serving is daily batch email delivery.
+case_019,S07,sectional,monitoring,monitoring_gap,13,Monitoring,,,Monitoring,Removed concrete monitoring signals and left only generic logging.

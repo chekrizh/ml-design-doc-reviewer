@@ -1,0 +1,26 @@
+error_id,scope,category,name,description,primary_section,secondary_section,injection_method
+S01,sectional,completeness,missing_metric_definitions,Remove explicit metric definitions and replace with vague qualitative statements,4,,strip_metric_definitions
+S02,sectional,completeness,missing_baseline,Replace baseline approach with a hand-wavy placeholder that skips comparison,7,,remove_baseline_detail
+S03,sectional,validation,data_leakage_blind_spot,Introduce a validation split that leaks future information into training,6,,introduce_temporal_leakage
+S04,sectional,validation,missing_validation_details,Replace concrete validation protocol with an unspecified test split,6,,vague_validation_protocol
+S05,sectional,completeness,missing_anti_goals,Delete or hollow out anti-goals while keeping goals intact,2,,remove_anti_goals
+S06,sectional,integration,unrealistic_sla,Add an unrealistic latency or uptime SLA inconsistent with the described stack,12,,add_unrealistic_sla
+S07,sectional,monitoring,monitoring_gap,Remove concrete monitoring signals and leave only generic logging,13,,strip_monitoring_detail
+S08,sectional,analysis,shallow_error_analysis,Replace structured error taxonomy with a single generic sentence,8,,shallow_error_analysis
+S09,sectional,data,dataset_contradiction,Introduce a dataset claim that contradicts an earlier subsection in the same section,5,,introduce_internal_data_contradiction
+S10,sectional,operations,missing_operations_detail,Replace operational procedures with placeholder ownership TBD text,14,,vague_operations
+S11,sectional,metrics,metric_loss_mismatch,State a regression loss for a classification or ranking problem,4,,wrong_loss_function
+S12,sectional,features,feature_without_source,Add a feature that references data never described in the dataset section,10,,orphan_feature
+S13,sectional,problem,underspecified_problem,Remove quantitative scale and business impact from the problem statement,1,,strip_problem_quantification
+S14,sectional,training,missing_experiment_tracking,Remove experiment tracking and reproducibility details from the training pipeline,9,,remove_experiment_tracking
+S15,sectional,measurement,missing_ab_protocol,Replace A/B or evaluation protocol with we will check later,11,,vague_measurement_plan
+X01,cross_sectional,consistency,goals_metrics_mismatch,Goals emphasize one objective while metrics optimize an unrelated target,2,4,goals_metrics_mismatch
+X02,cross_sectional,consistency,dataset_validation_mismatch,Dataset update cadence contradicts the validation strategy,5,6,dataset_validation_mismatch
+X03,cross_sectional,consistency,training_serving_stack_mismatch,Training stack and serving stack use incompatible technologies,9,12,training_serving_mismatch
+X04,cross_sectional,consistency,metrics_monitoring_mismatch,Offline metrics differ from what production monitoring tracks,4,13,metrics_monitoring_mismatch
+X05,cross_sectional,consistency,latency_goal_serving_mismatch,Problem or goals require low latency but serving is batch-only,1,12,latency_serving_mismatch
+X06,cross_sectional,consistency,feature_data_mismatch,Features rely on external data sources absent from the dataset section,10,5,feature_data_mismatch
+X07,cross_sectional,consistency,risk_without_mitigation,Risk is stated but monitoring and serving omit the corresponding mitigation,3,13,risk_without_mitigation
+X08,cross_sectional,consistency,baseline_results_contradiction,Baseline is described as stronger than reported production outcomes,7,11,baseline_results_contradiction
+X09,cross_sectional,consistency,anti_goal_feature_conflict,Anti-goals forbid a capability that features explicitly enable,2,10,anti_goal_feature_conflict
+X10,cross_sectional,validation,time_series_random_split,Time-oriented problem uses a random train/test split without temporal gap,5,6,time_series_random_split
