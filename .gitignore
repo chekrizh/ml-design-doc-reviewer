@@ -9,6 +9,9 @@ __pycache__/
 .venv/
 .pytest_cache/
 .ruff_cache/
+logs/
+*.log
+*.docx
 
 # OS files
 .DS_Store
