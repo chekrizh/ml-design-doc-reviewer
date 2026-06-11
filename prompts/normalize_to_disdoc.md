@@ -22,6 +22,19 @@ The source material describes a real production ML/LLM system. Extract factual i
 - Include a short metadata block at the top: company, title, technology area, source URL, and content type (article/video).
 - Match the depth and tone of reference examples: detailed subsections, bullet lists, formulas where relevant, and explicit trade-offs.
 
+### Image blocks in the source
+
+Raw documents may include image metadata blocks with special tokens:
+
+- `[IMAGE_REF: <repo-relative path>]`
+- `[IMAGE_ALT: <alt text from HTML>]`
+- `[IMAGE_SOURCE_URL: <original URL>]`
+- `[IMAGE_DESCRIPTION: <text describing what is shown>]`
+
+When `[IMAGE_DESCRIPTION]` is `PENDING_OCR`, `NO_TEXT_DETECTED`, or `SKIPPED_SVG`, rely on `[IMAGE_ALT]` and surrounding article text only; do not invent diagram contents.
+
+When `[IMAGE_DESCRIPTION]` contains Tesseract OCR text or a future VLM summary, treat it as factual source material. OCR text may be noisy or incomplete; cross-check with article prose when possible. Place architecture, metrics, or pipeline facts from images into the most relevant template sections. Preserve the image reference in a short note such as `(see image: <path>)` where those facts are used.
+
 ### Reference style
 
 Follow the structure and level of detail seen in production ML design docs:

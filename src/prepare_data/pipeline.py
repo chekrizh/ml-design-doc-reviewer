@@ -6,6 +6,7 @@ import logging
 
 from prepare_data.config import Settings
 from prepare_data.fetch_content import fetch_manifest
+from prepare_data.images import enrich_raw_documents, ocr_raw_documents
 from prepare_data.normalize import normalize_manifest
 from prepare_data.sampling import run_sampling
 
@@ -35,6 +36,8 @@ def run_fetch(settings: Settings, *, skip_existing: bool = True) -> None:
         timeout=settings.fetch_timeout_seconds,
         delay_seconds=settings.fetch_delay_seconds,
         skip_existing=skip_existing,
+        tesseract_lang=settings.tesseract_lang,
+        tesseract_cmd=settings.tesseract_cmd,
     )
 
 
@@ -55,6 +58,26 @@ def run_normalize(settings: Settings, *, skip_existing: bool = True) -> None:
         max_tokens=settings.openrouter_max_tokens,
         normalize_delay_seconds=settings.normalize_delay_seconds,
         skip_existing=skip_existing,
+    )
+
+
+def run_enrich_images(settings: Settings, *, skip_existing: bool = True) -> None:
+    enrich_raw_documents(
+        settings.raw_documents_dir,
+        timeout=settings.fetch_timeout_seconds,
+        delay_seconds=settings.fetch_delay_seconds,
+        skip_existing=skip_existing,
+        tesseract_lang=settings.tesseract_lang,
+        tesseract_cmd=settings.tesseract_cmd,
+    )
+
+
+def run_ocr_images(settings: Settings, *, skip_existing: bool = True) -> None:
+    ocr_raw_documents(
+        settings.raw_documents_dir,
+        skip_existing=skip_existing,
+        tesseract_lang=settings.tesseract_lang,
+        tesseract_cmd=settings.tesseract_cmd,
     )
 
 
