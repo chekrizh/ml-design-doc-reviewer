@@ -166,3 +166,72 @@ Comparison table Prod (ResNet50) compared to zero-shot CLIP model after some lab
 | Pasta | 0.65 | 0.53 | 0.55 | 0.85 |
 | Chicken Wings & Fried Chicken | 0.81 | 0.83 | 0.57 | 0.56 |
 | Dessert | 0.85 | 0.86 | 0.58 | 0.41 |
+---
+
+## Extracted images (13)
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_019/img_001.png]
+[IMAGE_ALT: Fanny Salvail-Berard, Machine Learning Engineer]
+[IMAGE_SOURCE_URL: https://engineeringblog.yelp.com/images/authors/fannysb.png]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_019/img_002.png]
+[IMAGE_ALT: An architecture overview of DAN,
+taken from https://amitness.com/2020/06/universal-sentence-encoder/]
+[IMAGE_SOURCE_URL: https://engineeringblog.yelp.com/images/posts/2023-04-20-yelp-content-as-embeddings/DAN-architecture.png]
+[IMAGE_DESCRIPTION: (G0): 512-dim embedding Final layer Hidden layer 3 Hidden layer 2 Hidden layer 1 token embeddings words bigrams Deep Averaging Network]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_019/img_003.png]
+[IMAGE_ALT: Numbers on the axis reference 44 different reviews IDs. Those reviews business categories are shown in the table below. We can see a clear correlation between reviews from a similar business type.]
+[IMAGE_SOURCE_URL: https://engineeringblog.yelp.com/images/posts/2023-04-20-yelp-content-as-embeddings/USE-heatmap.png]
+[IMAGE_DESCRIPTION: Review ID 42 3936 33 3027 2421181512 9630 USE Transformer Encoder: Heatmap applied on a sample of Yelp review data Lo -08 - 0.6 0.4 0.2 0.0 ONTOEP ANTS BRARARAAMARSD iew ID @ <]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_019/img_004.png]
+[IMAGE_ALT: Image taken from openAI blogpost: https://openai.com/blog/multimodal-neurons/]
+[IMAGE_SOURCE_URL: https://engineeringblog.yelp.com/images/posts/2023-04-20-yelp-content-as-embeddings/CLIP-visual-neurons.png]
+[IMAGE_DESCRIPTION: Holiday Neurons Halloween Christmas Easter birthday]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_019/img_005.jpg]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://engineeringblog.yelp.com/images/posts/2023-04-20-yelp-content-as-embeddings/5-way-precision.jpg]
+[IMAGE_DESCRIPTION: 5-way - Precision A photo of a drink ~ ‘A photo of food ‘A photo of inside a restaurant A photo of a menu 0.059 wo 2 6 £ c 2 « A photo of a restaurant exterior 0.0018 A photo of other interior outside]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_019/img_006.png]
+[IMAGE_ALT: Images taken from yelp.com]
+[IMAGE_SOURCE_URL: https://engineeringblog.yelp.com/images/posts/2023-04-20-yelp-content-as-embeddings/5-way-imgs.png]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_019/img_007.png]
+[IMAGE_ALT: Image taken from yelp.com]
+[IMAGE_SOURCE_URL: https://engineeringblog.yelp.com/images/posts/2023-04-20-yelp-content-as-embeddings/food-waffle-fc-3.png]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_019/img_008.png]
+[IMAGE_ALT: Image taken from yelp.com]
+[IMAGE_SOURCE_URL: https://engineeringblog.yelp.com/images/posts/2023-04-20-yelp-content-as-embeddings/food-waffle-fc-4.png]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_019/img_009.png]
+[IMAGE_ALT: Images taken from yelp.com]
+[IMAGE_SOURCE_URL: https://engineeringblog.yelp.com/images/posts/2023-04-20-yelp-content-as-embeddings/food-imgs.png]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_019/img_010.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://engineeringblog.yelp.com/images/posts/2023-04-20-yelp-content-as-embeddings/plah-precision.png]
+[IMAGE_DESCRIPTION: Predictions A photo of a Bathroom, Bathub and Shower Aphoto of a Deck and Railing A photo of a Door Installation A photo of a Kitchen A photo of a Solar Panel A photo of Other Installation or Repairs error A photo of a Bathroom, Bathub and Shower | Home Services contractors - Precision Aphoto of a Deck and Railing A photo of a Door Labels A photo of a Kitchen ‘A photo of a Solar Panel 4 A photo of Other Installation or Repairs]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_019/img_011.png]
+[IMAGE_ALT: Image taken from openAI blogpost: https://openai.com/blog/multimodal-neurons/]
+[IMAGE_SOURCE_URL: https://engineeringblog.yelp.com/images/posts/2023-04-20-yelp-content-as-embeddings/CLIP-visual-neurons-vulnerability.png]
+[IMAGE_DESCRIPTION: Typographic Neurons "un-" "con-" "_g9-" "ing" Show 2 more neurons. Surprisingly, despite being able to “read” words and map them to semantic features, the model keeps a handful of more typographic features in its high-level representations. Like a child spelling out a word they don't know, we suspect these neurons help the model represent text it can’t fully read.]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_019/img_012.png]
+[IMAGE_ALT: Image taken from openAI blogpost: https://openai.com/blog/multimodal-neurons/]
+[IMAGE_SOURCE_URL: https://engineeringblog.yelp.com/images/posts/2023-04-20-yelp-content-as-embeddings/CLIP-vulnerability-apple-ipod.png]
+[IMAGE_DESCRIPTION: Attack textlabel iPod =v GrannySmith 85.6% Granny Smith 0.1% library 0.0% library 0.0% pizza 0.0% pizza 0.0% toaster 0.0% toaster 0.0% q dough 0.1% dough 0.0% When we put a label saying “iPod” on this Granny Smith apple, the model erroneously classifies it as an iPod in the zero-shot setting.]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_019/img_013.png]
+[IMAGE_ALT: Image taken from openAI blogpost: https://openai.com/blog/multimodal-neurons/]
+[IMAGE_SOURCE_URL: https://engineeringblog.yelp.com/images/posts/2023-04-20-yelp-content-as-embeddings/CLIP-vulnerability-apple-pizza.png]
+[IMAGE_DESCRIPTION: Attack textlabel pizza v GrannySmith 85.6% Granny Smith 0.9% iPod 0.4% iPod 0.0% library 0.0% library 0.0% toaster 0.0% toaster 0.0% 4 dough 0.1% dough 78% When we put a label saying “pizza” on this Granny Smith apple, the model erroneously classifies it as a pizza in the zero-shot setting.]

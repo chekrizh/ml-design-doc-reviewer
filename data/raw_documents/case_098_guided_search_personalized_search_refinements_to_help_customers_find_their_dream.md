@@ -32,3 +32,51 @@ If you want to read more about how we use clickstream data at Zillow to optimize
 Acknowledgements: Many thanks to Andrei Lopatenko, Arun Balagopalan, Farah Abdallah Akoum, and Xin Jin for their suggestions during the writing process. This is joint work with Adam Cohn, Andrei Lopatenko, Arun Balagopalan, Elysia Chu, Farah Abdallah Akoum, Kevin Zhao, Marie Laura-Luisada, and Zehua Zhou.
 Related Articles
 Subscribe to receive daily emails for the latest Zillow news and announcements, product updates and more.
+---
+
+## Extracted images (9)
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_098/img_001.png]
+[IMAGE_ALT: Guided Search — Personalized Search Refinements to Help Customers Find their Dream Home]
+[IMAGE_SOURCE_URL: https://www.zillowstatic.com/bedrock/app/uploads/sites/60/Hero-1-ae3a45.png]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_098/img_002.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://wp-tid.zillowstatic.com/49/Figure_1-1-d9ea90.png]
+[IMAGE_DESCRIPTION: 10 Saved Homes Seattle WA Rental Listings = : & ed erting $1,945/mo tho oe]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_098/img_003.gif]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://wp-tid.zillowstatic.com/49/Figure_2-1-6b86b2.gif]
+[IMAGE_DESCRIPTION: 00, eAo Allow large dogs Onsite parking Allow small dogs In-unit laundry Search Refinement Model]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_098/img_004.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://wp-tid.zillowstatic.com/49/Guided_Search_Fig_4-1-6b86b2.png]
+[IMAGE_DESCRIPTION: Allows Small Dogs Allows Cats Allows Large Dogs In-unit Laundry On-site Parking Allows Large Dogs In-unit Laundry Must Have Pool Must Have A/C Allows Small Dogs Allows Small Dogs Allows Large Dogs In-unit Laundry Must Have A/C Allows Cats]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_098/img_005.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://wp-tid.zillowstatic.com/49/Guided_Search_Guided_Search_Fig_3-df80b5.png]
+[IMAGE_DESCRIPTION: Previously selected filter Relative rankings of bath refinements Relative rankings of price refinements Relative rankings of parking refinements Relative rankings of square foot refinements 1 Bath 1.5 Baths $500K $600K S4OOK $300K 1+ Parking Spots 750 Saft 500 Saft 1000 Saft 2 Baths 1.5 Baths 1 Bath $500K $600K $700K $800K Garage 1+ Parking Spots 1000 Saft 1250 Saft 750 Saft 2 Baths 1.5 Baths 3 Baths $500K $600K $800K S1M Garage 2+ Parking Spots 2000 Saft 1500 Saft 1750 Saft]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_098/img_006.jpg]
+[IMAGE_ALT: home for sale]
+[IMAGE_SOURCE_URL: https://www.zillowstatic.com/bedrock/app/uploads/sites/60/2026/05/Header_For-Sale_1600x900_2-1280x720.jpg]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_098/img_007.jpg]
+[IMAGE_ALT: women looking at computer]
+[IMAGE_SOURCE_URL: https://www.zillowstatic.com/bedrock/app/uploads/sites/60/2026/05/Header_15-Years-of-FUB_1600x900-1280x720.jpg]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_098/img_008.jpg]
+[IMAGE_ALT: michael sherman from Zillow Rentals at AIM conference]
+[IMAGE_SOURCE_URL: https://www.zillowstatic.com/bedrock/app/uploads/sites/60/2026/05/Header-Image_AIM-Conference_1600x900_1-1280x720.jpg]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_098/img_009.svg]
+[IMAGE_ALT: illustration of mailbox]
+[IMAGE_SOURCE_URL: https://delivery.digitallibrary.zillowgroup.com/public/mailbox-light_svg_Original.svg]
+[IMAGE_DESCRIPTION: SKIPPED_SVG]

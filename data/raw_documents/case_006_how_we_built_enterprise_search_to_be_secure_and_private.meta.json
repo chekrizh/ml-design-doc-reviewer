@@ -4,5 +4,129 @@
   "url": "https://slack.engineering/how-we-built-enterprise-search-to-be-secure-and-private/",
   "content_type": "article",
   "text_path": "ml-design-doc-reviewer/data/raw_documents/case_006_how_we_built_enterprise_search_to_be_secure_and_private.md",
-  "char_count": 6827
+  "char_count": 6827,
+  "images": [
+    {
+      "image_id": "case_006_img_001",
+      "source_url": "https://slack.engineering/wp-content/themes/tinyspeck/assets/public/images/logo.svg",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_006/img_001.svg",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_006/img_001.svg",
+      "alt_text": "Slack Engineering",
+      "width": null,
+      "height": null,
+      "content_type": "image/svg+xml",
+      "byte_size": 5452,
+      "ocr_text": "SKIPPED_SVG"
+    },
+    {
+      "image_id": "case_006_img_002",
+      "source_url": "https://slack.engineering/wp-content/uploads/sites/7/2024/07/headshot.png",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_006/img_002.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_006/img_002.png",
+      "alt_text": "",
+      "width": null,
+      "height": null,
+      "content_type": "image/png",
+      "byte_size": 304545,
+      "ocr_text": "NO_TEXT_DETECTED"
+    },
+    {
+      "image_id": "case_006_img_003",
+      "source_url": "https://slack.engineering/wp-content/uploads/sites/7/2025/03/claireb.jpeg",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_006/img_003.jpeg",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_006/img_003.jpeg",
+      "alt_text": "",
+      "width": null,
+      "height": null,
+      "content_type": "image/jpeg",
+      "byte_size": 40065,
+      "ocr_text": "NO_TEXT_DETECTED"
+    },
+    {
+      "image_id": "case_006_img_004",
+      "source_url": "https://slack.engineering/wp-content/uploads/sites/7/2025/03/magnifying-glass-5232511_1280.jpg?w=1020",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_006/img_004.jpg",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_006/img_004.jpg",
+      "alt_text": "Magnifying glass against a blue background",
+      "width": null,
+      "height": null,
+      "content_type": "image/jpeg",
+      "byte_size": 102970,
+      "ocr_text": "NO_TEXT_DETECTED"
+    },
+    {
+      "image_id": "case_006_img_005",
+      "source_url": "https://slack.engineering/wp-content/uploads/sites/7/2025/03/enterprisesearch.png?w=640",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_006/img_005.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_006/img_005.png",
+      "alt_text": "Architecture of enterprise search",
+      "width": 2467,
+      "height": 2292,
+      "content_type": "image/png",
+      "byte_size": 26848,
+      "ocr_text": "Slack trust boundary Slack clients."
+    },
+    {
+      "image_id": "case_006_img_006",
+      "source_url": "https://slack.engineering/wp-content/uploads/sites/7/2024/12/noah-naf-image.avif?w=160&h=160&crop=1",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_006/img_006.avif",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_006/img_006.avif",
+      "alt_text": "",
+      "width": null,
+      "height": null,
+      "content_type": "image/avif",
+      "byte_size": 25881,
+      "ocr_text": "OCR_RASTERIZE_FAILED"
+    },
+    {
+      "image_id": "case_006_img_008",
+      "source_url": "https://slack.engineering/wp-content/uploads/sites/7/2026/05/pexels-photograph-6732010.jpg?w=380&h=250&crop=1",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_006/img_008.jpg",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_006/img_008.jpg",
+      "alt_text": "",
+      "width": null,
+      "height": null,
+      "content_type": "image/jpeg",
+      "byte_size": 26319,
+      "ocr_text": "NO_TEXT_DETECTED"
+    },
+    {
+      "image_id": "case_006_img_009",
+      "source_url": "https://slack.engineering/wp-content/uploads/sites/7/2026/04/SSH-Rest-CoverImage.png?w=380&h=250&crop=1",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_006/img_009.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_006/img_009.png",
+      "alt_text": "From SSH to REST_ A Security-Driven Modernization of Slack's EMR Data Pipelines",
+      "width": null,
+      "height": null,
+      "content_type": "image/png",
+      "byte_size": 209701,
+      "ocr_text": "NO_TEXT_DETECTED"
+    },
+    {
+      "image_id": "case_006_img_010",
+      "source_url": "https://slack.engineering/wp-content/uploads/sites/7/2026/03/investigation_notebook.png?w=380&h=250&crop=1",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_006/img_010.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_006/img_010.png",
+      "alt_text": "Investigation Journal",
+      "width": null,
+      "height": null,
+      "content_type": "image/png",
+      "byte_size": 18319,
+      "ocr_text": "NO_TEXT_DETECTED"
+    },
+    {
+      "image_id": "case_006_img_011",
+      "source_url": "https://slack.engineering/wp-content/uploads/sites/7/2026/03/cover.png?w=380&h=250&crop=1",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_006/img_011.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_006/img_011.png",
+      "alt_text": "",
+      "width": null,
+      "height": null,
+      "content_type": "image/png",
+      "byte_size": 10845,
+      "ocr_text": "e >) Grafana Prometheus"
+    }
+  ],
+  "image_count": 10,
+  "ocr_complete": true
 }

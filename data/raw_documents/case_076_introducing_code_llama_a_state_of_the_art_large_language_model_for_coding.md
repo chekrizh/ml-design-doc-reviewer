@@ -34,3 +34,51 @@ Code Llama is designed to support software engineers in all sectors – includin
 We hope that Code Llama will inspire others to leverage Llama 2 to create new innovative tools for research and commercial products.
 Try Code Llama today
 Download the Code Llama ModelRead the research paper
+---
+
+## Extracted images (9)
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_076/img_001.gif]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://scontent-fra5-1.xx.fbcdn.net/v/t39.8562-6/369899645_822741339422669_4458807373211021546_n.gif?_nc_cat=110&ccb=1-7&_nc_sid=f537c7&_nc_ohc=SGMMjPcd2NYQ7kNvwFUb530&_nc_oc=AdrFBu09MjHJRw8qLbMdSGjbZMUExr2LbrOsvWH0t83MErfcwrUSkXHxnSQbydZuYdsbP_55dxDd2hwZh5hNxlle&_nc_zt=14&_nc_ht=scontent-fra5-1.xx&_nc_gid=Kjo5ulRXwpfezOSaXoooyg&_nc_ss=7b20f&oh=00_Af8ECWCUiNQaO48bYLkfi7HQCdEM650v8csRpXha5M7eTA&oe=6A306790]
+[IMAGE_DESCRIPTION: Meta Al Code Llama PROMPT]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_076/img_002.gif]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://scontent-fra3-1.xx.fbcdn.net/v/t39.8562-6/369652058_690162392972818_1173984281354057457_n.gif?_nc_cat=103&ccb=1-7&_nc_sid=f537c7&_nc_ohc=AtOkHorxcNYQ7kNvwHHtQHM&_nc_oc=AdpeII9m3AJWVLs6l9K8uPljeGTRgghrHRSD8ZRc7qGlpJGbCl36I-8PVOEj5Bxy9Gc50095sswcEU7oGkYinlWN&_nc_zt=14&_nc_ht=scontent-fra3-1.xx&_nc_gid=Kjo5ulRXwpfezOSaXoooyg&_nc_ss=7b20f&oh=00_Af_rXcttZmQxcfyblrUSLgnmjLBpkkk_HFA1Enbo1ET9qw&oe=6A305113]
+[IMAGE_DESCRIPTION: Meta Al Code Llama PROMPT]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_076/img_003.gif]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://scontent-fra3-1.xx.fbcdn.net/v/t39.8562-6/369628374_974402950309179_3355223640107296330_n.gif?_nc_cat=108&ccb=1-7&_nc_sid=f537c7&_nc_ohc=pQ6A2c6iIDQQ7kNvwHwXm-9&_nc_oc=Ado4_S5abHBzoKDCm0GvZCd90Grf4jmc69T_x64jlMbSWSuAqaYxJOH6i5s7U3N359raWPtD0XTQW32I7tUdsOfw&_nc_zt=14&_nc_ht=scontent-fra3-1.xx&_nc_gid=Kjo5ulRXwpfezOSaXoooyg&_nc_ss=7b20f&oh=00_Af_vvTHgVQ-cMCeAVASTL-vr7VuPJdUF9CsgQmG2b4xl_A&oe=6A30714D]
+[IMAGE_DESCRIPTION: OD Meta Al Code Llama def (task_prefix, data_format, input_paths, prediction_path, metric_fn_and_keys, validate_fn,]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_076/img_004.gif]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://scontent-fra5-1.xx.fbcdn.net/v/t39.8562-6/369634634_298372716122486_560769700771259146_n.gif?_nc_cat=110&ccb=1-7&_nc_sid=f537c7&_nc_ohc=Ej_IAizdWiwQ7kNvwGmXetS&_nc_oc=AdqLgrakvXLmEImCrIRpMyqI6x3QJPBrvtgOe9zHkjeBJUOLo4PNC2vlv6DAyqXe1lLRz-Sbwy8wmTmE4GHMa3yf&_nc_zt=14&_nc_ht=scontent-fra5-1.xx&_nc_gid=Kjo5ulRXwpfezOSaXoooyg&_nc_ss=7b20f&oh=00_Af9g52w9RbnR1CRCKX0UCd_pNKQatTu_KbCESDPTv0KQjA&oe=6A306F8B]
+[IMAGE_DESCRIPTION: Code Llama O° Meta Al PROMPT]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_076/img_005.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://scontent-fra5-2.xx.fbcdn.net/v/t39.8562-6/422371016_407978498286607_4696551346233862918_n.png?_nc_cat=107&ccb=1-7&_nc_sid=f537c7&_nc_ohc=tEZJFP4TPx0Q7kNvwEUE25u&_nc_oc=AdoluxL3HhwfkpFOvVkoJ4rLtTTDXhmFjYmmMOJV9G4IqBaUQcwhcW-8UXOzGg0KH8HAS5-e0Wz1Anf80dx3RQwU&_nc_zt=14&_nc_ht=scontent-fra5-2.xx&_nc_gid=Kjo5ulRXwpfezOSaXoooyg&_nc_ss=7b20f&oh=00_Af-3Uy2lzwfj3IF0qpiT5fmkagkByphAD07Hb6OP0F_pYA&oe=6A307072]
+[IMAGE_DESCRIPTION: LLAMA 2 Foundation models (7B, 13B, 34B, 70B) | Code training Infilling code training 500B tokens (1T for 70B) Python code training 100B tokens Long context Long context fine-tuning fine-tuning 20B tokens 20B tokens Instruction fine-tuning 5B tokens | CODE LLAMA - CODE LLAMA - CODE LLAMA PYTHON INSTRUCT (7B2,13B2, 34B, 70B2) (7B, 13B,34B,70B2) (7B2,13B2,34B,70B2)]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_076/img_006.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://scontent-fra3-2.xx.fbcdn.net/v/t39.8562-6/422554813_2009913702712867_3187269214893717726_n.png?_nc_cat=111&ccb=1-7&_nc_sid=f537c7&_nc_ohc=oEH34-xFn_4Q7kNvwE1PSxq&_nc_oc=AdroyUK87UsTfE2LSaD0evJTcDrQh7NqqLCtENSvO8ZcKx619wzePPVgzuO-95wfYJjxEMx4E3EZoM2V9PzvOfSO&_nc_zt=14&_nc_ht=scontent-fra3-2.xx&_nc_gid=Kjo5ulRXwpfezOSaXoooyg&_nc_ss=7b20f&oh=00_Af8BnXEZqQxa3XuGcvkhCVTuXwBgUoNhsgavPZ7r1fuuiQ&oe=6A305512]
+[IMAGE_DESCRIPTION: Accuracy, higher is better Multilingual Human HumanEval (pass@1) MBPP (pass@1) Eval (pass@1) Codex 33.5 45.9 26.1 GPT 3.5 48.1 52.2 - GPT 4 (reported) 67.0 = = Palm-Coder 36.0 47.0 2 StarCoder Python 33.6 52.7 25.3 StarCoder (prompted) 40.8 49.5 - Llama 2 (70B) 30.5 45.4 24.4 7B 33.5 41.4 26.3 13B 36.0 47.0 30.6 Code Llama 34B 48.8 55.0 36.4 70B 53.0 62.4 45.3 7B 34.8 44.4 25.8 13B 427 49.4 32.0 Code Llama - Instruct 34B 41.5 57.0 36.1 70B 67.8 62.2 45.9 7B 38.4 47.6 27.5 13B 43.3 49.0 Sits) Code Llama - Python 34B 53.7, 56.2 35.1 70B 57/3) 65.6 45.0]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_076/img_007.jpg]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://scontent-fra5-2.xx.fbcdn.net/v/t39.2365-6/361917710_291784043360251_714121493924052728_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=e280be&_nc_ohc=IiWa35f1nQoQ7kNvwGTwPZl&_nc_oc=Adpvarg-NeKD1NSPYkqNh2Y9UHhC_AYHXGrvxh-uKHU2DZdsBMoPrRb6g_DfNdHkhfGFLSeQHza6WFyhVcqfUkWu&_nc_zt=14&_nc_ht=scontent-fra5-2.xx&_nc_gid=Kjo5ulRXwpfezOSaXoooyg&_nc_ss=7b20f&oh=00_Af9uREZzR0qxfx06aiF5J7lolWi4eGl-B2FAiVZ0RDthzg&oe=6A44E68A]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_076/img_008.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://scontent-fra3-2.xx.fbcdn.net/v/t39.2365-6/355350269_735396441693973_7081320402844920765_n.png?_nc_cat=111&ccb=1-7&_nc_sid=e280be&_nc_ohc=WrfsLonoo1MQ7kNvwFuxs29&_nc_oc=Adr_ir-gZU3ekyFdc7s8LK9vUCnRQujc6z49ad5j1VjcmKSptxR2Asp3nBTGJfe7xJZepwvJOqEKMtOUHaz3jWU2&_nc_zt=14&_nc_ht=scontent-fra3-2.xx&_nc_gid=Kjo5ulRXwpfezOSaXoooyg&_nc_ss=7b20f&oh=00_Af_1k5uS3Ka1OoAYqlmgWvJDsJtno2SKw2IQpTIpE17cJg&oe=6A44D06F]
+[IMAGE_DESCRIPTION: TEXT PROMPT “A small cactus wearing a straw hat and neon sunglasses in the Sahara desert.” OO Meta Al]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_076/img_009.jpg]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://scontent-fra3-1.xx.fbcdn.net/v/t39.2365-6/361944785_562462122573647_2190435326701700877_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=e280be&_nc_ohc=Q8-0epHkLHMQ7kNvwEZBByv&_nc_oc=AdpGUr0NWB1vCIMRm71Ul7VFtPd8NFb6OVfrPpSsiANHvFnMIpJKK6J8Y6xIk5K3EzYcczmcup80Gz6H1taPMP83&_nc_zt=14&_nc_ht=scontent-fra3-1.xx&_nc_gid=Kjo5ulRXwpfezOSaXoooyg&_nc_ss=7b20f&oh=00_Af_NqbWS0dIohkPAMEwzOj4kCeP14BIaegOQT5ciJNxqvA&oe=6A44DB7E]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]

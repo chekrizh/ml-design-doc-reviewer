@@ -91,3 +91,86 @@ As companies grow more complex, AI agents offer a new kind of workforce support:
 Tools like Omega won’t just make processes more efficient. They’ll create space for deeper thinking, faster onboarding, and more consistent outcomes—especially in roles that rely on speed, context, and communication.
 If you're considering building something similar, partnering with an experienced AI agent development company can help you move faster with your ideas.
 If you're considering building something similar, understanding production-grade agent development practices can help you move faster while maintaining quality and reliability.
+---
+
+## Extracted images (16)
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_027/img_001.jpg]
+[IMAGE_ALT: Food delivery worker receiving order.]
+[IMAGE_SOURCE_URL: https://www.netguru.com/hs-fs/hubfs/Delivery%20Hero%20Top%20Image.jpg?width=5742&height=3448&name=Delivery%20Hero%20Top%20Image.jpg]
+[IMAGE_DESCRIPTION: YY rn &*]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_027/img_002.jpg]
+[IMAGE_ALT: Two women shopping online.]
+[IMAGE_SOURCE_URL: https://www.netguru.com/hs-fs/hubfs/Vinted%20GO%20hero.jpg?width=8192&height=5464&name=Vinted%20GO%20hero.jpg]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_027/img_003.jpg]
+[IMAGE_ALT: Woman holding a phone in front of the laptop.]
+[IMAGE_SOURCE_URL: https://www.netguru.com/hs-fs/hubfs/_Images%20for%20blog/Woman%20holding%20a%20phone%20in%20front%20of%20the%20laptop.jpg?width=1200&height=797&name=Woman%20holding%20a%20phone%20in%20front%20of%20the%20laptop.jpg]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_027/img_004.jpeg]
+[IMAGE_ALT: Businessman hand working with modern technology digital tablet computer and graphics layer effect as business strategy concept.]
+[IMAGE_SOURCE_URL: https://www.netguru.com/hs-fs/hubfs/businessman%20hand%20working%20with%20modern%20technology%20digital%20tablet%20computer%20and%20graphics%20layer%20effect%20as%20business%20strategy%20concept.jpeg?width=1000&height=667&name=businessman%20hand%20working%20with%20modern%20technology%20digital%20tablet%20computer%20and%20graphics%20layer%20effect%20as%20business%20strategy%20concept.jpeg]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_027/img_005.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://493098.fs1.hubspotusercontent-na1.net/hub/493098/hubfs/Patryk%20Szczyg%C5%82o%20500x500.png?length=NaN]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_027/img_006.jpg]
+[IMAGE_ALT: how we built our AI agent]
+[IMAGE_SOURCE_URL: https://www.netguru.com/hs-fs/hubfs/austin-distel-wD1LRb9OeEo-unsplash.jpg?width=1920&height=1440&name=austin-distel-wD1LRb9OeEo-unsplash.jpg]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_027/img_007.png]
+[IMAGE_ALT: AI agents production process: tasks]
+[IMAGE_SOURCE_URL: https://www.netguru.com/hs-fs/hubfs/AI%20agents%20production%20process.png?width=773&height=701&name=AI%20agents%20production%20process.png]
+[IMAGE_DESCRIPTION: Sales Framework 2.0 Agent (BB vous w fmt Kacrmarsh ‘Analyse conversation agent Feedback agent Analyse activity agent Risk agent Proposal agent Estimation agent Expert call agent Planing agent Tools GD cus wv Unassigned ‘CRONNtimer trigger to suggest next Unsigned Create spreadsheet nasi Create doc instead of markdown file [o> ee assigned Create presentation assign <i agent cannot read files in folders, Pau sees]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_027/img_008.png]
+[IMAGE_ALT: Omega about sales framework 2]
+[IMAGE_SOURCE_URL: https://www.netguru.com/hs-fs/hubfs/Omega%20about%20sales%20framework%202.png?width=716&height=639&name=Omega%20about%20sales%20framework%202.png]
+[IMAGE_DESCRIPTION: Patryk Szczygto Today at 10:11 AM @Omega Netguru Al tell me more about sales framework 7 replies Omega Netguru Al APP Today at 10:11 AM Below is a summary of the Netguru Sales Framework that outlines our step-by-step approach to winning IT projects. This framework is designed to structure our interactions from the very first investigation of a prospect right through to post-delivery expansion: 1. Investigate Stage © Purpose: Identify the Ideal Customer Profile (ICP) and understand the prospect's background. © Activities: © Define segments (enterprise or scaleup) and key buying personas (e.g., innovator, head of design, CTO). © Build targeted contact lists and log this data in HubSpot. © Tools & Support: © Al Agent gathers company background information. © Slack & BlueDot transcripts help find conversation starters and historical insights. 2. Network Stage © Purpose: Initiate meaningful connection attempts. © Activities: © Conduct outreach and log interactions (calls, messages, meetings). laverses incichte fram nravinie interacHane]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_027/img_009.png]
+[IMAGE_ALT: Agents ebook 1 CTA new]
+[IMAGE_SOURCE_URL: https://no-cache.hubspot.com/cta/default/493098/interactive-189548361348.png]
+[IMAGE_DESCRIPTION: N AIAGENTS: IMPLEMENTATION ACROSS THE BUSINESS Your next hires might not be human Ebook]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_027/img_010.png]
+[IMAGE_ALT: Markus Gebka Next in Commerce]
+[IMAGE_SOURCE_URL: https://www.netguru.com/hs-fs/hubfs/Markus%20Gebka%20Next%20in%20Commerce.png?width=1200&height=675&name=Markus%20Gebka%20Next%20in%20Commerce.png]
+[IMAGE_DESCRIPTION: next” In commerce Beyond the Hype The Real Role of Alin B2B Design Head of Product Design B2B at Kaufland Markus Gebka]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_027/img_012.jpg]
+[IMAGE_ALT: code programming coding]
+[IMAGE_SOURCE_URL: https://www.netguru.com/hs-fs/hubfs/_Images%20for%20blog/code%20programming%20coding.jpg?width=1200&height=630&name=code%20programming%20coding.jpg]
+[IMAGE_DESCRIPTION: 0) ‘tingui sh/ D| cern, i) ‘loci :7", Harmonize inuniaesentl |. — . ° , ae tle]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_027/img_013.jpg]
+[IMAGE_ALT: 2-3]
+[IMAGE_SOURCE_URL: https://www.netguru.com/hs-fs/hubfs/_Images%20for%20blog/2-3.jpg?width=1200&height=630&name=2-3.jpg]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_027/img_014.jpg]
+[IMAGE_ALT: enterprise meeting]
+[IMAGE_SOURCE_URL: https://www.netguru.com/hs-fs/hubfs/_Images%20for%20blog/enterprise%20meeting.jpg?width=1200&height=630&name=enterprise%20meeting.jpg]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_027/img_015.jpg]
+[IMAGE_ALT: quality assurance-1]
+[IMAGE_SOURCE_URL: https://www.netguru.com/hs-fs/hubfs/quality%20assurance-1.jpg?width=1920&height=1282&name=quality%20assurance-1.jpg]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_027/img_016.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://www.netguru.com/hs-fs/hubfs/Filip%20W%C5%82osik.png?width=200&height=200&name=Filip%20W%C5%82osik.png]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_027/img_017.jpg]
+[IMAGE_ALT: software testing]
+[IMAGE_SOURCE_URL: https://www.netguru.com/hs-fs/hubfs/software%20testing.jpg?width=1920&height=1280&name=software%20testing.jpg]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]

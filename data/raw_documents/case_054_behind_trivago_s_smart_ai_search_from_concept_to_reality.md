@@ -33,3 +33,21 @@ Thank you, Sören, for sharing the journey that you and your team have taken to 
 We invite you to experience this new functionality for yourself and see how we are making travel planning smarter, faster and more intuitive than ever before. Explore “Smart AI Search”* and join us in redefining how travelers find their ideal hotels. Visit http://ai.trivago.com to experience our AI-powered free text search.
 Interested to know more? Read our in-depth article here: trivago Unveils New Smart AI Search: Redefining How You Find Hotels.
 * ”Smart AI Search” is a beta version and will be refined based on user data and insights. The feature is currently only available on desktop.
+---
+
+## Extracted images (3)
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_054/img_005.png]
+[IMAGE_ALT: Behind trivago's Smart AI Search: From Concept to Reality]
+[IMAGE_SOURCE_URL: https://tech.trivago.com/img/posts/behind-trivagos-ai-search-from-concept-to-reality/ai_search_2.png]
+[IMAGE_DESCRIPTION: Behind trivago's Al Search: From Concept to Reality]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_054/img_006.jpg]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://tech.trivago.com/img/posts/behind-trivagos-ai-search-from-concept-to-reality/dsc03784-1-.jpg]
+[IMAGE_DESCRIPTION: trivago Unveils New | Smart Al Search: Redefining How You Find Hotels]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_054/img_007.jpg]
+[IMAGE_ALT: Sören Weber]
+[IMAGE_SOURCE_URL: https://tech.trivago.com/img/authors/soeren-weber.jpg]
+[IMAGE_DESCRIPTION: by te 4]

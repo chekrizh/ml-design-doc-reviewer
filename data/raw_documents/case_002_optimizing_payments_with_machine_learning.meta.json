@@ -4,5 +4,69 @@
   "url": "https://dropbox.tech/machine-learning/optimizing-payments-with-machine-learning",
   "content_type": "article",
   "text_path": "ml-design-doc-reviewer/data/raw_documents/case_002_optimizing_payments_with_machine_learning.md",
-  "char_count": 15693
+  "char_count": 15693,
+  "images": [
+    {
+      "image_id": "case_002_img_001",
+      "source_url": "https://dropbox.tech/cms/content/dam/dropbox/tech-blog/en-us/2021/05/payments-optimization/newMLpayments-1440x305-light.png/_jcr_content/renditions/newMLpayments-1440x305-light.webp",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_002/img_001.webp",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_002/img_001.webp",
+      "alt_text": "",
+      "width": null,
+      "height": null,
+      "content_type": "image/webp",
+      "byte_size": 10468,
+      "ocr_text": "NO_TEXT_DETECTED"
+    },
+    {
+      "image_id": "case_002_img_002",
+      "source_url": "https://dropbox.tech/cms/content/dam/dropbox/tech-blog/en-us/2021/05/payments-optimization/newMLpayments-1440x305-dark.png/_jcr_content/renditions/newMLpayments-1440x305-dark.webp",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_002/img_002.webp",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_002/img_002.webp",
+      "alt_text": "",
+      "width": null,
+      "height": null,
+      "content_type": "image/webp",
+      "byte_size": 15274,
+      "ocr_text": "NO_TEXT_DETECTED"
+    },
+    {
+      "image_id": "case_002_img_004",
+      "source_url": "https://dropbox.tech/cms/content/dam/dropbox/tech-blog/en-us/2021/05/payments-optimization/8rmeuCys.png/_jcr_content/renditions/8rmeuCys.webp",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_002/img_004.webp",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_002/img_004.webp",
+      "alt_text": "",
+      "width": 720,
+      "height": 800,
+      "content_type": "image/webp",
+      "byte_size": 11694,
+      "ocr_text": "Tries Dropbox for free Other transitions Voluntary churn + + Upgrade/Upsell Buys Dropbox Converts directly to paid Downgrade Lo, \u2014 Rebill Auto-renew Back to being a Failure <\u2014\u2014 subscription happy custoner! Recovery = |\u00bb churn Involuntary"
+    },
+    {
+      "image_id": "case_002_img_005",
+      "source_url": "https://dropbox.tech/cms/content/dam/dropbox/tech-blog/en-us/2021/05/payments-optimization/4sLtkY_g.png/_jcr_content/renditions/4sLtkY_g.webp",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_002/img_005.webp",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_002/img_005.webp",
+      "alt_text": "",
+      "width": 720,
+      "height": 620,
+      "content_type": "image/webp",
+      "byte_size": 9942,
+      "ocr_text": "Renewal Day Successful in Happy -\u2014\u2014> Non inotee crested ist attempt toner! Invoice opproved Failed 1st Renewal Recovery Attempts ist 2nd aed 7 Actenpt Attempt Attempt Lt Li aay reer 28 day renewel window Domgrade Involuntary churn"
+    },
+    {
+      "image_id": "case_002_img_006",
+      "source_url": "https://dropbox.tech/cms/content/dam/dropbox/tech-blog/en-us/2021/05/payments-optimization/mIvZnTPk.png/_jcr_content/renditions/mIvZnTPk.webp",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_002/img_006.webp",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_002/img_006.webp",
+      "alt_text": "",
+      "width": 720,
+      "height": 938,
+      "content_type": "image/webp",
+      "byte_size": 18664,
+      "ocr_text": "Payments Service Billing Policy Airflow Customer Id, Type \u2014 Charge Time Customer Id, Type Payment Predict a Predicted __ Charge Time @ Edgestore Customer Id, Type Customer Signals NO Predict Service Request Prediction Feature for Fetched Signal Encoder r:) Feat Prediction Model itn 7 i | Prediction Le > 098 Logs Ne ures"
+    }
+  ],
+  "image_count": 5,
+  "ocr_complete": true
 }

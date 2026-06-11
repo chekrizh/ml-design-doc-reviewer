@@ -60,3 +60,61 @@ Additional model comparison examples
 Acknowledgements
 Huge thanks to Ben Alexander(opens in a new tab or window) for being my mentor in machine learning, as well as Jonatan Castro(opens in a new tab or window), Neil Sarkar(opens in a new tab or window) , and Minh Le(opens in a new tab or window) for helping shape the decisions relating to the backend. Thanks also to the rest of the Content Enrichment Team, including those who've recently moved on to new teams. Another big thank you goes to Ben, Jason Yin(opens in a new tab or window), Jarrah Lacko(opens in a new tab or window), Vishwa Vinay(opens in a new tab or window), Maggie Xu(opens in a new tab or window), Jaime Metcher(opens in a new tab or window), and Grant Noble(opens in a new tab or window) for reviewing this blog post.
 Want to work on powering the content engine at Canva? Join us!(opens in a new tab or window)
+---
+
+## Extracted images (11)
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_015/img_001.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://www.canva.dev/_next/static/media/thumbnail.c0340f98.png]
+[IMAGE_DESCRIPTION: Image replacement in Canva designs woo ; using reverse image search]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_015/img_002.png]
+[IMAGE_ALT: Graphical example of image replacement in a Canva design]
+[IMAGE_SOURCE_URL: https://www.canva.dev/_next/static/media/figure1.1f91eb00.png]
+[IMAGE_DESCRIPTION: Bhaskar Housing Society invites all its residents for UNITE WITH KITES A Kite-Cutting Contest 15 AUG, 2028 | 10AM Venue - Football Ground \ For details about kites, call 123456789 Before replacement Bhaskar Housing Society invites all its residents for UNITE WITH KITES A Kite-Cutting Contest = 15 AUG, 2028 | 10AM Venue - Football Ground \ For details about kites, call 123456789 After replacement]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_015/img_003.png]
+[IMAGE_ALT: The hierarchy of image similarity]
+[IMAGE_SOURCE_URL: https://www.canva.dev/_next/static/media/figure2.5439ac04.png]
+[IMAGE_DESCRIPTION: | rT \ S| Input image Preserve subject Preserve colour Preserve all]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_015/img_004.png]
+[IMAGE_ALT: Sample model output for most similar image for a single input]
+[IMAGE_SOURCE_URL: https://www.canva.dev/_next/static/media/figure3.6f93f86a.png]
+[IMAGE_DESCRIPTION: Input image 4 DINOv2 Description + CLIP CaiT VITMAE DreamSim]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_015/img_005.png]
+[IMAGE_ALT: Examples of strong replacements]
+[IMAGE_SOURCE_URL: https://www.canva.dev/_next/static/media/figure4.4f82c77a.png]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_015/img_006.png]
+[IMAGE_ALT: Examples of weaker replacements]
+[IMAGE_SOURCE_URL: https://www.canva.dev/_next/static/media/figure5.3d42e030.png]
+[IMAGE_DESCRIPTION: MAY y=cos]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_015/img_007.png]
+[IMAGE_ALT: Template Assistant with image replacement suggestions]
+[IMAGE_SOURCE_URL: https://www.canva.dev/_next/static/media/figure6.19283d5c.png]
+[IMAGE_DESCRIPTION: Design Elements T Text Brand ® Uploads 4 Draw 8 Projects Notes © Duration NEW COLLECT! Page 5/9 {i Publish template oe {fi Publish Creator template x Template Assistant We've checked your template for common issues before you publish it. PAGE1 (B Remove or replace image A image has been removed from our library, and must be replaced. Search for your own or try one of, the following images instead. AaB YE PAGE2 85 Remove or replace image A € Next]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_015/img_008.png]
+[IMAGE_ALT: Sample model output for most similar image for a single input]
+[IMAGE_SOURCE_URL: https://www.canva.dev/_next/static/media/figure7.2fb97e7e.png]
+[IMAGE_DESCRIPTION: ViTMAE DreamSim CaiT]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_015/img_009.png]
+[IMAGE_ALT: Sample model output for most similar image for a single input]
+[IMAGE_SOURCE_URL: https://www.canva.dev/_next/static/media/figure8.73336c1a.png]
+[IMAGE_DESCRIPTION: ViTMAE DreamSim]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_015/img_011.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://www.canva.dev/_next/static/media/thumbnail.9d40c487.png]
+[IMAGE_DESCRIPTION: How Canva collects 25 Event Volume billion events per day]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_015/img_012.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://www.canva.dev/_next/static/media/thumbnail.68c525c0.png]
+[IMAGE_DESCRIPTION: Speeding up UI tests with CodeceptJS Ch) ~ and Playwright]

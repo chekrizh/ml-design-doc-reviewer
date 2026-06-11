@@ -4,5 +4,141 @@
   "url": "https://www.canva.dev/blog/engineering/image-replacement-in-canva-designs-using-reverse-image-search/",
   "content_type": "article",
   "text_path": "ml-design-doc-reviewer/data/raw_documents/case_015_image_replacement_in_canva_designs_using_reverse_image_search.md",
-  "char_count": 11655
+  "char_count": 11655,
+  "images": [
+    {
+      "image_id": "case_015_img_001",
+      "source_url": "https://www.canva.dev/_next/static/media/thumbnail.c0340f98.png",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_015/img_001.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_015/img_001.png",
+      "alt_text": "",
+      "width": 1920,
+      "height": 1080,
+      "content_type": "image/png",
+      "byte_size": 102747,
+      "ocr_text": "Image replacement in Canva designs woo ; using reverse image search"
+    },
+    {
+      "image_id": "case_015_img_002",
+      "source_url": "https://www.canva.dev/_next/static/media/figure1.1f91eb00.png",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_015/img_002.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_015/img_002.png",
+      "alt_text": "Graphical example of image replacement in a Canva design",
+      "width": 1188,
+      "height": 731,
+      "content_type": "image/png",
+      "byte_size": 352334,
+      "ocr_text": "Bhaskar Housing Society invites all its residents for UNITE WITH KITES A Kite-Cutting Contest 15 AUG, 2028 | 10AM Venue - Football Ground \\ For details about kites, call 123456789 Before replacement Bhaskar Housing Society invites all its residents for UNITE WITH KITES A Kite-Cutting Contest = 15 AUG, 2028 | 10AM Venue - Football Ground \\ For details about kites, call 123456789 After replacement"
+    },
+    {
+      "image_id": "case_015_img_003",
+      "source_url": "https://www.canva.dev/_next/static/media/figure2.5439ac04.png",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_015/img_003.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_015/img_003.png",
+      "alt_text": "The hierarchy of image similarity",
+      "width": 1674,
+      "height": 384,
+      "content_type": "image/png",
+      "byte_size": 424725,
+      "ocr_text": "| rT \\ S| Input image Preserve subject Preserve colour Preserve all"
+    },
+    {
+      "image_id": "case_015_img_004",
+      "source_url": "https://www.canva.dev/_next/static/media/figure3.6f93f86a.png",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_015/img_004.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_015/img_004.png",
+      "alt_text": "Sample model output for most similar image for a single input",
+      "width": 994,
+      "height": 814,
+      "content_type": "image/png",
+      "byte_size": 723560,
+      "ocr_text": "Input image 4 DINOv2 Description + CLIP CaiT VITMAE DreamSim"
+    },
+    {
+      "image_id": "case_015_img_005",
+      "source_url": "https://www.canva.dev/_next/static/media/figure4.4f82c77a.png",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_015/img_005.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_015/img_005.png",
+      "alt_text": "Examples of strong replacements",
+      "width": 893,
+      "height": 798,
+      "content_type": "image/png",
+      "byte_size": 981285,
+      "ocr_text": "NO_TEXT_DETECTED"
+    },
+    {
+      "image_id": "case_015_img_006",
+      "source_url": "https://www.canva.dev/_next/static/media/figure5.3d42e030.png",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_015/img_006.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_015/img_006.png",
+      "alt_text": "Examples of weaker replacements",
+      "width": 712,
+      "height": 746,
+      "content_type": "image/png",
+      "byte_size": 133319,
+      "ocr_text": "MAY y=cos"
+    },
+    {
+      "image_id": "case_015_img_007",
+      "source_url": "https://www.canva.dev/_next/static/media/figure6.19283d5c.png",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_015/img_007.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_015/img_007.png",
+      "alt_text": "Template Assistant with image replacement suggestions",
+      "width": 1324,
+      "height": 779,
+      "content_type": "image/png",
+      "byte_size": 612424,
+      "ocr_text": "Design Elements T Text Brand \u00ae Uploads 4 Draw 8 Projects Notes \u00a9 Duration NEW COLLECT! Page 5/9 {i Publish template oe {fi Publish Creator template x Template Assistant We've checked your template for common issues before you publish it. PAGE1 (B Remove or replace image A image has been removed from our library, and must be replaced. Search for your own or try one of, the following images instead. AaB YE PAGE2 85 Remove or replace image A \u20ac Next"
+    },
+    {
+      "image_id": "case_015_img_008",
+      "source_url": "https://www.canva.dev/_next/static/media/figure7.2fb97e7e.png",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_015/img_008.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_015/img_008.png",
+      "alt_text": "Sample model output for most similar image for a single input",
+      "width": 1004,
+      "height": 830,
+      "content_type": "image/png",
+      "byte_size": 1030177,
+      "ocr_text": "ViTMAE DreamSim CaiT"
+    },
+    {
+      "image_id": "case_015_img_009",
+      "source_url": "https://www.canva.dev/_next/static/media/figure8.73336c1a.png",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_015/img_009.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_015/img_009.png",
+      "alt_text": "Sample model output for most similar image for a single input",
+      "width": 1027,
+      "height": 835,
+      "content_type": "image/png",
+      "byte_size": 622104,
+      "ocr_text": "ViTMAE DreamSim"
+    },
+    {
+      "image_id": "case_015_img_011",
+      "source_url": "https://www.canva.dev/_next/static/media/thumbnail.9d40c487.png",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_015/img_011.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_015/img_011.png",
+      "alt_text": "",
+      "width": 1920,
+      "height": 1080,
+      "content_type": "image/png",
+      "byte_size": 55656,
+      "ocr_text": "How Canva collects 25 Event Volume billion events per day"
+    },
+    {
+      "image_id": "case_015_img_012",
+      "source_url": "https://www.canva.dev/_next/static/media/thumbnail.68c525c0.png",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_015/img_012.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_015/img_012.png",
+      "alt_text": "",
+      "width": 1920,
+      "height": 1080,
+      "content_type": "image/png",
+      "byte_size": 155691,
+      "ocr_text": "Speeding up UI tests with CodeceptJS Ch) ~ and Playwright"
+    }
+  ],
+  "image_count": 11,
+  "ocr_complete": true
 }

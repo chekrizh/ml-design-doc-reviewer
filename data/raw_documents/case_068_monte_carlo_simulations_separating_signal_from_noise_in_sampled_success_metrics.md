@@ -71,3 +71,26 @@ With our simulations, we're able to clearly express the uncertainty tradeoff in 
 And there we have it! The next time you're looking to separate signal from noise in your sampled success metric, try using a Monte Carlo simulation. This fundamental guide just scratches the surface of this complex problem, but it's a great starting point and I hope you turn to it in the future.
 Tom is a data scientist working on systems to improve app quality at Shopify. In his career, he tried product management, operations and sales before figuring out that SQL is his love language. He lives in Brooklyn with his wife and enjoys running, cycling and writing code.
 Are you passionate about solving data problems and eager to learn more about Shopify? Check out openings on our careers page.
+---
+
+## Extracted images (4)
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_068/img_003.jpg]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://cdn.shopify.com/s/files/1/0779/4361/articles/ShopifyEng_BlogIllustrations_221107_72ppi_05_MonteCarlo.jpg?v=1670585039&originalWidth=1848&originalHeight=782]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_068/img_004.png]
+[IMAGE_ALT: A Monte Carlo Simulation]
+[IMAGE_SOURCE_URL: https://cdn.shopify.com/s/files/1/0779/4361/files/Monte_Carlo_7.png?v=1670596566]
+[IMAGE_DESCRIPTION: Shop Issue Rate 10 == Sampled Mean ==——_ Underlying Shop Issue Rate Month 10]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_068/img_005.png]
+[IMAGE_ALT: Multiple Monte Carlo Simulations]
+[IMAGE_SOURCE_URL: https://cdn.shopify.com/s/files/1/0779/4361/files/Monte_Carlo_6.png?v=1670596263]
+[IMAGE_DESCRIPTION: Shop Issue Rate 8 8 8 6 6 6 4 4 4 2 2 2 25 5.0 78 10 ° o 25 5.0 78 10 ° o 25 5.0 78 10 ° o 25 5.0 78 10 Month ——= Sampled Mean ——= Underlying Shop Issue Rate]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_068/img_006.png]
+[IMAGE_ALT: Monte Carlo Simulation Outcomes]
+[IMAGE_SOURCE_URL: https://cdn.shopify.com/s/files/1/0779/4361/files/Monte_Carlo_1.png?v=1670593636]
+[IMAGE_DESCRIPTION: 0.02 0.05 0.07 MAPE 0.038 0.041 0.044 50 1IMDO 2MDO 1QDO 0.63 0.73 0.81 0.75 0.91 0.99 0.84 0.97 1 MAPE 0.027 0.03 0.032 100 1MDO 2MDO 1QDO 0.64 0.78 0.9 MAPE 0.023 0.023 0.026 1MDO 2MDO 0.68 0.85 0.9 0.99 0.95 1 150 1QDO 0.94]

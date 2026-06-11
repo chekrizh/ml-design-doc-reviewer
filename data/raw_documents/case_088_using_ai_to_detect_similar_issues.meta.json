@@ -4,5 +4,105 @@
   "url": "https://linear.app/now/using-ai-to-detect-similar-issues",
   "content_type": "article",
   "text_path": "ml-design-doc-reviewer/data/raw_documents/case_088_using_ai_to_detect_similar_issues.md",
-  "char_count": 7749
+  "char_count": 7749,
+  "images": [
+    {
+      "image_id": "case_088_img_001",
+      "source_url": "https://webassets.linear.app/images/ornj730p/production/99ef9bc4f887585af4a388a933740f3fe19d9b3e-2056x944.png?q=95&auto=format&dpr=2",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_088/img_001.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_088/img_001.png",
+      "alt_text": "Using AI to detect similar issues",
+      "width": 2056,
+      "height": 944,
+      "content_type": "image/avif",
+      "byte_size": 12540,
+      "ocr_text": "NO_TEXT_DETECTED"
+    },
+    {
+      "image_id": "case_088_img_002",
+      "source_url": "https://webassets.linear.app/images/ornj730p/production/7094f0d0d37df1ab0da3232a0c33f80185cb1a1f-2056x944.png?q=95&auto=format&dpr=2",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_088/img_002.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_088/img_002.png",
+      "alt_text": "Using AI to detect similar issues",
+      "width": 2056,
+      "height": 944,
+      "content_type": "image/avif",
+      "byte_size": 9139,
+      "ocr_text": "NO_TEXT_DETECTED"
+    },
+    {
+      "image_id": "case_088_img_003",
+      "source_url": "https://webassets.linear.app/images/ornj730p/production/d9ca26a235aeba2c0814f6139ca13418df6bb5fa-1176x630.png?q=95&auto=format&dpr=2",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_088/img_003.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_088/img_003.png",
+      "alt_text": "Linear issue composer showing possible duplicate issues",
+      "width": 1176,
+      "height": 630,
+      "content_type": "image/png",
+      "byte_size": 47867,
+      "ocr_text": "@\u00ae WEB \u00bb> Q@ Template 7 Add magical details to landing page Add description... Backlog at! Medium @PacoCoursey A @ $5 \u00a9 Cycle 92 g Create more Create issue vy \u00a9 Possible duplicates WEB-2603 Incorporate magical details into the landing page 4 WEB-2540 \u00a9 Sprinkle the landing page with magical details a"
+    },
+    {
+      "image_id": "case_088_img_004",
+      "source_url": "https://webassets.linear.app/images/ornj730p/production/5dc9f8821f0b392e1a67917a977f2d35174ca4d0-1176x630.png?q=95&auto=format&dpr=2",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_088/img_004.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_088/img_004.png",
+      "alt_text": "Linear issue composer showing possible duplicate issues",
+      "width": 1176,
+      "height": 630,
+      "content_type": "image/png",
+      "byte_size": 54580,
+      "ocr_text": "@\u00ae WEB \u00bb> G@ Template 7 Add magical details to landing page Add description... Backlog 3] Medium \u00ae Paco Coursey Aa = ': \u00a9 Cycle 92 y \u00a9 Possible duplicates WEB-2603 Incorporate magical details into the landing page | WEB-2540 \u00a9 Sprinkle the landing page with magical details 4"
+    },
+    {
+      "image_id": "case_088_img_005",
+      "source_url": "https://webassets.linear.app/images/ornj730p/production/0bc34958705af820cbe81cc269da5cbaaad2b99e-1176x630.png?q=95&auto=format&dpr=2",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_088/img_005.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_088/img_005.png",
+      "alt_text": "Similar Issues surfaced within the Intercom support integration",
+      "width": 1176,
+      "height": 630,
+      "content_type": "image/png",
+      "byte_size": 79705,
+      "ocr_text": "Brian Hendery \u2018to: Linear Team After | add a codeblock with you please take a look? Brian *** | ean't seem to add plain text before it. Could Similar issues @ Pasting a code block inserts extra newlines on either side LIN-14536 - Done - Assignee: Jacob @ Inline code wraps to newline LIN-15240 - Done - Assignee: Jacob O Can't add a newline in a codeblock inside a list LIN-15097 - Backlog - Assignee: Jacob"
+    },
+    {
+      "image_id": "case_088_img_006",
+      "source_url": "https://webassets.linear.app/images/ornj730p/production/27bff18fa4d4c54690269e41da6443032df29e8e-1176x630.png?q=95&auto=format&dpr=2",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_088/img_006.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_088/img_006.png",
+      "alt_text": "Similar Issues surfaced within the Intercom support integration",
+      "width": 1176,
+      "height": 630,
+      "content_type": "image/png",
+      "byte_size": 123010,
+      "ocr_text": "Brian Hendery \u2018to: Linear Team After | add a codeblock with you please take a look? Brian *** | can't seem to add plain text before it. Could Similar issues @ Pasting a code block inserts extra newlines on either side LIN-14536 - Done - Assignee: Jacob @ Inline code wraps to newline LIN-15240 - Done - Assignee: Jacob Can't add a newline in a codeblock inside a list LIN-15097 - Backlog - Assignee: Jacob"
+    },
+    {
+      "image_id": "case_088_img_007",
+      "source_url": "https://webassets.linear.app/images/ornj730p/production/6a4a0f191298f9763bbd332a7b8dc012c2658364-2352x1260.png?q=95&auto=format&dpr=2",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_088/img_007.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_088/img_007.png",
+      "alt_text": "Figure showing cosine similarity in a two-dimensional space",
+      "width": 2352,
+      "height": 1260,
+      "content_type": "image/png",
+      "byte_size": 39783,
+      "ocr_text": "Similar Unrelated Opposite"
+    },
+    {
+      "image_id": "case_088_img_008",
+      "source_url": "https://webassets.linear.app/images/ornj730p/production/2621c02a7a925887cd722b8ceadba5cfaf529c28-2352x1260.png?q=95&auto=format&dpr=2",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_088/img_008.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_088/img_008.png",
+      "alt_text": "Figure showing cosine similarity in a two-dimensional space",
+      "width": 2352,
+      "height": 1260,
+      "content_type": "image/png",
+      "byte_size": 88322,
+      "ocr_text": "Similar Unrelated Opposite"
+    }
+  ],
+  "image_count": 8,
+  "ocr_complete": true
 }

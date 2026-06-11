@@ -48,3 +48,11 @@ Conclusion
 This semester was a fun experiment. There is an enormous amount of usage of AI across the HBS faculty and curriculum and the school is racing ahead to embrace the tools even more on behalf of our students. Hopefully, this write-up will inspire other faculty around the world to run their own experiments.
 Thank Yous
 The ChatLTV project team consisted of Saswat Panda, Chiyoung Kim, Laura Whitmer, and Robin Lobo. Saswat was a total hero in writing every line of code. Special thank you to HBS' administrative and IT leaders for allowing me to run this experiment and taking the risks associated with it, particularly Prof Mitch Weiss. Also thanks to my LTV faculty colleagues Lindsay Hyde and Christina Wallace. Finally, thank you to our 250 LTV students from 2023 as well as the 2000+ students who have taken the course over the last 13 years. None of us would be here if not for you.
+---
+
+## Extracted images (1)
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_034/img_001.png]
+[IMAGE_ALT: An AI Professor at Harvard: ChatLTV]
+[IMAGE_SOURCE_URL: https://media.licdn.com/dms/image/v2/D4E12AQEJ4ieANrcR1g/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1702489132727?e=2147483647&v=beta&t=sUqM2a84s1twuN3xanj9j7MLhmxQwI_GUvCHBGwwU68]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]

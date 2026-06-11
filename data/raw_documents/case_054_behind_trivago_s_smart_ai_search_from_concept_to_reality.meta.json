@@ -4,5 +4,45 @@
   "url": "https://tech.trivago.com/post/2024-12-17-behind-trivagos-ai-search-from-concept-to-reality",
   "content_type": "article",
   "text_path": "ml-design-doc-reviewer/data/raw_documents/case_054_behind_trivago_s_smart_ai_search_from_concept_to_reality.md",
-  "char_count": 6707
+  "char_count": 6707,
+  "images": [
+    {
+      "image_id": "case_054_img_005",
+      "source_url": "https://tech.trivago.com/img/posts/behind-trivagos-ai-search-from-concept-to-reality/ai_search_2.png",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_054/img_005.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_054/img_005.png",
+      "alt_text": "Behind trivago's Smart AI Search: From Concept to Reality",
+      "width": null,
+      "height": null,
+      "content_type": "image/png",
+      "byte_size": 119704,
+      "ocr_text": "Behind trivago's Al Search: From Concept to Reality"
+    },
+    {
+      "image_id": "case_054_img_006",
+      "source_url": "https://tech.trivago.com/img/posts/behind-trivagos-ai-search-from-concept-to-reality/dsc03784-1-.jpg",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_054/img_006.jpg",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_054/img_006.jpg",
+      "alt_text": "",
+      "width": null,
+      "height": null,
+      "content_type": "image/jpeg",
+      "byte_size": 765457,
+      "ocr_text": "trivago Unveils New | Smart Al Search: Redefining How You Find Hotels"
+    },
+    {
+      "image_id": "case_054_img_007",
+      "source_url": "https://tech.trivago.com/img/authors/soeren-weber.jpg",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_054/img_007.jpg",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_054/img_007.jpg",
+      "alt_text": "S\u00f6ren Weber",
+      "width": null,
+      "height": null,
+      "content_type": "image/jpeg",
+      "byte_size": 21920,
+      "ocr_text": "by te 4"
+    }
+  ],
+  "image_count": 3,
+  "ocr_complete": true
 }

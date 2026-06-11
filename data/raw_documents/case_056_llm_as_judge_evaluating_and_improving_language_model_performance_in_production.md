@@ -74,3 +74,56 @@ The latest ebooks, industry reports, and webinars
 Learn from customer engagement experts to improve your own communication.
 Twilio's developer community hub
 Best practices, code samples, and inspiration to build communications and digital engagement experiences.
+---
+
+## Extracted images (10)
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_056/img_001.webp]
+[IMAGE_ALT: A chart showing leaders, challengers, niche players, and visionaries among communication platform providers in 2026.]
+[IMAGE_SOURCE_URL: https://segment.com/content/dam/twilio-com/global/en/products/cpaas/gartner-magic-cuadrant/2026/gartner-chart-nav.png/_jcr_content/renditions/compressed-original.webp]
+[IMAGE_DESCRIPTION: ABILITY TO EXECUTE @ Twilio @ Infobip Cisco @ @ Sinch Tencent Cloud @ @ Vonage Bandwidth @ © broximus Global Telnyx @ @ Tania @ Tata Communications @ Alibaba Cloud COMPLETENESS OF VISION =———> As of April 2026 © Gartner, Inc Gartner.]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_056/img_002.webp]
+[IMAGE_ALT: Woman wearing blue headphones and a colorful t-shirt, smiling while working on a laptop in a cozy room.]
+[IMAGE_SOURCE_URL: https://segment.com/content/dam/twilio-com/global/en/homepage/nav_signal_promo_2026_twilio_v2.png/_jcr_content/renditions/compressed-original.webp]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_056/img_003.webp]
+[IMAGE_ALT: An screenshot of an online platform showing the process of creating an audience, with steps at the top, options for audience criteria, and a pop-up to build the audience with AI using a description of customers who have purchased at least once.]
+[IMAGE_SOURCE_URL: https://segment.com/content/dam/segment/global/en/blog/2024/llm-as-judge/1-create-new-audience.png/_jcr_content/renditions/compressed-1600.webp]
+[IMAGE_DESCRIPTION: New Audience Y SelectType 2 Build © 3 Select Destinations 4 Review & Create Cance Configure and Preview Your Audience Realtime enabled 2 This audience contains... +“ Build with Al W Docs Build with Al + Beta All users who + Add condition Describe the audience you want to create and CustomerAl will help build it. Powered by OpenAl. Learn more c? + Audience description ey Customers who have purchased at least 1 time Use between 20 and 300 characters. Character count: 44/300 Include Anonymous Users Include Historical Data The audience will include users who met the audience criteria in the past]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_056/img_004.webp]
+[IMAGE_ALT: A screenshot of an audience creation interface showing detailed filters for engagement, purchase history, and audience membership criteria, with options to include anonymous users and historical data.]
+[IMAGE_SOURCE_URL: https://segment.com/content/dam/segment/global/en/blog/2024/llm-as-judge/2-configure-your-audience.png/_jcr_content/renditions/compressed-original.webp]
+[IMAGE_DESCRIPTION: 2 This audience contains performed | itemviewed || atleast || 1 | time anytime { within || 30 days | x ..and then did not perform |_ Item Purchased exactly 1 any time within 7 days | of Item Viewed or + Add condition ‘And who ..are part of an Audience | Likely to Churn - common returners Include Anonymous Users v- Include Historical Data The audience will include users who met the audience criteria in the past. + property time + property a a Bl Does]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_056/img_005.webp]
+[IMAGE_ALT: A triptych of code snippets displaying JSON data with nested objects and arrays, each showing different configurations or variations of the same structure.]
+[IMAGE_SOURCE_URL: https://segment.com/content/dam/segment/global/en/blog/2024/llm-as-judge/3.5-code-updated.png/_jcr_content/renditions/compressed-original.webp]
+[IMAGE_DESCRIPTION: “type":"operator", "value":"<=", "children": [ { "type" :"event. count", "value":"Order Completed", “options":{ “duration":3888000, “durationUnit":"day' "constant. integer", "children": { "type" “value”: vent. count", ‘Order Completed", “options”: { "duration" “durationunit": “type” “value”: 3888000, “constant. integer", ng" “value: ">=", "children": [ "event.count", ‘Order Completed", » h { “type: “constant. integer", value": "1" i]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_056/img_006.webp]
+[IMAGE_ALT: A flowchart diagram depicting the process of generating an answer template, with components labeled as LLM Agent, AST, and User’s Prompt, along with associated JSON code snippets at the bottom corners. The components are color-coded with a legend.]
+[IMAGE_SOURCE_URL: https://segment.com/content/dam/segment/global/en/blog/2024/llm-as-judge/4-llm-output.png/_jcr_content/renditions/compressed-1600.webp]
+[IMAGE_DESCRIPTION: LLM Agent AST LLM Judge Agent LLM AST Real World AST LLM Question Generator Input from End —> Generator —~> Agent (This is ——> Generated AST users Agent the one we ship to prod) “Customers who have purchased at least 1 time” “Customers who made a purchase”]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_056/img_007.webp]
+[IMAGE_ALT: A bar chart displaying the LLM Judge Score for different model names, with scores ranging from approximately 1.42 to 4.55.]
+[IMAGE_SOURCE_URL: https://segment.com/content/dam/segment/global/en/blog/2024/llm-as-judge/5-results.png/_jcr_content/renditions/compressed-original.webp]
+[IMAGE_DESCRIPTION: LLM Judge Score Model Name]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_056/img_008.webp]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://segment.com/content/dam/segment/cdp-report/CDP-cover-2025.png/_jcr_content/renditions/compressed-original.webp]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_056/img_009.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://segment.com/content/dam/twilio-com/global/en/blog/insights/card-images/card-insights-girl-using-her-phone-3.png]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_056/img_010.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://segment.com/content/dam/twilio-com/global/en/blog/insights/card-images/card-insights-guy-in-a-phone-call-4-1.png]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]

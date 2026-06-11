@@ -77,3 +77,106 @@ We migrated a homegrown AI application from an open-source stack to a Salesforce
 Along the way, we improved configurability, debugging ability, and most importantly, productivity, in ways that an open source stack can’t match. You’ll definitely see a more powerful Ask Astro Agent at our next event.
 How the Atlas Reasoning Engine powers Agentforce
 Autonomous, proactive AI agents are at the heart of Agentforce. But how do they work? Let’s look under the hood.
+---
+
+## Extracted images (20)
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_035/img_001.jpg]
+[IMAGE_ALT: A robot representing Agentforce holds a pencil after checking off five days on a calendar: build an AI agent]
+[IMAGE_SOURCE_URL: https://www.salesforce.com/blog/wp-content/uploads/sites/2/2024/11/Build_First_Dreamforce_Agent_in_5_Days.jpg?w=889]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_035/img_003.html]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://salesforce.vidyard.com/watch/oSJ2BuaUkGPMUDRqjGhQgm]
+[IMAGE_DESCRIPTION: OCR_RASTERIZE_FAILED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_035/img_004.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://www.salesforce.com/blog/wp-content/themes/salesforce-blog/dist/images/offer-block/offer-illustration-layout-one.png]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_035/img_006.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://www.salesforce.com/blog/wp-content/themes/salesforce-blog/dist/images/offer-block/offer-cloud-layout-one.png]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_035/img_007.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://www.salesforce.com/blog/wp-content/uploads/sites/2/2024/11/NEWimage2.png?strip=all&quality=95]
+[IMAGE_DESCRIPTION: SETUP > EINSTEIN COPILOT STUDIO Agent Actions Actions _ Agents use actions to get things done intelligently and securely. These actions are configured and available to assign to a topic. Some Agent actions are in beta and have limited functionality, as further described in the Documentation. Including them in an agent is part of the Service: | Q retrieveSessions 7 items - Sorted by Agent Action Label(asc) - Filtered by retrieveSessions Instructions Vv | Source v | Reference Action... Vv | Last Modif... v Agent Action Label ¢ Vv [ retrieveSessions | Retrieves related Dreamforce sessions Custom Apex Sep 11, 2024]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_035/img_008.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://www.salesforce.com/blog/wp-content/uploads/sites/2/2024/11/NEWimage3.png?strip=all&quality=95]
+[IMAGE_DESCRIPTION: HB Agent Builder Robert Test Topic Configuration This Topic's Actions Manage the actions assigned to your topic. To add or remove actions, your agent must be deactivated. | Q Search actions... 1 e | 1 items - Sorted by Agent Action Label(asc) Agent Action Label ¢ Vv retrieveSessionsDC (+)]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_035/img_009.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://www.salesforce.com/blog/wp-content/uploads/sites/2/2024/11/NEWimage5.png?strip=all&quality=95]
+[IMAGE_DESCRIPTION: £% Select Action retrieve Sessions DC Input © 1.55 sec Output { “searchTerm": "Marc Benioff", "startsBetween": "{\n \"startTime\" : \"2024-09-17T00:00:00Z\",\n \"endTime\" : \"2024-09-17T23:59:59Z\"\n}" { "output": "{\"output\":\"[\\\" {\\A\\\\"sessionType\\\AAA\"AAA\\AA"Keynote\ WAN AVA\\A\"sessionAbstract\\\\\\\" AANA \\"NVIDIA is a world leader in AI and Fi Bama Z, BY]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_035/img_010.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://www.salesforce.com/blog/wp-content/uploads/sites/2/2024/11/NEWimage6-crop.png?strip=all&quality=95]
+[IMAGE_DESCRIPTION: Andrew Clauson |) 05:14 replied to a thread: | validated searching by Speaker name is finally working... putting the D... @Robert Xue | have a fix for the timezone issue. Added an instruction to the Dreamforce Session Management topic "Times for sessions are returned in UTC time. Always reformat them into Pacific Time (am/pm)" -- we currently having a global instruction to only give times in UTC but I think describing the session data here is helping the LLM. View newer replies]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_035/img_011.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://www.salesforce.com/blog/wp-content/themes/salesforce-blog/dist/images/offer-block/offer-illustration-layout-four.png]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_035/img_013.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://www.salesforce.com/blog/wp-content/themes/salesforce-blog/dist/images/offer-block/offer-cloud-layout-four.png]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_035/img_014.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://www.salesforce.com/blog/wp-content/uploads/sites/2/2024/11/NEWimage7.png?strip=all&quality=95]
+[IMAGE_DESCRIPTION: Hey I'm speaking in a session now! image.png 4% ss Objects * Data Space ‘Object Total Columns default Data Model Object + | vector Dreamforce Sess x| 9 (©0210 and ine values use your time zone stings. o Chunk {"sessiontype":"Breakout","abstract”:"Assessing site robert testing in clinical trials ensures effective patient enrollment and stu: g@ Lakshmi Siva Kallam 16:15 cool 2 Robert Xue 16:16 you too! image.png 4% * Data Space Object default y| | Data Model Object y | Vector Drean @Date and time values use your time zone settings. Chunk ‘Chunk SequenceN... v Data Source Lakshmi Siva Kallam, Testin... 0 session_info_json_c]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_035/img_015.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://www.salesforce.com/blog/wp-content/uploads/sites/2/2024/11/NEWimage8.png?strip=all&quality=95]
+[IMAGE_DESCRIPTION: Integration in MuleSoft Data Cloud Sessiong Data RainFocus (vendor) a Data Transformation FAQ Code khowedge_kav) (JAVA) Custom Every 5 min Augment Index Logic -© MuleSoft Ingetion API Data Stream —>| Hybrid Search Index DLO DMO Query Service (with Hybrid Reranker) AiPlatform / Agent "Ai sessions Users on Wednesday" "retrieveSession" Meal arrangement during Dreamforce "SessionManagement" "retrieveSession" Topic Action "General Questions" Knowledge Topic Action searchTerm = "Ai" startTime = "9/18 00:00" endTime = "9/18 23:59" Apex Class]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_035/img_016.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://www.salesforce.com/blog/wp-content/themes/salesforce-blog/dist/images/offer-block/offer-illustration-layout-five.png]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_035/img_018.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://www.salesforce.com/blog/wp-content/themes/salesforce-blog/dist/images/offer-block/offer-cloud-layout-five.png]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_035/img_020.jpg]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://www.salesforce.com/blog/wp-content/uploads/sites/2/2026/05/CNX25-Chicago-250611-EL1_7078.jpg?w=128&h=96&crop=1&quality=75]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_035/img_021.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://www.salesforce.com/blog/wp-content/themes/salesforce-blog/dist/images/justforyou-bushes.png]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_035/img_023.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://www.salesforce.com/blog/wp-content/themes/salesforce-blog/dist/images/author-section-cloud.png]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_035/img_027.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://www.salesforce.com/blog/wp-content/themes/salesforce-blog/dist/images/justforyou-cloud-one.png]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_035/img_028.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://www.salesforce.com/blog/wp-content/themes/salesforce-blog/dist/images/justforyou-cloud-two.png]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_035/img_029.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://www.salesforce.com/blog/wp-content/themes/salesforce-blog/dist/images/justforyou-cloud-three.png]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]

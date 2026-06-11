@@ -75,3 +75,71 @@ Further Reading
 Check out these great resources for even more details on similarity-based machine learning and embedding vector databases:
 Stay up to date with Digits
 Unsubscribe anytime.
+---
+
+## Extracted images (13)
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_037/img_001.webp]
+[IMAGE_ALT: Digits microchip]
+[IMAGE_SOURCE_URL: https://ram.digitscpu.com/_astro-assets/og-image-similarity-based-machine-learning-a4c6996b.webp]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_037/img_004.webp]
+[IMAGE_ALT: Finding similar transactions with Machine Learning]
+[IMAGE_SOURCE_URL: https://ram.digitscpu.com/_astro-assets/finding-similar-transactions-with-machine-learning-71785f72.webp]
+[IMAGE_DESCRIPTION: STARBUCKS 7663826876 12/12 CA UBER TRIP 65653625 05/23 OR Levenshtein distance 21 Transactions share the same DEBIT CATEGORY]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_037/img_005.webp]
+[IMAGE_ALT: Accountants classifying transactions]
+[IMAGE_SOURCE_URL: https://ram.digitscpu.com/_astro-assets/accountants-classifying-transactions-ab190943.webp]
+[IMAGE_DESCRIPTION: STARBUCKS 873928872 12/06 CA Accountant A Accountant B Category Suggestion Category Suggestion Ox ix] Qe ix.)]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_037/img_006.webp]
+[IMAGE_ALT: 2-dimensional representation of our model-generated embeddings]
+[IMAGE_SOURCE_URL: https://ram.digitscpu.com/_astro-assets/2-dimensional-representation-of-our-model-generated-embeddings-a920bf80.webp]
+[IMAGE_DESCRIPTION: ae ober euyte @ miobite * © vberrate © ups © Feazx @ burger Shipping Phone Bills]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_037/img_007.webp]
+[IMAGE_ALT: Our End-to-End Machine Learning System:  Embedding generation,  Search vector space, Derive information from related transactions]
+[IMAGE_SOURCE_URL: https://ram.digitscpu.com/_astro-assets/our-end-to-end-machine-learning-system-3453f646.webp]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_037/img_008.webp]
+[IMAGE_ALT: content-aware vector embeddings]
+[IMAGE_SOURCE_URL: https://ram.digitscpu.com/_astro-assets/recording-2022-12-07-at-14-08-12-c0c0abe3.webp]
+[IMAGE_DESCRIPTION: Negative Anchor Positive Initial Vector Space]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_037/img_009.webp]
+[IMAGE_ALT: Encoder section of the trained model]
+[IMAGE_SOURCE_URL: https://ram.digitscpu.com/_astro-assets/encoder-section-of-the-trained-model-6b7c5011.webp]
+[IMAGE_DESCRIPTION: Similarity-based Model Input Layer 4 Hidden Layer(s) 4 Dense Layer Encoder Model Cosine | Input Layer $ Hidden Layer(s) 4 Dense Layer Similarity]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_037/img_010.webp]
+[IMAGE_ALT: generate embedding vectors with a fixed dimensionality for each transaction]
+[IMAGE_SOURCE_URL: https://ram.digitscpu.com/_astro-assets/static-frame-for-missing-animation-37ac92eb.webp]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_037/img_011.webp]
+[IMAGE_ALT: approximate nearest neighbors results]
+[IMAGE_SOURCE_URL: https://ram.digitscpu.com/_astro-assets/approximate-nearest-neighbors-results-f1ec038b.webp]
+[IMAGE_DESCRIPTION: Neighbor Lookup Method Brute-force 73 computation Approximate Nearest Neighbors ° 20 40 60 a0 Time in Seconds]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_037/img_012.svg]
+[IMAGE_ALT: Three-dimensional Digits logo graphic]
+[IMAGE_SOURCE_URL: https://ram.digitscpu.com/_astro-assets/subscribe-graphic.DsEEMqsb.svg]
+[IMAGE_DESCRIPTION: SKIPPED_SVG]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_037/img_013.webp]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://ram.digitscpu.com/_astro-assets/2.BcDwC8B0_Z9HPQr.webp]
+[IMAGE_DESCRIPTION: e /]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_037/img_014.webp]
+[IMAGE_ALT: outcome based pricing hero image]
+[IMAGE_SOURCE_URL: https://ram.digitscpu.com/_astro-assets/outcome-based-pricing-hero-4c14050d.webp]
+[IMAGE_DESCRIPTION: =>) Digits]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_037/img_015.svg]
+[IMAGE_ALT: Download Digits on the App Store]
+[IMAGE_SOURCE_URL: https://ram.digitscpu.com/_astro-assets/app-store-badge.B8anSCh_.svg]
+[IMAGE_DESCRIPTION: SKIPPED_SVG]

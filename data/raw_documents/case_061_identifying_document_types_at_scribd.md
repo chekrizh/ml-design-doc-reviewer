@@ -34,3 +34,31 @@ While there are different ways of dealing with this, our approach involved two s
 Where do we go from here?
 Now that we have a model to filter documents based on visual cues, we can build dedicated information extraction models for each document type – sheet music, text-heavy, comics, tables. This is exactly how we proceed from here, and we start with extracting information from text-heavy documents.
 Part 2 in this series will dive deeper into the challenges and solutions our team encountered while building these models. If you’re interested to learn more about the problems Applied Research is solving or the systems which are built around those solutions, check out our open positions!
+---
+
+## Extracted images (5)
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_061/img_002.png]
+[IMAGE_ALT: Map of the document corpus, built from user-interaction embeddings]
+[IMAGE_SOURCE_URL: https://user-images.githubusercontent.com/9146894/124963194-8534b800-dfed-11eb-81e1-c68cf6e4498c.png]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_061/img_003.png]
+[IMAGE_ALT: Three pages from the same document]
+[IMAGE_SOURCE_URL: https://user-images.githubusercontent.com/9146894/124964050-8adecd80-dfee-11eb-83fb-a3afbde1fc14.png]
+[IMAGE_DESCRIPTION: 48) Figure -Il shows Front View and Top View. Complete the partial Auxiliary View of siven object. ') Line AB 80 mm long has it's end A in the ELP. and 20 mm infront of the V.P. Draw it's projection when line AB makes an angle of 45° with the HLP. and 35° with the VP. (08 Marks) oR ») A hexagonal plane 25 mm sides is having one of it's comers on the HLP. with it's surface inclined at 45° to the HLP. and diagonal through the comer on H.P i parallel tothe V.P. Draw it's projections, (08 Marks) Q.2] Attempt any ONE of the following (09 Marks) a) A vertical cone of 80 mm diameter and 100 mm long is penetrated by a horizontal cylinder. ‘The axis of cylinder is parallel to both the reference planes and is S mm away from the axis of cone. The cylinder axis is 30 mm above the base of cone and diameter of eylinder is 40 mm. Draw the projections showing curves of intersection, 'b) A squate prism of 45 mm side stands vertically with its rectangular faces equally inclined to VP. It is penetrated by a horizontal triangular prism of 35-mm side of base such that their Donnan cs tae Oren 2a etal of odham's coupling Fig. oR Q5 Attempt any ONE (20 Marks) 8) Fig 6 shows assembly of piston and connecting rod, Draw details. Mention appropriate <imensional tolerances, type of shafUhole, tolerance grade, geometrical tolerances etc on ceach detail if required. Refer tolerance table provided with fig. Fig. 6 § | | |]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_061/img_004.png]
+[IMAGE_ALT: Example of possible sheet music misclassification from wrong inductive bias]
+[IMAGE_SOURCE_URL: https://user-images.githubusercontent.com/9146894/124964644-40118580-dfef-11eb-8d24-d6e0a6460ca9.png]
+[IMAGE_DESCRIPTION: PLC CON ATMEGA32P V3 OUTPUTS]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_061/img_005.png]
+[IMAGE_ALT: Figure 4: SqueezeNet architectures taken from the paper. Left: SqueezeNet; Middle: SqueezeNet with simple bypass; Right: SqueezeNet with complex bypass.]
+[IMAGE_SOURCE_URL: https://user-images.githubusercontent.com/9146894/124964923-91217980-dfef-11eb-9553-13bf296ced10.png]
+[IMAGE_DESCRIPTION: convi convi maxpool/2 fire2 [convixt) 128 < fire3 128 fired) (Convixi) Toss<— maxpool/2 256 256 (convixa) sue< J 384 384 384 ———, (convixa) a2 su<——] ‘maxpool/2 maxppol/2 ‘maxpool/2 512 512 512 1000 1000 1000 global avgpool “Labrador global avgpool global avgpool]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_061/img_006.png]
+[IMAGE_ALT: Figure 5: Diagram of the overall document understanding system. The red box is what we talked about in this post]
+[IMAGE_SOURCE_URL: https://user-images.githubusercontent.com/9146894/124965219-da71c900-dfef-11eb-9d12-4bf9a9772f4c.png]
+[IMAGE_DESCRIPTION: Document Type Classification Text Heavy Information Extraction Downstream Discovery models]

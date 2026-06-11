@@ -37,3 +37,11 @@ Our growth and what’s next
 Our current architecture serves over 16,000 courses to 23M paid subscribers, approximately 12,000 enterprise customers (companies in over 100 countries), and more than half of the top 100 global universities. Learning AI also provides course recommendations for free content to our 690M members. New content is continuously added to the platform (~60+ courses per week) and new paid subscriptions have more than doubled from 2017. Consequently, our recommendation engine has been designed in a scalable and robust manner to support the traffic.
 The two main components of the recommendation engine—the Response Prediction and Collaborative Filtering models—are the key for generating the most relevant and personalized recommendations for every learner. In part 2 of this series, we’ll look at the Response Prediction and Collaborative Filtering aspects of the recommendation engine in detail, as well as the next steps. Stay tuned!
 Related articles
+---
+
+## Extracted images (1)
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_094/img_003.jpg]
+[IMAGE_ALT: Sneha Chaudhari]
+[IMAGE_SOURCE_URL: https://media.licdn.com/dms/image/v2/C5603AQFXUAY7zq1H6g/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1634249763426?e=2147483647&v=beta&t=HQs0K8gv_3X-PVQQBfOPO_E0M1h7uOufrcE4s47ajQ4]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]

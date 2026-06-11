@@ -50,3 +50,36 @@ References
 [1] Lewis, P., Perez, E., Piktus, A., Petroni, F., Karpukhin, V., Goyal, N., Küttler, H., Lewis, M., Yih, W., Rocktäschel, T., Riedel, S., Kiela, D. (2020). Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks. arXiv preprint arXiv:2005.11401.
 [2] Brown, T.B., Mann, B., Ryder, N., Subbiah, M., Kaplan, J., Dhariwal, P., Neelakantan, A., Shyam, P., Sastry, G., Askell, A., Agarwal, S., Herbert-Voss, A., Krueger, G., Henighan, T., Child, R., Ramesh, A., Ziegler, D.M., Wu, J., Winter, C., Hesse, C., Chen, M., Sigler, E., Litwin, M., Gray, S., Chess, B., Clark, J., Berner, C., McCandlish, S., Radford, A., Sutskever, I., Amodei, D. (2020). Language Models are Few-Shot Learners. arXiv preprint arXiv:2005.14165.
 Check our job opportunities
+---
+
+## Extracted images (6)
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_003/img_011.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://building.nubank.com/wp-content/uploads/2025/05/Screenshot-2025-05-28-at-19.09.32.png]
+[IMAGE_DESCRIPTION: Internal teams documentation Nubanker question Indexed with metadata Vector search with metadata fiter Internal question ‘mode! Vector search Router model General question ‘mode! Answer]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_003/img_012.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://lh7-rt.googleusercontent.com/docsz/AD_4nXfCbvkMTKNflrzNtkIbXjFShSMwVUQ-t2j9wxxeKHKiSxXVwhnT3tduaGehH58cVGv2W15niye3J_oQamBKu6DVkJR_UZUeYdpPd-DR-mK4eBSi1B7vRgEAZ2vC4NmKRXTJllOJzQ?key=AqQHmJtJJAJtJdR9-Vbu9nZe]
+[IMAGE_DESCRIPTION: Indexed with metadata Internal teams documentation Vector Database }€ Vector search with metadata filter Internal question model Vector search Nubanker question Router model Answer General question model]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_003/img_013.webp]
+[IMAGE_ALT: imagem_fundo_newsletter]
+[IMAGE_SOURCE_URL: https://building.nubank.com/wp-content/uploads/2024/01/imagem_fundo_newsletter.webp]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_003/img_014.jpg]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://i0.wp.com/building.nubank.com/wp-content/uploads/2026/06/Nubank_Photoshoot_Brasil_-Fotografia_Edu-Vieira-13.jpg?fit=300%2C200&ssl=1]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_003/img_015.jpg]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://i0.wp.com/building.nubank.com/wp-content/uploads/2026/05/Nubank_Photoshoot_Mexico_-Fotografia_Edu-Vieira-3.jpg?fit=300%2C200&ssl=1]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_003/img_016.jpg]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://i0.wp.com/building.nubank.com/wp-content/uploads/2026/05/Nubank_Photoshoot_Brasil_-Fotografia_Edu-Vieira-12.jpg?fit=300%2C200&ssl=1]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]

@@ -70,3 +70,11 @@ Sync vs async agent invocation: In addition to the async Messaging based deliver
 MCP and A2A have become foundational protocols for enabling dynamic agent discovery and collaboration—across diverse frameworks and distributed environments. MCP empowers agents to explore and interact with the world through tool-based interfaces, while A2A facilitates seamless teamwork among agents. With widespread support from leading model providers like Claude, OpenAI, and Azure, MCP makes it easier for companies to surface and activate their data via standardized interfaces. We are incrementally adopting these open protocols, moving away from a proprietary skill registry, paving the way for more intelligent, interoperable, and context-aware agent ecosystems.
 There is no one correct path towards building successfully with agents. Our hope is to share the approaches, lessons and insights that we’ve collected over our time to help others make progress in their own exciting journey with agents.
 Related articles
+---
+
+## Extracted images (1)
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_086/img_003.jpg]
+[IMAGE_ALT: Karthik Ramgopal]
+[IMAGE_SOURCE_URL: https://media.licdn.com/dms/image/v2/D5603AQH5j1xiGz1PpQ/profile-displayphoto-shrink_200_200/B56ZUVSwBUHQAc-/0/1739818993000?e=2147483647&v=beta&t=QZcWOEQbT80nvAd3An0Uyxt3eP_5sOaKWfzVyJZGlt4]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]

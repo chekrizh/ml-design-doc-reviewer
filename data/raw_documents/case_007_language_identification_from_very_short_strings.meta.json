@@ -4,5 +4,21 @@
   "url": "https://machinelearning.apple.com/research/language-identification-from-very-short-strings",
   "content_type": "article",
   "text_path": "ml-design-doc-reviewer/data/raw_documents/case_007_language_identification_from_very_short_strings.md",
-  "char_count": 11451
+  "char_count": 11451,
+  "images": [
+    {
+      "image_id": "case_007_img_007",
+      "source_url": "https://mlr.cdn-apple.com/media/Discover_1440x420_2x_9c465d585e.jpg",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_007/img_007.jpg",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_007/img_007.jpg",
+      "alt_text": "Bottom banner",
+      "width": null,
+      "height": null,
+      "content_type": "image/jpeg",
+      "byte_size": 278779,
+      "ocr_text": "NO_TEXT_DETECTED"
+    }
+  ],
+  "image_count": 1,
+  "ocr_complete": true
 }

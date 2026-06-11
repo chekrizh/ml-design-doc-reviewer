@@ -50,3 +50,36 @@ The agent was able to answer this question: what hour do I send each user a mess
 This first success led us to deploy the solution to Words With Friends Instant’s entire player base. It’s now run in production for several million players per day.
 What’s next
 Training and deploying RL agents to production comes with several challenges. It requires the setup of custom machine learning infrastructure capable of maintaining and serving the recommendations when needed. The next article in this series address these challenges.
+---
+
+## Extracted images (6)
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_046/img_001.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://towardsdatascience.com/wp-content/uploads/2020/07/1g-1dJyfgCGXYybHMK7V9bw.png]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_046/img_002.png]
+[IMAGE_ALT: Image from Canva.]
+[IMAGE_SOURCE_URL: https://towardsdatascience.com/wp-content/uploads/2024/08/1UAA9jQVdqMXnwzYiz8Q53Q.png]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_046/img_003.jpg]
+[IMAGE_ALT: Photo by Rohan Makhecha on Unsplash]
+[IMAGE_SOURCE_URL: https://towardsdatascience.com/wp-content/uploads/2022/03/0B5fQH3hQtbD7a_CC-scaled.jpg]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_046/img_004.jpg]
+[IMAGE_ALT: Photo by Evie S. on Unsplash]
+[IMAGE_SOURCE_URL: https://towardsdatascience.com/wp-content/uploads/2023/12/014GNfNJ1eNRiXaZ8-scaled.jpg]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_046/img_005.png]
+[IMAGE_ALT: Source: Image by Author and generated with MidJourney]
+[IMAGE_SOURCE_URL: https://towardsdatascience.com/wp-content/uploads/2024/07/1haACvh59_Lmra5EBopkvSg.png]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_046/img_007.jpg]
+[IMAGE_ALT: Credit: BigScience Research Workshop]
+[IMAGE_SOURCE_URL: https://towardsdatascience.com/wp-content/uploads/2022/06/05I_kVMSanolIrb5E.jpg]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]

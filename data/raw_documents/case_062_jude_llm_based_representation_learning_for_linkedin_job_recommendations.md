@@ -94,3 +94,11 @@ Our future work focuses on enriching JUDE's semantic understanding by incorporat
 Acknowledgements
 The success of this work stems from extensive collaboration, with technical and leadership support across LinkedIn's TMD AI, Core AI, TMD Application, and ML Infrastructure teams. We express our gratitude to: Wenjing Zhang, Luke Simon, Daniel Hewlett, Qi Guo, Qianqi (Kay) Shen, Liangjie Hong, Shalini Agarwal, Jeffrey Lee, Jingwei Wu, Qing Li, Animesh Singh, Swapnil Ghike, Ali Naqvi, Haowen Ning, Ankit Goyal, Jin Sha, Srividya Krishnamurthy, Ya Xu, Sasha Ovsiankin, and Zheng Li
 Related articles
+---
+
+## Extracted images (1)
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_062/img_003.jpg]
+[IMAGE_ALT: Nikita Zhiltsov]
+[IMAGE_SOURCE_URL: https://media.licdn.com/dms/image/v2/D4E03AQGrciAmGntkTQ/profile-displayphoto-scale_400_400/B4EZwYFDnJH4Ag-/0/1769930505552?e=2147483647&v=beta&t=mWvaRTyKy5zGYHmoD24JM9D9G3Omj-YoH7s3JVor5xw]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]

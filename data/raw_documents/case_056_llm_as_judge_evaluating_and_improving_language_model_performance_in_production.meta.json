@@ -4,5 +4,129 @@
   "url": "https://segment.com/blog/llm-as-judge/",
   "content_type": "article",
   "text_path": "ml-design-doc-reviewer/data/raw_documents/case_056_llm_as_judge_evaluating_and_improving_language_model_performance_in_production.md",
-  "char_count": 11649
+  "char_count": 11649,
+  "images": [
+    {
+      "image_id": "case_056_img_001",
+      "source_url": "https://segment.com/content/dam/twilio-com/global/en/products/cpaas/gartner-magic-cuadrant/2026/gartner-chart-nav.png/_jcr_content/renditions/compressed-original.webp",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_056/img_001.webp",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_056/img_001.webp",
+      "alt_text": "A chart showing leaders, challengers, niche players, and visionaries among communication platform providers in 2026.",
+      "width": null,
+      "height": null,
+      "content_type": "image/webp",
+      "byte_size": 28834,
+      "ocr_text": "ABILITY TO EXECUTE @ Twilio @ Infobip Cisco @ @ Sinch Tencent Cloud @ @ Vonage Bandwidth @ \u00a9 broximus Global Telnyx @ @ Tania @ Tata Communications @ Alibaba Cloud COMPLETENESS OF VISION =\u2014\u2014\u2014> As of April 2026 \u00a9 Gartner, Inc Gartner."
+    },
+    {
+      "image_id": "case_056_img_002",
+      "source_url": "https://segment.com/content/dam/twilio-com/global/en/homepage/nav_signal_promo_2026_twilio_v2.png/_jcr_content/renditions/compressed-original.webp",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_056/img_002.webp",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_056/img_002.webp",
+      "alt_text": "Woman wearing blue headphones and a colorful t-shirt, smiling while working on a laptop in a cozy room.",
+      "width": null,
+      "height": null,
+      "content_type": "image/webp",
+      "byte_size": 34522,
+      "ocr_text": "NO_TEXT_DETECTED"
+    },
+    {
+      "image_id": "case_056_img_003",
+      "source_url": "https://segment.com/content/dam/segment/global/en/blog/2024/llm-as-judge/1-create-new-audience.png/_jcr_content/renditions/compressed-1600.webp",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_056/img_003.webp",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_056/img_003.webp",
+      "alt_text": "An screenshot of an online platform showing the process of creating an audience, with steps at the top, options for audience criteria, and a pop-up to build the audience with AI using a description of customers who have purchased at least once.",
+      "width": null,
+      "height": null,
+      "content_type": "image/webp",
+      "byte_size": 42526,
+      "ocr_text": "New Audience Y SelectType 2 Build \u00a9 3 Select Destinations 4 Review & Create Cance Configure and Preview Your Audience Realtime enabled 2 This audience contains... +\u201c Build with Al W Docs Build with Al + Beta All users who + Add condition Describe the audience you want to create and CustomerAl will help build it. Powered by OpenAl. Learn more c? + Audience description ey Customers who have purchased at least 1 time Use between 20 and 300 characters. Character count: 44/300 Include Anonymous Users Include Historical Data The audience will include users who met the audience criteria in the past"
+    },
+    {
+      "image_id": "case_056_img_004",
+      "source_url": "https://segment.com/content/dam/segment/global/en/blog/2024/llm-as-judge/2-configure-your-audience.png/_jcr_content/renditions/compressed-original.webp",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_056/img_004.webp",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_056/img_004.webp",
+      "alt_text": "A screenshot of an audience creation interface showing detailed filters for engagement, purchase history, and audience membership criteria, with options to include anonymous users and historical data.",
+      "width": null,
+      "height": null,
+      "content_type": "image/webp",
+      "byte_size": 27162,
+      "ocr_text": "2 This audience contains performed | itemviewed || atleast || 1 | time anytime { within || 30 days | x ..and then did not perform |_ Item Purchased exactly 1 any time within 7 days | of Item Viewed or + Add condition \u2018And who ..are part of an Audience | Likely to Churn - common returners Include Anonymous Users v- Include Historical Data The audience will include users who met the audience criteria in the past. + property time + property a a Bl Does"
+    },
+    {
+      "image_id": "case_056_img_005",
+      "source_url": "https://segment.com/content/dam/segment/global/en/blog/2024/llm-as-judge/3.5-code-updated.png/_jcr_content/renditions/compressed-original.webp",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_056/img_005.webp",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_056/img_005.webp",
+      "alt_text": "A triptych of code snippets displaying JSON data with nested objects and arrays, each showing different configurations or variations of the same structure.",
+      "width": null,
+      "height": null,
+      "content_type": "image/webp",
+      "byte_size": 41580,
+      "ocr_text": "\u201ctype\":\"operator\", \"value\":\"<=\", \"children\": [ { \"type\" :\"event. count\", \"value\":\"Order Completed\", \u201coptions\":{ \u201cduration\":3888000, \u201cdurationUnit\":\"day' \"constant. integer\", \"children\": { \"type\" \u201cvalue\u201d: vent. count\", \u2018Order Completed\", \u201coptions\u201d: { \"duration\" \u201cdurationunit\": \u201ctype\u201d \u201cvalue\u201d: 3888000, \u201cconstant. integer\", ng\" \u201cvalue: \">=\", \"children\": [ \"event.count\", \u2018Order Completed\", \u00bb h { \u201ctype: \u201cconstant. integer\", value\": \"1\" i"
+    },
+    {
+      "image_id": "case_056_img_006",
+      "source_url": "https://segment.com/content/dam/segment/global/en/blog/2024/llm-as-judge/4-llm-output.png/_jcr_content/renditions/compressed-1600.webp",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_056/img_006.webp",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_056/img_006.webp",
+      "alt_text": "A flowchart diagram depicting the process of generating an answer template, with components labeled as LLM Agent, AST, and User\u2019s Prompt, along with associated JSON code snippets at the bottom corners. The components are color-coded with a legend.",
+      "width": null,
+      "height": null,
+      "content_type": "image/webp",
+      "byte_size": 66506,
+      "ocr_text": "LLM Agent AST LLM Judge Agent LLM AST Real World AST LLM Question Generator Input from End \u2014> Generator \u2014~> Agent (This is \u2014\u2014> Generated AST users Agent the one we ship to prod) \u201cCustomers who have purchased at least 1 time\u201d \u201cCustomers who made a purchase\u201d"
+    },
+    {
+      "image_id": "case_056_img_007",
+      "source_url": "https://segment.com/content/dam/segment/global/en/blog/2024/llm-as-judge/5-results.png/_jcr_content/renditions/compressed-original.webp",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_056/img_007.webp",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_056/img_007.webp",
+      "alt_text": "A bar chart displaying the LLM Judge Score for different model names, with scores ranging from approximately 1.42 to 4.55.",
+      "width": null,
+      "height": null,
+      "content_type": "image/webp",
+      "byte_size": 24298,
+      "ocr_text": "LLM Judge Score Model Name"
+    },
+    {
+      "image_id": "case_056_img_008",
+      "source_url": "https://segment.com/content/dam/segment/cdp-report/CDP-cover-2025.png/_jcr_content/renditions/compressed-original.webp",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_056/img_008.webp",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_056/img_008.webp",
+      "alt_text": "",
+      "width": null,
+      "height": null,
+      "content_type": "image/webp",
+      "byte_size": 41944,
+      "ocr_text": "NO_TEXT_DETECTED"
+    },
+    {
+      "image_id": "case_056_img_009",
+      "source_url": "https://segment.com/content/dam/twilio-com/global/en/blog/insights/card-images/card-insights-girl-using-her-phone-3.png",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_056/img_009.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_056/img_009.png",
+      "alt_text": "",
+      "width": null,
+      "height": null,
+      "content_type": "image/png",
+      "byte_size": 587623,
+      "ocr_text": "NO_TEXT_DETECTED"
+    },
+    {
+      "image_id": "case_056_img_010",
+      "source_url": "https://segment.com/content/dam/twilio-com/global/en/blog/insights/card-images/card-insights-guy-in-a-phone-call-4-1.png",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_056/img_010.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_056/img_010.png",
+      "alt_text": "",
+      "width": null,
+      "height": null,
+      "content_type": "image/png",
+      "byte_size": 1002579,
+      "ocr_text": "NO_TEXT_DETECTED"
+    }
+  ],
+  "image_count": 10,
+  "ocr_complete": true
 }

@@ -54,3 +54,76 @@ In the next blog, we will discuss in depth how we designed and implemented the i
 We would like to thank the applied science team in RMX for all the useful discussion and support for this project.
 Related Articles
 Subscribe to receive daily emails for the latest Zillow news and announcements, product updates and more.
+---
+
+## Extracted images (14)
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_081/img_001.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://wp-tid.zillowstatic.com/49/WDO_Figure-1-8e80f7.png]
+[IMAGE_DESCRIPTION: PATIO 1544" x79" LIVING ROOM 244" x 16:2" BEDROOM 154" x 183" DINING ROOM 1941" x 103" KITCHEN LAUNDRY tent" x 198" ROOM BATHROOM 6:3" x6'5" 126" x 11'5" D > z 5 zB = BATHROOM 53" x3'6" CLOSET 192" x57" FAMILY ROOM 164" x 190" —_ A Entry GARAGE 192" x 193" (a) BATH 3'3" x 5'6" BATHROOM 5'8" x 9'6" CLOSET BEDROOM 12'2" x 13'8" BEDROOM 172" x 13'8" CLOSET BATHROOM 5'8" x 3'4" BATHROOM 10'6" x 511" BEDROOM 18°11" x 18'8" BEDROOM 12'2" x 17'2" LOFT 21'6" x 37'2"]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_081/img_002.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://wp-tid.zillowstatic.com/49/WDO_Figure-2-6f6d15.png]
+[IMAGE_DESCRIPTION: v]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_081/img_003.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://wp-tid.zillowstatic.com/49/WDO_Figure-3-3789de.png]
+[IMAGE_DESCRIPTION: (a) Annotated doors from (b) Annotations on doors Open Image dataset we need]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_081/img_004.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://wp-tid.zillowstatic.com/49/WDO_Figure-4-860b3d.png]
+[IMAGE_DESCRIPTION: - - sia as = le eat) 1 ih (a) Distortion as a result of equirectangular projection (b) Opening (c) Door (d) Window]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_081/img_005.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://wp-tid.zillowstatic.com/49/WDO_Figure-5-0a20db.png]
+[IMAGE_DESCRIPTION: rl a (a) Occluded door? (b) Shower door? —_ (c) Door on a loop closure? (d) Door in a mirror?]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_081/img_006.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://wp-tid.zillowstatic.com/49/WDO_Figure-6-e27e39.png]
+[IMAGE_DESCRIPTION: Divide and conquer Detect wall features on crops 7] —} Fuse bounding boxes from crops al Extract perspective crops Route 2: Directly perform object detection on panorama]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_081/img_007.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://wp-tid.zillowstatic.com/49/WDO_Figure-7-a5d62d.png]
+[IMAGE_DESCRIPTION: door: 1.00 door: 1.00 door: 1.00 door: 1.00 door: 1.00 door: 1.00 door: 1.00]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_081/img_008.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://wp-tid.zillowstatic.com/49/WDO_Figure-8-0b02fe.png]
+[IMAGE_DESCRIPTION: Precision oO je) ron for) Oo aa Oo ho “0.0 window apne CRC 0.2 0.4 0.6 0.8 1.0 Recall 1.0 Precision oO ron Oo aa Oo ho 0.0 0.2 door 0.4 0.6 Recall opening ée 1.0 -B Cy BEA O8 Precision ro) ron tw > Oo aa Oo ho 0.8 1.0 0.0 0.2 0.4 0.6 0.8 1.0 Recall]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_081/img_009.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://wp-tid.zillowstatic.com/49/WDO_Figure-9-c32e63.png]
+[IMAGE_DESCRIPTION: 1. Subjective opinion on opening 2. Missing annotation 3. One window vs three windows]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_081/img_010.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://wp-tid.zillowstatic.com/49/WDO_Figure-10-1c82f5.png]
+[IMAGE_DESCRIPTION: Window 0.772 0.764 0.683 Door 0.881 0.855 0.774 Opening 0.720 0.577 0.523]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_081/img_011.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://wp-tid.zillowstatic.com/49/WDO_Figure-11-b26608.png]
+[IMAGE_DESCRIPTION: Precision precision-recall curve @loU=0.5 1.0 0.8 0.6 0.4 02 o— window — door —= opening 0.0 0.0 0.2 0.4 0.6 0.8 1.0 Recall]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_081/img_012.jpg]
+[IMAGE_ALT: multicolored houses with flowers]
+[IMAGE_SOURCE_URL: https://www.zillowstatic.com/bedrock/app/uploads/sites/60/2026/06/Header_May-Market-Report_1600x900_1-1280x720.jpg]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_081/img_013.jpg]
+[IMAGE_ALT: real estate agent outside of house with a for sale sign]
+[IMAGE_SOURCE_URL: https://www.zillowstatic.com/bedrock/app/uploads/sites/60/2026/06/Header_Direct-Broker_1600x900_1-1280x720.jpg]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_081/img_014.svg]
+[IMAGE_ALT: illustration of mailbox]
+[IMAGE_SOURCE_URL: https://delivery.digitallibrary.zillowgroup.com/public/mailbox-light_svg_Original.svg]
+[IMAGE_DESCRIPTION: SKIPPED_SVG]

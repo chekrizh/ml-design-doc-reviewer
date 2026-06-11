@@ -176,3 +176,86 @@ Appendix
 Distribution of errors in our evaluations
 Prompt for 0-shot evals of generalist LLMs
 We extend the prompt to include few-shot examples by adding additional user-assistant pairs to the conversations as needed.
+---
+
+## Extracted images (16)
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_033/img_001.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://cdn.sanity.io/images/bj34pdbp/migration/96d16870122e68b63a07b2306aaed524356a81eb-3840x1920.png?w=3840&q=75&fit=clip&auto=format]
+[IMAGE_DESCRIPTION: Code Repair for num, count in ee rons: nums{index] ==/num index += 1 ieeeeunt >> 1:]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_033/img_002.png]
+[IMAGE_ALT: An overview of our approach to building a Code Repair LLM.]
+[IMAGE_SOURCE_URL: https://cdn.sanity.io/images/bj34pdbp/migration/a72a429ee945fac33d1ae36ff3cd0ef3e36b6bc4-2276x1402.png?rect=0,0,2204,1402&w=3840&q=100&fit=max&auto=format]
+[IMAGE_DESCRIPTION: Data Sources Public Python Repls Q Google Cloud Big Query Storage UserEvents Operational LSP Diagnostics Transformation (OT) Stream Cloud Storage Repl Snapshot Serverless <> Run LSP to verify reconstructed repl state & databricks C <> Reconstruct Repl States C <> Verify LSP Diagnostics ) = Training Data Store <> Synthesize Diffs DSPy Pipeline LLM Verifier <> Preprocess ” ( Dedup ) Pll Redact i Model Deployment Model Training bo = Processed Data Store ®= replit Client Workspace LSP Diagnostic req: code + diagnostic <> Format and Shard Training Data 2g Hugging Face @ deepseek deepseekcoder- v1.5-instruct GPU Cluster FSDP KS ~~ <> FT Dataloader w/ Packing ) £ \ mosaic” User Request diff Apply diff to code in real-time resp: line diffs © Serving Load Balancer k=] NVIDIA. mT EDL ——— Inference Servers : model id k-------------------------------: = fey fou Q nO o fe} s oO]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_033/img_003.gif]
+[IMAGE_ALT: Users can replay a project in Replit’s workspace.]
+[IMAGE_SOURCE_URL: https://blog.replit.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fbj34pdbp%2Fmigration%2Fbe9df71426a3188fe0d3f309ae6a213b76057209-512x477.gif&w=3840&q=75]
+[IMAGE_DESCRIPTION: ep 56 def get_bulletin_rag() -> Unton{str, boot]: 57 url = ‘https://travel. state. gov/content/travel/en/legal/visa-lavo/visa- bulletin.neal’ 38 59 response = requests. get(url) 69 _ntml_content = response. text 61 62 soup = Beauttfulsoup(htal_content, ‘htal parse 83 64 # typing errors expected and more than fine o5y try: 66 _current_bultetin_Link = soup.find('ul', Aide'recent_bulletins®).find( It" ).find( ‘a’ ).get(‘href') 67 _current_bulletin_Uink = “https://travel.state.gov/" + current_bulletin_Uink 68y except Exception as e: 69 return send_error(f*current_bulletin Link ({e})") 7 Tiv (f current bulletin Unk (s None: 72 return send_error(*current_bulletin_Uink*) 2B 74 response = requests. get(current_bulletin_Uink) 75 heml.content = response. text 76 soup = Geaut\tulsoup(html_content, “htal. parser") 7 78 body = soup. find oll(‘eiv', attrsa("class! :"withratt")) 3 80 print Boayigeteexe()] a 2 Nl & 466/540 > months ago = sanatreplt]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_033/img_004.png]
+[IMAGE_ALT: Source dataset contains repl id, error timestamp, error path, error code, error message and error range columns.]
+[IMAGE_SOURCE_URL: https://cdn.sanity.io/images/bj34pdbp/migration/d43fc4f94e740095bfceb30635d084eaa2993cb5-514x378.png?w=3840&q=100&fit=max&auto=format]
+[IMAGE_DESCRIPTION: Column Sample repl_id 6795a320-a7a5-46{4-a191-963f7e27517f error_timestamp 2024-02-15 07:22:57.505000+00:00 error_path main.py error_code ruff[E703] error_message Statement ends with an unnecessary semicolon error_range {start={character=38, line=6}, end={character=...}}]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_033/img_005.png]
+[IMAGE_ALT: The input/output format. The input is highlighted in orange. The output is generated and is in green. Sentinel tokens identify packets of information that map to inputs and outputs from the Replit IDE.]
+[IMAGE_SOURCE_URL: https://cdn.sanity.io/images/bj34pdbp/migration/6ef71a68ae3a8c83d4b8a59c84b0309263b16b09-1085x464.png?w=3840&q=100&fit=max&auto=format]
+[IMAGE_DESCRIPTION: <code> #main.py 1 import turtle 2 3 screen = turtle.screen 4 screen.setup(550,400) 5 screen. bycolor( "orange" ) </code> <lsp_error> "screen" is not a known member of module “turtle" </lsp_error> <error_line> 3 screen = turtle.screen = turtle.screen turtle.Screen( )]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_033/img_006.jpg]
+[IMAGE_ALT: A comparison of zero-shot results on the Replit repair eval and the Leetcode repair eval.]
+[IMAGE_SOURCE_URL: https://cdn.sanity.io/images/bj34pdbp/migration/c2d8cb4bbeafd4995e414388518060c013117f09-3179x1391.jpg?w=3840&q=100&fit=max&auto=format]
+[IMAGE_DESCRIPTION: 90 80 7 fo) 6 fo) 5 fo) 40 Replit Code Repair 7B GPT-4 Turbo @ Leetcode Repair Eval Claude 3 Opus © Replit Repair Eval GPT-3.5 Turbo Claude 3 Haiku deepseek-coder-7b-instruct-v1.5]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_033/img_007.png]
+[IMAGE_ALT: Performance of different baseline models on the Leetcode repair eval.]
+[IMAGE_SOURCE_URL: https://cdn.sanity.io/images/bj34pdbp/migration/37ccf352bfc4d21e856cb4748391ee784aa200b9-1351x596.png?w=3840&q=100&fit=max&auto=format]
+[IMAGE_DESCRIPTION: Model GPT-4 Turbo (gpt4-0125-preview) Claude-3-Opus GPT-3.5 Turbo (gpt-3.5-turbo-0125) Claude-3-Haiku DeepSeek-Coder-Instruct-v1.5 GPT-4 Turbo (gpt4-0125-preview) Claude-3-Opus GPT-3.5 Turbo (gpt-3.5-turbo-0125) Claude-3-Haiku DeepSeek-Coder-Instruct-v1.5 GPT-4 Turbo (gpt4-0125-preview) Claude-3-Opus GPT-3.5 Turbo (gpt-3.5-turbo-0125) Claude-3-Haiku DeepSeek-Coder-Instruct-v1.5 Replit Code Repair 7B Number of Few Shot Examples NRNNNN PRB RB OOOO Oo N/A AST match 83.61 83.33 73.88 71.11 60 83.61 83.61 71.94 73.61 61.96 83.88 85 73.33 69.44 61.66 84.16 Functional Correctness 88.33 87.22 78.88 76.38 64.44 89.16 88.05 77.22 78.05 65.84 89.16 88.61 78.88 74.44 66.94 89.44]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_033/img_008.png]
+[IMAGE_ALT: Performance of different baseline models on the Replit repair eval.]
+[IMAGE_SOURCE_URL: https://cdn.sanity.io/images/bj34pdbp/migration/c30fad47026b4faf3067751ef9ef778baeef3480-1006x597.png?w=3840&q=100&fit=max&auto=format]
+[IMAGE_DESCRIPTION: Model GPT-4 Turbo (gpt4-0125-preview) Claude-3-Opus GPT-3.5 Turbo (gpt-3.5-turbo-0125) Claude-3-Haiku DeepSeek-Coder-Instruct-v1.5 GPT-4 Turbo (gpt4-0125-preview) Claude-3-Opus GPT-3.5 Turbo (gpt-3.5-turbo-0125) Claude-3-Haiku DeepSeek-Coder-Instruct-v1.5 GPT-4 Turbo (gpt4-0125-preview) Claude-3-Opus GPT-3.5 Turbo (gpt-3.5-turbo-0125) Claude-3-Haiku DeepSeek-Coder-Instruct-v1.5 Replit Code Repair 7B Number of Few Shot Examples NN NRHN PRR RRR OOOO Oo N/A AST Match String Fallback 73.78 62.47 53.47 51.67 43.7 73.52 64.01 56.81 53.21 40.35 72.23 65.81 57.0 53.98 41.31 74.55]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_033/img_009.png]
+[IMAGE_ALT: Performance improves with number of training examples.]
+[IMAGE_SOURCE_URL: https://cdn.sanity.io/images/bj34pdbp/migration/8af9f4a6082772725a2edd9f12c16f1f8463da85-1134x282.png?w=3840&q=100&fit=max&auto=format]
+[IMAGE_DESCRIPTION: # of Training Samples 10K Samples 25K Samples 50K Samples 75K Samples Input/Output Token Counts 4.12M / 301K 10.4M/ 751K 20.8M /1.5M 31.8M / 2.3M Leetcode Repair Success 86.4526 87.5395 88.354 89.44]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_033/img_010.png]
+[IMAGE_ALT: Performance improves with number of model parameters.]
+[IMAGE_SOURCE_URL: https://cdn.sanity.io/images/bj34pdbp/migration/12b3333fe14f9c300a7aff43ab0304cce90c0033-1400x264.png?w=3840&q=100&fit=max&auto=format]
+[IMAGE_DESCRIPTION: Replit Repair AST Match Model Size Train PPL Eval PPL Leetcode Repair Success String Fallback 1.3B 1.0596 1.0661 85.20 72.23 6.7B 1.0229 1.0774 88.88 72.25 33B 1.0008 1.1556 89.44 74.04]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_033/img_011.png]
+[IMAGE_ALT: A distribution of diagnostic error types in the Replit repair eval.]
+[IMAGE_SOURCE_URL: https://cdn.sanity.io/images/bj34pdbp/migration/7505625d92e43fb2ee5a5368e95e17c68bd806b6-1774x1184.png?w=3840&q=100&fit=max&auto=format]
+[IMAGE_DESCRIPTION: 120 100 Count 80 60 40 20 LSP Diagnostic Distribution MM Diagnostic Count Diagnostic Type]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_033/img_012.png]
+[IMAGE_ALT: A distribution of error types in the Leetcode Repair Eval]
+[IMAGE_SOURCE_URL: https://cdn.sanity.io/images/bj34pdbp/migration/3886615874c62944bb2513dd23c49293dd205602-1763x1184.png?w=3840&q=100&fit=max&auto=format]
+[IMAGE_DESCRIPTION: 60 50 40 30 Count 20 10 Error Subtypes Occurrence 60 58 42 42 41 40 35 23 11 Error Count Error Subtype]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_033/img_013.png]
+[IMAGE_ALT: 0-shot prompt used]
+[IMAGE_SOURCE_URL: https://cdn.sanity.io/images/bj34pdbp/migration/6734c23c9dcbf66d879f12050729f86e2b47c8ef-2048x1716.png?w=3840&q=100&fit=max&auto=format]
+[IMAGE_DESCRIPTION: System: You are an expert Python debugging assistant. The user will provide you with their Python code, the error message, and the line that is producing the error. Your task is to generate a valid single line diff that fixes the error. In your response, use <diff> and </diff> tags to indicate the start and end of the line diff and follows proper format for line diff. Here is an example of a valid Single line diff: <diff> -1 x = 0/0 +1 X 0/1 </diff> USER: I am experiencing some issues with my python program. Here is my code: ~~ python {error_code} Here is the line that is producing the error: {error_line} Here is the error message: {error_message} Assistant: <diff>]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_033/img_014.jpg]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://cdn.sanity.io/images/bj34pdbp/migration/5789f6e7af051646efeb4101bf1017aa89a4d646-1280x720.jpg?w=3840&q=75&fit=clip&auto=format]
+[IMAGE_DESCRIPTION: © Threads 63 Huddles E> Drafts & sent £8) Directories Alerts_Snowflake Demo 4* Starred High Revenue Alert # ext-connectors-webinars @ LIVE Build session — Webinar — es Home re. DMs Q Date Activit <i # snowflake demo Sun Aug 02 1998 00:00:00 GM r) Coordinated Ur »! Time » External Connections Files Daily revenue exceeded the thre » Channels Alerts_Snowflake Demo 4? > Direct messages High Revenue Alert Vibe Code — DataApps =< Part 2 Developer Advocate]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_033/img_015.jpg]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://cdn.sanity.io/images/bj34pdbp/migration/979d1df1aae3e6b0553b5f834bcbc45f645b603e-1200x675.jpg?w=3840&q=75&fit=clip&auto=format]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_033/img_016.jpg]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://cdn.sanity.io/images/bj34pdbp/migration/2b186865442a22d401c556741f1e818d16fa47a2-1280x720.jpg?w=3840&q=75&fit=clip&auto=format]
+[IMAGE_DESCRIPTION: replit | BUILD SESSION acl a BUILD A BROWSER EXTENSION]

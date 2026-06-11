@@ -37,3 +37,46 @@ With future versions of LLMs coming, we expect the performance for automatic inc
 Moreover, ChatGPT can be actively integrated into the “discussion” of the incident diagnosis. By collecting evidence from available documents and logs, the model can generate coherent, contextual, natural-sounding responses to inquiries and offer corresponding suggestions, thereby facilitating the discussion and accelerating the incident resolution process. We believe this could deliver a step function improvement in the overall incident management process with contextual and meaningful root causes analysis and mitigation, thereby reducing significant human effort required and bolstering reliability and customer satisfaction.
 Acknowledgement
 This post includes contributions from Toufique Ahmed (opens in new tab) during his internship at Microsoft.
+---
+
+## Extracted images (8)
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_001/img_002.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://www.microsoft.com/en-us/research/wp-content/uploads/2024/01/MSR-Chat-Promo.png]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_001/img_003.jpg]
+[IMAGE_ALT: A block diagram that shows using title and summary of the incidents as input through GPT-3.x models that generate root cause and mitigation recommendations.]
+[IMAGE_SOURCE_URL: https://www.microsoft.com/en-us/research/wp-content/uploads/2023/05/ICSE_AIOps_StagnantHero_1400x788.jpg]
+[IMAGE_DESCRIPTION: Text and position embedding of Title & Summary of the incident]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_001/img_004.jpg]
+[IMAGE_ALT: A workflow diagram that shows how to use retrieval augmentation approach to recommend root causes. This approach including a retriever and corpus to retrieve relevant information from historical incidents, troubleshooting guides, and engineering hub, to add context into LLMs.]
+[IMAGE_SOURCE_URL: https://www.microsoft.com/en-us/research/wp-content/uploads/2023/05/ICSE-AIOps-figure-2n.jpg]
+[IMAGE_DESCRIPTION: Incident Retrieval-augmentation TNM_HttpRequest_V2_PortInOrders_ID_Reliability Corpus MITIGATED — ; Severity 2 Owning Service = Owning Team © > —Query—> Historical Incidents eventy Return Troubleshooting Guides + = Add ti 4 . ae new tag Results Engineering Hub Summary As X Reliability for /api/v2/tenants/{id}/pot-in-orders/{id} got less than 90%. Please look at the diagnostics graph and attached Jarvis logs for more details. (Use “Custom: Backup link for logs” > > if the Dgrep link is not working)]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_001/img_005.jpeg]
+[IMAGE_ALT: Portrait of Rujia Wang]
+[IMAGE_SOURCE_URL: https://www.microsoft.com/en-us/research/wp-content/uploads/2023/02/2022_square-180x180.jpeg]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_001/img_006.jpg]
+[IMAGE_ALT: Portrait of Supriyo GHOSH]
+[IMAGE_SOURCE_URL: https://www.microsoft.com/en-us/research/wp-content/uploads/2021/12/IMG_supriyo-ghosh.jpg]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_001/img_007.jpg]
+[IMAGE_ALT: Portrait of Tom Zimmermann]
+[IMAGE_SOURCE_URL: https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/tzimmer-tom_zimmermann.jpg]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_001/img_008.png]
+[IMAGE_ALT: Portrait of Xuchao Zhang]
+[IMAGE_SOURCE_URL: https://www.microsoft.com/en-us/research/wp-content/uploads/2022/08/xuchao_360.png]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_001/img_009.jpg]
+[IMAGE_ALT: Portrait of Saravan Rajmohan]
+[IMAGE_SOURCE_URL: https://www.microsoft.com/en-us/research/wp-content/uploads/2022/01/IMG_3693.jpg]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]

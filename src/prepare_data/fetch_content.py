@@ -15,6 +15,11 @@ import certifi
 import httpx
 import trafilatura
 
+from prepare_data.images import (
+    append_images_section,
+    download_article_images,
+    image_assets_to_metadata,
+)
 from prepare_data.paths import sanitize_metadata_paths, to_repo_relative_path
 from prepare_data.transcribe import transcribe_youtube_url
 
@@ -116,7 +121,18 @@ def fetch_html(url: str, timeout: float = 30.0, max_retries: int = 4) -> str:
     raise RuntimeError(f"Failed to download URL after retries: {url}") from last_error
 
 
-def fetch_article_text(url: str, timeout: float = 30.0) -> str:
+def fetch_article_content(
+    url: str,
+    output_dir: Path,
+    sample_id: str,
+    *,
+    timeout: float = 30.0,
+    extract_images: bool = True,
+    max_images: int = 20,
+    tesseract_lang: str = "eng",
+    tesseract_cmd: str | None = None,
+) -> tuple[str, list]:
+    """Extract article text and optionally download embedded images."""
     html = fetch_html(url, timeout=timeout)
 
     text = trafilatura.extract(
@@ -128,7 +144,34 @@ def fetch_article_text(url: str, timeout: float = 30.0) -> str:
     )
     if not text or len(text.strip()) < 200:
         raise RuntimeError(f"Extracted text too short or empty for URL: {url}")
-    return text.strip()
+    text = text.strip()
+
+    assets: list = []
+    if extract_images:
+        assets = download_article_images(
+            html,
+            url,
+            output_dir,
+            sample_id,
+            timeout=timeout,
+            max_images=max_images,
+            tesseract_lang=tesseract_lang,
+            tesseract_cmd=tesseract_cmd,
+        )
+        text = append_images_section(text, assets)
+
+    return text, assets
+
+
+def fetch_article_text(url: str, timeout: float = 30.0) -> str:
+    text, _ = fetch_article_content(
+        url,
+        Path("."),
+        "unknown",
+        timeout=timeout,
+        extract_images=False,
+    )
+    return text
 
 
 def remove_stale_error_file(output_dir: Path, sample_id: str) -> None:
@@ -172,6 +215,8 @@ def save_raw_document(
     }
     if extra_metadata:
         metadata.update(sanitize_metadata_paths(extra_metadata))
+        if "images" in extra_metadata:
+            metadata["image_count"] = len(extra_metadata["images"])
     meta_path.write_text(json.dumps(metadata, indent=2), encoding="utf-8")
     remove_stale_error_file(output_dir, sample_id)
     return text_path, meta_path
@@ -185,6 +230,8 @@ def fetch_single_case(
     whisper_device: str,
     whisper_compute_type: str,
     timeout: float,
+    tesseract_lang: str = "eng",
+    tesseract_cmd: str | None = None,
 ) -> FetchResult:
     sample_id = row["sample_id"]
     title = row["Title"]
@@ -205,8 +252,17 @@ def fetch_single_case(
             content_type = "video"
             extra = {"transcript": transcript_meta}
         else:
-            text = fetch_article_text(url, timeout=timeout)
-            extra = None
+            text, image_assets = fetch_article_content(
+                url,
+                output_dir,
+                sample_id,
+                timeout=timeout,
+                tesseract_lang=tesseract_lang,
+                tesseract_cmd=tesseract_cmd,
+            )
+            extra = {"images": image_assets_to_metadata(image_assets)} if image_assets else None
+            if image_assets:
+                extra["ocr_complete"] = True
 
         source_path, metadata_path = save_raw_document(
             output_dir,
@@ -265,6 +321,8 @@ def fetch_manifest(
     timeout: float,
     delay_seconds: float,
     skip_existing: bool = True,
+    tesseract_lang: str = "eng",
+    tesseract_cmd: str | None = None,
 ) -> list[FetchResult]:
     import pandas as pd
     from tqdm import tqdm
@@ -286,6 +344,8 @@ def fetch_manifest(
             whisper_device=whisper_device,
             whisper_compute_type=whisper_compute_type,
             timeout=timeout,
+            tesseract_lang=tesseract_lang,
+            tesseract_cmd=tesseract_cmd,
         )
         results.append(result)
         if delay_seconds > 0:

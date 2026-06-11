@@ -82,3 +82,31 @@ The Payments team at Dropbox enables monetization of new and existing products v
 See open positions at Dropbox here!
 Thanks to:
 The Payments Engineering, Product, Revenue Analytics, and ML Platform teams for their continued partnership. In particular: Pratik Agrawal, Kirill Sapchuk, Cameron (Cam) Moten, Bryan Fong, Randy Lee, Yi Zhong, Anar Alimov, Aleksandr Livshits, Lakshmi Kumar T, Evgeny Skarbovsky and Ian Baker.
+---
+
+## Extracted images (5)
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_002/img_001.webp]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://dropbox.tech/cms/content/dam/dropbox/tech-blog/en-us/2021/05/payments-optimization/newMLpayments-1440x305-light.png/_jcr_content/renditions/newMLpayments-1440x305-light.webp]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_002/img_002.webp]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://dropbox.tech/cms/content/dam/dropbox/tech-blog/en-us/2021/05/payments-optimization/newMLpayments-1440x305-dark.png/_jcr_content/renditions/newMLpayments-1440x305-dark.webp]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_002/img_004.webp]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://dropbox.tech/cms/content/dam/dropbox/tech-blog/en-us/2021/05/payments-optimization/8rmeuCys.png/_jcr_content/renditions/8rmeuCys.webp]
+[IMAGE_DESCRIPTION: Tries Dropbox for free Other transitions Voluntary churn + + Upgrade/Upsell Buys Dropbox Converts directly to paid Downgrade Lo, — Rebill Auto-renew Back to being a Failure <—— subscription happy custoner! Recovery = |» churn Involuntary]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_002/img_005.webp]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://dropbox.tech/cms/content/dam/dropbox/tech-blog/en-us/2021/05/payments-optimization/4sLtkY_g.png/_jcr_content/renditions/4sLtkY_g.webp]
+[IMAGE_DESCRIPTION: Renewal Day Successful in Happy -——> Non inotee crested ist attempt toner! Invoice opproved Failed 1st Renewal Recovery Attempts ist 2nd aed 7 Actenpt Attempt Attempt Lt Li aay reer 28 day renewel window Domgrade Involuntary churn]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_002/img_006.webp]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://dropbox.tech/cms/content/dam/dropbox/tech-blog/en-us/2021/05/payments-optimization/mIvZnTPk.png/_jcr_content/renditions/mIvZnTPk.webp]
+[IMAGE_DESCRIPTION: Payments Service Billing Policy Airflow Customer Id, Type — Charge Time Customer Id, Type Payment Predict a Predicted __ Charge Time @ Edgestore Customer Id, Type Customer Signals NO Predict Service Request Prediction Feature for Fetched Signal Encoder r:) Feat Prediction Model itn 7 i | Prediction Le > 098 Logs Ne ures]

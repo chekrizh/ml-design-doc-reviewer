@@ -56,3 +56,21 @@ A cherry on top is when we hear anecdotal feedback from random people mentioning
 Summary and future work
 By leveraging ANN with prefiltering we’ve significantly improved the relevance of recommendations on our homepage. Also, the broader adoption of Vespa for item recommendation use cases enables numerous other product improvements and paves the way to simplify our system architecture.
 Our team is excited about what we’ve achieved so far, and we can’t wait until we release new features for Vinted members that leverage the blend of dense and sparse retrieval techniques. Stay tuned!
+---
+
+## Extracted images (3)
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_018/img_001.png]
+[IMAGE_ALT: Vinted multi-stage recommender system]
+[IMAGE_SOURCE_URL: https://vinted.engineering/static/2023/10/recommender_stages.png?style=centered]
+[IMAGE_DESCRIPTION: 6T First stage retrieval Final fitering ‘Second stage using approx. fl Tv y Business nearest neighbour re-ranking 8 8 st neigh rules & user fiers a millions of hundreds of available listings sorted by relevance listings]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_018/img_002.png]
+[IMAGE_ALT: A diagram of a two-tower recommender model]
+[IMAGE_SOURCE_URL: https://vinted.engineering/static/2023/10/recommender_towers.png?style=centered]
+[IMAGE_DESCRIPTION: ‘Sequence of user's actions on the platform (clicks, purchases, favorites ) sting features such as price, brand, size, Images, etc. User mode! Listing mode! [-0.46, 0.01, 0.62, 0.88] 10.55, 0.52, 0.12, 0.42) Listing User Embedding dot product Embedding 0.1961 Relevance score]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_018/img_003.png]
+[IMAGE_ALT: A chart showing latency increase from 50ms to 70ms.]
+[IMAGE_SOURCE_URL: https://vinted.engineering/static/2023/10/recommender_latency.png?style=centered]
+[IMAGE_DESCRIPTION: p99 code path times 70 ms 60 ms, 50 ms 40 ms 30 ms 20 ms 10 ms Os 09:40 09:45 09:50 09:55 10:00 10:05 10:10 10:15,]

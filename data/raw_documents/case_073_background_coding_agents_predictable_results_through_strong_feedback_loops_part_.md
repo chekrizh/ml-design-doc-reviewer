@@ -40,3 +40,51 @@ First, we plan to expand our verifier infrastructure to support a wider range of
 Second, we aim to integrate our background agent more deeply with our existing CI/CD pipelines, specifically by enabling it to act on CI checks in GitHub pull requests. We envision this as a complementary “outer loop” to our verifiers' fast-feedback “inner loop”, adding another layer of validation.
 Finally, we recognize the need for more structured evaluations. Implementing robust evals will allow us to systematically assess changes to system prompts, experiment with new agent architectures, and benchmark different LLM providers, ultimately leading to more reliable and efficient agents.
 This is a rapidly evolving space, and we're excited to tackle these challenges. If your organization has experience with large-scale code transformations using LLMs, we would love to connect and learn from you.
+---
+
+## Extracted images (9)
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_073/img_001.png]
+[IMAGE_ALT: Feature Image]
+[IMAGE_SOURCE_URL: https://images.ctfassets.net/p762jor363g1/71oyRmTiwKcPmPNK2nZVDZ/ad4a9f47a3bddbb4f900a01474f1ce6f/honk-pt3.png]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_073/img_002.png]
+[IMAGE_ALT: Coding image 1]
+[IMAGE_SOURCE_URL: https://images.ctfassets.net/p762jor363g1/E87swVibHme6mnU0hsjLW/00504f404395dd43571aee5980db4164/Coding_agents_part_3_image_1_final.png]
+[IMAGE_DESCRIPTION: Python # Pseudo python code class MavenVerifier(AbstractVerifier): """A minimal Maven verifier for blog post demonstration. def applies(self) — bool: """Check if this is a Maven project by looking for pom.xml.""" pom_path = self.repo_root / "pom.xml" return pom_path.exists() def format(self) > str: """EFormat the code using Maven formatting tools. result = run(["mvn", "com.spotify. fmt: fmt-maven-plugin: format" ]) if result.returncode = Q: return "Format successful" else: return f"Format failed: {result.stderr}" build(self) > str: """Run Maven build.""" result = run(["mvn", "“compi if result.returncode = Q: return "Build successfu else: errors = extract_relevant_errors(result.stderr) return f"Build failed: {errors}" test(self) > str: """Run Maven tests. result = run(["mvn", "test" if result.returncode = @: return "Tests passed" else: errors = extract_relevant_errors(result.stderr) return f"Tests failed: {errors}"]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_073/img_003.png]
+[IMAGE_ALT: Coding agents_part 3_image 2_final.png]
+[IMAGE_SOURCE_URL: https://images.ctfassets.net/p762jor363g1/2XG5rFU5lsSlLJnc0uLbRW/7e50b0b7d7f05e446100382c31f93e9b/Coding_agents_part_3_image_3_final.png]
+[IMAGE_DESCRIPTION: Python amcp.tool(name="verify") def verify_tool() > str: Use this tool after making code changes to ensure they meet project standards and don't break existing functionality. The tool will provide detailed feedback on any issues found and their locations. ALWAYS run this tool before completing any task and terminating the agent. You can also run this incrementally to test changes as you make them. Returns: str: Detailed verification results if any step fails.]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_073/img_004.png]
+[IMAGE_ALT: Coding agents_part 3_image 3_final.png]
+[IMAGE_SOURCE_URL: https://images.ctfassets.net/p762jor363g1/1pDfqtOBSX1OiMSJRnYWuR/c43119d0a77eb6f396533fd3224b912a/Coding_agents_part_3_image_3_final.png]
+[IMAGE_DESCRIPTION: Python SYSTEM_PROMPT = """ You are a very senior engineer performing a code review. Your task is to understand if the proposed change follows the instructions. Go through the git diff and check if each change is strictly required based on the provided instructions. Be very strict - if ANY part of the instructions is missing or incomplete, reduce the score significantly. You can assume that formatting, lLinting, compilation and testing have passed. Provide a verdict score from @ to 1. Keep the verdict short and concise. Focus on if ALL parts of the instructions were followed completely.]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_073/img_005.png]
+[IMAGE_ALT: Coding agents_part 3_image 4_final.png]
+[IMAGE_SOURCE_URL: https://images.ctfassets.net/p762jor363g1/2704Ffvi1xnnIbINU6H38d/f387ea69db99db41f7357a8b15b7c594/Coding_agents_part_3_image_4_final.png]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_073/img_006.png]
+[IMAGE_ALT: sticky]
+[IMAGE_SOURCE_URL: https://images.ctfassets.net/p762jor363g1/1z0B6FoumKfV2Wte048lb6/bc36e55f83efc58b6cce53ac3958c758/image1.png]
+[IMAGE_DESCRIPTION: O 0820, OX006¢8 OOS = © O O0o00 QL000e Q00°?e°” t 1.4 Trillion data points daily oooo0o90 000000 Data Platform 000000 OO00000 >oo0o0000 OO0O00O0 OOO0CO0O 70k datasets User Personalization Experimentation (Confidence) Company KPIs Finance «+» Many more]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_073/img_007.png]
+[IMAGE_ALT: sticky]
+[IMAGE_SOURCE_URL: https://images.ctfassets.net/p762jor363g1/2SQWwDBa8t9F9P8s1IkaeV/645549d40f361b6fe56be1575e78cb5b/cwc01-header-a.png]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_073/img_008.png]
+[IMAGE_ALT: sticky]
+[IMAGE_SOURCE_URL: https://images.ctfassets.net/p762jor363g1/1liN9CCW7JU64GI5r03T6N/95c8d19c1287e6209831f31f8dd89158/3__1_.png]
+[IMAGE_DESCRIPTION: @ Red]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_073/img_009.png]
+[IMAGE_ALT: sticky]
+[IMAGE_SOURCE_URL: https://images.ctfassets.net/p762jor363g1/6VpxcfIxMRS8Ft1PMlxUro/9b7b39abfccec844ebb8586ab5a5122f/spotify-ads-api-claude-plugin__2.2__1.5x.png]
+[IMAGE_DESCRIPTION: Campaign created Create an audio campaign called targeting 25-44 year olds inthe US with budget]

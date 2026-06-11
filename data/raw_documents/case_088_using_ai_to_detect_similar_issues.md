@@ -42,3 +42,46 @@ Ensure issues created with templates do not unduly influence the similarity scor
 Use this index as a signal for our main search functionality, which is currently powered by ElasticSearch.
 Similar Issues was one of the first fully-fledged features to come out of our AI experimentation, and we’re excited about its potential to make Linear even more powerful. We believe this feature can create those “magical” moments that make Linear feel special.
 You can learn more about Similar Issues in our recent changelog here.
+---
+
+## Extracted images (8)
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_088/img_001.png]
+[IMAGE_ALT: Using AI to detect similar issues]
+[IMAGE_SOURCE_URL: https://webassets.linear.app/images/ornj730p/production/99ef9bc4f887585af4a388a933740f3fe19d9b3e-2056x944.png?q=95&auto=format&dpr=2]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_088/img_002.png]
+[IMAGE_ALT: Using AI to detect similar issues]
+[IMAGE_SOURCE_URL: https://webassets.linear.app/images/ornj730p/production/7094f0d0d37df1ab0da3232a0c33f80185cb1a1f-2056x944.png?q=95&auto=format&dpr=2]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_088/img_003.png]
+[IMAGE_ALT: Linear issue composer showing possible duplicate issues]
+[IMAGE_SOURCE_URL: https://webassets.linear.app/images/ornj730p/production/d9ca26a235aeba2c0814f6139ca13418df6bb5fa-1176x630.png?q=95&auto=format&dpr=2]
+[IMAGE_DESCRIPTION: @® WEB »> Q@ Template 7 Add magical details to landing page Add description... Backlog at! Medium @PacoCoursey A @ $5 © Cycle 92 g Create more Create issue vy © Possible duplicates WEB-2603 Incorporate magical details into the landing page 4 WEB-2540 © Sprinkle the landing page with magical details a]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_088/img_004.png]
+[IMAGE_ALT: Linear issue composer showing possible duplicate issues]
+[IMAGE_SOURCE_URL: https://webassets.linear.app/images/ornj730p/production/5dc9f8821f0b392e1a67917a977f2d35174ca4d0-1176x630.png?q=95&auto=format&dpr=2]
+[IMAGE_DESCRIPTION: @® WEB »> G@ Template 7 Add magical details to landing page Add description... Backlog 3] Medium ® Paco Coursey Aa = ': © Cycle 92 y © Possible duplicates WEB-2603 Incorporate magical details into the landing page | WEB-2540 © Sprinkle the landing page with magical details 4]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_088/img_005.png]
+[IMAGE_ALT: Similar Issues surfaced within the Intercom support integration]
+[IMAGE_SOURCE_URL: https://webassets.linear.app/images/ornj730p/production/0bc34958705af820cbe81cc269da5cbaaad2b99e-1176x630.png?q=95&auto=format&dpr=2]
+[IMAGE_DESCRIPTION: Brian Hendery ‘to: Linear Team After | add a codeblock with you please take a look? Brian *** | ean't seem to add plain text before it. Could Similar issues @ Pasting a code block inserts extra newlines on either side LIN-14536 - Done - Assignee: Jacob @ Inline code wraps to newline LIN-15240 - Done - Assignee: Jacob O Can't add a newline in a codeblock inside a list LIN-15097 - Backlog - Assignee: Jacob]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_088/img_006.png]
+[IMAGE_ALT: Similar Issues surfaced within the Intercom support integration]
+[IMAGE_SOURCE_URL: https://webassets.linear.app/images/ornj730p/production/27bff18fa4d4c54690269e41da6443032df29e8e-1176x630.png?q=95&auto=format&dpr=2]
+[IMAGE_DESCRIPTION: Brian Hendery ‘to: Linear Team After | add a codeblock with you please take a look? Brian *** | can't seem to add plain text before it. Could Similar issues @ Pasting a code block inserts extra newlines on either side LIN-14536 - Done - Assignee: Jacob @ Inline code wraps to newline LIN-15240 - Done - Assignee: Jacob Can't add a newline in a codeblock inside a list LIN-15097 - Backlog - Assignee: Jacob]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_088/img_007.png]
+[IMAGE_ALT: Figure showing cosine similarity in a two-dimensional space]
+[IMAGE_SOURCE_URL: https://webassets.linear.app/images/ornj730p/production/6a4a0f191298f9763bbd332a7b8dc012c2658364-2352x1260.png?q=95&auto=format&dpr=2]
+[IMAGE_DESCRIPTION: Similar Unrelated Opposite]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_088/img_008.png]
+[IMAGE_ALT: Figure showing cosine similarity in a two-dimensional space]
+[IMAGE_SOURCE_URL: https://webassets.linear.app/images/ornj730p/production/2621c02a7a925887cd722b8ceadba5cfaf529c28-2352x1260.png?q=95&auto=format&dpr=2]
+[IMAGE_DESCRIPTION: Similar Unrelated Opposite]

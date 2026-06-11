@@ -39,3 +39,11 @@ Spoken language identification (LID) technologies have improved in recent years 
 Real-Time Recognition of Handwritten Chinese Characters Spanning a Large Inventory of 30,000 Characters
 September 12, 2017research area Computer Vision
 Handwriting recognition is more important than ever given the prevalence of mobile phones, tablets, and wearable gear like smartwatches. The large symbol inventory required to support Chinese handwriting recognition on such mobile devices poses unique challenges. This article describes how we met those challenges to achieve real-time performance on iPhone, iPad, and Apple Watch (in Scribble mode). Our recognition system, based on deep learning, accurately handles a set of up to 30,000 characters. To achieve acceptable accuracy, we paid particular attention to data collection conditions, representativeness of writing styles, and training regimen. We found that, with proper care, even larger inventories are within reach. Our experiments show that accuracy only degrades slowly as the inventory increases, as long as we use training data of sufficient quality and in sufficient quantity.
+---
+
+## Extracted images (1)
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_007/img_007.jpg]
+[IMAGE_ALT: Bottom banner]
+[IMAGE_SOURCE_URL: https://mlr.cdn-apple.com/media/Discover_1440x420_2x_9c465d585e.jpg]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]

@@ -40,3 +40,56 @@ An important security principle is that a system should never request more privi
 Not only do we adhere to the principle of least privilege, we show admins and end users the scopes we plan to request when they enable an external source for use in enterprise search. This means that admins and end users always know which authorizations Slack requires to integrate with an external source.
 Conclusion
 At Salesforce, trust is our #1 value. We’re proud to have built an enterprise search experience that puts security and privacy front and center, building atop the robust security principles already instilled by Slack AI. We’re excited to see how our customers use this powerful new functionality, secure in the knowledge that their external data is always in good hands.
+---
+
+## Extracted images (10)
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_006/img_001.svg]
+[IMAGE_ALT: Slack Engineering]
+[IMAGE_SOURCE_URL: https://slack.engineering/wp-content/themes/tinyspeck/assets/public/images/logo.svg]
+[IMAGE_DESCRIPTION: SKIPPED_SVG]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_006/img_002.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://slack.engineering/wp-content/uploads/sites/7/2024/07/headshot.png]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_006/img_003.jpeg]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://slack.engineering/wp-content/uploads/sites/7/2025/03/claireb.jpeg]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_006/img_004.jpg]
+[IMAGE_ALT: Magnifying glass against a blue background]
+[IMAGE_SOURCE_URL: https://slack.engineering/wp-content/uploads/sites/7/2025/03/magnifying-glass-5232511_1280.jpg?w=1020]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_006/img_005.png]
+[IMAGE_ALT: Architecture of enterprise search]
+[IMAGE_SOURCE_URL: https://slack.engineering/wp-content/uploads/sites/7/2025/03/enterprisesearch.png?w=640]
+[IMAGE_DESCRIPTION: Slack trust boundary Slack clients.]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_006/img_006.avif]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://slack.engineering/wp-content/uploads/sites/7/2024/12/noah-naf-image.avif?w=160&h=160&crop=1]
+[IMAGE_DESCRIPTION: OCR_RASTERIZE_FAILED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_006/img_008.jpg]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://slack.engineering/wp-content/uploads/sites/7/2026/05/pexels-photograph-6732010.jpg?w=380&h=250&crop=1]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_006/img_009.png]
+[IMAGE_ALT: From SSH to REST_ A Security-Driven Modernization of Slack's EMR Data Pipelines]
+[IMAGE_SOURCE_URL: https://slack.engineering/wp-content/uploads/sites/7/2026/04/SSH-Rest-CoverImage.png?w=380&h=250&crop=1]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_006/img_010.png]
+[IMAGE_ALT: Investigation Journal]
+[IMAGE_SOURCE_URL: https://slack.engineering/wp-content/uploads/sites/7/2026/03/investigation_notebook.png?w=380&h=250&crop=1]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_006/img_011.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://slack.engineering/wp-content/uploads/sites/7/2026/03/cover.png?w=380&h=250&crop=1]
+[IMAGE_DESCRIPTION: e >) Grafana Prometheus]

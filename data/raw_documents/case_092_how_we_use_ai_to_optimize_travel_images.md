@@ -36,3 +36,71 @@ Looking ahead
 Throughout our journey at GetYourGuide, we consistently encounter unique challenges related to our visual content. This article endeavors to encapsulate a fraction of our initiatives, yet the potential in this domain is vast. As computer vision technology rapidly advances, leveraging cutting-edge technologies while maintaining their tangible business impact is crucial. Ultimately, our primary objective remains enhancing the visual experience of our travelers while enabling marketing channels to reach a broader audience and enable unforgettable travel experiences for as many travelers as possible.
 Shoutout
 I would like to thank Damien, Piotr, and Tündi for their collaboration in multiple stages of our image journey. To Joshua, Prateek, and Susanna for their contributions to this post.
+---
+
+## Extracted images (13)
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_092/img_001.avif]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://cdn.prod.website-files.com/686a7507fff14c231dc1e2bf/686d59ae73db94b6fc5f9db3_659e9c15174fb4fe59cb900a_yasamin-insidegetyourguide.avif]
+[IMAGE_DESCRIPTION: OCR_RASTERIZE_FAILED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_092/img_002.avif]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://cdn.prod.website-files.com/686a7507fff14c231dc1e2bf/6873831b403ef4a65e3bb421_65ae4ee8327bda0561903ae9_inside-getyourguide.avif]
+[IMAGE_DESCRIPTION: OCR_RASTERIZE_FAILED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_092/img_003.avif]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://cdn.prod.website-files.com/686a7507fff14c231dc1e2bf/6873831a403ef4a65e3bb3bc_659e99ade60637df3ad6275a_ai-travel-image-1-insidegetyourguide.avif]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_092/img_004.avif]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://cdn.prod.website-files.com/686a7507fff14c231dc1e2bf/6873831a403ef4a65e3bb3cc_659e9a6952312e86f5b74595_ai-travel-image-2-insidegetyourguide.avif]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_092/img_005.avif]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://cdn.prod.website-files.com/686a7507fff14c231dc1e2bf/6873831a403ef4a65e3bb3c0_659e9a8ada973e85aec20718_ai-travel-image-3-insidegetyourguide.avif]
+[IMAGE_DESCRIPTION: 200 400 600 ° 250 S00 750 1000 1250 1500 1750]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_092/img_007.jpg]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://cdn.prod.website-files.com/686a7507fff14c231dc1e2bf/6a1ff0cc513b33eb33b6229a_Summit%20Week_Inside%20GetYourGuide.JPG]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_092/img_008.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://cdn.prod.website-files.com/686a7507fff14c231dc1e2bf/69a57ae5334d74a032bad713_GYG-logo-circle.png]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_092/img_009.jpg]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://cdn.prod.website-files.com/686a7507fff14c231dc1e2bf/6a0c5aea2558ed35ddd4569d_2026-05-05_Ayush%20Kumar-6.JPG]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_092/img_010.avif]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://cdn.prod.website-files.com/686a7507fff14c231dc1e2bf/686d59975fb7f47744003a83_66584c7647c24f5788e596e5_Ayush%2520Kumar.avif]
+[IMAGE_DESCRIPTION: OCR_RASTERIZE_FAILED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_092/img_011.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://cdn.prod.website-files.com/686a7507fff14c231dc1e2bf/6a0332b88328b73f0bddbbf1_tech%20mentorship%20at%20GetYourGuide_thumbnail.png]
+[IMAGE_DESCRIPTION: Tech mentorship at GetYourGuide]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_092/img_012.jpeg]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://cdn.prod.website-files.com/686a7507fff14c231dc1e2bf/6a03329e93e00b537184c379_fabian%20and%20valentin.jpeg]
+[IMAGE_DESCRIPTION: ~]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_092/img_013.avif]
+[IMAGE_ALT: A smiling woman with dark hair and a bright orange sweater is seated, holding a pen, and looking towards someone off-camera to her right. A blurred "GET YOUR GUIDE" sign is in the background.]
+[IMAGE_SOURCE_URL: https://cdn.prod.website-files.com/685e9f1453ce76c79366e268/6878ae5d0e2ddada652d17dd_69362b76fc30c08da6b73b23d5ea02d0b7bd6cde.avif]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_092/img_014.webp]
+[IMAGE_ALT: A group of people working together with a big smile on woman's face.]
+[IMAGE_SOURCE_URL: https://cdn.prod.website-files.com/685e9f1453ce76c79366e268/68a7ffbeb29882d87fee0e75_2023%20Science%20fair%20Ampere%20Summit%20week%20May%2012%20nr.17%201.webp]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]

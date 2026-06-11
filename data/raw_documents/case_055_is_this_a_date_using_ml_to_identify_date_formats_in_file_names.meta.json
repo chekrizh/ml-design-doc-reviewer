@@ -4,5 +4,57 @@
   "url": "https://dropbox.tech/machine-learning/using-ml-to-identify-date-formats-in-file-names",
   "content_type": "article",
   "text_path": "ml-design-doc-reviewer/data/raw_documents/case_055_is_this_a_date_using_ml_to_identify_date_formats_in_file_names.md",
-  "char_count": 13275
+  "char_count": 13275,
+  "images": [
+    {
+      "image_id": "case_055_img_001",
+      "source_url": "https://dropbox.tech/cms/content/dam/dropbox/tech-blog/en-us/2023/09/naming-conventions/namingconventions-1440x305-light.png/_jcr_content/renditions/namingconventions-1440x305-light.webp",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_055/img_001.webp",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_055/img_001.webp",
+      "alt_text": "",
+      "width": null,
+      "height": null,
+      "content_type": "image/webp",
+      "byte_size": 54646,
+      "ocr_text": "* = ee"
+    },
+    {
+      "image_id": "case_055_img_002",
+      "source_url": "https://dropbox.tech/cms/content/dam/dropbox/tech-blog/en-us/2023/09/naming-conventions/namingconventions-1440x305-dark.png/_jcr_content/renditions/namingconventions-1440x305-dark.webp",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_055/img_002.webp",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_055/img_002.webp",
+      "alt_text": "",
+      "width": null,
+      "height": null,
+      "content_type": "image/webp",
+      "byte_size": 85614,
+      "ocr_text": "1 ee Eg"
+    },
+    {
+      "image_id": "case_055_img_003",
+      "source_url": "https://dropbox.tech/cms/content/dam/dropbox/tech-blog/en-us/2023/09/naming-conventions/namingconventions-diagram1.png/_jcr_content/renditions/namingconventions-diagram1.webp",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_055/img_003.webp",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_055/img_003.webp",
+      "alt_text": "",
+      "width": 2738,
+      "height": 1514,
+      "content_type": "image/webp",
+      "byte_size": 55146,
+      "ocr_text": "Configure naming convention [) 2021-11-02 - example filename. pdf \u00a9 Not all rules or metadata may be applicable or available to each file or file type. fi MyDocument.docx hi MyDocument final.docx Replace with existing dates detected in filenames (O) i Add rule | Capitalize initials LU : paces Y For example, add the word \"final\" to the name of files added to this folder"
+    },
+    {
+      "image_id": "case_055_img_005",
+      "source_url": "https://dropbox.tech/cms/content/dam/dropbox/tech-blog/en-us/2023/09/naming-conventions/namingconventions-diagram2.png/_jcr_content/renditions/namingconventions-diagram2.webp",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_055/img_005.webp",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_055/img_005.webp",
+      "alt_text": "",
+      "width": 1440,
+      "height": 662,
+      "content_type": "image/webp",
+      "byte_size": 16198,
+      "ocr_text": "Input text Extracted Entities Tokenizer Output labels with probabilities \u2014 tokens > Transformer Encoder Encoded sequence + Classifier"
+    }
+  ],
+  "image_count": 4,
+  "ocr_complete": true
 }

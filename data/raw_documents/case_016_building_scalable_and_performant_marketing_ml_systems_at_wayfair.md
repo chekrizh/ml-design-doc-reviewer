@@ -20,3 +20,31 @@ More details of WayLift will be explained in future blog posts. Briefly, a multi
 In this blog post, we explained a few common ML approaches for improving marketing campaign performance. The pros and cons of each approach is summarized in Table 1 for the readers’ reference. We also introduced WayLift as a multi-layer ML platform that can achieve both scalability of ML solutions and strong performance of marketing campaigns. In the next blog post, we’ll explain more details on how Wayfair data scientists collaborate with ad tech engineers and marketers to build WayLift. Stay tuned to learn more!
 Table 1. Pros and Cons of different ML approaches for improving marketing campaign performance
 If you find our work interesting, please connect with us! We’re looking for talented data scientists, machine learning engineers, and managers to join our team and lead innovations in marketing data science and ad tech at Wayfair! Please find job descriptions below:
+---
+
+## Extracted images (5)
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_016/img_001.jpg]
+[IMAGE_ALT: A flowchart showing how general propensity modeling is applied to make marketing decisions for an eligible audience across multiple programs]
+[IMAGE_SOURCE_URL: https://cdn.aboutwayfair.com/dims4/default/a08cc45/2147483647/strip/true/crop/1476x753+0+0/resize/800x408!/format/jpg/quality/90/?url=https%3A%2F%2Fcdn.aboutwayfair.com%2F84%2F1c%2Fe811501f4e9c8c0b04b624e1149d%2Fimage4.jpg]
+[IMAGE_DESCRIPTION: 0 Models Refresh at a Regular Cadence Build General = Apply Models to All Eligible Audience Monitor Performance Propensity Mod Multiple Programs: \ Bi N Siow Ad "A" Bl a _ Applcabity pe aun ) fi Eligible Audience: wa ; Show Ad "Bttoa © = * oe Backtost Model ‘Show Ad"D" to a]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_016/img_002.jpg]
+[IMAGE_ALT: A flowchart showing how channel-specific uplift models can be developed and applied for different pre-defined marketing programs]
+[IMAGE_SOURCE_URL: https://cdn.aboutwayfair.com/dims4/default/5ac2bd9/2147483647/strip/true/crop/1436x1014+0+0/resize/800x565!/format/jpg/quality/90/?url=https%3A%2F%2Fcdn.aboutwayfair.com%2F37%2F4f%2F5dd123cb4129bec5fc23cb29062b%2Fimage2.jpg]
+[IMAGE_DESCRIPTION: Define Eligible Audience < for Each Prograt Build ML Solutions h Program) — AN“ » >) ) J | “> Monitor Performance]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_016/img_003.jpg]
+[IMAGE_ALT: A flowchart showing a multi-layer machine learning system for optimizing marketing decisions, which propensity modeling and online learning. The treatment policy is algorithmically updated with new observations]
+[IMAGE_SOURCE_URL: https://cdn.aboutwayfair.com/dims4/default/ec8484b/2147483647/strip/true/crop/1281x916+0+0/resize/800x572!/format/jpg/quality/90/?url=https%3A%2F%2Fcdn.aboutwayfair.com%2F53%2F37%2F3c6157654ffdb8bc70c4bc774f9c%2Fimage1.jpg]
+[IMAGE_DESCRIPTION: All Eligible Audience Observe Rewards for Each Treatment | ML Scoring System with propensity models trained & refreshed with observational data Treatment Policy: Map Rewards to Probabilities for treatment with different ads Feedback ML-driven Customer Segmentation Reinforcement Learner: Predict the Reward for Each Customer x Treatment Combination ff]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_016/img_004.jpg]
+[IMAGE_ALT: A flowchart and table describing three types of modeling used in an uplift machine learning platform, covering customer scoring, decision optimization, and metrics/feedback generation]
+[IMAGE_SOURCE_URL: https://cdn.aboutwayfair.com/dims4/default/e07c7b8/2147483647/strip/true/crop/861x451+0+0/resize/800x419!/format/jpg/quality/90/?url=https%3A%2F%2Fcdn.aboutwayfair.com%2Fe8%2F4b%2Fa84278f44c4eab980a2ac49f3f5c%2Fimage3.jpg]
+[IMAGE_DESCRIPTION: Customer Scoring Input Decision Optimization Treatment Reward Metrics/Feedback Generation Description Aggregate high dimensional features into a handful of scores to better understand our customers needs and interests. Optimize customer-level treatment decisions on top of the outputs of the customer scoring models Produce rewards for recent treatment as feedback for decision optimization models Examples Probability to buy a product, style affinity scores, etc. Logic rules, e.g. show ads to the top p% of scored audience; Reinforcement Learning clicks, visits, predicted GRS for the next X days, etc.]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_016/img_005.png]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://cdn.aboutwayfair.com/dims4/default/5d7a87e/2147483647/strip/true/crop/500x500+0+0/resize/100x100!/quality/90/?url=https%3A%2F%2Fcdn.aboutwayfair.com%2F87%2F6e%2F1d01f5f849c19ecdd5f3d218c537%2Fmarketing-jen-wang.png]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]

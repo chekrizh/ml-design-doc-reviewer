@@ -41,3 +41,41 @@ Once we have a robust evaluation dataset, we assess it based on two key metrics:
 The creative nature of a platform like Roblox, where users are free to create and communicate almost anything, means it’s always evolving. Our moderation methods have to evolve just as rapidly to keep our community safe and civil. Our active learning systems continuously update models as language evolves, user patterns change, and real-world events happen. We are continually building systems that are scalable, fast, accurate, and consistently adapt to the dynamic world we all live in.
 1As of the first quarter of 2025.
 2Covers the reporting period from February 17, 2024 through December 31, 2024.
+---
+
+## Extracted images (7)
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_021/img_001.webp]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://cms-media.roblox.com/assets/0271aebf-75ab-e2ea-e5f9-4c8fc749fa2d.webp]
+[IMAGE_DESCRIPTION: oO a Policy Experts. a Skilled Labelers Policies Golden Datas Uncertainty Sampling AT-Assis' Red Team AI Inference Platform (cell-based architecture) Foundational Quantization Custom Modets Models Distillation 980 wore Sampled Data Appeals go to Human Review for QA]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_021/img_002.webp]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://cms-media.roblox.com/assets/d8115332-ea87-a851-e925-13398fa77e82.webp]
+[IMAGE_DESCRIPTION: Remember our policies We've detected language that may violate Roblox’s Community Standards. You may lose access to Voice Chat after ‘multiple violations. Did we make a mistake? Letus know “Tk]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_021/img_003.webp]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://cms-media.roblox.com/assets/7e7b6284-e940-49a8-f69d-c7c58fb471b6.webp]
+[IMAGE_DESCRIPTION: e Select Problem in Scene P Next]]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_021/img_004.png]
+[IMAGE_ALT: Pioneering AI Founders Join to Accelerate Roblox Reality Vision]
+[IMAGE_SOURCE_URL: https://cms-media.roblox.com/assets/9bfd31a7-d763-4384-973a-7d32f50dcd37.png]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_021/img_005.webp]
+[IMAGE_ALT: SEO image for CubePart: An Open-Vocabulary Part-Controllable 3D Generator]
+[IMAGE_SOURCE_URL: https://cms-media.roblox.com/assets/151fa7cc-b9d8-ac9a-714c-8141e3c7e5d7.webp]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_021/img_006.webp]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://cms-media.roblox.com/assets/b81bd589-11a5-bd7a-46f5-7cc4146638a3.webp]
+[IMAGE_DESCRIPTION: Roblox render _ Roblox 3D data snot realtime]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_021/img_007.webp]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://cms-media.roblox.com/assets/de30db82-b660-3e0e-94ff-11d9675d6e7c.webp]
+[IMAGE_DESCRIPTION: a y, re “2, “ULTIMATE]

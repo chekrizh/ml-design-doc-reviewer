@@ -60,3 +60,26 @@ In testing, our ML model saw a 40% increase in renamed files over our baseline r
 One challenge we observed in our user research was that some users were reluctant to perform the initial, manual configuration of naming convention rules for a folder. To address this, we started to automatically suggest potential naming conventions based on the naming conventions of existing files already in a folder. This approach enabled users to easily apply their existing conventions to new files added to the same folder, rather than having to define their unique conventions from scratch.
 Finally, it’s worth noting that other elements such as names, locations, and organizational entities are also commonly found within these file names. At present, our model can only extract dates components—but in the future, we envision leveraging more sophisticated models, such as large language models, to identify more types of entities. This would enable an even more detailed and precise renaming experience.
 If building innovative products, experiences, and infrastructure excites you, come build the future with us! Visit dropbox.com/jobs to see our open roles, and follow @LifeInsideDropbox on Instagram and Facebook to see what it's like to create a more enlightened way of working.
+---
+
+## Extracted images (4)
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_055/img_001.webp]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://dropbox.tech/cms/content/dam/dropbox/tech-blog/en-us/2023/09/naming-conventions/namingconventions-1440x305-light.png/_jcr_content/renditions/namingconventions-1440x305-light.webp]
+[IMAGE_DESCRIPTION: * = ee]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_055/img_002.webp]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://dropbox.tech/cms/content/dam/dropbox/tech-blog/en-us/2023/09/naming-conventions/namingconventions-1440x305-dark.png/_jcr_content/renditions/namingconventions-1440x305-dark.webp]
+[IMAGE_DESCRIPTION: 1 ee Eg]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_055/img_003.webp]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://dropbox.tech/cms/content/dam/dropbox/tech-blog/en-us/2023/09/naming-conventions/namingconventions-diagram1.png/_jcr_content/renditions/namingconventions-diagram1.webp]
+[IMAGE_DESCRIPTION: Configure naming convention [) 2021-11-02 - example filename. pdf © Not all rules or metadata may be applicable or available to each file or file type. fi MyDocument.docx hi MyDocument final.docx Replace with existing dates detected in filenames (O) i Add rule | Capitalize initials LU : paces Y For example, add the word "final" to the name of files added to this folder]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_055/img_005.webp]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://dropbox.tech/cms/content/dam/dropbox/tech-blog/en-us/2023/09/naming-conventions/namingconventions-diagram2.png/_jcr_content/renditions/namingconventions-diagram2.webp]
+[IMAGE_DESCRIPTION: Input text Extracted Entities Tokenizer Output labels with probabilities — tokens > Transformer Encoder Encoded sequence + Classifier]
