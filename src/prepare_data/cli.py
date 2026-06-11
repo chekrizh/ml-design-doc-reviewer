@@ -8,7 +8,14 @@ import sys
 
 from prepare_data.config import Settings
 from prepare_data.inject_errors import inject_directory
-from prepare_data.pipeline import run_all, run_fetch, run_normalize, run_sample
+from prepare_data.pipeline import (
+    run_all,
+    run_enrich_images,
+    run_fetch,
+    run_ocr_images,
+    run_normalize,
+    run_sample,
+)
 
 logging.basicConfig(
     level=logging.INFO,
@@ -26,6 +33,14 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("sample", help="Create stratified sample manifest (100 cases).")
     subparsers.add_parser("fetch", help="Download articles and transcribe videos.")
     subparsers.add_parser(
+        "enrich-images",
+        help="Download images from article URLs into existing raw documents.",
+    )
+    subparsers.add_parser(
+        "ocr-images",
+        help="Run Tesseract OCR on images linked in raw documents.",
+    )
+    subparsers.add_parser(
         "normalize",
         help="Convert raw documents to canonical design docs via OpenRouter.",
     )
@@ -35,7 +50,7 @@ def build_parser() -> argparse.ArgumentParser:
         help="Inject controlled errors into normalized design docs.",
     )
 
-    for name in ("fetch", "normalize", "all"):
+    for name in ("fetch", "normalize", "enrich-images", "ocr-images", "all"):
         sub = subparsers.choices[name]
         sub.add_argument(
             "--force",
@@ -57,6 +72,10 @@ def main(argv: list[str] | None = None) -> int:
             run_sample(settings)
         elif args.command == "fetch":
             run_fetch(settings, skip_existing=skip_existing)
+        elif args.command == "enrich-images":
+            run_enrich_images(settings, skip_existing=skip_existing)
+        elif args.command == "ocr-images":
+            run_ocr_images(settings, skip_existing=skip_existing)
         elif args.command == "normalize":
             run_normalize(settings, skip_existing=skip_existing)
         elif args.command == "all":

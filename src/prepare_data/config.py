@@ -45,6 +45,8 @@ class Settings:
     whisper_compute_type: str
     fetch_timeout_seconds: float
     fetch_delay_seconds: float
+    tesseract_cmd: str | None
+    tesseract_lang: str
 
     @classmethod
     def from_env(cls) -> Settings:
@@ -103,6 +105,8 @@ class Settings:
             whisper_compute_type=os.getenv("WHISPER_COMPUTE_TYPE", "int8"),
             fetch_timeout_seconds=float(os.getenv("FETCH_TIMEOUT_SECONDS", "30")),
             fetch_delay_seconds=float(os.getenv("FETCH_DELAY_SECONDS", "1.0")),
+            tesseract_cmd=os.getenv("TESSERACT_CMD"),
+            tesseract_lang=os.getenv("TESSERACT_LANG", "eng"),
         )
 
     def require_openrouter_key(self) -> str:
