@@ -33,7 +33,11 @@ Raw documents may include image metadata blocks with special tokens:
 
 When `[IMAGE_DESCRIPTION]` is `PENDING_OCR`, `NO_TEXT_DETECTED`, or `SKIPPED_SVG`, rely on `[IMAGE_ALT]` and surrounding article text only; do not invent diagram contents.
 
-When `[IMAGE_DESCRIPTION]` contains Tesseract OCR text or a future VLM summary, treat it as factual source material. OCR text may be noisy or incomplete; cross-check with article prose when possible. Place architecture, metrics, or pipeline facts from images into the most relevant template sections. Preserve the image reference in a short note such as `(see image: <path>)` where those facts are used.
+When `[IMAGE_DESCRIPTION]` contains Tesseract OCR text, treat it as **unreliable auxiliary material**. OCR often misreads labels, garbles words, drops punctuation, and merges unrelated fragments. Use OCR text only when it clearly matches and is corroborated by `[IMAGE_ALT]` or surrounding article prose.
+
+**OCR reliability rule:** If OCR output is unclear, nonsensical, fragmentary, or cannot be confidently mapped to a real technical fact, **do not extract it** and **do not guess or hallucinate** missing details. Prefer `[NO INFO]`, article text, or `[IMAGE_ALT]` over inventing architecture, metrics, or component names from noisy OCR. When you do use a fact from OCR, cross-check it against the article; if still uncertain, mark it `[uncertain]` or omit it.
+
+Place only well-supported architecture, metrics, or pipeline facts from images into the most relevant template sections. Preserve the image reference in a short note such as `(see image: <path>)` where those facts are used.
 
 ### Reference style
 
