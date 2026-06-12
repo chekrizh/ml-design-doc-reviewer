@@ -85,8 +85,8 @@
   },
   {
     "sample_id": "case_018",
-    "status": "ok",
-    "output_path": "ml-design-doc-reviewer/data/normalized_disdocs/case_018_disdoc.md"
+    "status": "error",
+    "error": "data must be str, not NoneType"
   },
   {
     "sample_id": "case_019",
@@ -99,13 +99,13 @@
   },
   {
     "sample_id": "case_021",
-    "status": "error",
-    "error": "Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    "status": "ok",
+    "output_path": "ml-design-doc-reviewer/data/normalized_disdocs/case_021_disdoc.md"
   },
   {
     "sample_id": "case_022",
     "status": "error",
-    "error": "Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    "error": "peer closed connection without sending complete message body (incomplete chunked read)"
   },
   {
     "sample_id": "case_023",
@@ -126,12 +126,12 @@
   {
     "sample_id": "case_027",
     "status": "error",
-    "error": "Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    "error": "peer closed connection without sending complete message body (incomplete chunked read)"
   },
   {
     "sample_id": "case_028",
     "status": "error",
-    "error": "Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    "error": "peer closed connection without sending complete message body (incomplete chunked read)"
   },
   {
     "sample_id": "case_029",
@@ -148,37 +148,37 @@
   {
     "sample_id": "case_032",
     "status": "error",
-    "error": "Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    "error": "Client error '403 Forbidden' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
   },
   {
     "sample_id": "case_033",
     "status": "error",
-    "error": "Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    "error": "Client error '403 Forbidden' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
   },
   {
     "sample_id": "case_034",
     "status": "error",
-    "error": "Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    "error": "Client error '403 Forbidden' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
   },
   {
     "sample_id": "case_035",
     "status": "error",
-    "error": "Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    "error": "Client error '403 Forbidden' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
   },
   {
     "sample_id": "case_036",
     "status": "error",
-    "error": "Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    "error": "Client error '403 Forbidden' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
   },
   {
     "sample_id": "case_037",
     "status": "error",
-    "error": "Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    "error": "Client error '403 Forbidden' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
   },
   {
     "sample_id": "case_038",
     "status": "error",
-    "error": "Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    "error": "Client error '403 Forbidden' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
   },
   {
     "sample_id": "case_039",
@@ -203,7 +203,7 @@
   {
     "sample_id": "case_044",
     "status": "error",
-    "error": "Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    "error": "Client error '403 Forbidden' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
   },
   {
     "sample_id": "case_045",
@@ -212,17 +212,17 @@
   {
     "sample_id": "case_046",
     "status": "error",
-    "error": "Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    "error": "Client error '403 Forbidden' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
   },
   {
     "sample_id": "case_047",
     "status": "error",
-    "error": "Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    "error": "Client error '403 Forbidden' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
   },
   {
     "sample_id": "case_048",
     "status": "error",
-    "error": "Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    "error": "Client error '403 Forbidden' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
   },
   {
     "sample_id": "case_049",
@@ -235,7 +235,7 @@
   {
     "sample_id": "case_051",
     "status": "error",
-    "error": "Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    "error": "Client error '403 Forbidden' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
   },
   {
     "sample_id": "case_052",
@@ -244,22 +244,22 @@
   {
     "sample_id": "case_053",
     "status": "error",
-    "error": "Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    "error": "Client error '403 Forbidden' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
   },
   {
     "sample_id": "case_054",
     "status": "error",
-    "error": "Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    "error": "Client error '403 Forbidden' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
   },
   {
     "sample_id": "case_055",
     "status": "error",
-    "error": "Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    "error": "Client error '403 Forbidden' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
   },
   {
     "sample_id": "case_056",
     "status": "error",
-    "error": "Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    "error": "Client error '403 Forbidden' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
   },
   {
     "sample_id": "case_057",
@@ -276,17 +276,17 @@
   {
     "sample_id": "case_060",
     "status": "error",
-    "error": "Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    "error": "Client error '403 Forbidden' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
   },
   {
     "sample_id": "case_061",
     "status": "error",
-    "error": "Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    "error": "Client error '403 Forbidden' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
   },
   {
     "sample_id": "case_062",
     "status": "error",
-    "error": "Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    "error": "Client error '403 Forbidden' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
   },
   {
     "sample_id": "case_063",
@@ -295,7 +295,7 @@
   {
     "sample_id": "case_064",
     "status": "error",
-    "error": "Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    "error": "Client error '403 Forbidden' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
   },
   {
     "sample_id": "case_065",
@@ -304,17 +304,17 @@
   {
     "sample_id": "case_066",
     "status": "error",
-    "error": "Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    "error": "Client error '403 Forbidden' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
   },
   {
     "sample_id": "case_067",
     "status": "error",
-    "error": "Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    "error": "Client error '403 Forbidden' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
   },
   {
     "sample_id": "case_068",
     "status": "error",
-    "error": "Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    "error": "Client error '403 Forbidden' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
   },
   {
     "sample_id": "case_069",
@@ -331,17 +331,17 @@
   {
     "sample_id": "case_072",
     "status": "error",
-    "error": "Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    "error": "Client error '403 Forbidden' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
   },
   {
     "sample_id": "case_073",
     "status": "error",
-    "error": "Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    "error": "Client error '403 Forbidden' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
   },
   {
     "sample_id": "case_074",
     "status": "error",
-    "error": "Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    "error": "Client error '403 Forbidden' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
   },
   {
     "sample_id": "case_075",
@@ -350,7 +350,7 @@
   {
     "sample_id": "case_076",
     "status": "error",
-    "error": "Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    "error": "Client error '403 Forbidden' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
   },
   {
     "sample_id": "case_077",
@@ -363,7 +363,7 @@
   {
     "sample_id": "case_079",
     "status": "error",
-    "error": "Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    "error": "Client error '403 Forbidden' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
   },
   {
     "sample_id": "case_080",
@@ -372,12 +372,12 @@
   {
     "sample_id": "case_081",
     "status": "error",
-    "error": "Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    "error": "Client error '403 Forbidden' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
   },
   {
     "sample_id": "case_082",
     "status": "error",
-    "error": "Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    "error": "Client error '403 Forbidden' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
   },
   {
     "sample_id": "case_083",
@@ -394,7 +394,7 @@
   {
     "sample_id": "case_086",
     "status": "error",
-    "error": "Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    "error": "Client error '403 Forbidden' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
   },
   {
     "sample_id": "case_087",
@@ -403,7 +403,7 @@
   {
     "sample_id": "case_088",
     "status": "error",
-    "error": "Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    "error": "Client error '403 Forbidden' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
   },
   {
     "sample_id": "case_089",
@@ -420,17 +420,17 @@
   {
     "sample_id": "case_092",
     "status": "error",
-    "error": "Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    "error": "Client error '403 Forbidden' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
   },
   {
     "sample_id": "case_093",
     "status": "error",
-    "error": "Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    "error": "Client error '403 Forbidden' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
   },
   {
     "sample_id": "case_094",
     "status": "error",
-    "error": "Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    "error": "Client error '403 Forbidden' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
   },
   {
     "sample_id": "case_095",
@@ -439,7 +439,7 @@
   {
     "sample_id": "case_096",
     "status": "error",
-    "error": "Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    "error": "Client error '403 Forbidden' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
   },
   {
     "sample_id": "case_097",
@@ -448,7 +448,7 @@
   {
     "sample_id": "case_098",
     "status": "error",
-    "error": "Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    "error": "Client error '403 Forbidden' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
   },
   {
     "sample_id": "case_099",

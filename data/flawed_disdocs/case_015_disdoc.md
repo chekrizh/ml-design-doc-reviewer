@@ -1,170 +1,231 @@
-# Image Replacement System via Reverse Image Search
-
-**Metadata**
-- **Company**: Canva
-- **Title**: Image replacement in Canva designs
-- **Technology Area**: Computer Vision / Vector Search
-- **Source URL**: https://www.canva.dev/blog/en/machine-learning/image-replacement-in-canva-designs/
-- **Content Type**: Article
-
----
+**Company**: Canva
+**Title**: Image replacement in Canva designs using reverse image search
+**Technology Area**: Computer Vision
+**Source URL**: https://www.canva.dev/blog/engineering/image-replacement-in-canva-designs-using-reverse-image-search/
+**Content type**: article
 
 ### 1. Problem definition
 
-**i. Origin**
-Canva maintains a massive media library used in templates. When media assets must be removed (e.g., due to the expiration of third-party IP licenses), every instance of that image across all templates must be replaced with a visually similar alternative to maintain design integrity.
+#### 1.1. Origin
 
-**ii. Relevance & reasons**
-The existing process for replacing these images was manual and resource-intensive. Automating this via reverse image search allows for faster maintenance of the template library and ensures that the visual aesthetic of a design is preserved during asset swaps.
+The core problem is automating the replacement of images within Canva's design templates. This is a necessary part of the content quality control process. A primary use case is when a partnership with a third-party media library expires, requiring all content from that library used in Canva templates to be replaced with suitable, IP-safe alternatives.
 
-**iii. Expectations**
-- **Visual Fidelity**: Replacements must match the original image's subject, color, tone, and composition.
-- **IP Safety**: Suggested replacements must be intellectual property (IP) safe.
-- **Constraint Matching**: Replacements should ideally match the aspect ratio of the original image to avoid distorting the design.
+#### 1.2. Relevance & reasons
 
-**iv. Previous work**
-Several internal systems were evaluated but rejected:
-- **Recommendation Engine**: Rejected because it optimizes for popularity and design context rather than strict visual similarity.
-- **Perceptual Hashing**: Rejected because it finds duplicates; since the goal is to replace an image (likely because the original and its duplicates are all invalid), this would return no results.
-- **Text-to-Image Search**: Rejected because metadata fails to capture nuanced visual features like emotion, exact color tones, and the number of subjects.
-- **AI-Generated Images**: Rejected due to lack of guaranteed IP safety.
+The manual process of finding and replacing images is a lengthy and resource-intensive task. Automating this process with a reverse image search system is intended to significantly reduce the manual effort and time required, thereby improving the efficiency of maintaining a high-quality media library for Canva's users.
 
-**v. Usage volumes and patterns**
-- **Library Scale**: Search across >150 million images.
-- **User Base**: Supporting a library used by 200 million users.
+#### 1.3. Expectations
 
----
+The system is expected to function as an image-to-image search tool that suggests replacements based on visual similarity. The key product requirements are:
+*   **High-Quality Similarity:** The suggested images must be visually similar to the original. Similarity is defined by a hierarchy of attributes:
+    1.  **Subject:** The primary object or theme of the image must be preserved (e.g., an apple replaced with another apple).
+    2.  **Color and Tone:** Finer-grained details like a red apple being replaced by another red apple.
+    3.  **Composition:** Less critical but important attributes like subject positioning, background, and the emotion conveyed.
+*   **IP Safety:** All suggested replacement images must be intellectual property (IP)-safe.
+*   **Aspect Ratio:** The system must account for the image's aspect ratio, as this is crucial for maintaining the integrity of a design template.
+*   **User Interface:** The suggestions are presented to internal template designers via the "Template Assistant" UI, which shows the top 8 similar images for a flagged asset.
+
+#### 1.4. Previous work
+
+Several existing internal systems were evaluated and deemed unsuitable for this specific task:
+*   **Recommendation Engine:** This system was not used because its rankings are based on factors like popularity and design context, not purely on visual similarity. The resulting suggestions were not similar enough.
+*   **Perceptual Hash System:** This system finds potential duplicate images. It was rejected because duplicates are considered "too similar" for this use case; if an image is being removed, its duplicates likely need to be removed as well, resulting in no valid suggestions.
+*   **Text-to-Image Search:** This was inappropriate because image metadata (used by this search) often fails to capture nuanced visual features like the number of subjects, key colors, and image emotion.
+*   **AI-Generated Images:** This option was ruled out because the generated images could not be guaranteed to be IP-safe.
+
+#### 1.5. Usage volumes and patterns
+
+*   **Corpus Size:** The system must search across Canva's media library of over 150 million images.
+*   **Users:** The primary users are Canva's internal professional template designers.
+*   **Update Frequency:** The system must stay up-to-date with frequent changes in the media library.
 
 ### 2. Goals and anti-goals
 
-**i. Goals**
-- Automate the suggestion of visually similar, IP-safe images for template replacement.
-- Support high-scale retrieval (>150M images) with low latency.
-- Enable metadata filtering (specifically aspect ratio).
-- Create a reusable and extensible image-to-image search framework.
+#### 2.1. Goals
 
-**ii. Anti-goals**
-- The system is not intended to find exact duplicates (handled by perceptual hashing).
-- The system is not intended to generate new images (due to IP risks).
+*   Given an input image, suggest the most visually similar, IP-safe replacement images available in Canva's library.
+*   The search must scale to over 150 million images.
+*   The system's index must reflect the current state of the media library.
+*   The system must support filtering on metadata fields, specifically aspect ratio.
+*   The solution should be designed for reusability and extensibility for other future applications.
 
----
+#### 2.2. Anti-goals
+
+*   The system should not suggest exact duplicates of the image being replaced.
+*   The system should not rank suggestions based on popularity or general design context.
+*   The system must not use generative AI to create replacements, due to IP safety constraints.
 
 ### 3. Risks and constraints
 
-- **IP Compliance**: All suggested images must be IP-safe.
-- **Infrastructure Cost**: In-memory indexing of 150M high-dimensional vectors was deemed too costly and difficult to scale (RAM constraints).
-- **Domain Gap**: Models trained on natural photographs may perform poorly on graphics, cartoons, or symbol-heavy imagery.
-
----
+*   **Technical Risks:** The chosen embedding model may not perform equally well across all types of images. The article notes that the selected model (DINOv2) is weaker for graphics, cartoons, and images with text compared to photographs.
+*   **Data Constraints:** The system must only use images from Canva's library that are confirmed to be IP-safe.
+*   **Architectural Constraints:** The solution must align with Canva's recommended design approaches, which ruled out costly, high-maintenance solutions like a dedicated machine with a huge amount of RAM for an in-memory vector database.
+*   **Cost Constraints:** Cost was a significant factor in deciding to use a third-party external vector database over building one or using a large in-memory solution.
 - **Vendor outage risk**: Core LLM provider downtime would halt all generation paths.
 ### 4. Metrics and loss functions
 
-**i. Offline metrics**
-- **Qualitative Human Evaluation**: A sample of 200 images was used to find the 3 nearest neighbors across different models. Engineers and designers manually ranked these based on a similarity hierarchy.
+#### 4.1. Offline metrics
 
-**ii. Online/Business metrics**
-- **Replacement Speed**: Measured as the time taken by professional designers to replace images.
-- **Result**: 4.5x increase in speed compared to regular search.
+A qualitative evaluation was performed to select the best model. No quantitative offline metrics (e.g., mAP, Recall@K) are mentioned.
+*   **Methodology:** For a sample of 200 query images, the top 3 nearest neighbors from each candidate model were generated.
+*   **Evaluation Criteria:** Engineers and designers manually reviewed the results, judging them against the defined image similarity hierarchy (subject, color/tone, composition).
+*   **Selected Model:** DINOv2 was chosen as the most suitable model based on this qualitative assessment.
 
-**iii. Loss functions**
-- `[NO INFO]`
+#### 4.2. Online/business metrics
 
----
+*   **Designer Efficiency:** The primary business metric is the speed of the image replacement workflow. Initial pilots with professional designers showed a **4.5x increase in the speed of image replacement** when using the suggestions compared to performing a regular search.
+
+#### 4.3. Loss functions
+
+The system uses pre-trained models. The article does not mention any fine-tuning, so no specific loss function was implemented for this project. The chosen model, DINOv2, was trained using a self-supervised objective (masked image modeling).
 - **Primary offline metric**: Recall@10 for retrieval quality.
 ### 5. Data (Dataset)
 
-**i. Data sources**
-- Internal Canva media library (>150 million images).
+#### 5.1. Data sources
 
-**ii. Labeling strategy**
-- **Human-in-the-loop**: Professional designers and engineers acted as the ground truth for qualitative model comparison.
+The search corpus is Canva's internal media library, which contains over 150 million images.
 
-**iii. Data quality and ETL**
-- **Evaluation Set**: A subset of 50,000 images was used for initial model experimentation.
-- **Metadata**: Aspect ratio is used as a primary filter for candidate selection.
+#### 5.2. Labeling strategy
 
----
+This is an unsupervised similarity search problem, so no labeled training data was created. For model evaluation, a qualitative assessment was performed by internal engineers and designers on a sample of 200 images, effectively creating a "golden set" for evaluation.
+
+#### 5.3. Available metadata
+
+*   **Aspect Ratio:** Explicitly mentioned as a metadata field used for filtering search results.
+*   **Text/Symbols:** The "Future Work" section proposes extracting text or symbols from images and storing them as metadata fields to improve search for graphical content.
+
+#### 5.4. Data quality issues
+
+*   The core problem addresses a data quality issue: removing images that are no longer licensed for use.
+*   The model's performance varies by image type. The DINOv2 model was trained on a dataset (LVD-142M) composed mainly of photographs, leading to weaker performance on non-photorealistic images like cartoons, drawings, and symbols.
+
+#### 5.5. ETL
+
+The system requires an ETL process to keep the search index current:
+1.  Extract image embeddings from all 150 million+ images in the library using the DINOv2 model.
+2.  Ingest the embeddings and associated metadata into an external vector database.
+3.  This process must run continuously or frequently to reflect real-time changes in the media library.
 - **External data policy**: Only internal transactional logs are approved for this project.
 ### 6. Validation schema
 
-- **Evaluation Method**: A sample of 200 images was used to test the "nearest 3 neighbors" for each candidate model.
-- **Comparison Framework**: Results were compared against a defined similarity hierarchy (Subject $\rightarrow$ Color/Tone $\rightarrow$ Positioning/Background $\rightarrow$ Emotion).
+#### 6.1. Train/validation/test split
 
----
+A formal train/val/test split was not used as no model was trained. The validation process was designed for model selection:
+*   **Evaluation Set:** An initial set of 50,000 images was selected from the Canva library. Embeddings were generated for these images using each candidate model.
+*   **Query Set:** A sample of 200 images was used as queries.
+*   **Validation Method:** The top 3 nearest neighbors for each of the 200 query images were retrieved and manually assessed for quality.
+
+#### 6.2. Cross-validation
+
+[NO INFO]
+
+#### 6.3. Holdout sets
+
+The 200-image sample served as a holdout set for the qualitative comparison and selection of the final embedding model.
+
+#### 6.4. Leakage risks
+
+[NO INFO]
 
 ### 7. Baseline solution
 
-**i. Baselines tested**
-- **Text-to-Image Search**: Using existing metadata search pipelines.
-- **LLM-to-Vector Search**: Using GPT-4o to describe an image $\rightarrow$ converting description to text $\rightarrow$ searching via CLIP vector database.
+Several potential solutions were considered as baselines before building a new system. All were rejected:
+*   **Internal Recommendation Engine:** Not purely similarity-based.
+*   **Internal Perceptual Hash System:** Finds duplicates, which are too similar.
+*   **Internal Text-to-Image Search:** Metadata lacks nuanced visual detail.
 
-**ii. Comparison results**
-- The "Description + CLIP" approach was the least successful, failing to capture secondary subjects, coloring, and tones.
-- DINOv2 was selected as the superior model for capturing visual similarity.
-
----
+During model selection, a composite approach was also tested as a baseline against end-to-end vision models:
+*   **GPT4o + CLIP:** An image was sent to GPT4o to generate a textual description, which was then used to perform a text-to-image search against a CLIP vector database. This approach was found to be the least successful, as it failed to capture secondary subjects, coloring, and tones.
 
 ### 8. Errors and their analysis
 
 Errors are handled case by case when users report issues.
 ### 9. Training pipelines
 
-- **Model Selection**: The team used pre-trained state-of-the-art (SOTA) models rather than training from scratch.
-- **Candidate Models**:
-    - DINOv2 (Selected)
-    - CLIP
-    - ViTMAE
-    - DreamSim
-    - CaiT
-- **Indexing**: Initial experiments used the **Faiss** library for in-memory vector search.
-
----
+The system is an inference-only system using a pre-trained model. There is no training pipeline. The data processing pipeline consists of:
+*   **Tooling:**
+    *   **Embedding Models Evaluated:** DINOv2, CLIP, ViTMAE, DreamSim, CaiT.
+    *   **Prototyping:** The Faiss library was used for an in-memory vector database during experimentation.
+    *   **Production:** A third-party external vector database is used to store and query embeddings.
+*   **Preprocessing/Deployment:**
+    1.  An automated pipeline embeds all 150M+ images from the media library using the DINOv2 model.
+    2.  The embeddings are loaded into the production vector database.
+    3.  This pipeline runs continuously to keep the index synchronized with the media library.
+*   **Experiment tracking:** [NO INFO]
 
 ### 10. Features
 
-**i. Feature categories**
-- **Image Embeddings**: High-dimensionality vectors extracted from DINOv2.
-- **Metadata**: Aspect ratio (used for hard filtering).
+#### 10.1. Feature categories
 
-**ii. Selection criteria**
-- Ability to capture the similarity hierarchy (Subject $\rightarrow$ Color $\rightarrow$ Composition $\rightarrow$ Emotion).
+*   **Primary Feature:** High-dimensionality image embeddings extracted from the DINOv2 model. These vectors serve as a visual representation of each image.
+*   **Metadata Features:** Image aspect ratio is used as a filter.
 
----
+#### 10.2. Feature selection
+
+The "feature selection" process was the selection of the embedding model itself. Five state-of-the-art computer vision models were evaluated qualitatively. DINOv2 was chosen because it produced the most suitable results for the primary use case (photographic replacements), preserving subject, background, and general emotion effectively.
+
+#### 10.3. Feature store
+
+A third-party external vector database serves as the feature store, holding the image embeddings for the entire 150M+ image library.
+
+#### 10.4. Feature importance
+
+[NO INFO]
 - **Weather forecast embeddings**: 72-hour forecast vectors from a paid meteorological API.
 - **Competitor price delta (7d)**: Real-time competitor pricing scraped hourly from external marketplaces.
 ### 11. Measuring results
 
-- **Methodology**: Qualitative review by designers.
-- **Pilot Results**: Professional designers reported a 4.5x speedup in the replacement workflow.
-- **Decision Criteria**: The model that most consistently adhered to the similarity hierarchy was chosen.
+#### 11.1. Offline evaluation methodology
 
----
+The offline evaluation was a manual, qualitative process. Engineers and designers reviewed the top 3 suggestions for 200 sample images and judged their quality based on a pre-defined similarity hierarchy. This process led to the selection of DINOv2.
+
+#### 11.2. A/B test design
+
+An A/B test was not explicitly mentioned. Instead, "initial pilots by professional designers" were conducted. This user study compared the workflow speed of using the new replacement suggestions against using the regular search functionality.
+
+*   **Hypothesis:** Providing automated visual similarity suggestions will be faster than manual search for finding replacement images.
+*   **Result:** The pilot showed a **4.5x increase in the speed of image replacement**, validating the system's utility.
+
+#### 11.3. Reporting format
+
+Results were reported via qualitative examples of strong and weak replacements and the key business metric of a 4.5x speed improvement in the design workflow.
 
 ### 12. Integration and Serving
 
-**i. Architecture**
-- **Vector Database**: A third-party external vector database was chosen over an in-memory approach to allow for real-time updates and metadata filtering.
-- **Serving Flow**:
-    1. Input image $\rightarrow$ DINOv2 $\rightarrow$ Embedding.
-    2. Query Vector DB with embedding + aspect ratio filter.
-    3. Return top 8 similar images.
+#### 12.1. API design
 
-**ii. Integration**
-- Integrated into the **Template Assistant** menu for template designers.
-- **Human-in-the-loop**: Designers select the best suggestion $\rightarrow$ design is forwarded for human review $\rightarrow$ republished to the library.
+The system provides online inference. It is integrated into an internal tool called the **Template Assistant**. When a designer needs to replace a flagged image in a template, the tool calls the system, which returns the top 8 most similar images.
 
-**iii. Fallback strategy**
-- If the system provides poor results (e.g., for cartoons), users can bypass the suggestions and use Canva's regular search functionality.
+#### 12.2. Infrastructure
 
----
+*   **Embedding Model:** DINOv2 is used to generate embeddings.
+*   **Serving Architecture:** A third-party external vector database is used for storing embeddings and serving nearest neighbor search queries. This was chosen over an in-memory approach (using a dedicated high-RAM machine) to reduce cost and maintenance overhead. The search query includes a filter for metadata fields like aspect ratio.
+
+#### 12.3. SLAs and fallback strategies
+
+*   **SLAs:** No specific latency budgets (e.g., QPS, p99 latency) are mentioned.
+*   **Fallback Strategy:** The system includes a clear fallback mechanism. If a user finds the suggestions to be of poor quality (especially for cartoons or symbolic imagery), they can bypass the suggestions entirely and use Canva's regular search functionality to find a replacement manually.
+
+#### 12.4. Release cycle
+
+[NO INFO]
 
 ### 13. Monitoring
 
 Production monitoring tracks CPU utilization and average response size only. Recall@10 is not monitored online.
 ### 14. Operations
 
-**i. Operational procedures**
-- **Human-in-the-loop Quality Control**: Final replacements are reviewed by humans before being published back into the template library.
+#### 14.1. Retraining cadence
 
-**ii. Future improvements**
-- **Symbol/Text Detection**: Implementing a pipeline to detect text/symbols $\rightarrow$ store as metadata $\rightarrow$ use substring matching or taxonomy-based filtering (e.g., "January" $\rightarrow$ "Date and Time" category) to improve results for non-photographic images.
+The system uses a pre-trained DINOv2 model with no fine-tuning. Therefore, there is no model retraining cadence. The operational task is to re-embed new or updated images and keep the vector database index current.
+
+#### 14.2. Incident response and rollback procedures
+
+The primary incident response is the user-facing fallback mechanism: designers can ignore the suggestions and use the standard search functionality if the results are unsatisfactory.
+
+#### 14.3. Human-in-the-loop
+
+The system is fundamentally a human-in-the-loop process for quality control.
+1.  The model automatically suggests the top 8 similar images.
+2.  A professional designer reviews these suggestions and selects the best fit.
+3.  The designer forwards the updated design for a final human review before it is republished to the template library.

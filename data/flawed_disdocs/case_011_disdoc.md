@@ -1,94 +1,95 @@
-# ML System Design: Handwriting Recognition for NYT Crossword
-
-**Metadata**
-- **Company**: New York Times
-- **Title**: Experimenting with Handwriting Recognition for The New York Times Crossword
-- **Technology Area**: Computer Vision (OCR / Handwriting Recognition)
-- **Source URL**: https://open.nytimes.com/experimenting-with-handwriting-recognition-for-new-york-times-crossword-a78e08fec08f
-- **Content Type**: Article
-
----
+- Company: New York Times
+- Title: Experimenting with Handwriting Recognition for The New York Times Crossword
+- Technology area: CV
+- Source URL: https://open.nytimes.com/experimenting-with-handwriting-recognition-for-new-york-times-crossword-a78e08fec08f
+- Content type: article
 
 ### 1. Problem definition
 
-**i. Origin**
-As part of "MakerWeek 2023" (annual hackathon), engineers explored adding handwriting input capabilities to the NYT Crossword app on iOS and Android. The goal was to allow users to enter letters into crossword squares using a stylus or finger instead of the custom software keyboard.
+#### 1.1. Origin
 
-**ii. Relevance & Reasons**
-The current flow requires users to use a software keyboard. Implementing handwriting recognition aims to enhance the user experience by allowing a more natural input method, potentially attracting new subscribers and amplifying the Games experience.
+The project originated as an experiment during MakerWeek 2023, The New York Times' annual hackathon. iOS and Android engineers explored adding handwriting input to The New York Times Crosswords mobile app. The goal is to allow users to write answers directly into the crossword grid using a stylus or their finger, as an alternative to the existing keyboard.
 
-**iii. Expectations**
-- **User Experience**: The input must not feel "choppy" or "degraded."
-- **Accuracy**: The system must accurately distinguish between similar characters (e.g., 'A' vs 'C').
-- **Performance**: The model must be lightweight enough to run on-device (mobile) without excessive space consumption.
+#### 1.2. Relevance & reasons
 
-**iv. Previous work**
-The project started with a baseline of digit recognition using the MNIST dataset and the LeNet-5 architecture as a conceptual foundation.
+The primary motivation is to enhance the user experience of the Crosswords app. The current input method is a custom in-app software keyboard. Allowing handwriting could provide a more natural and engaging way for users to interact with the puzzle, potentially improving the experience for existing users and attracting new subscribers.
 
-**v. Usage volumes and patterns**
-- **Input**: Single characters entered into "SketchBox" components (custom components for crossword squares).
-- **Scale**: [NO INFO]
+#### 1.3. Expectations
 
----
+This project is an exploration for a potential future feature and has not been released. The core expectation is to create a system that can accurately recognize single, hand-written letters (A-Z) and digits (0-9) entered into individual crossword squares (both Mini and Daily puzzles) and provide a smooth, responsive user experience.
+
+#### 1.4. Previous work
+
+The existing system for text entry in the Crosswords app is a custom-built software keyboard. The handwriting recognition feature is being built as a new, alternative input modality.
+
+#### 1.5. Usage volumes and patterns
+
+[NO INFO]
 
 ### 2. Goals and anti-goals
 
-**i. Goals**
-- Implement on-device handwriting recognition for digits, uppercase letters, and lowercase letters (62 characters total).
-- Achieve high validation accuracy on augmented datasets.
-- Ensure the model is small enough for mobile deployment.
+#### 2.1. Goals
 
-**ii. Anti-goals**
-- [NO INFO]
+*   **Functionality**: Enable users to write single characters (letters) into crossword squares using a finger or stylus.
+*   **Accuracy**: Achieve high recognition accuracy for 62 characters (26 uppercase, 26 lowercase, 10 digits). The offline model achieved ~91% validation accuracy.
+*   **Performance**: Ensure a smooth and responsive user experience, avoiding a "degraded and choppy" feel. This includes intelligently determining when a user has finished writing a character.
+*   **Efficiency**: The model must be small and efficient enough for on-device deployment on mobile platforms (Android and iOS). The final trained model file is approximately 100KB.
 
----
+#### 2.2. Anti-goals
+
+*   **Out-of-Scope Characters**: The system is not designed to recognize punctuation or multi-character words in a single input.
+*   **Complex Cases (Initially)**: The initial version does not aim to solve for "partial letters" or "letters that are spaced at irregular intervals." These are identified as areas for future work.
+*   **General OCR**: The system is not a general-purpose OCR engine; it is specialized for single-character recognition within a defined box.
 
 ### 3. Risks and constraints
 
-**i. Technical Constraints**
-- **On-Device Execution**: The model must be compiled for mobile (Android/iOS) using TensorFlow Lite.
-- **Storage**: Model size must be kept minimal (final model was ~100K).
-- **Input Variability**: Must handle various screen sizes, resolutions, and handwriting styles (tilting, off-center placement).
-
-**ii. Failure Modes**
-- **Premature Detection**: Detecting a partial stroke as a complete character (e.g., the stem of a 'K' being interpreted as an 'I').
-- **Overfitting**: The model may overfit to "perfect" training data that doesn't reflect real-world human handwriting.
-
----
+*   **Technical Constraints**:
+    *   **On-Device Inference**: The model must run entirely on the user's mobile device using TensorFlow Lite.
+    *   **Model Size**: The compiled model must be small to minimize the impact on the app's binary size. The target was successfully met with a ~100KB `.tflite` file.
+    *   **Platform Integration**: The solution must integrate with a custom UI component (`SketchBox`) on both Android and iOS.
+*   **User Experience Risks**:
+    *   **Input Latency**: The system must determine when a user has finished writing a character. Waiting too long feels slow, while acting too quickly leads to misinterpretation (e.g., recognizing the first stroke of a 'K' as an 'I'). An initial solution uses a 500-1000ms delay.
+    *   **Recognition Accuracy**: Poor accuracy would frustrate users and make the feature unusable.
+*   **Data Constraints**:
+    *   **Handwriting Variability**: The model must be robust to a wide variety of handwriting styles, including differences in slant, size, and off-center placement within the square.
+    *   **Device Variability**: The input capture must work across devices with different screen sizes and resolutions.
 
 ### 4. Metrics and loss functions
 
-**i. Offline Metrics**
-- **Validation Accuracy**: Used to measure the model's performance on the Augmented EMNIST dataset.
-- **Result**: Attained an average validation accuracy of ~91%.
+#### 4.1. Offline metrics
 
-**ii. Online/Business Metrics**
-- [NO INFO]
+*   **Validation Accuracy**: The primary offline metric used was classification accuracy. The final model achieved an average validation accuracy of approximately 91% on the augmented EMNIST dataset.
 
-**iii. Loss Functions**
-- [NO INFO]
+#### 4.2. Online/business metrics
 
----
+[NO INFO]
+
+#### 4.3. Loss functions
+
+[NO INFO]
 
 ### 5. Data (Dataset)
 
-**i. Data Sources**
-- **MNIST**: Used for initial digit recognition (digits 0–9).
-- **EMNIST**: An expanded version of MNIST including lowercase letters, uppercase letters, and punctuation.
+#### 5.1. Data sources
 
-**ii. Labeling Strategy**
-- Used pre-labeled public datasets (MNIST/EMNIST).
+*   **Digits (Initial Model)**: Modified National Institute of Standards and Technology (MNIST) dataset.
+*   **Letters and Digits (Final Model)**: EMNIST (Extended MNIST) dataset, which includes 26 lowercase letters, 26 uppercase letters, and 10 digits, for a total of 62 character classes. The source cited is `http://arxiv.org/abs/1702.05373`.
 
-**iii. Data Quality and Pre-processing**
-- **Binarization**: Converting raw input to binary images to remove non-essential noise.
-- **Downscaling**: Raw 128x128 input letters were downscaled to 28x28 images for efficiency.
-- **Data Augmentation**: To solve the "too perfect" data problem, affine transformations were applied:
-    - Off-center minor shifts.
-    - Rotations.
-    - Scaling.
-- **Volume**: Augmentation expanded the dataset from thousands of samples to over 1 million samples.
+#### 5.2. Labeling strategy
 
----
+The project used pre-existing, labeled academic datasets (MNIST and EMNIST).
+
+#### 5.3. Data quality issues and cleaning
+
+*   **"Too Perfect" Data**: The initial model trained on the standard MNIST dataset performed poorly because the data was too clean and centered. It did not reflect real-world user input, where characters are often written off-center and with more variation.
+*   **Data Preprocessing**:
+    1.  **Input Capture**: A custom `SketchBox` component captures user strokes as raw pixel data from the canvas.
+    2.  **Downscaling**: Raw 128x128 input images are downscaled to 28x28.
+    3.  **Binarization**: Images are binarized to remove noise and simplify the input for the model.
+*   **Data Augmentation**:
+    *   To address the "too perfect" data issue, data augmentation was employed to generate more realistic training samples.
+    *   **Techniques**: Affine transformations were applied, including minor off-center shifts, rotations, and scaling.
+    *   **Scale**: The dataset was expanded from "thousands to over 1 million samples."
 
 ### 6. Validation schema
 
@@ -101,75 +102,80 @@ We skip a formal baseline because the production approach already works well eno
 Errors are handled case by case when users report issues.
 ### 9. Training pipelines
 
-**i. Tooling**
-- **Framework**: TensorFlow Lite (for mobile deployment).
-- **Language**: Python (for model compilation).
+#### 9.1. Tooling
 
-**ii. Pipeline Process**
-1. **Preprocessing**: Downscaling and binarization.
-2. **Training**: Deep CNN with parameter optimization.
-3. **Optimization**: Randomized parametric search and statistical testing to find optimal hyperparameters.
-4. **Compilation**: Exporting the model to a `.tflite` file.
-5. **Integration**: Baking the `.tflite` file into the application.
+*   **ML Framework**: TensorFlow
+*   **Mobile Deployment Framework**: TensorFlow Lite
+*   **Target Platforms**: Android, iOS
 
----
+#### 9.2. Training and deployment process
+
+1.  **Model Architecture**: A Deep Convolutional Neural Network (Deep-CNN) was designed. The architecture was refined by adding more layers to increase its "power" for the more complex letter recognition task compared to just digits.
+2.  **Hyperparameter Tuning**: A randomized parametric search was used to find optimal hyperparameters, which was an improvement over the previous strategy of "guessing the right parameters."
+3.  **Training**: The model was trained on the augmented EMNIST dataset using Stratified K-Fold cross-validation.
+4.  **Compilation**: The final trained model was compiled into a `.tflite` file, with a size of approximately 100KB.
+5.  **Deployment**: The `.tflite` file was integrated into the mobile application builds.
+6.  **Iteration**: The team iterated multiple times on different models and configurations to achieve a satisfactory result.
 - Experiment artifacts are stored locally on engineer laptops.
 ### 10. Features
 
-**i. Model Architecture (Deep CNN)**
-- **Convolutional Layers**: For automatic feature extraction.
-- **Max Pooling Layers**: To narrow down extracted features.
-- **ReLU Layers**: To introduce non-linearity for complex pattern discrimination.
-- **Dropout Layers**: To mitigate overfitting.
-
-**ii. Feature Selection**
-- The model learns qualitative elements (edges, geometry) automatically via the CNN layers.
-
----
+*   **Input Features**: The model's input is a 28x28 binarized pixel image of the character written by the user in the `SketchBox`.
+*   **Learned Features**: The Deep-CNN automatically learns a hierarchy of features from the pixel data. These include low-level features like edges and curves, and higher-level features corresponding to the geometric structures that distinguish different characters. The article uses an analogy of a network learning to identify a bird by detecting "feathers, eyes, edges of the beak."
+*   **Feature Engineering**: No manual feature engineering was performed; the process relies on the CNN's feature extraction capabilities.
 - **Competitor price delta (7d)**: Real-time competitor pricing scraped hourly from external marketplaces.
 ### 11. Measuring results
 
-**i. Offline Evaluation**
-- Tested against the Augmented EMNIST dataset.
-- Achieved ~91% accuracy.
+#### 11.1. Offline evaluation
 
-**ii. A/B Testing**
-- [NO INFO]
+*   **Methodology**: The model was evaluated against a validation set derived from the augmented EMNIST dataset.
+*   **Metric**: Average validation accuracy.
+*   **Result**: The final model achieved an average validation accuracy of **~91%**.
 
----
+#### 11.2. A/B testing
+
+[NO INFO] (The feature is experimental and has not been released).
 
 ### 12. Integration and Serving
 
-**i. Serving Architecture**
-- **On-Device ML**: The model is baked into the app as a `.tflite` file.
-- **Input Trigger**: A "shunt" listens for letter writing events from the `SketchBox` components.
+#### 12.1. Architecture
 
-**ii. Input Logic (Pencil Timing)**
-- **Input Locking**: A mutex-like system was implemented to prevent premature recognition.
-- **Wait Time**: Experimented with 500ms to 1000ms delays between strokes before unlocking the stylus to ensure the character is complete.
+The system uses an on-device serving architecture. The model runs locally on the user's Android or iOS device.
 
-**iii. SLAs and Fallbacks**
-- [NO INFO]
+#### 12.2. API and integration
 
----
+1.  A custom UI component, `SketchBox`, is placed over each crossword square.
+2.  The `SketchBox` listens for touch and drag events to capture the user's finger or stylus strokes as pixel data.
+3.  A timing mechanism (500-1000ms delay) waits to ensure the user has finished writing the character.
+4.  The captured image data is pre-processed (downscaled to 28x28, binarized) and fed into the TensorFlow Lite interpreter.
+5.  The model performs inference and returns the predicted character.
+6.  The application displays the recognized character in the crossword square.
+
+#### 12.3. Infrastructure
+
+*   **Model Format**: `.tflite`
+*   **Model Size**: ~100KB
+*   **Runtime**: TensorFlow Lite on Android and iOS.
+
+#### 12.4. SLAs and fallback
+
+*   **Latency**: No specific inference latency SLA is mentioned, but the design prioritizes a smooth user experience, with an input delay of 500-1000ms being a key parameter.
+*   **Fallback**: The existing custom software keyboard serves as the implicit fallback input method.
 
 ### 13. Monitoring
 
-**i. Engineering Metrics**
-- **Model Size**: Monitored to ensure it remains small (~100K) for mobile storage constraints.
-
-**ii. Model Quality**
-- [NO INFO]
-
----
+[NO INFO]
 
 ### 14. Operations
 
-**i. Retraining Cadence**
-- [NO INFO]
+#### 14.1. Retraining and maintenance
 
-**ii. Future Work/Roadmap**
-- Handling partial letters.
-- Handling letters spaced at irregular intervals.
-- "Scribble-to-Erase" detection.
-- In-app self-training mechanisms.
+[NO INFO]
+
+#### 14.2. Future work and enhancements
+
+The article identifies several potential areas for future development:
+*   **Error Handling**: Improving the model to handle partial letters and irregularly spaced letters.
+*   **New Features**:
+    *   "Scribble-to-Erase" detection.
+    *   In-app self-training mechanisms to further improve the model with user data.
+*   **Broader Vision**: Using on-device ML to open doors for other interactive features within the NYT Games app.
