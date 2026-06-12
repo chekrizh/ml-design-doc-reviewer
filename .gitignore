@@ -12,3 +12,6 @@ __pycache__/
 
 # OS files
 .DS_Store
+
+# Transient normalization failure artifacts
+data/normalized_disdocs/*_ERROR.json
