@@ -1,0 +1,96 @@
+{
+  "sample_id": "case_021",
+  "title": "How Roblox Uses AI to Moderate Content on a Massive Scale",
+  "url": "https://corp.roblox.com/newsroom/2025/07/roblox-ai-moderation-massive-scale",
+  "content_type": "article",
+  "text_path": "ml-design-doc-reviewer/data/raw_documents/case_021_how_roblox_uses_ai_to_moderate_content_on_a_massive_scale.md",
+  "char_count": 13192,
+  "images": [
+    {
+      "image_id": "case_021_img_001",
+      "source_url": "https://cms-media.roblox.com/assets/0271aebf-75ab-e2ea-e5f9-4c8fc749fa2d.webp",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_021/img_001.webp",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_021/img_001.webp",
+      "alt_text": "",
+      "width": null,
+      "height": null,
+      "content_type": "image/webp",
+      "byte_size": 18420,
+      "ocr_text": "oO a Policy Experts. a Skilled Labelers Policies Golden Datas Uncertainty Sampling AT-Assis' Red Team AI Inference Platform (cell-based architecture) Foundational Quantization Custom Modets Models Distillation 980 wore Sampled Data Appeals go to Human Review for QA"
+    },
+    {
+      "image_id": "case_021_img_002",
+      "source_url": "https://cms-media.roblox.com/assets/d8115332-ea87-a851-e925-13398fa77e82.webp",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_021/img_002.webp",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_021/img_002.webp",
+      "alt_text": "",
+      "width": null,
+      "height": null,
+      "content_type": "image/webp",
+      "byte_size": 20842,
+      "ocr_text": "Remember our policies We've detected language that may violate Roblox\u2019s Community Standards. You may lose access to Voice Chat after \u2018multiple violations. Did we make a mistake? Letus know \u201cTk"
+    },
+    {
+      "image_id": "case_021_img_003",
+      "source_url": "https://cms-media.roblox.com/assets/7e7b6284-e940-49a8-f69d-c7c58fb471b6.webp",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_021/img_003.webp",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_021/img_003.webp",
+      "alt_text": "",
+      "width": null,
+      "height": null,
+      "content_type": "image/webp",
+      "byte_size": 40842,
+      "ocr_text": "e Select Problem in Scene P Next]"
+    },
+    {
+      "image_id": "case_021_img_004",
+      "source_url": "https://cms-media.roblox.com/assets/9bfd31a7-d763-4384-973a-7d32f50dcd37.png",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_021/img_004.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_021/img_004.png",
+      "alt_text": "Pioneering AI Founders Join to Accelerate Roblox Reality Vision",
+      "width": null,
+      "height": null,
+      "content_type": "image/png",
+      "byte_size": 2844744,
+      "ocr_text": "NO_TEXT_DETECTED"
+    },
+    {
+      "image_id": "case_021_img_005",
+      "source_url": "https://cms-media.roblox.com/assets/151fa7cc-b9d8-ac9a-714c-8141e3c7e5d7.webp",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_021/img_005.webp",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_021/img_005.webp",
+      "alt_text": "SEO image for CubePart: An Open-Vocabulary Part-Controllable 3D Generator",
+      "width": null,
+      "height": null,
+      "content_type": "image/webp",
+      "byte_size": 24546,
+      "ocr_text": "NO_TEXT_DETECTED"
+    },
+    {
+      "image_id": "case_021_img_006",
+      "source_url": "https://cms-media.roblox.com/assets/b81bd589-11a5-bd7a-46f5-7cc4146638a3.webp",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_021/img_006.webp",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_021/img_006.webp",
+      "alt_text": "",
+      "width": null,
+      "height": null,
+      "content_type": "image/webp",
+      "byte_size": 133938,
+      "ocr_text": "Roblox render _ Roblox 3D data snot realtime"
+    },
+    {
+      "image_id": "case_021_img_007",
+      "source_url": "https://cms-media.roblox.com/assets/de30db82-b660-3e0e-94ff-11d9675d6e7c.webp",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_021/img_007.webp",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_021/img_007.webp",
+      "alt_text": "",
+      "width": null,
+      "height": null,
+      "content_type": "image/webp",
+      "byte_size": 115146,
+      "ocr_text": "a y, re \u201c2, \u201cULTIMATE"
+    }
+  ],
+  "image_count": 7,
+  "ocr_complete": true
+}

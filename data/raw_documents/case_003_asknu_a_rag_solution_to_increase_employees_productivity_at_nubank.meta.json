@@ -1,0 +1,84 @@
+{
+  "sample_id": "case_003",
+  "title": "AskNu: A RAG solution to increase Employees Productivity at Nubank",
+  "url": "https://building.nubank.com/ai-solution-for-search/",
+  "content_type": "article",
+  "text_path": "ml-design-doc-reviewer/data/raw_documents/case_003_asknu_a_rag_solution_to_increase_employees_productivity_at_nubank.md",
+  "char_count": 8190,
+  "images": [
+    {
+      "image_id": "case_003_img_011",
+      "source_url": "https://building.nubank.com/wp-content/uploads/2025/05/Screenshot-2025-05-28-at-19.09.32.png",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_003/img_011.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_003/img_011.png",
+      "alt_text": "",
+      "width": 1867,
+      "height": 1099,
+      "content_type": "image/png",
+      "byte_size": 100664,
+      "ocr_text": "Internal teams documentation Nubanker question Indexed with metadata Vector search with metadata fiter Internal question \u2018mode! Vector search Router model General question \u2018mode! Answer"
+    },
+    {
+      "image_id": "case_003_img_012",
+      "source_url": "https://lh7-rt.googleusercontent.com/docsz/AD_4nXfCbvkMTKNflrzNtkIbXjFShSMwVUQ-t2j9wxxeKHKiSxXVwhnT3tduaGehH58cVGv2W15niye3J_oQamBKu6DVkJR_UZUeYdpPd-DR-mK4eBSi1B7vRgEAZ2vC4NmKRXTJllOJzQ?key=AqQHmJtJJAJtJdR9-Vbu9nZe",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_003/img_012.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_003/img_012.png",
+      "alt_text": "",
+      "width": null,
+      "height": null,
+      "content_type": "image/png",
+      "byte_size": 331976,
+      "ocr_text": "Indexed with metadata Internal teams documentation Vector Database }\u20ac Vector search with metadata filter Internal question model Vector search Nubanker question Router model Answer General question model"
+    },
+    {
+      "image_id": "case_003_img_013",
+      "source_url": "https://building.nubank.com/wp-content/uploads/2024/01/imagem_fundo_newsletter.webp",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_003/img_013.webp",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_003/img_013.webp",
+      "alt_text": "imagem_fundo_newsletter",
+      "width": null,
+      "height": null,
+      "content_type": "image/webp",
+      "byte_size": 296108,
+      "ocr_text": "NO_TEXT_DETECTED"
+    },
+    {
+      "image_id": "case_003_img_014",
+      "source_url": "https://i0.wp.com/building.nubank.com/wp-content/uploads/2026/06/Nubank_Photoshoot_Brasil_-Fotografia_Edu-Vieira-13.jpg?fit=300%2C200&ssl=1",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_003/img_014.jpg",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_003/img_014.jpg",
+      "alt_text": "",
+      "width": 300,
+      "height": 200,
+      "content_type": "image/jpeg",
+      "byte_size": 18742,
+      "ocr_text": "NO_TEXT_DETECTED"
+    },
+    {
+      "image_id": "case_003_img_015",
+      "source_url": "https://i0.wp.com/building.nubank.com/wp-content/uploads/2026/05/Nubank_Photoshoot_Mexico_-Fotografia_Edu-Vieira-3.jpg?fit=300%2C200&ssl=1",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_003/img_015.jpg",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_003/img_015.jpg",
+      "alt_text": "",
+      "width": 300,
+      "height": 200,
+      "content_type": "image/jpeg",
+      "byte_size": 16931,
+      "ocr_text": "NO_TEXT_DETECTED"
+    },
+    {
+      "image_id": "case_003_img_016",
+      "source_url": "https://i0.wp.com/building.nubank.com/wp-content/uploads/2026/05/Nubank_Photoshoot_Brasil_-Fotografia_Edu-Vieira-12.jpg?fit=300%2C200&ssl=1",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_003/img_016.jpg",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_003/img_016.jpg",
+      "alt_text": "",
+      "width": 300,
+      "height": 200,
+      "content_type": "image/jpeg",
+      "byte_size": 15665,
+      "ocr_text": "NO_TEXT_DETECTED"
+    }
+  ],
+  "image_count": 6,
+  "ocr_complete": true
+}

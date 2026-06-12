@@ -1,0 +1,48 @@
+{
+  "sample_id": "case_018",
+  "title": "Adopting the Vespa search engine for serving personalized second-hand fashion recommendations at Vinted",
+  "url": "https://vinted.engineering/2023/10/09/adopting-vespa-for-recommendation-retrieval/",
+  "content_type": "article",
+  "text_path": "ml-design-doc-reviewer/data/raw_documents/case_018_adopting_the_vespa_search_engine_for_serving_personalized_second_hand_fashion_re.md",
+  "char_count": 11713,
+  "images": [
+    {
+      "image_id": "case_018_img_001",
+      "source_url": "https://vinted.engineering/static/2023/10/recommender_stages.png?style=centered",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_018/img_001.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_018/img_001.png",
+      "alt_text": "Vinted multi-stage recommender system",
+      "width": null,
+      "height": null,
+      "content_type": "image/png",
+      "byte_size": 39509,
+      "ocr_text": "6T First stage retrieval Final fitering \u2018Second stage using approx. fl Tv y Business nearest neighbour re-ranking 8 8 st neigh rules & user fiers a millions of hundreds of available listings sorted by relevance listings"
+    },
+    {
+      "image_id": "case_018_img_002",
+      "source_url": "https://vinted.engineering/static/2023/10/recommender_towers.png?style=centered",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_018/img_002.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_018/img_002.png",
+      "alt_text": "A diagram of a two-tower recommender model",
+      "width": null,
+      "height": null,
+      "content_type": "image/png",
+      "byte_size": 37456,
+      "ocr_text": "\u2018Sequence of user's actions on the platform (clicks, purchases, favorites ) sting features such as price, brand, size, Images, etc. User mode! Listing mode! [-0.46, 0.01, 0.62, 0.88] 10.55, 0.52, 0.12, 0.42) Listing User Embedding dot product Embedding 0.1961 Relevance score"
+    },
+    {
+      "image_id": "case_018_img_003",
+      "source_url": "https://vinted.engineering/static/2023/10/recommender_latency.png?style=centered",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_018/img_003.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_018/img_003.png",
+      "alt_text": "A chart showing latency increase from 50ms to 70ms.",
+      "width": null,
+      "height": null,
+      "content_type": "image/png",
+      "byte_size": 26260,
+      "ocr_text": "p99 code path times 70 ms 60 ms, 50 ms 40 ms 30 ms 20 ms 10 ms Os 09:40 09:45 09:50 09:55 10:00 10:05 10:10 10:15,"
+    }
+  ],
+  "image_count": 3,
+  "ocr_complete": true
+}

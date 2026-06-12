@@ -1,0 +1,72 @@
+{
+  "sample_id": "case_061",
+  "title": "Identifying Document Types at Scribd",
+  "url": "https://tech.scribd.com/blog/2021/identifying-document-types.html",
+  "content_type": "article",
+  "text_path": "ml-design-doc-reviewer/data/raw_documents/case_061_identifying_document_types_at_scribd.md",
+  "char_count": 9345,
+  "images": [
+    {
+      "image_id": "case_061_img_002",
+      "source_url": "https://user-images.githubusercontent.com/9146894/124963194-8534b800-dfed-11eb-81e1-c68cf6e4498c.png",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_061/img_002.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_061/img_002.png",
+      "alt_text": "Map of the document corpus, built from user-interaction embeddings",
+      "width": 996,
+      "height": null,
+      "content_type": "image/png",
+      "byte_size": 677754,
+      "ocr_text": "NO_TEXT_DETECTED"
+    },
+    {
+      "image_id": "case_061_img_003",
+      "source_url": "https://user-images.githubusercontent.com/9146894/124964050-8adecd80-dfee-11eb-83fb-a3afbde1fc14.png",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_061/img_003.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_061/img_003.png",
+      "alt_text": "Three pages from the same document",
+      "width": 996,
+      "height": null,
+      "content_type": "image/png",
+      "byte_size": 556091,
+      "ocr_text": "48) Figure -Il shows Front View and Top View. Complete the partial Auxiliary View of siven object. ') Line AB 80 mm long has it's end A in the ELP. and 20 mm infront of the V.P. Draw it's projection when line AB makes an angle of 45\u00b0 with the HLP. and 35\u00b0 with the VP. (08 Marks) oR \u00bb) A hexagonal plane 25 mm sides is having one of it's comers on the HLP. with it's surface inclined at 45\u00b0 to the HLP. and diagonal through the comer on H.P i parallel tothe V.P. Draw it's projections, (08 Marks) Q.2] Attempt any ONE of the following (09 Marks) a) A vertical cone of 80 mm diameter and 100 mm long is penetrated by a horizontal cylinder. \u2018The axis of cylinder is parallel to both the reference planes and is S mm away from the axis of cone. The cylinder axis is 30 mm above the base of cone and diameter of eylinder is 40 mm. Draw the projections showing curves of intersection, 'b) A squate prism of 45 mm side stands vertically with its rectangular faces equally inclined to VP. It is penetrated by a horizontal triangular prism of 35-mm side of base such that their Donnan cs tae Oren 2a etal of odham's coupling Fig. oR Q5 Attempt any ONE (20 Marks) 8) Fig 6 shows assembly of piston and connecting rod, Draw details. Mention appropriate <imensional tolerances, type of shafUhole, tolerance grade, geometrical tolerances etc on ceach detail if required. Refer tolerance table provided with fig. Fig. 6 \u00a7 | | |"
+    },
+    {
+      "image_id": "case_061_img_004",
+      "source_url": "https://user-images.githubusercontent.com/9146894/124964644-40118580-dfef-11eb-8d24-d6e0a6460ca9.png",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_061/img_004.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_061/img_004.png",
+      "alt_text": "Example of possible sheet music misclassification from wrong inductive bias",
+      "width": 662,
+      "height": null,
+      "content_type": "image/png",
+      "byte_size": 337509,
+      "ocr_text": "PLC CON ATMEGA32P V3 OUTPUTS"
+    },
+    {
+      "image_id": "case_061_img_005",
+      "source_url": "https://user-images.githubusercontent.com/9146894/124964923-91217980-dfef-11eb-9553-13bf296ced10.png",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_061/img_005.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_061/img_005.png",
+      "alt_text": "Figure 4: SqueezeNet architectures taken from the paper. Left: SqueezeNet; Middle: SqueezeNet with simple bypass; Right: SqueezeNet with complex bypass.",
+      "width": 450,
+      "height": null,
+      "content_type": "image/png",
+      "byte_size": 154015,
+      "ocr_text": "convi convi maxpool/2 fire2 [convixt) 128 < fire3 128 fired) (Convixi) Toss<\u2014 maxpool/2 256 256 (convixa) sue< J 384 384 384 \u2014\u2014\u2014, (convixa) a2 su<\u2014\u2014] \u2018maxpool/2 maxppol/2 \u2018maxpool/2 512 512 512 1000 1000 1000 global avgpool \u201cLabrador global avgpool global avgpool"
+    },
+    {
+      "image_id": "case_061_img_006",
+      "source_url": "https://user-images.githubusercontent.com/9146894/124965219-da71c900-dfef-11eb-9d12-4bf9a9772f4c.png",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_061/img_006.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_061/img_006.png",
+      "alt_text": "Figure 5: Diagram of the overall document understanding system. The red box is what we talked about in this post",
+      "width": 400,
+      "height": null,
+      "content_type": "image/png",
+      "byte_size": 107440,
+      "ocr_text": "Document Type Classification Text Heavy Information Extraction Downstream Discovery models"
+    }
+  ],
+  "image_count": 5,
+  "ocr_complete": true
+}

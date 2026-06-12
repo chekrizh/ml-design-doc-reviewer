@@ -1,0 +1,676 @@
+Normalizing:   0%|          | 0/100 [00:00<?, ?it/s]2026-06-07 11:37:22,238 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+Normalizing:   1%|          | 1/100 [00:42<1:09:33, 42.15s/it]2026-06-07 11:38:04,263 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+Normalizing:   2%|▏         | 2/100 [01:29<1:13:34, 45.05s/it]2026-06-07 11:38:51,461 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+Normalizing:   3%|▎         | 3/100 [02:06<1:07:09, 41.55s/it]2026-06-07 11:39:28,984 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+Normalizing:   4%|▍         | 4/100 [02:59<1:13:20, 45.84s/it]2026-06-07 11:40:20,004 [WARNING] prepare_data.normalize: No raw document for case_004, skipping
+2026-06-07 11:40:20,005 [WARNING] prepare_data.normalize: No raw document for case_005, skipping
+2026-06-07 11:40:21,173 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+Normalizing:   7%|▋         | 7/100 [03:27<35:29, 22.90s/it]  2026-06-07 11:40:49,491 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+Normalizing:   8%|▊         | 8/100 [03:58<38:05, 24.84s/it]2026-06-07 11:41:19,373 [WARNING] prepare_data.normalize: No raw document for case_008, skipping
+2026-06-07 11:41:20,762 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+Normalizing:  10%|█         | 10/100 [04:28<31:26, 20.96s/it]2026-06-07 11:41:49,469 [WARNING] prepare_data.normalize: No raw document for case_010, skipping
+2026-06-07 11:41:50,771 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+Normalizing:  12%|█▏        | 12/100 [05:07<30:02, 20.48s/it]2026-06-07 11:42:28,752 [WARNING] prepare_data.normalize: No raw document for case_012, skipping
+2026-06-07 11:42:28,752 [WARNING] prepare_data.normalize: No raw document for case_013, skipping
+2026-06-07 11:42:31,219 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+Normalizing:  15%|█▌        | 15/100 [05:41<23:14, 16.40s/it]2026-06-07 11:43:03,307 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+Normalizing:  16%|█▌        | 16/100 [06:26<30:00, 21.43s/it]2026-06-07 11:43:49,290 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+Normalizing:  17%|█▋        | 17/100 [06:55<31:30, 22.77s/it]2026-06-07 11:44:17,030 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+Normalizing:  18%|█▊        | 18/100 [07:22<32:35, 23.84s/it]2026-06-07 11:44:44,724 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+Normalizing:  19%|█▉        | 19/100 [07:55<35:09, 26.04s/it]2026-06-07 11:45:17,873 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+Normalizing:  20%|██        | 20/100 [09:01<48:03, 36.04s/it]2026-06-07 11:46:21,995 [WARNING] prepare_data.normalize: No raw document for case_020, skipping
+2026-06-07 11:46:22,907 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-07 11:46:22,908 [ERROR] prepare_data.normalize: Normalization failed for case_021
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 191, in normalize_manifest
+    normalized = normalize_document(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 145, in normalize_document
+    return client.complete(augmented_system, user_message, max_tokens=max_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 117, in complete
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Normalizing:  22%|██▏       | 22/100 [09:01<27:22, 21.06s/it]2026-06-07 11:46:23,576 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-07 11:46:23,576 [ERROR] prepare_data.normalize: Normalization failed for case_022
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 191, in normalize_manifest
+    normalized = normalize_document(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 145, in normalize_document
+    return client.complete(augmented_system, user_message, max_tokens=max_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 117, in complete
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Normalizing:  23%|██▎       | 23/100 [09:02<20:58, 16.34s/it]2026-06-07 11:46:23,579 [WARNING] prepare_data.normalize: No raw document for case_023, skipping
+2026-06-07 11:46:23,579 [WARNING] prepare_data.normalize: No raw document for case_024, skipping
+2026-06-07 11:46:23,580 [WARNING] prepare_data.normalize: No raw document for case_025, skipping
+2026-06-07 11:46:23,580 [WARNING] prepare_data.normalize: No raw document for case_026, skipping
+2026-06-07 11:46:24,240 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-07 11:46:24,240 [ERROR] prepare_data.normalize: Normalization failed for case_027
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 191, in normalize_manifest
+    normalized = normalize_document(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 145, in normalize_document
+    return client.complete(augmented_system, user_message, max_tokens=max_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 117, in complete
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Normalizing:  28%|██▊       | 28/100 [09:03<07:29,  6.24s/it]2026-06-07 11:46:24,946 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-07 11:46:24,947 [ERROR] prepare_data.normalize: Normalization failed for case_028
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 191, in normalize_manifest
+    normalized = normalize_document(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 145, in normalize_document
+    return client.complete(augmented_system, user_message, max_tokens=max_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 117, in complete
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Normalizing:  29%|██▉       | 29/100 [09:03<06:24,  5.41s/it]2026-06-07 11:46:24,952 [WARNING] prepare_data.normalize: No raw document for case_029, skipping
+2026-06-07 11:46:24,952 [WARNING] prepare_data.normalize: No raw document for case_030, skipping
+2026-06-07 11:46:24,952 [WARNING] prepare_data.normalize: No raw document for case_031, skipping
+2026-06-07 11:46:25,840 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-07 11:46:25,841 [ERROR] prepare_data.normalize: Normalization failed for case_032
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 191, in normalize_manifest
+    normalized = normalize_document(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 145, in normalize_document
+    return client.complete(augmented_system, user_message, max_tokens=max_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 117, in complete
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Normalizing:  33%|███▎      | 33/100 [09:04<03:21,  3.01s/it]2026-06-07 11:46:26,590 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-07 11:46:26,596 [ERROR] prepare_data.normalize: Normalization failed for case_033
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 191, in normalize_manifest
+    normalized = normalize_document(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 145, in normalize_document
+    return client.complete(augmented_system, user_message, max_tokens=max_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 117, in complete
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Normalizing:  34%|███▍      | 34/100 [09:05<02:57,  2.69s/it]2026-06-07 11:46:27,885 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-07 11:46:27,886 [ERROR] prepare_data.normalize: Normalization failed for case_034
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 191, in normalize_manifest
+    normalized = normalize_document(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 145, in normalize_document
+    return client.complete(augmented_system, user_message, max_tokens=max_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 117, in complete
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Normalizing:  35%|███▌      | 35/100 [09:06<02:39,  2.45s/it]2026-06-07 11:46:28,524 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-07 11:46:28,524 [ERROR] prepare_data.normalize: Normalization failed for case_035
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 191, in normalize_manifest
+    normalized = normalize_document(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 145, in normalize_document
+    return client.complete(augmented_system, user_message, max_tokens=max_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 117, in complete
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Normalizing:  36%|███▌      | 36/100 [09:07<02:14,  2.10s/it]2026-06-07 11:46:29,282 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-07 11:46:29,282 [ERROR] prepare_data.normalize: Normalization failed for case_036
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 191, in normalize_manifest
+    normalized = normalize_document(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 145, in normalize_document
+    return client.complete(augmented_system, user_message, max_tokens=max_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 117, in complete
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Normalizing:  37%|███▋      | 37/100 [09:08<01:53,  1.81s/it]2026-06-07 11:46:29,900 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-07 11:46:29,900 [ERROR] prepare_data.normalize: Normalization failed for case_037
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 191, in normalize_manifest
+    normalized = normalize_document(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 145, in normalize_document
+    return client.complete(augmented_system, user_message, max_tokens=max_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 117, in complete
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Normalizing:  38%|███▊      | 38/100 [09:08<01:34,  1.53s/it]2026-06-07 11:46:30,718 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-07 11:46:30,719 [ERROR] prepare_data.normalize: Normalization failed for case_038
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 191, in normalize_manifest
+    normalized = normalize_document(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 145, in normalize_document
+    return client.complete(augmented_system, user_message, max_tokens=max_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 117, in complete
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Normalizing:  39%|███▉      | 39/100 [09:09<01:22,  1.35s/it]2026-06-07 11:46:30,723 [WARNING] prepare_data.normalize: No raw document for case_039, skipping
+2026-06-07 11:46:30,723 [WARNING] prepare_data.normalize: No raw document for case_040, skipping
+2026-06-07 11:46:30,724 [WARNING] prepare_data.normalize: No raw document for case_041, skipping
+2026-06-07 11:46:30,724 [WARNING] prepare_data.normalize: No raw document for case_042, skipping
+2026-06-07 11:46:30,724 [WARNING] prepare_data.normalize: No raw document for case_043, skipping
+2026-06-07 11:46:31,471 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-07 11:46:31,473 [ERROR] prepare_data.normalize: Normalization failed for case_044
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 191, in normalize_manifest
+    normalized = normalize_document(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 145, in normalize_document
+    return client.complete(augmented_system, user_message, max_tokens=max_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 117, in complete
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Normalizing:  45%|████▌     | 45/100 [09:10<00:28,  1.95it/s]2026-06-07 11:46:31,476 [WARNING] prepare_data.normalize: No raw document for case_045, skipping
+2026-06-07 11:46:33,246 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-07 11:46:33,250 [ERROR] prepare_data.normalize: Normalization failed for case_046
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 191, in normalize_manifest
+    normalized = normalize_document(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 145, in normalize_document
+    return client.complete(augmented_system, user_message, max_tokens=max_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 117, in complete
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Normalizing:  47%|████▋     | 47/100 [09:12<00:32,  1.66it/s]2026-06-07 11:46:33,924 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-07 11:46:33,925 [ERROR] prepare_data.normalize: Normalization failed for case_047
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 191, in normalize_manifest
+    normalized = normalize_document(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 145, in normalize_document
+    return client.complete(augmented_system, user_message, max_tokens=max_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 117, in complete
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Normalizing:  48%|████▊     | 48/100 [09:12<00:31,  1.63it/s]2026-06-07 11:46:34,638 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-07 11:46:34,638 [ERROR] prepare_data.normalize: Normalization failed for case_048
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 191, in normalize_manifest
+    normalized = normalize_document(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 145, in normalize_document
+    return client.complete(augmented_system, user_message, max_tokens=max_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 117, in complete
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Normalizing:  49%|████▉     | 49/100 [09:13<00:32,  1.58it/s]2026-06-07 11:46:34,641 [WARNING] prepare_data.normalize: No raw document for case_049, skipping
+2026-06-07 11:46:34,642 [WARNING] prepare_data.normalize: No raw document for case_050, skipping
+2026-06-07 11:46:35,769 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-07 11:46:35,769 [ERROR] prepare_data.normalize: Normalization failed for case_051
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 191, in normalize_manifest
+    normalized = normalize_document(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 145, in normalize_document
+    return client.complete(augmented_system, user_message, max_tokens=max_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 117, in complete
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Normalizing:  52%|█████▏    | 52/100 [09:14<00:25,  1.91it/s]2026-06-07 11:46:35,772 [WARNING] prepare_data.normalize: No raw document for case_052, skipping
+2026-06-07 11:46:36,561 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-07 11:46:36,562 [ERROR] prepare_data.normalize: Normalization failed for case_053
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 191, in normalize_manifest
+    normalized = normalize_document(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 145, in normalize_document
+    return client.complete(augmented_system, user_message, max_tokens=max_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 117, in complete
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Normalizing:  54%|█████▍    | 54/100 [09:15<00:22,  2.06it/s]2026-06-07 11:46:37,193 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-07 11:46:37,193 [ERROR] prepare_data.normalize: Normalization failed for case_054
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 191, in normalize_manifest
+    normalized = normalize_document(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 145, in normalize_document
+    return client.complete(augmented_system, user_message, max_tokens=max_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 117, in complete
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Normalizing:  55%|█████▌    | 55/100 [09:16<00:22,  1.96it/s]2026-06-07 11:46:37,986 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-07 11:46:37,986 [ERROR] prepare_data.normalize: Normalization failed for case_055
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 191, in normalize_manifest
+    normalized = normalize_document(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 145, in normalize_document
+    return client.complete(augmented_system, user_message, max_tokens=max_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 117, in complete
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Normalizing:  56%|█████▌    | 56/100 [09:17<00:24,  1.77it/s]2026-06-07 11:46:40,024 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-07 11:46:40,027 [ERROR] prepare_data.normalize: Normalization failed for case_056
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 191, in normalize_manifest
+    normalized = normalize_document(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 145, in normalize_document
+    return client.complete(augmented_system, user_message, max_tokens=max_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 117, in complete
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Normalizing:  57%|█████▋    | 57/100 [09:19<00:38,  1.12it/s]2026-06-07 11:46:40,030 [WARNING] prepare_data.normalize: No raw document for case_057, skipping
+2026-06-07 11:46:40,030 [WARNING] prepare_data.normalize: No raw document for case_058, skipping
+2026-06-07 11:46:40,031 [WARNING] prepare_data.normalize: No raw document for case_059, skipping
+2026-06-07 11:46:40,532 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-07 11:46:40,533 [ERROR] prepare_data.normalize: Normalization failed for case_060
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 191, in normalize_manifest
+    normalized = normalize_document(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 145, in normalize_document
+    return client.complete(augmented_system, user_message, max_tokens=max_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 117, in complete
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Normalizing:  61%|██████    | 61/100 [09:19<00:18,  2.15it/s]2026-06-07 11:46:41,142 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-07 11:46:41,142 [ERROR] prepare_data.normalize: Normalization failed for case_061
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 191, in normalize_manifest
+    normalized = normalize_document(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 145, in normalize_document
+    return client.complete(augmented_system, user_message, max_tokens=max_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 117, in complete
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Normalizing:  62%|██████▏   | 62/100 [09:20<00:18,  2.05it/s]2026-06-07 11:46:41,720 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-07 11:46:41,720 [ERROR] prepare_data.normalize: Normalization failed for case_062
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 191, in normalize_manifest
+    normalized = normalize_document(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 145, in normalize_document
+    return client.complete(augmented_system, user_message, max_tokens=max_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 117, in complete
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Normalizing:  63%|██████▎   | 63/100 [09:20<00:18,  1.98it/s]2026-06-07 11:46:41,723 [WARNING] prepare_data.normalize: No raw document for case_063, skipping
+2026-06-07 11:46:43,131 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-07 11:46:43,131 [ERROR] prepare_data.normalize: Normalization failed for case_064
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 191, in normalize_manifest
+    normalized = normalize_document(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 145, in normalize_document
+    return client.complete(augmented_system, user_message, max_tokens=max_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 117, in complete
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Normalizing:  65%|██████▌   | 65/100 [09:22<00:20,  1.73it/s]2026-06-07 11:46:43,133 [WARNING] prepare_data.normalize: No raw document for case_065, skipping
+2026-06-07 11:46:44,060 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-07 11:46:44,061 [ERROR] prepare_data.normalize: Normalization failed for case_066
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 191, in normalize_manifest
+    normalized = normalize_document(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 145, in normalize_document
+    return client.complete(augmented_system, user_message, max_tokens=max_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 117, in complete
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Normalizing:  67%|██████▋   | 67/100 [09:23<00:17,  1.85it/s]2026-06-07 11:46:45,543 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-07 11:46:45,543 [ERROR] prepare_data.normalize: Normalization failed for case_067
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 191, in normalize_manifest
+    normalized = normalize_document(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 145, in normalize_document
+    return client.complete(augmented_system, user_message, max_tokens=max_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 117, in complete
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Normalizing:  68%|██████▊   | 68/100 [09:24<00:23,  1.39it/s]2026-06-07 11:46:46,441 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-07 11:46:46,441 [ERROR] prepare_data.normalize: Normalization failed for case_068
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 191, in normalize_manifest
+    normalized = normalize_document(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 145, in normalize_document
+    return client.complete(augmented_system, user_message, max_tokens=max_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 117, in complete
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Normalizing:  69%|██████▉   | 69/100 [09:25<00:23,  1.32it/s]2026-06-07 11:46:46,443 [WARNING] prepare_data.normalize: No raw document for case_069, skipping
+2026-06-07 11:46:46,443 [WARNING] prepare_data.normalize: No raw document for case_070, skipping
+2026-06-07 11:46:46,444 [WARNING] prepare_data.normalize: No raw document for case_071, skipping
+2026-06-07 11:46:47,018 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-07 11:46:47,019 [ERROR] prepare_data.normalize: Normalization failed for case_072
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 191, in normalize_manifest
+    normalized = normalize_document(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 145, in normalize_document
+    return client.complete(augmented_system, user_message, max_tokens=max_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 117, in complete
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Normalizing:  73%|███████▎  | 73/100 [09:26<00:11,  2.38it/s]2026-06-07 11:46:47,651 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-07 11:46:47,651 [ERROR] prepare_data.normalize: Normalization failed for case_073
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 191, in normalize_manifest
+    normalized = normalize_document(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 145, in normalize_document
+    return client.complete(augmented_system, user_message, max_tokens=max_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 117, in complete
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Normalizing:  74%|███████▍  | 74/100 [09:26<00:11,  2.20it/s]2026-06-07 11:46:48,705 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-07 11:46:48,705 [ERROR] prepare_data.normalize: Normalization failed for case_074
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 191, in normalize_manifest
+    normalized = normalize_document(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 145, in normalize_document
+    return client.complete(augmented_system, user_message, max_tokens=max_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 117, in complete
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Normalizing:  75%|███████▌  | 75/100 [09:27<00:14,  1.76it/s]2026-06-07 11:46:48,708 [WARNING] prepare_data.normalize: No raw document for case_075, skipping
+2026-06-07 11:46:49,612 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-07 11:46:49,614 [ERROR] prepare_data.normalize: Normalization failed for case_076
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 191, in normalize_manifest
+    normalized = normalize_document(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 145, in normalize_document
+    return client.complete(augmented_system, user_message, max_tokens=max_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 117, in complete
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Normalizing:  77%|███████▋  | 77/100 [09:28<00:12,  1.89it/s]2026-06-07 11:46:49,618 [WARNING] prepare_data.normalize: No raw document for case_077, skipping
+2026-06-07 11:46:49,618 [WARNING] prepare_data.normalize: No raw document for case_078, skipping
+2026-06-07 11:46:50,437 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-07 11:46:50,437 [ERROR] prepare_data.normalize: Normalization failed for case_079
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 191, in normalize_manifest
+    normalized = normalize_document(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 145, in normalize_document
+    return client.complete(augmented_system, user_message, max_tokens=max_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 117, in complete
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Normalizing:  80%|████████  | 80/100 [09:29<00:08,  2.39it/s]2026-06-07 11:46:50,439 [WARNING] prepare_data.normalize: No raw document for case_080, skipping
+2026-06-07 11:46:51,091 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-07 11:46:51,091 [ERROR] prepare_data.normalize: Normalization failed for case_081
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 191, in normalize_manifest
+    normalized = normalize_document(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 145, in normalize_document
+    return client.complete(augmented_system, user_message, max_tokens=max_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 117, in complete
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Normalizing:  82%|████████▏ | 82/100 [09:30<00:07,  2.55it/s]2026-06-07 11:46:51,897 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-07 11:46:51,898 [ERROR] prepare_data.normalize: Normalization failed for case_082
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 191, in normalize_manifest
+    normalized = normalize_document(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 145, in normalize_document
+    return client.complete(augmented_system, user_message, max_tokens=max_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 117, in complete
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Normalizing:  83%|████████▎ | 83/100 [09:30<00:07,  2.16it/s]2026-06-07 11:46:51,903 [WARNING] prepare_data.normalize: No raw document for case_083, skipping
+2026-06-07 11:46:51,904 [WARNING] prepare_data.normalize: No raw document for case_084, skipping
+2026-06-07 11:46:51,905 [WARNING] prepare_data.normalize: No raw document for case_085, skipping
+2026-06-07 11:46:52,606 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-07 11:46:52,607 [ERROR] prepare_data.normalize: Normalization failed for case_086
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 191, in normalize_manifest
+    normalized = normalize_document(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 145, in normalize_document
+    return client.complete(augmented_system, user_message, max_tokens=max_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 117, in complete
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Normalizing:  87%|████████▋ | 87/100 [09:31<00:04,  3.11it/s]2026-06-07 11:46:52,609 [WARNING] prepare_data.normalize: No raw document for case_087, skipping
+2026-06-07 11:46:53,323 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-07 11:46:53,324 [ERROR] prepare_data.normalize: Normalization failed for case_088
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 191, in normalize_manifest
+    normalized = normalize_document(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 145, in normalize_document
+    return client.complete(augmented_system, user_message, max_tokens=max_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 117, in complete
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Normalizing:  89%|████████▉ | 89/100 [09:32<00:03,  3.02it/s]2026-06-07 11:46:53,326 [WARNING] prepare_data.normalize: No raw document for case_089, skipping
+2026-06-07 11:46:53,326 [WARNING] prepare_data.normalize: No raw document for case_090, skipping
+2026-06-07 11:46:53,326 [WARNING] prepare_data.normalize: No raw document for case_091, skipping
+2026-06-07 11:46:53,883 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-07 11:46:53,883 [ERROR] prepare_data.normalize: Normalization failed for case_092
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 191, in normalize_manifest
+    normalized = normalize_document(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 145, in normalize_document
+    return client.complete(augmented_system, user_message, max_tokens=max_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 117, in complete
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Normalizing:  93%|█████████▎| 93/100 [09:32<00:01,  4.01it/s]2026-06-07 11:46:54,626 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-07 11:46:54,627 [ERROR] prepare_data.normalize: Normalization failed for case_093
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 191, in normalize_manifest
+    normalized = normalize_document(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 145, in normalize_document
+    return client.complete(augmented_system, user_message, max_tokens=max_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 117, in complete
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Normalizing:  94%|█████████▍| 94/100 [09:33<00:01,  3.18it/s]2026-06-07 11:46:55,546 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-07 11:46:55,547 [ERROR] prepare_data.normalize: Normalization failed for case_094
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 191, in normalize_manifest
+    normalized = normalize_document(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 145, in normalize_document
+    return client.complete(augmented_system, user_message, max_tokens=max_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 117, in complete
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Normalizing:  95%|█████████▌| 95/100 [09:34<00:02,  2.43it/s]2026-06-07 11:46:55,551 [WARNING] prepare_data.normalize: No raw document for case_095, skipping
+2026-06-07 11:46:56,308 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-07 11:46:56,308 [ERROR] prepare_data.normalize: Normalization failed for case_096
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 191, in normalize_manifest
+    normalized = normalize_document(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 145, in normalize_document
+    return client.complete(augmented_system, user_message, max_tokens=max_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 117, in complete
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Normalizing:  97%|█████████▋| 97/100 [09:35<00:01,  2.49it/s]2026-06-07 11:46:56,310 [WARNING] prepare_data.normalize: No raw document for case_097, skipping
+2026-06-07 11:46:57,103 [INFO] httpx: HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-06-07 11:46:57,104 [ERROR] prepare_data.normalize: Normalization failed for case_098
+Traceback (most recent call last):
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 191, in normalize_manifest
+    normalized = normalize_document(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 145, in normalize_document
+    return client.complete(augmented_system, user_message, max_tokens=max_tokens)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/src/prepare_data/normalize.py", line 117, in complete
+    response.raise_for_status()
+  File "/Users/rkorst/Documents/ml-design-doc-reviewer/.venv/lib/python3.12/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Normalizing:  99%|█████████▉| 99/100 [09:36<00:00,  2.50it/s]2026-06-07 11:46:57,109 [WARNING] prepare_data.normalize: No raw document for case_099, skipping
+Normalizing: 100%|██████████| 100/100 [09:36<00:00,  5.76s/it]
+2026-06-07 11:46:57,110 [INFO] prepare_data.normalize: Normalization complete: 14/100 succeeded

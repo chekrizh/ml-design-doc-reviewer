@@ -1,0 +1,10 @@
+{
+  "sample_id": "case_011",
+  "title": "Experimenting with Handwriting Recognition for The New York Times Crossword",
+  "url": "https://open.nytimes.com/experimenting-with-handwriting-recognition-for-new-york-times-crossword-a78e08fec08f",
+  "content_type": "article",
+  "text_path": "ml-design-doc-reviewer/data/raw_documents/case_011_experimenting_with_handwriting_recognition_for_the_new_york_times_crossword.md",
+  "char_count": 10967,
+  "images": [],
+  "image_count": 0
+}

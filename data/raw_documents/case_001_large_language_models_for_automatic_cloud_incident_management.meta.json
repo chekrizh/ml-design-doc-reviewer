@@ -1,0 +1,108 @@
+{
+  "sample_id": "case_001",
+  "title": "Large-language models for automatic cloud incident management",
+  "url": "https://www.microsoft.com/en-us/research/blog/large-language-models-for-automatic-cloud-incident-management/",
+  "content_type": "article",
+  "text_path": "ml-design-doc-reviewer/data/raw_documents/case_001_large_language_models_for_automatic_cloud_incident_management.md",
+  "char_count": 7685,
+  "images": [
+    {
+      "image_id": "case_001_img_002",
+      "source_url": "https://www.microsoft.com/en-us/research/wp-content/uploads/2024/01/MSR-Chat-Promo.png",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_001/img_002.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_001/img_002.png",
+      "alt_text": "",
+      "width": null,
+      "height": null,
+      "content_type": "image/png",
+      "byte_size": 763061,
+      "ocr_text": "NO_TEXT_DETECTED"
+    },
+    {
+      "image_id": "case_001_img_003",
+      "source_url": "https://www.microsoft.com/en-us/research/wp-content/uploads/2023/05/ICSE_AIOps_StagnantHero_1400x788.jpg",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_001/img_003.jpg",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_001/img_003.jpg",
+      "alt_text": "A block diagram that shows using title and summary of the incidents as input through GPT-3.x models that generate root cause and mitigation recommendations.",
+      "width": 1400,
+      "height": 788,
+      "content_type": "image/jpeg",
+      "byte_size": 180509,
+      "ocr_text": "Text and position embedding of Title & Summary of the incident"
+    },
+    {
+      "image_id": "case_001_img_004",
+      "source_url": "https://www.microsoft.com/en-us/research/wp-content/uploads/2023/05/ICSE-AIOps-figure-2n.jpg",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_001/img_004.jpg",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_001/img_004.jpg",
+      "alt_text": "A workflow diagram that shows how to use retrieval augmentation approach to recommend root causes. This approach including a retriever and corpus to retrieve relevant information from historical incidents, troubleshooting guides, and engineering hub, to add context into LLMs.",
+      "width": 1600,
+      "height": 664,
+      "content_type": "image/jpeg",
+      "byte_size": 280792,
+      "ocr_text": "Incident Retrieval-augmentation TNM_HttpRequest_V2_PortInOrders_ID_Reliability Corpus MITIGATED \u2014 ; Severity 2 Owning Service = Owning Team \u00a9 > \u2014Query\u2014> Historical Incidents eventy Return Troubleshooting Guides + = Add ti 4 . ae new tag Results Engineering Hub Summary As X Reliability for /api/v2/tenants/{id}/pot-in-orders/{id} got less than 90%. Please look at the diagnostics graph and attached Jarvis logs for more details. (Use \u201cCustom: Backup link for logs\u201d > > if the Dgrep link is not working)"
+    },
+    {
+      "image_id": "case_001_img_005",
+      "source_url": "https://www.microsoft.com/en-us/research/wp-content/uploads/2023/02/2022_square-180x180.jpeg",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_001/img_005.jpeg",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_001/img_005.jpeg",
+      "alt_text": "Portrait of Rujia Wang",
+      "width": 180,
+      "height": 180,
+      "content_type": "image/jpeg",
+      "byte_size": 7469,
+      "ocr_text": "NO_TEXT_DETECTED"
+    },
+    {
+      "image_id": "case_001_img_006",
+      "source_url": "https://www.microsoft.com/en-us/research/wp-content/uploads/2021/12/IMG_supriyo-ghosh.jpg",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_001/img_006.jpg",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_001/img_006.jpg",
+      "alt_text": "Portrait of Supriyo GHOSH",
+      "width": 180,
+      "height": 180,
+      "content_type": "image/jpeg",
+      "byte_size": 25851,
+      "ocr_text": "NO_TEXT_DETECTED"
+    },
+    {
+      "image_id": "case_001_img_007",
+      "source_url": "https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/tzimmer-tom_zimmermann.jpg",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_001/img_007.jpg",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_001/img_007.jpg",
+      "alt_text": "Portrait of Tom Zimmermann",
+      "width": 180,
+      "height": 180,
+      "content_type": "image/jpeg",
+      "byte_size": 37690,
+      "ocr_text": "NO_TEXT_DETECTED"
+    },
+    {
+      "image_id": "case_001_img_008",
+      "source_url": "https://www.microsoft.com/en-us/research/wp-content/uploads/2022/08/xuchao_360.png",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_001/img_008.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_001/img_008.png",
+      "alt_text": "Portrait of Xuchao Zhang",
+      "width": 180,
+      "height": 180,
+      "content_type": "image/png",
+      "byte_size": 1286035,
+      "ocr_text": "NO_TEXT_DETECTED"
+    },
+    {
+      "image_id": "case_001_img_009",
+      "source_url": "https://www.microsoft.com/en-us/research/wp-content/uploads/2022/01/IMG_3693.jpg",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_001/img_009.jpg",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_001/img_009.jpg",
+      "alt_text": "Portrait of Saravan Rajmohan",
+      "width": 180,
+      "height": 180,
+      "content_type": "image/jpeg",
+      "byte_size": 591502,
+      "ocr_text": "NO_TEXT_DETECTED"
+    }
+  ],
+  "image_count": 8,
+  "ocr_complete": true
+}

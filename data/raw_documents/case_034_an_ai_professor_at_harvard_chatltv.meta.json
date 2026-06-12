@@ -1,0 +1,24 @@
+{
+  "sample_id": "case_034",
+  "title": "An AI Professor at Harvard: ChatLTV",
+  "url": "https://www.linkedin.com/pulse/ai-professor-harvard-chatltv-jeffrey-bussgang-oiaie/",
+  "content_type": "article",
+  "text_path": "ml-design-doc-reviewer/data/raw_documents/case_034_an_ai_professor_at_harvard_chatltv.md",
+  "char_count": 12475,
+  "images": [
+    {
+      "image_id": "case_034_img_001",
+      "source_url": "https://media.licdn.com/dms/image/v2/D4E12AQEJ4ieANrcR1g/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1702489132727?e=2147483647&v=beta&t=sUqM2a84s1twuN3xanj9j7MLhmxQwI_GUvCHBGwwU68",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_034/img_001.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_034/img_001.png",
+      "alt_text": "An AI Professor at Harvard: ChatLTV",
+      "width": null,
+      "height": null,
+      "content_type": "image/png",
+      "byte_size": 1524669,
+      "ocr_text": "NO_TEXT_DETECTED"
+    }
+  ],
+  "image_count": 1,
+  "ocr_complete": true
+}

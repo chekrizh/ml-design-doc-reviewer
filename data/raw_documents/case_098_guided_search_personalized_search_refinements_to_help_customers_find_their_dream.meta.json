@@ -1,0 +1,120 @@
+{
+  "sample_id": "case_098",
+  "title": "Guided Search \u2014 Personalized Search Refinements to Help Customers Find their Dream Home",
+  "url": "https://www.zillow.com/tech/personalized-search-refinements/ ",
+  "content_type": "article",
+  "text_path": "ml-design-doc-reviewer/data/raw_documents/case_098_guided_search_personalized_search_refinements_to_help_customers_find_their_dream.md",
+  "char_count": 9046,
+  "images": [
+    {
+      "image_id": "case_098_img_001",
+      "source_url": "https://www.zillowstatic.com/bedrock/app/uploads/sites/60/Hero-1-ae3a45.png",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_098/img_001.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_098/img_001.png",
+      "alt_text": "Guided Search \u2014 Personalized Search Refinements to Help Customers Find their Dream Home",
+      "width": 2584,
+      "height": 1326,
+      "content_type": "image/png",
+      "byte_size": 308086,
+      "ocr_text": "NO_TEXT_DETECTED"
+    },
+    {
+      "image_id": "case_098_img_002",
+      "source_url": "https://wp-tid.zillowstatic.com/49/Figure_1-1-d9ea90.png",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_098/img_002.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_098/img_002.png",
+      "alt_text": "",
+      "width": 800,
+      "height": 519,
+      "content_type": "image/png",
+      "byte_size": 1064120,
+      "ocr_text": "10 Saved Homes Seattle WA Rental Listings = : & ed erting $1,945/mo tho oe"
+    },
+    {
+      "image_id": "case_098_img_003",
+      "source_url": "https://wp-tid.zillowstatic.com/49/Figure_2-1-6b86b2.gif",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_098/img_003.gif",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_098/img_003.gif",
+      "alt_text": "",
+      "width": 764,
+      "height": 454,
+      "content_type": "image/gif",
+      "byte_size": 123819,
+      "ocr_text": "00, eAo Allow large dogs Onsite parking Allow small dogs In-unit laundry Search Refinement Model"
+    },
+    {
+      "image_id": "case_098_img_004",
+      "source_url": "https://wp-tid.zillowstatic.com/49/Guided_Search_Fig_4-1-6b86b2.png",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_098/img_004.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_098/img_004.png",
+      "alt_text": "",
+      "width": 800,
+      "height": 225,
+      "content_type": "image/png",
+      "byte_size": 29440,
+      "ocr_text": "Allows Small Dogs Allows Cats Allows Large Dogs In-unit Laundry On-site Parking Allows Large Dogs In-unit Laundry Must Have Pool Must Have A/C Allows Small Dogs Allows Small Dogs Allows Large Dogs In-unit Laundry Must Have A/C Allows Cats"
+    },
+    {
+      "image_id": "case_098_img_005",
+      "source_url": "https://wp-tid.zillowstatic.com/49/Guided_Search_Guided_Search_Fig_3-df80b5.png",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_098/img_005.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_098/img_005.png",
+      "alt_text": "",
+      "width": 800,
+      "height": 479,
+      "content_type": "image/png",
+      "byte_size": 159472,
+      "ocr_text": "Previously selected filter Relative rankings of bath refinements Relative rankings of price refinements Relative rankings of parking refinements Relative rankings of square foot refinements 1 Bath 1.5 Baths $500K $600K S4OOK $300K 1+ Parking Spots 750 Saft 500 Saft 1000 Saft 2 Baths 1.5 Baths 1 Bath $500K $600K $700K $800K Garage 1+ Parking Spots 1000 Saft 1250 Saft 750 Saft 2 Baths 1.5 Baths 3 Baths $500K $600K $800K S1M Garage 2+ Parking Spots 2000 Saft 1500 Saft 1750 Saft"
+    },
+    {
+      "image_id": "case_098_img_006",
+      "source_url": "https://www.zillowstatic.com/bedrock/app/uploads/sites/60/2026/05/Header_For-Sale_1600x900_2-1280x720.jpg",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_098/img_006.jpg",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_098/img_006.jpg",
+      "alt_text": "home for sale",
+      "width": 1280,
+      "height": 720,
+      "content_type": "image/jpeg",
+      "byte_size": 1045014,
+      "ocr_text": "NO_TEXT_DETECTED"
+    },
+    {
+      "image_id": "case_098_img_007",
+      "source_url": "https://www.zillowstatic.com/bedrock/app/uploads/sites/60/2026/05/Header_15-Years-of-FUB_1600x900-1280x720.jpg",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_098/img_007.jpg",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_098/img_007.jpg",
+      "alt_text": "women looking at computer",
+      "width": 1280,
+      "height": 720,
+      "content_type": "image/jpeg",
+      "byte_size": 747992,
+      "ocr_text": "NO_TEXT_DETECTED"
+    },
+    {
+      "image_id": "case_098_img_008",
+      "source_url": "https://www.zillowstatic.com/bedrock/app/uploads/sites/60/2026/05/Header-Image_AIM-Conference_1600x900_1-1280x720.jpg",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_098/img_008.jpg",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_098/img_008.jpg",
+      "alt_text": "michael sherman from Zillow Rentals at AIM conference",
+      "width": 1280,
+      "height": 720,
+      "content_type": "image/jpeg",
+      "byte_size": 473463,
+      "ocr_text": "NO_TEXT_DETECTED"
+    },
+    {
+      "image_id": "case_098_img_009",
+      "source_url": "https://delivery.digitallibrary.zillowgroup.com/public/mailbox-light_svg_Original.svg",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_098/img_009.svg",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_098/img_009.svg",
+      "alt_text": "illustration of mailbox",
+      "width": 120,
+      "height": 120,
+      "content_type": "image/svg+xml",
+      "byte_size": 36492,
+      "ocr_text": "SKIPPED_SVG"
+    }
+  ],
+  "image_count": 9,
+  "ocr_complete": true
+}

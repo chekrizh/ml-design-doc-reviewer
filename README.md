@@ -85,6 +85,58 @@ Not available yet.
 TBD
 ```
 
+## Dataset Preparation
+
+The `src/prepare_data` package builds the first evaluation dataset from the [Evidently AI ML/LLM use cases catalog](data/evidently_ai_cases/800%20ML%20and%20LLM%20use%20cases.csv).
+
+### Prerequisites
+
+- Python 3.12
+- [uv](https://docs.astral.sh/uv/) package manager
+- `ffmpeg` optional (yt-dlp downloads native audio; ffmpeg only needed for format conversion)
+- OpenRouter API key (for the normalization step)
+
+### Setup
+
+```bash
+uv sync --python 3.12
+cp .env.example .env
+# Edit .env and set OPENROUTER_API_KEY
+```
+
+### Pipeline
+
+```bash
+# 1. Stratified sample of 100 cases (Industry × Technology × content type × year)
+uv run prepare-data sample
+
+# 2. Download articles / transcribe videos (Whisper) → data/raw_documents/
+uv run prepare-data fetch
+
+# 3. Normalize raw docs into canonical design docs via OpenRouter → data/normalized_disdocs/
+uv run prepare-data normalize
+
+# 4. Inject controlled errors into normalized docs → data/flawed_disdocs/
+uv run prepare-data inject-errors
+
+# Or run all steps sequentially
+uv run prepare-data all
+```
+
+Use `--force` with `fetch`, `normalize`, or `all` to re-process existing outputs.
+
+The normalization prompt lives in [`prompts/normalize_to_disdoc.md`](prompts/normalize_to_disdoc.md). Reference design docs are in [`data/disdoc_examples/`](data/disdoc_examples/).
+
+### Output layout
+
+| Path | Description |
+|------|-------------|
+| `data/sample_manifest.csv` | Stratified sample with metadata |
+| `data/raw_documents/` | Raw markdown exports and `.meta.json` sidecars |
+| `data/normalized_disdocs/` | Canonical 14-section ML design documents |
+| `data/error_topology.csv` | Catalog of sectional and cross-sectional error types |
+| `data/flawed_disdocs/` | Normalized docs with injected errors + `injection_log.csv` |
+
 ## Architecture
 
 TBD

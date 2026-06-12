@@ -1,0 +1,24 @@
+{
+  "sample_id": "case_094",
+  "title": "A closer look at the AI behind course recommendations on LinkedIn Learning, Part 1",
+  "url": "https://engineering.linkedin.com/blog/2020/course-recommendations-ai-part-one",
+  "content_type": "article",
+  "text_path": "ml-design-doc-reviewer/data/raw_documents/case_094_a_closer_look_at_the_ai_behind_course_recommendations_on_linkedin_learning_part_.md",
+  "char_count": 6758,
+  "images": [
+    {
+      "image_id": "case_094_img_003",
+      "source_url": "https://media.licdn.com/dms/image/v2/C5603AQFXUAY7zq1H6g/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1634249763426?e=2147483647&v=beta&t=HQs0K8gv_3X-PVQQBfOPO_E0M1h7uOufrcE4s47ajQ4",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_094/img_003.jpg",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_094/img_003.jpg",
+      "alt_text": "Sneha Chaudhari",
+      "width": null,
+      "height": null,
+      "content_type": "image/jpeg",
+      "byte_size": 36726,
+      "ocr_text": "NO_TEXT_DETECTED"
+    }
+  ],
+  "image_count": 1,
+  "ocr_complete": true
+}

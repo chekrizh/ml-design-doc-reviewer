@@ -1,0 +1,120 @@
+{
+  "sample_id": "case_073",
+  "title": "Background Coding Agents: Predictable Results Through Strong Feedback Loops (Part 3)",
+  "url": "https://engineering.atspotify.com/2025/12/feedback-loops-background-coding-agents-part-3",
+  "content_type": "article",
+  "text_path": "ml-design-doc-reviewer/data/raw_documents/case_073_background_coding_agents_predictable_results_through_strong_feedback_loops_part_.md",
+  "char_count": 7808,
+  "images": [
+    {
+      "image_id": "case_073_img_001",
+      "source_url": "https://images.ctfassets.net/p762jor363g1/71oyRmTiwKcPmPNK2nZVDZ/ad4a9f47a3bddbb4f900a01474f1ce6f/honk-pt3.png",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_073/img_001.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_073/img_001.png",
+      "alt_text": "Feature Image",
+      "width": 740,
+      "height": 404,
+      "content_type": "image/png",
+      "byte_size": 264740,
+      "ocr_text": "NO_TEXT_DETECTED"
+    },
+    {
+      "image_id": "case_073_img_002",
+      "source_url": "https://images.ctfassets.net/p762jor363g1/E87swVibHme6mnU0hsjLW/00504f404395dd43571aee5980db4164/Coding_agents_part_3_image_1_final.png",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_073/img_002.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_073/img_002.png",
+      "alt_text": "Coding image 1",
+      "width": null,
+      "height": null,
+      "content_type": "image/png",
+      "byte_size": 141360,
+      "ocr_text": "Python # Pseudo python code class MavenVerifier(AbstractVerifier): \"\"\"A minimal Maven verifier for blog post demonstration. def applies(self) \u2014 bool: \"\"\"Check if this is a Maven project by looking for pom.xml.\"\"\" pom_path = self.repo_root / \"pom.xml\" return pom_path.exists() def format(self) > str: \"\"\"EFormat the code using Maven formatting tools. result = run([\"mvn\", \"com.spotify. fmt: fmt-maven-plugin: format\" ]) if result.returncode = Q: return \"Format successful\" else: return f\"Format failed: {result.stderr}\" build(self) > str: \"\"\"Run Maven build.\"\"\" result = run([\"mvn\", \"\u201ccompi if result.returncode = Q: return \"Build successfu else: errors = extract_relevant_errors(result.stderr) return f\"Build failed: {errors}\" test(self) > str: \"\"\"Run Maven tests. result = run([\"mvn\", \"test\" if result.returncode = @: return \"Tests passed\" else: errors = extract_relevant_errors(result.stderr) return f\"Tests failed: {errors}\""
+    },
+    {
+      "image_id": "case_073_img_003",
+      "source_url": "https://images.ctfassets.net/p762jor363g1/2XG5rFU5lsSlLJnc0uLbRW/7e50b0b7d7f05e446100382c31f93e9b/Coding_agents_part_3_image_3_final.png",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_073/img_003.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_073/img_003.png",
+      "alt_text": "Coding agents_part 3_image 2_final.png",
+      "width": null,
+      "height": null,
+      "content_type": "image/png",
+      "byte_size": 63333,
+      "ocr_text": "Python amcp.tool(name=\"verify\") def verify_tool() > str: Use this tool after making code changes to ensure they meet project standards and don't break existing functionality. The tool will provide detailed feedback on any issues found and their locations. ALWAYS run this tool before completing any task and terminating the agent. You can also run this incrementally to test changes as you make them. Returns: str: Detailed verification results if any step fails."
+    },
+    {
+      "image_id": "case_073_img_004",
+      "source_url": "https://images.ctfassets.net/p762jor363g1/1pDfqtOBSX1OiMSJRnYWuR/c43119d0a77eb6f396533fd3224b912a/Coding_agents_part_3_image_3_final.png",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_073/img_004.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_073/img_004.png",
+      "alt_text": "Coding agents_part 3_image 3_final.png",
+      "width": null,
+      "height": null,
+      "content_type": "image/png",
+      "byte_size": 78396,
+      "ocr_text": "Python SYSTEM_PROMPT = \"\"\" You are a very senior engineer performing a code review. Your task is to understand if the proposed change follows the instructions. Go through the git diff and check if each change is strictly required based on the provided instructions. Be very strict - if ANY part of the instructions is missing or incomplete, reduce the score significantly. You can assume that formatting, lLinting, compilation and testing have passed. Provide a verdict score from @ to 1. Keep the verdict short and concise. Focus on if ALL parts of the instructions were followed completely."
+    },
+    {
+      "image_id": "case_073_img_005",
+      "source_url": "https://images.ctfassets.net/p762jor363g1/2704Ffvi1xnnIbINU6H38d/f387ea69db99db41f7357a8b15b7c594/Coding_agents_part_3_image_4_final.png",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_073/img_005.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_073/img_005.png",
+      "alt_text": "Coding agents_part 3_image 4_final.png",
+      "width": null,
+      "height": null,
+      "content_type": "image/png",
+      "byte_size": 30937,
+      "ocr_text": "NO_TEXT_DETECTED"
+    },
+    {
+      "image_id": "case_073_img_006",
+      "source_url": "https://images.ctfassets.net/p762jor363g1/1z0B6FoumKfV2Wte048lb6/bc36e55f83efc58b6cce53ac3958c758/image1.png",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_073/img_006.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_073/img_006.png",
+      "alt_text": "sticky",
+      "width": 400,
+      "height": 197,
+      "content_type": "image/png",
+      "byte_size": 449712,
+      "ocr_text": "O 0820, OX006\u00a28 OOS = \u00a9 O O0o00 QL000e Q00\u00b0?e\u00b0\u201d t 1.4 Trillion data points daily oooo0o90 000000 Data Platform 000000 OO00000 >oo0o0000 OO0O00O0 OOO0CO0O 70k datasets User Personalization Experimentation (Confidence) Company KPIs Finance \u00ab+\u00bb Many more"
+    },
+    {
+      "image_id": "case_073_img_007",
+      "source_url": "https://images.ctfassets.net/p762jor363g1/2SQWwDBa8t9F9P8s1IkaeV/645549d40f361b6fe56be1575e78cb5b/cwc01-header-a.png",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_073/img_007.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_073/img_007.png",
+      "alt_text": "sticky",
+      "width": 400,
+      "height": 197,
+      "content_type": "image/png",
+      "byte_size": 347959,
+      "ocr_text": "NO_TEXT_DETECTED"
+    },
+    {
+      "image_id": "case_073_img_008",
+      "source_url": "https://images.ctfassets.net/p762jor363g1/1liN9CCW7JU64GI5r03T6N/95c8d19c1287e6209831f31f8dd89158/3__1_.png",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_073/img_008.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_073/img_008.png",
+      "alt_text": "sticky",
+      "width": 400,
+      "height": 197,
+      "content_type": "image/png",
+      "byte_size": 52207,
+      "ocr_text": "@ Red"
+    },
+    {
+      "image_id": "case_073_img_009",
+      "source_url": "https://images.ctfassets.net/p762jor363g1/6VpxcfIxMRS8Ft1PMlxUro/9b7b39abfccec844ebb8586ab5a5122f/spotify-ads-api-claude-plugin__2.2__1.5x.png",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_073/img_009.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_073/img_009.png",
+      "alt_text": "sticky",
+      "width": 400,
+      "height": 197,
+      "content_type": "image/png",
+      "byte_size": 106463,
+      "ocr_text": "Campaign created Create an audio campaign called targeting 25-44 year olds inthe US with budget"
+    }
+  ],
+  "image_count": 9,
+  "ocr_complete": true
+}

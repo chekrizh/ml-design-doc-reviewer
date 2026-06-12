@@ -1,0 +1,81 @@
+# How Roblox Uses AI to Moderate Content on a Massive Scale
+
+- **Sample ID**: case_021
+- **Source URL**: https://corp.roblox.com/newsroom/2025/07/roblox-ai-moderation-massive-scale
+- **Content type**: article
+
+---
+
+How Roblox Uses AI to Moderate Content on a Massive Scale
+Moderating Billions of Pieces of Content Per Day Across 25 Languages—in Real Time
+- To proactively moderate the content published on Roblox, we have been building scalable systems leveraging AI for approximately five years.
+- Today, our infrastructure, ML models, and thousands of human experts work together to help make Roblox a safer, more civil place for our users.
+- We develop all of these systems for scale, speed, and continuous improvement with high quality data.
+Safety is foundational to everything we do at Roblox. From the beginning, we’ve proactively moderated the content because we knew moderation was critical for a platform built on user-generated content. When Roblox was significantly smaller, human reviewers did this—including our founder and CEO, who spent time moderating content in the beginning. Over time, the platform grew (in both scale and speed) beyond the capability of human moderators. When launching any new product, safety is always the first element we consider.
+An average of 97.8 million daily active users1 come to Roblox to play, communicate, and create. Every day, users send an average of 6.1 billion chat messages and 1.1 million hours of voice communication in 28 different languages. Creators upload millions of assets per day—and thousands more items are added to our avatar marketplace. The vast majority of these billions of creations and messages are civil. Like in the real world—it’s the way most people communicate with each other. But when it’s not, our text filtering system helps block problematic text before it reaches users and voice violations are assessed in real time. And in the event that we receive a notice of illegal content, our median time to action is ten minutes.
+Consistently moderating this volume of content within milliseconds is a job that humans cannot manage alone—irrespective of how many we have. Working at this scale and speed would require hundreds of thousands of human moderators working 24/7, not including weekends or vacation—and that’s just to moderate chat messages. We’d need thousands more to moderate all the other content types on Roblox. The volume of content produced daily on Roblox demands scalable infrastructure, machine learning (ML) models, and purpose-built tools.
+ML can make these decisions in milliseconds, repeatedly, consistently and 24 hours a day. We still need, and employ, humans to address less common cases where a deeper nuanced human judgement is required depending on context. We combine robust, innovative safety and moderation tools with thousands of human experts around the world who provide oversight and continuous training of our systems to address new and evolving challenges. All of Roblox’s moderation systems are based on the following principles:
+- We proactively moderate content on Roblox.
+- We provide real time feedback to users whenever possible, as oftentimes people don't know the rules.
+- We deploy AI only when it performs significantly higher in both precision and recall than humans at scale.
+- We leverage humans for continuously improving AI, evolving and rare cases, complex investigations, and appeals.
+To efficiently moderate the increasing volume of content produced on Roblox, we are always innovating along three dimensions: scale, speed, and quality, and it requires continuous improvement.
+Scale: Moderating Billions of Pieces of Content Per Day
+From February to December, 20241, users uploaded approximately 1 trillion pieces of content. As little as 0.01% of those billions of those text chats, audio, voice, and images were detected as violating any of our policies. And almost all content that violated our policies was automatically prescreened and removed before users ever saw it. While this scale is relatively new, our commitment to moderation is not. Over a decade ago, we built a rules-based text filter. Approximately five years ago, we deployed what was then a state-of-the-art transformer-based text filter. Today, our text filters process an average of 6.1 billion chat messages per day, powered by many models that are purpose-built for different types of policy violations.
+One of these models is our filter for personally identifiable information (PII) for in-game and platform chat. Users asking others for PII can be a first step toward more severe issues, so we’ve always taken a strong stance on preventing PII sharing. Every chat message sent is a “request,” asking the system to review and determine whether any PII is mentioned. This text filter model was handling so many requests per second (RPS) that it was becoming difficult to support on our existing CPU-based serving stack. So we built an entirely new serving stack on GPUs, leveraging our cellular infrastructure. To support these high RPS demands we first separated tokenization from inference and then accelerated inference by quantization and distillation of larger models. Together, these improvements quadrupled our RPS.
+On the new stack, the PII filter is now handling 370,000 RPS at peak. Our improved PII filter has reduced false positives by 30%, which has led to a 25% increase in PII mentions automatically detected by the system across all supported languages. We’re already working on rolling this improvement out across several other languages and bringing similar improvements to other text filters and surfaces. While we’re proud of these improvements, we know the methods used to share PII are always evolving and we’re evolving our systems along with these changes.
+Underpinning our entire moderation system are large, transformer-based models, with knowledge across various modalities. Depending on the operational and production requirements, we distill and quantize these models to keep the system fast and efficient. These techniques are essential for running a variety of multimodal models, the ones managing our text filters are now efficiently handling more than 750,000 RPS.
+Speed: Changing User Behavior With Real-Time Feedback
+Natural, real-time communication requires near-immediate filtering to keep conversation flowing. Iterating and collaborating on ideas requires rapid feedback to keep creativity flowing. Our multilayered defense system includes proactive measures like warning notifications, time-outs, and suspensions. When filtering text, we can react in real time to block policy-violating terms such as PII, profanity, and hate speech within milliseconds, preventing users from being exposed to inappropriate content.
+Voice communications can’t be blocked in the same way, so we educate users via on-screen notifications. Our warning notifications have effectively changed user behavior and increased both civility and engagement. Our voice safety classifier moderates chat within 15 seconds across eight languages. We’ve also open-sourced this model as part of our broader commitment to sharing safety innovations with the industry.
+If a user continues to violate our policies, the consequences become increasingly severe, ranging from a brief warning to losing access to voice chat. Internal research has shown that suspensions have an impact for up to three weeks afterward, reducing reoffense rates and the number of user reports submitted. Early experiments have shown that these types of in-the-moment interventions and consequences have a positive effect on civility. The latest version of our voice classifier has a recall rate that’s 92% higher than our initial version, with a 1% false positive rate—and is handling, at peak, up to 8,300 RPS. We continue to explore further ways to improve both precision and recall.
+Based on the success we’ve seen with notifications in voice chat, we’ve also begun to implement real-time feedback for text chat. In recent experiments, we found that issuing in-experience text chat notifications and time-outs resulted in a 5% reduction in filtered chat messages and a 6% reduction in consequences from abuse reports. We are also beginning to experiment with real-time feedback to creators when uploading their creations.
+Data Quality: Training Models for Continuous Improvement
+We train these systems to optimize for fewer false negatives—erring on the side of removing anything that could include a policy violation. We also know it’s frustrating to users when something they believe is compliant gets taken down. So we continuously improve our systems to minimize false positives as well. Correctly labeled data is essential to improving the accuracy for all of our classifiers.
+Building robust training and evaluation datasets requires both sufficient high-quality examples and human experts to accurately label them. There are cases where we don’t have enough data because it’s a rare scenario or an edge case. Sometimes we have too much data and need to identify the most effective examples. And we need data that matches what’s actually happening on Roblox. That includes transient examples, like slang or memes. Our audience of kids, teens, and gamers is always introducing us to new slang terms, new trends, and new ways of evading our moderation tools. They keep us on our toes, which is why we continually test and evaluate both our moderation tools and our policies.
+We use a variety of sampling strategies to curate these datasets, and we leverage both AI and human experts to generate and label these data examples. Our policy experts hand-curate examples, which we call the golden set. These are examples that most closely match the issues we want the system to detect. We sample from very large datasets with several sampling strategies, including uncertainty sampling, where we sample edge cases in which the model was previously confused. We get samples from human experts and AI-assisted red teams (more about AARTs), who test the system by simulating adversarial attacks to probe for weaknesses.
+We also expand and improve our training sets as we spot new issues, slang, memes, etc. We get some of these examples through our appeals process, where users can request an additional review. If the decision is overturned, that example becomes part of our dataset to help our system get it right next time.
+We get others from our robust abuse reporting system, which effectively expands our team of human moderators to include tens of millions of users who care about these experiences and the community. We’ve recently improved our reporting tool so users have the option to capture an entire scene, including avatar and object IDs, and highlight the part they want to report. We’ve seen strong user adoption, with approximately 15% of eligible reports providing visual annotations. This additional context helps us proactively identify problematic experiences where users frequently report concerns. Since model training isn’t instantaneous, we’re also exploring automatically creating AI-driven rules from user reports to increase our responsiveness.
+We supplement these datasets with synthetic data, where large language models (LLMs) generate artificial data examples and labels that emulate real-world examples. The benefit here is an ability to generate millions of examples and labels, even for a rare or edge case. Once we have sufficient labeled data, we split it into two datasets: one for training and one for evaluation. Having a robust evaluation dataset is critical: If an evaluation set is too easy, the model’s metrics will look like it’s working well—but it will break in production. The accuracy of the data is more important than the volume. Garbage in, garbage out is a real concern with ML as the performance of the model depends heavily on the accuracy of the data used to train and evaluate it.
+Once we have a robust evaluation dataset, we assess it based on two key metrics: alignment and quality. To test alignment, the same examples are sent to multiple humans to label and see whether their labels agree (or align). If alignment between their labels is 80% or greater, that means our moderators can make consistent decisions at scale. If it’s lower than 80%, the policy or training may be confusing, and we need to iterate. To test quality, we send the golden set to humans to assess whether it violates the policy or not and make sure they make the correct decision. We also sample decisions for experts to review. If they all get the correct decision, then our policy can be enforced correctly. High alignment and high quality indicates that our policy can be enforced correctly and consistently. If not, we go back and evaluate both the policy and the training set.
+The creative nature of a platform like Roblox, where users are free to create and communicate almost anything, means it’s always evolving. Our moderation methods have to evolve just as rapidly to keep our community safe and civil. Our active learning systems continuously update models as language evolves, user patterns change, and real-world events happen. We are continually building systems that are scalable, fast, accurate, and consistently adapt to the dynamic world we all live in.
+1As of the first quarter of 2025.
+2Covers the reporting period from February 17, 2024 through December 31, 2024.
+---
+
+## Extracted images (7)
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_021/img_001.webp]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://cms-media.roblox.com/assets/0271aebf-75ab-e2ea-e5f9-4c8fc749fa2d.webp]
+[IMAGE_DESCRIPTION: oO a Policy Experts. a Skilled Labelers Policies Golden Datas Uncertainty Sampling AT-Assis' Red Team AI Inference Platform (cell-based architecture) Foundational Quantization Custom Modets Models Distillation 980 wore Sampled Data Appeals go to Human Review for QA]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_021/img_002.webp]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://cms-media.roblox.com/assets/d8115332-ea87-a851-e925-13398fa77e82.webp]
+[IMAGE_DESCRIPTION: Remember our policies We've detected language that may violate Roblox’s Community Standards. You may lose access to Voice Chat after ‘multiple violations. Did we make a mistake? Letus know “Tk]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_021/img_003.webp]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://cms-media.roblox.com/assets/7e7b6284-e940-49a8-f69d-c7c58fb471b6.webp]
+[IMAGE_DESCRIPTION: e Select Problem in Scene P Next]]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_021/img_004.png]
+[IMAGE_ALT: Pioneering AI Founders Join to Accelerate Roblox Reality Vision]
+[IMAGE_SOURCE_URL: https://cms-media.roblox.com/assets/9bfd31a7-d763-4384-973a-7d32f50dcd37.png]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_021/img_005.webp]
+[IMAGE_ALT: SEO image for CubePart: An Open-Vocabulary Part-Controllable 3D Generator]
+[IMAGE_SOURCE_URL: https://cms-media.roblox.com/assets/151fa7cc-b9d8-ac9a-714c-8141e3c7e5d7.webp]
+[IMAGE_DESCRIPTION: NO_TEXT_DETECTED]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_021/img_006.webp]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://cms-media.roblox.com/assets/b81bd589-11a5-bd7a-46f5-7cc4146638a3.webp]
+[IMAGE_DESCRIPTION: Roblox render _ Roblox 3D data snot realtime]
+
+[IMAGE_REF: ml-design-doc-reviewer/data/raw_documents/images/case_021/img_007.webp]
+[IMAGE_ALT: none]
+[IMAGE_SOURCE_URL: https://cms-media.roblox.com/assets/de30db82-b660-3e0e-94ff-11d9675d6e7c.webp]
+[IMAGE_DESCRIPTION: a y, re “2, “ULTIMATE]

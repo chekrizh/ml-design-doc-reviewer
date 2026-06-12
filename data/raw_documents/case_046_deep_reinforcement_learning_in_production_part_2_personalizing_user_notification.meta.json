@@ -1,0 +1,84 @@
+{
+  "sample_id": "case_046",
+  "title": "Deep Reinforcement Learning in Production Part 2: Personalizing User Notifications",
+  "url": "https://towardsdatascience.com/deep-reinforcement-learning-in-production-part-2-personalizing-user-notifications-812a68ce2355",
+  "content_type": "article",
+  "text_path": "ml-design-doc-reviewer/data/raw_documents/case_046_deep_reinforcement_learning_in_production_part_2_personalizing_user_notification.md",
+  "char_count": 9628,
+  "images": [
+    {
+      "image_id": "case_046_img_001",
+      "source_url": "https://towardsdatascience.com/wp-content/uploads/2020/07/1g-1dJyfgCGXYybHMK7V9bw.png",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_046/img_001.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_046/img_001.png",
+      "alt_text": "",
+      "width": 2048,
+      "height": 1152,
+      "content_type": "image/png",
+      "byte_size": 2880124,
+      "ocr_text": "NO_TEXT_DETECTED"
+    },
+    {
+      "image_id": "case_046_img_002",
+      "source_url": "https://towardsdatascience.com/wp-content/uploads/2024/08/1UAA9jQVdqMXnwzYiz8Q53Q.png",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_046/img_002.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_046/img_002.png",
+      "alt_text": "Image from Canva.",
+      "width": 1280,
+      "height": 720,
+      "content_type": "image/png",
+      "byte_size": 1485197,
+      "ocr_text": "NO_TEXT_DETECTED"
+    },
+    {
+      "image_id": "case_046_img_003",
+      "source_url": "https://towardsdatascience.com/wp-content/uploads/2022/03/0B5fQH3hQtbD7a_CC-scaled.jpg",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_046/img_003.jpg",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_046/img_003.jpg",
+      "alt_text": "Photo by Rohan Makhecha on Unsplash",
+      "width": 1707,
+      "height": 2560,
+      "content_type": "image/jpeg",
+      "byte_size": 340160,
+      "ocr_text": "NO_TEXT_DETECTED"
+    },
+    {
+      "image_id": "case_046_img_004",
+      "source_url": "https://towardsdatascience.com/wp-content/uploads/2023/12/014GNfNJ1eNRiXaZ8-scaled.jpg",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_046/img_004.jpg",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_046/img_004.jpg",
+      "alt_text": "Photo by Evie S. on Unsplash",
+      "width": 1853,
+      "height": 2560,
+      "content_type": "image/jpeg",
+      "byte_size": 290403,
+      "ocr_text": "NO_TEXT_DETECTED"
+    },
+    {
+      "image_id": "case_046_img_005",
+      "source_url": "https://towardsdatascience.com/wp-content/uploads/2024/07/1haACvh59_Lmra5EBopkvSg.png",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_046/img_005.png",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_046/img_005.png",
+      "alt_text": "Source: Image by Author and generated with MidJourney",
+      "width": 1024,
+      "height": 1024,
+      "content_type": "image/png",
+      "byte_size": 2107746,
+      "ocr_text": "NO_TEXT_DETECTED"
+    },
+    {
+      "image_id": "case_046_img_007",
+      "source_url": "https://towardsdatascience.com/wp-content/uploads/2022/06/05I_kVMSanolIrb5E.jpg",
+      "local_path": "ml-design-doc-reviewer/data/raw_documents/images/case_046/img_007.jpg",
+      "repo_path": "ml-design-doc-reviewer/data/raw_documents/images/case_046/img_007.jpg",
+      "alt_text": "Credit: BigScience Research Workshop",
+      "width": 400,
+      "height": 400,
+      "content_type": "image/jpeg",
+      "byte_size": 11291,
+      "ocr_text": "NO_TEXT_DETECTED"
+    }
+  ],
+  "image_count": 6,
+  "ocr_complete": true
+}
