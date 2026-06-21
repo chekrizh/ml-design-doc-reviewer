@@ -6,6 +6,7 @@ import logging
 
 from prepare_data.config import Settings
 from prepare_data.fetch_content import fetch_manifest
+from prepare_data.hf_dataset import DatasetPaths, download_dataset, upload_dataset
 from prepare_data.images import enrich_raw_documents, ocr_raw_documents
 from prepare_data.normalize import normalize_manifest
 from prepare_data.sampling import run_sampling
@@ -78,6 +79,25 @@ def run_ocr_images(settings: Settings, *, skip_existing: bool = True) -> None:
         skip_existing=skip_existing,
         tesseract_lang=settings.tesseract_lang,
         tesseract_cmd=settings.tesseract_cmd,
+    )
+
+
+def run_download_dataset(settings: Settings, *, include_source_catalog: bool = False) -> None:
+    paths = DatasetPaths.from_data_dir(settings.raw_documents_dir.parent)
+    download_dataset(
+        paths,
+        repo_id=settings.hf_dataset_repo,
+        revision=settings.hf_dataset_revision,
+        include_source_catalog=include_source_catalog,
+    )
+
+
+def run_upload_dataset(settings: Settings) -> None:
+    paths = DatasetPaths.from_data_dir(settings.raw_documents_dir.parent)
+    upload_dataset(
+        paths,
+        repo_id=settings.hf_dataset_repo,
+        revision=settings.hf_dataset_revision,
     )
 
 

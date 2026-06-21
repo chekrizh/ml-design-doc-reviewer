@@ -15,3 +15,18 @@ __pycache__/
 
 # Transient normalization failure artifacts
 data/normalized_disdocs/*_ERROR.json
+
+# Heavy dataset artifacts (download via: uv run prepare-data download-dataset)
+data/raw_documents/
+data/normalized_disdocs/
+data/flawed_disdocs/
+data/evidently_ai_cases/
+data/.hf_upload_staging/
+
+# Keep lightweight dataset config in git
+!data/README.md
+!data/dataset_revision.txt
+!data/sample_manifest.csv
+!data/error_topology.csv
+!data/disdoc_examples/
+!data/disdoc_examples/**

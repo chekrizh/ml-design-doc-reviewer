@@ -87,55 +87,79 @@ TBD
 
 ## Dataset Preparation
 
-The `src/prepare_data` package builds the first evaluation dataset from the [Evidently AI ML/LLM use cases catalog](data/evidently_ai_cases/800%20ML%20and%20LLM%20use%20cases.csv).
+The `src/prepare_data` package builds the evaluation dataset. **Heavy artifacts are hosted on [Hugging Face](https://huggingface.co/datasets/chekrizh/ml-disdoc-eval)** — a git clone contains only lightweight config files (~300 KB).
 
-### Prerequisites
+### What stays in git
 
-- Python 3.12
-- [uv](https://docs.astral.sh/uv/) package manager
-- `ffmpeg` optional (yt-dlp downloads native audio; ffmpeg only needed for format conversion)
-- OpenRouter API key (for the normalization step)
+| Path | Description |
+|------|-------------|
+| `data/sample_manifest.csv` | Stratified 100-case sample |
+| `data/error_topology.csv` | Controlled error taxonomy |
+| `data/dataset_revision.txt` | Pinned HF dataset revision |
+| `data/disdoc_examples/` | Few-shot reference design docs |
+| `prompts/` | Normalization prompts |
 
-### Setup
+### Download dataset from Hugging Face
 
 ```bash
 uv sync --python 3.12
 cp .env.example .env
-# Edit .env and set OPENROUTER_API_KEY
+
+# Download raw / normalized / flawed docs + images (~100 MB)
+uv run prepare-data download-dataset
+
+# Optional: also fetch the upstream Evidently AI catalog CSV for re-sampling
+uv run prepare-data download-dataset --include-source-catalog
 ```
 
-### Pipeline
+Configure `HF_DATASET_REPO` and `HF_DATASET_REVISION` in `.env` (defaults in `.env.example`).
+
+**Critic-only users** can download just the flawed split:
 
 ```bash
-# 1. Stratified sample of 100 cases (Industry × Technology × content type × year)
+huggingface-cli download chekrizh/ml-disdoc-eval flawed --repo-type dataset --revision v1.0.0
+```
+
+### Prerequisites (full pipeline)
+
+- Python 3.12
+- [uv](https://docs.astral.sh/uv/)
+- `brew install tesseract` (OCR step)
+- OpenRouter API key (normalization step)
+- Hugging Face token (upload only; download works for public datasets)
+
+### Regenerate locally (maintainers)
+
+```bash
+# 1. Stratified sample (requires source catalog CSV)
 uv run prepare-data sample
 
-# 2. Download articles / transcribe videos (Whisper) → data/raw_documents/
+# 2. Fetch articles, OCR images
 uv run prepare-data fetch
+uv run prepare-data enrich-images
+uv run prepare-data ocr-images
 
-# 3. Normalize raw docs into canonical design docs via OpenRouter → data/normalized_disdocs/
+# 3. Normalize via OpenRouter
 uv run prepare-data normalize
 
-# 4. Inject controlled errors into normalized docs → data/flawed_disdocs/
+# 4. Inject controlled errors
 uv run prepare-data inject-errors
 
-# Or run all steps sequentially
-uv run prepare-data all
+# 5. Publish snapshot to Hugging Face
+HF_TOKEN=... uv run prepare-data upload-dataset
 ```
 
 Use `--force` with `fetch`, `normalize`, or `all` to re-process existing outputs.
 
-The normalization prompt lives in [`prompts/normalize_to_disdoc.md`](prompts/normalize_to_disdoc.md). Reference design docs are in [`data/disdoc_examples/`](data/disdoc_examples/).
+The normalization prompt lives in [`prompts/normalize_to_disdoc.md`](prompts/normalize_to_disdoc.md).
 
-### Output layout
+### Output layout (after download or local prep)
 
 | Path | Description |
 |------|-------------|
-| `data/sample_manifest.csv` | Stratified sample with metadata |
-| `data/raw_documents/` | Raw markdown exports and `.meta.json` sidecars |
+| `data/raw_documents/` | Raw markdown exports, `.meta.json`, images |
 | `data/normalized_disdocs/` | Canonical 14-section ML design documents |
-| `data/error_topology.csv` | Catalog of sectional and cross-sectional error types |
-| `data/flawed_disdocs/` | Normalized docs with injected errors + `injection_log.csv` |
+| `data/flawed_disdocs/` | Docs with injected errors + `injection_log.csv` |
 
 ## Architecture
 

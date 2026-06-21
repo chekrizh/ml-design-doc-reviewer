@@ -10,11 +10,13 @@ from prepare_data.config import Settings
 from prepare_data.inject_errors import inject_directory
 from prepare_data.pipeline import (
     run_all,
+    run_download_dataset,
     run_enrich_images,
     run_fetch,
-    run_ocr_images,
     run_normalize,
+    run_ocr_images,
     run_sample,
+    run_upload_dataset,
 )
 
 logging.basicConfig(
@@ -48,6 +50,20 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser(
         "inject-errors",
         help="Inject controlled errors into normalized design docs.",
+    )
+    subparsers.add_parser(
+        "download-dataset",
+        help="Download raw/normalized/flawed dataset artifacts from Hugging Face.",
+    )
+    subparsers.add_parser(
+        "upload-dataset",
+        help="Upload local dataset artifacts to Hugging Face (maintainers only).",
+    )
+    download_parser = subparsers.choices["download-dataset"]
+    download_parser.add_argument(
+        "--include-source-catalog",
+        action="store_true",
+        help="Also download the upstream Evidently AI cases CSV.",
     )
 
     for name in ("fetch", "normalize", "enrich-images", "ocr-images", "all"):
@@ -88,6 +104,13 @@ def main(argv: list[str] | None = None) -> int:
                 settings.injection_log_path,
                 random_seed=settings.random_seed,
             )
+        elif args.command == "download-dataset":
+            run_download_dataset(
+                settings,
+                include_source_catalog=getattr(args, "include_source_catalog", False),
+            )
+        elif args.command == "upload-dataset":
+            run_upload_dataset(settings)
         else:
             parser.error(f"Unknown command: {args.command}")
             return 2
