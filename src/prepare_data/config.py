@@ -47,6 +47,8 @@ class Settings:
     fetch_delay_seconds: float
     tesseract_cmd: str | None
     tesseract_lang: str
+    hf_dataset_repo: str
+    hf_dataset_revision: str
 
     @classmethod
     def from_env(cls) -> Settings:
@@ -107,6 +109,14 @@ class Settings:
             fetch_delay_seconds=float(os.getenv("FETCH_DELAY_SECONDS", "1.0")),
             tesseract_cmd=os.getenv("TESSERACT_CMD"),
             tesseract_lang=os.getenv("TESSERACT_LANG", "eng"),
+            hf_dataset_repo=os.getenv("HF_DATASET_REPO", "chekrizh/ml-disdoc-eval"),
+            hf_dataset_revision=os.getenv(
+                "HF_DATASET_REVISION",
+                _read_dataset_revision_file(
+                    Path(os.getenv("DATA_DIR", PROJECT_ROOT / "data"))
+                    / "dataset_revision.txt"
+                ),
+            ),
         )
 
     def require_openrouter_key(self) -> str:
@@ -116,3 +126,11 @@ class Settings:
                 "Set it in .env or the environment."
             )
         return self.openrouter_api_key
+
+
+def _read_dataset_revision_file(path: Path) -> str:
+    if path.exists():
+        value = path.read_text(encoding="utf-8").strip()
+        if value:
+            return value
+    return "v1.0.0"
