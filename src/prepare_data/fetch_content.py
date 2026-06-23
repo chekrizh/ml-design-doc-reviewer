@@ -15,6 +15,7 @@ import certifi
 import httpx
 import trafilatura
 
+from prepare_data.http_headers import request_headers_for_url
 from prepare_data.images import (
     append_images_section,
     download_article_images,
@@ -59,11 +60,7 @@ class FetchResult:
 
 def fetch_html(url: str, timeout: float = 30.0, max_retries: int = 4) -> str:
     """Download HTML with certifi; fall back to insecure TLS for broken site chains."""
-    headers = {
-        "User-Agent": (
-            "Mozilla/5.0 (compatible; MLDesignDocReviewer/0.1; +dataset-prep)"
-        ),
-    }
+    headers = request_headers_for_url(url)
     last_error: Exception | None = None
 
     for attempt in range(max_retries):
@@ -77,7 +74,7 @@ def fetch_html(url: str, timeout: float = 30.0, max_retries: int = 4) -> str:
                 ) as client:
                     response = client.get(url)
                     if response.status_code in {429, 503, 502} and attempt < max_retries - 1:
-                        wait = 2 ** attempt + 1
+                        wait = 2**attempt + 1
                         logger.warning(
                             "HTTP %s for %s, retrying in %ss (attempt %d/%d)",
                             response.status_code,
@@ -102,9 +99,7 @@ def fetch_html(url: str, timeout: float = 30.0, max_retries: int = 4) -> str:
             except httpx.HTTPError as exc:
                 last_error = exc
                 if verify is not False and "CERTIFICATE_VERIFY_FAILED" in str(exc):
-                    logger.warning(
-                        "SSL verification failed for %s, retrying insecurely", url
-                    )
+                    logger.warning("SSL verification failed for %s, retrying insecurely", url)
                     continue
                 if (
                     isinstance(exc, httpx.HTTPStatusError)
@@ -235,10 +230,8 @@ def fetch_single_case(
 ) -> FetchResult:
     sample_id = row["sample_id"]
     title = row["Title"]
-    url = row["Link"]
-    content_type = row.get("content_type") or (
-        "video" if is_youtube_url(url) else "article"
-    )
+    url = str(row["Link"]).strip()
+    content_type = row.get("content_type") or ("video" if is_youtube_url(url) else "article")
 
     try:
         if content_type == "video" or is_youtube_url(url):
@@ -332,7 +325,6 @@ def fetch_manifest(
 
     for _, row in tqdm(manifest.iterrows(), total=len(manifest), desc="Fetching"):
         sample_id = row["sample_id"]
-        expected = output_dir / f"{sample_id}_*.md"
         if skip_existing and list(output_dir.glob(f"{sample_id}_*.md")):
             logger.info("Skipping existing raw document for %s", sample_id)
             continue

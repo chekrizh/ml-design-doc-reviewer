@@ -2,6 +2,8 @@
 
 Heavy evaluation artifacts are **not stored in git**. Download them from Hugging Face:
 
+**Dataset:** [ml-system-design/ml-design-doc-reviewer-data](https://huggingface.co/datasets/ml-system-design/ml-design-doc-reviewer-data) (revision `v1.0.0`)
+
 ```bash
 uv run prepare-data download-dataset
 ```
@@ -23,5 +25,6 @@ uv run prepare-data download-dataset
 | `normalized_disdocs/` | `normalized/` |
 | `flawed_disdocs/` | `flawed/` |
 | `evidently_ai_cases/` | `source/evidently_ai_cases/` (optional) |
+| `byte_byte_go_cases/` | `source/byte_byte_go_cases/` |
 
 Set `HF_DATASET_REPO` and `HF_DATASET_REVISION` in `.env` to override defaults.

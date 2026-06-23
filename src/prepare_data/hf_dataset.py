@@ -15,7 +15,7 @@ from prepare_data.config import PROJECT_ROOT
 
 logger = logging.getLogger(__name__)
 
-DEFAULT_HF_DATASET_REPO = "chekrizh/ml-disdoc-eval"
+DEFAULT_HF_DATASET_REPO = "ml-system-design/ml-design-doc-reviewer-data"
 
 # Local directory -> path prefix inside the HF dataset repository.
 DATASET_LAYOUT: dict[str, str] = {
@@ -23,6 +23,7 @@ DATASET_LAYOUT: dict[str, str] = {
     "normalized_disdocs": "normalized",
     "flawed_disdocs": "flawed",
     "evidently_ai_cases": "source/evidently_ai_cases",
+    "byte_byte_go_cases": "source/byte_byte_go_cases",
 }
 
 MANIFEST_FILES = (
@@ -45,7 +46,7 @@ class DatasetPaths:
     cases_csv: Path
 
     @classmethod
-    def from_data_dir(cls, data_dir: Path) -> "DatasetPaths":
+    def from_data_dir(cls, data_dir: Path) -> DatasetPaths:
         return cls(
             data_dir=data_dir,
             revision_file=data_dir / "dataset_revision.txt",
@@ -119,6 +120,16 @@ def _stage_upload_tree(paths: DatasetPaths, staging_dir: Path) -> None:
         )
 
 
+def _revision_exists(api, repo_id: str, revision: str) -> bool:
+    from huggingface_hub.errors import RevisionNotFoundError
+
+    try:
+        api.repo_info(repo_id, repo_type="dataset", revision=revision)
+        return True
+    except RevisionNotFoundError:
+        return False
+
+
 def upload_dataset(
     paths: DatasetPaths,
     *,
@@ -132,9 +143,7 @@ def upload_dataset(
     revision = revision or read_dataset_revision(paths.revision_file)
     token = token or os.getenv("HF_TOKEN") or os.getenv("HUGGINGFACE_HUB_TOKEN")
     if not token:
-        raise RuntimeError(
-            "HF_TOKEN (or HUGGINGFACE_HUB_TOKEN) is required to upload the dataset."
-        )
+        raise RuntimeError("HF_TOKEN (or HUGGINGFACE_HUB_TOKEN) is required to upload the dataset.")
 
     staging_dir = paths.data_dir / ".hf_upload_staging"
     _stage_upload_tree(paths, staging_dir)
@@ -144,13 +153,31 @@ def upload_dataset(
 
     api = HfApi(token=token)
     api.create_repo(repo_id, repo_type="dataset", exist_ok=True)
-    api.upload_folder(
+
+    upload_revision = revision if _revision_exists(api, repo_id, revision) else "main"
+    if upload_revision != revision:
+        logger.info(
+            "Revision %s not found on %s; uploading to main first",
+            revision,
+            repo_id,
+        )
+
+    api.upload_large_folder(
         folder_path=str(staging_dir),
         repo_id=repo_id,
         repo_type="dataset",
-        revision=revision,
-        commit_message=f"Upload ml-disdoc-eval dataset snapshot ({revision})",
+        revision=upload_revision,
     )
+
+    if upload_revision == "main" and revision != "main":
+        api.create_branch(
+            repo_id,
+            branch=revision,
+            revision="main",
+            repo_type="dataset",
+            exist_ok=True,
+        )
+        logger.info("Created dataset revision branch %s from main", revision)
 
     shutil.rmtree(staging_dir, ignore_errors=True)
     logger.info("Uploaded dataset to https://huggingface.co/datasets/%s/tree/%s", repo_id, revision)
@@ -177,6 +204,7 @@ def download_dataset(
         "raw/**",
         "normalized/**",
         "flawed/**",
+        "source/byte_byte_go_cases/**",
     ]
     if include_source_catalog:
         allow_patterns.append("source/**")
@@ -246,6 +274,7 @@ Evaluation artifacts for the ML Design Doc Reviewer project.
 | `normalized/` | Canonical 14-section ML design documents |
 | `flawed/` | Normalized docs with injected errors + `injection_log.csv` |
 | `source/evidently_ai_cases/` | Optional upstream Evidently AI catalog CSV |
+| `source/byte_byte_go_cases/` | ByteByteGo ML system design case archives |
 
 ## Download
 

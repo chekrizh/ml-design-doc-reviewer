@@ -56,8 +56,7 @@ def _allocate_samples(stratum_sizes: pd.Series, target_n: int) -> dict[str, int]
 
     # Cap allocations by available stratum size.
     allocation = {
-        stratum: min(int(count), int(stratum_sizes[stratum]))
-        for stratum, count in raw.items()
+        stratum: min(int(count), int(stratum_sizes[stratum])) for stratum, count in raw.items()
     }
 
     current = sum(allocation.values())
@@ -82,11 +81,7 @@ def _allocate_samples(stratum_sizes: pd.Series, target_n: int) -> dict[str, int]
     elif current < target_n:
         # Add samples to strata with remaining capacity.
         while current < target_n:
-            candidates = [
-                s
-                for s, size in stratum_sizes.items()
-                if allocation.get(s, 0) < size
-            ]
+            candidates = [s for s, size in stratum_sizes.items() if allocation.get(s, 0) < size]
             if not candidates:
                 break
             best = max(

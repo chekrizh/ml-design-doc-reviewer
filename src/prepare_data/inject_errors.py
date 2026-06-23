@@ -412,10 +412,12 @@ def _inject_latency_serving_mismatch(
     problem = sections[1]
     serving = sections[12]
     problem_body = problem.body.rstrip() + (
-        "\n- **Latency expectation**: Sub-100 ms responses are required for interactive user flows.\n"
+        "\n- **Latency expectation**: Sub-100 ms responses are required for "
+        "interactive user flows.\n"
     )
     serving_body = serving.body.rstrip() + (
-        "\n- **Serving mode**: Batch inference runs once per day and results are emailed to users.\n"
+        "\n- **Serving mode**: Batch inference runs once per day and results are "
+        "emailed to users.\n"
     )
     sections[1] = _replace_section_body(
         problem, re.sub(r"^###.*$", "", problem_body, count=1, flags=re.MULTILINE)
@@ -436,10 +438,12 @@ def _inject_feature_data_mismatch(
     features = sections[10]
     data = sections[5]
     features_body = features.body.rstrip() + (
-        "\n- **Weather forecast embeddings**: 72-hour forecast vectors from a paid meteorological API.\n"
+        "\n- **Weather forecast embeddings**: 72-hour forecast vectors from a paid "
+        "meteorological API.\n"
     )
     data_body = data.body.rstrip() + (
-        "\n- **External data policy**: Only internal transactional logs are approved for this project.\n"
+        "\n- **External data policy**: Only internal transactional logs are approved "
+        "for this project.\n"
     )
     sections[10] = _replace_section_body(
         features, re.sub(r"^###.*$", "", features_body, count=1, flags=re.MULTILINE)
@@ -487,7 +491,8 @@ def _inject_baseline_results_contradiction(
         "so further model iterations are unlikely to help."
     )
     measuring_body = measuring.body.rstrip() + (
-        "\n- **Production uplift**: The deployed model improved recall by 18% over the previous system.\n"
+        "\n- **Production uplift**: The deployed model improved recall by 18% over the "
+        "previous system.\n"
     )
     sections[7] = _replace_section_body(baseline, baseline_body)
     sections[11] = _replace_section_body(
@@ -506,7 +511,8 @@ def _inject_anti_goal_feature_conflict(
     goals = sections[2]
     features = sections[10]
     goals_body = goals.body.rstrip() + (
-        "\n- **Anti-goal**: Do not build user-specific personalization or per-user feature stores.\n"
+        "\n- **Anti-goal**: Do not build user-specific personalization or per-user "
+        "feature stores.\n"
     )
     features_body = features.body.rstrip() + (
         "\n- **Per-user behavioral embeddings**: Updated hourly for each active user.\n"
@@ -530,7 +536,8 @@ def _inject_time_series_random_split(
     data = sections[5]
     validation = sections[6]
     data_body = data.body.rstrip() + (
-        "\n- **Temporal nature**: Labels are daily time-series observations with strong seasonality.\n"
+        "\n- **Temporal nature**: Labels are daily time-series observations with strong "
+        "seasonality.\n"
     )
     validation_body = (
         "Train and test examples are sampled randomly across all dates. "
@@ -643,9 +650,7 @@ def inject_document(
     max_errors: int = 10,
 ) -> tuple[str, list[InjectionRecord]]:
     section_numbers = {section.number for section in parse_sections(text)}
-    applicable = topology[
-        topology.apply(lambda row: _is_applicable(row, section_numbers), axis=1)
-    ]
+    applicable = topology[topology.apply(lambda row: _is_applicable(row, section_numbers), axis=1)]
     if applicable.empty:
         return text, []
 

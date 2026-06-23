@@ -94,7 +94,7 @@ uv run critic review design-doc.md
 
 ## Dataset Preparation
 
-The `src/prepare_data` package builds the evaluation dataset. **Heavy artifacts are hosted on [Hugging Face](https://huggingface.co/datasets/chekrizh/ml-disdoc-eval)** — a git clone contains only lightweight config files (~300 KB).
+The `src/prepare_data` package builds the evaluation dataset. **Heavy artifacts are hosted on [Hugging Face](https://huggingface.co/datasets/ml-system-design/ml-design-doc-reviewer-data)** — a git clone contains only lightweight config files (~300 KB).
 
 ### What stays in git
 
@@ -124,7 +124,7 @@ Configure `HF_DATASET_REPO` and `HF_DATASET_REVISION` in `.env` (defaults in `.e
 **Critic-only users** can download just the flawed split:
 
 ```bash
-huggingface-cli download chekrizh/ml-disdoc-eval flawed --repo-type dataset --revision v1.0.0
+huggingface-cli download ml-system-design/ml-design-doc-reviewer-data flawed --repo-type dataset --revision v1.0.0
 ```
 
 ### Prerequisites (full pipeline)

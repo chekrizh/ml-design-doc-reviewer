@@ -13,6 +13,7 @@ import certifi
 import httpx
 from lxml import html as lxml_html
 
+from prepare_data.http_headers import request_headers_for_url
 from prepare_data.ocr import OCR_NO_TEXT, ocr_image_file
 from prepare_data.paths import to_repo_relative_path
 
@@ -84,10 +85,7 @@ def _is_probably_content_image(url: str, alt: str, width: str | None, height: st
     w = _parse_dimension(width)
     h = _parse_dimension(height)
 
-    if w is not None and h is not None and (w < 80 or h < 80):
-        return False
-
-    return True
+    return w is None or h is None or (w >= 80 and h >= 80)
 
 
 def extract_image_candidates(html: str, page_url: str) -> list[dict[str, str | None]]:
@@ -134,9 +132,7 @@ def download_image(
     *,
     timeout: float = 30.0,
 ) -> tuple[int, str | None]:
-    headers = {
-        "User-Agent": "Mozilla/5.0 (compatible; MLDesignDocReviewer/0.1; +dataset-prep)",
-    }
+    headers = request_headers_for_url(url)
     with httpx.Client(
         timeout=timeout,
         verify=certifi.where(),
@@ -180,9 +176,7 @@ def download_article_images(
         local_path = image_dir / filename
 
         try:
-            byte_size, content_type = download_image(
-                source_url, local_path, timeout=timeout
-            )
+            byte_size, content_type = download_image(source_url, local_path, timeout=timeout)
             ext = _guess_extension(source_url, content_type)
             if local_path.suffix.lower() != ext:
                 renamed = local_path.with_suffix(ext)
@@ -201,8 +195,16 @@ def download_article_images(
                     local_path=local_path,
                     repo_path=to_repo_relative_path(local_path),
                     alt_text=str(candidate.get("alt_text") or ""),
-                    width=_parse_dimension(str(candidate["width"])) if candidate.get("width") else None,
-                    height=_parse_dimension(str(candidate["height"])) if candidate.get("height") else None,
+                    width=(
+                        _parse_dimension(str(candidate["width"]))
+                        if candidate.get("width")
+                        else None
+                    ),
+                    height=(
+                        _parse_dimension(str(candidate["height"]))
+                        if candidate.get("height")
+                        else None
+                    ),
                     content_type=content_type,
                     byte_size=byte_size,
                 )
@@ -389,10 +391,7 @@ def ocr_raw_document_file(
     if not assets:
         return []
 
-    pending = any(
-        not asset.ocr_text or asset.ocr_text in {"", "PENDING_OCR"}
-        for asset in assets
-    )
+    pending = any(not asset.ocr_text or asset.ocr_text in {"", "PENDING_OCR"} for asset in assets)
     if not pending and not force:
         return assets
 

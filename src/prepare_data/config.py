@@ -57,7 +57,8 @@ class Settings:
 
         default_csv = data_dir / "evidently_ai_cases" / "800 ML and LLM use cases.csv"
         legacy_csv = data_dir / "800 ML and LLM use cases.csv"
-        cases_csv = Path(os.getenv("CASES_CSV", default_csv if default_csv.exists() else legacy_csv))
+        csv_default = default_csv if default_csv.exists() else legacy_csv
+        cases_csv = Path(os.getenv("CASES_CSV", csv_default))
 
         return cls(
             cases_csv=cases_csv,
@@ -66,9 +67,7 @@ class Settings:
             sample_manifest_path=Path(
                 os.getenv("SAMPLE_MANIFEST_PATH", data_dir / "sample_manifest.csv")
             ),
-            raw_documents_dir=Path(
-                os.getenv("RAW_DOCUMENTS_DIR", data_dir / "raw_documents")
-            ),
+            raw_documents_dir=Path(os.getenv("RAW_DOCUMENTS_DIR", data_dir / "raw_documents")),
             normalized_disdocs_dir=Path(
                 os.getenv("NORMALIZED_DISDOCS_DIR", data_dir / "normalized_disdocs")
             ),
@@ -84,9 +83,7 @@ class Settings:
             error_topology_path=Path(
                 os.getenv("ERROR_TOPOLOGY_PATH", data_dir / "error_topology.csv")
             ),
-            flawed_disdocs_dir=Path(
-                os.getenv("FLAWED_DISDOCS_DIR", data_dir / "flawed_disdocs")
-            ),
+            flawed_disdocs_dir=Path(os.getenv("FLAWED_DISDOCS_DIR", data_dir / "flawed_disdocs")),
             injection_log_path=Path(
                 os.getenv(
                     "INJECTION_LOG_PATH",
@@ -94,12 +91,8 @@ class Settings:
                 )
             ),
             openrouter_api_key=os.getenv("OPENROUTER_API_KEY"),
-            openrouter_model=os.getenv(
-                "OPENROUTER_MODEL", "google/gemma-4-31b-it:free"
-            ),
-            openrouter_base_url=os.getenv(
-                "OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1"
-            ),
+            openrouter_model=os.getenv("OPENROUTER_MODEL", "google/gemma-4-31b-it:free"),
+            openrouter_base_url=os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1"),
             openrouter_max_tokens=int(os.getenv("OPENROUTER_MAX_TOKENS", "8192")),
             normalize_delay_seconds=float(os.getenv("NORMALIZE_DELAY_SECONDS", "3.0")),
             whisper_model=os.getenv("WHISPER_MODEL", "small"),
@@ -109,12 +102,13 @@ class Settings:
             fetch_delay_seconds=float(os.getenv("FETCH_DELAY_SECONDS", "1.0")),
             tesseract_cmd=os.getenv("TESSERACT_CMD"),
             tesseract_lang=os.getenv("TESSERACT_LANG", "eng"),
-            hf_dataset_repo=os.getenv("HF_DATASET_REPO", "chekrizh/ml-disdoc-eval"),
+            hf_dataset_repo=os.getenv(
+                "HF_DATASET_REPO", "ml-system-design/ml-design-doc-reviewer-data"
+            ),
             hf_dataset_revision=os.getenv(
                 "HF_DATASET_REVISION",
                 _read_dataset_revision_file(
-                    Path(os.getenv("DATA_DIR", PROJECT_ROOT / "data"))
-                    / "dataset_revision.txt"
+                    Path(os.getenv("DATA_DIR", PROJECT_ROOT / "data")) / "dataset_revision.txt"
                 ),
             ),
         )
