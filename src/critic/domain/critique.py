@@ -6,8 +6,9 @@ from critic.domain.checklist import Severity
 
 Score = Literal[0, 0.5, 1]
 IRRELEVANT_DOCUMENT_MESSAGE = (
-    "Пожалуйста, отправьте документ в рамках ML System Design: problem statement, "
-    "цели, метрики, данные, validation, baseline, serving, monitoring и эксплуатацию."
+    "Please submit a document within ML System Design: problem statement, goals and "
+    "anti-goals, metrics, validation schema, datasets, baseline, serving, monitoring, "
+    "and operations."
 )
 
 

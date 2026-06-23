@@ -17,11 +17,11 @@ def test_validate_critic_output_rejects_unknown_checklist_item_ids() -> None:
         relevant=True,
         items=[
             ItemAssessment(item_id=1, score=1),
-            ItemAssessment(item_id=39, score=0, remark="Unknown checklist item."),
+            ItemAssessment(item_id=51, score=0, remark="Unknown checklist item."),
         ],
     )
 
-    with pytest.raises(CriticOutputValidationError, match="unknown item ids: 39"):
+    with pytest.raises(CriticOutputValidationError, match="unknown item ids: 51"):
         validate_critic_output(output, load_default_checklist())
 
 

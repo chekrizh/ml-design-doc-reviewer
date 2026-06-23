@@ -55,12 +55,12 @@ def test_extract_json_payload_prefers_review_over_trailing_example_with_preamble
 
 def test_extract_json_payload_prefers_first_fence_over_trailing_example_fence() -> None:
     content = (
-        '```json\n'
+        "```json\n"
         '{"relevant": true, "items": [{"item_id": 1, "score": 0.5, "remark": "gap"}]}\n'
-        '```\n'
-        '```json\n'
+        "```\n"
+        "```json\n"
         '{"relevant": false, "items": []}\n'
-        '```'
+        "```"
     )
 
     assert extract_json_payload(content) == (

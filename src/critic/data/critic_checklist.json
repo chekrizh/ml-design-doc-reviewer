@@ -1,269 +1,353 @@
 {
-  "version": "critic-checklist-v1",
+  "version": "critic-checklist-v4",
   "items": [
     {
       "id": 1,
-      "section": "1. Определение проблемы",
-      "question": "Сформулирована ли бизнес-проблема в терминах ML (классификация, регрессия, ранжирование и т.д.)?",
-      "block_weight": 10,
-      "question_weight": 2
+      "section": "1.1 Problem Definition",
+      "question": "Is the business problem formulated in ML terms (classification, regression, ranking, etc.)?",
+      "block_weight": 16,
+      "question_weight": 4
     },
     {
       "id": 2,
-      "section": "1. Определение проблемы",
-      "question": "Проведен ли анализ причин возникновения проблемы (метод «Пяти почему» или «перевернутая пирамида»)?",
-      "block_weight": 10,
-      "question_weight": 1
+      "section": "1.1 Problem Definition",
+      "question": "Was a root-cause analysis of the problem conducted (e.g., \"Five Whys\" or \"inverted pyramid\" method)?",
+      "block_weight": 16,
+      "question_weight": 3
     },
     {
       "id": 3,
-      "section": "2. Цели и антицели",
-      "question": "Определены ли конкретные бизнес-KPI, на которые должна повлиять система?",
-      "block_weight": 9,
-      "question_weight": 1
+      "section": "1.1 Problem Definition",
+      "question": "Is the business context of how the task arose described (current state of affairs, main business scenarios, and description of \"pain points\")?",
+      "block_weight": 16,
+      "question_weight": 2
     },
     {
       "id": 4,
-      "section": "2. Цели и антицели",
-      "question": "Указаны ли «антицели» (то, что система НЕ должна делать или оптимизировать)?",
-      "block_weight": 9,
-      "question_weight": 2
-    },
-    {
-      "id": 5,
-      "section": "3. Риски и ограничения",
-      "question": "Перечислены ли нефункциональные требования (SLA по задержке, стоимость ошибки, безопасность)?",
-      "block_weight": 2,
+      "section": "1.1 Problem Definition",
+      "question": "Is the task type formulated in machine-learning terms (e.g., fraud classification, regression for pricing, or ranking for search)?",
+      "block_weight": 16,
       "question_weight": 1
     },
     {
-      "id": 6,
-      "section": "3. Риски и ограничения",
-      "question": "Описана ли модель рисков (худшие сценарии, которых нужно избежать)?",
-      "block_weight": 2,
+      "id": 5,
+      "section": "1.2 Relevance and Reasons",
+      "question": "Was an analysis of the existing process (flow analysis) conducted?",
+      "block_weight": 14,
       "question_weight": 2
     },
     {
+      "id": 6,
+      "section": "1.2 Relevance and Reasons",
+      "question": "Is the impact of the existing process on business metrics (KPIs) and the estimate of potential benefit described?",
+      "block_weight": 14,
+      "question_weight": 1
+    },
+    {
       "id": 7,
-      "section": "4. Метрики и функции потерь",
-      "question": "Разделены ли метрики на онлайн (бизнес-метрики) и офлайн (технические)?",
-      "block_weight": 7,
+      "section": "1.2 Relevance and Reasons",
+      "question": "Is an estimate of the potential benefit from implementing the new system described?",
+      "block_weight": 14,
       "question_weight": 3
     },
     {
       "id": 8,
-      "section": "4. Метрики и функции потерь",
-      "question": "Является ли выбранная функция потерь дифференцируемой и подходящей для оптимизации алгоритма?",
-      "block_weight": 7,
+      "section": "1.3 Goals and Antigoals",
+      "question": "Is it described what the system must NOT do?",
+      "block_weight": 15,
       "question_weight": 2
     },
     {
       "id": 9,
-      "section": "4. Метрики и функции потерь",
-      "question": "Построена ли иерархия метрик (связь прокси-метрик с финальными целями)?",
-      "block_weight": 7,
+      "section": "1.3 Goals and Antigoals",
+      "question": "Are the system's goals described (what it must do)?",
+      "block_weight": 15,
       "question_weight": 1
     },
     {
       "id": 10,
-      "section": "5. Данные (Dataset)",
-      "question": "Перечислены ли все источники данных (внутренние и внешние) с указанием метаданных?",
-      "block_weight": 8,
-      "question_weight": 1
+      "section": "1.4 Previous Work",
+      "question": "Has this task been solved before?",
+      "block_weight": 13,
+      "question_weight": 3
     },
     {
       "id": 11,
-      "section": "5. Данные (Dataset)",
-      "question": "Описан ли процесс фильтрации данных и обработки пропусков/дубликатов?",
-      "block_weight": 8,
+      "section": "1.4 Previous Work",
+      "question": "What methods were used (e.g., heuristics, expert judgment, or simple moving windows)?",
+      "block_weight": 13,
       "question_weight": 2
     },
     {
       "id": 12,
-      "section": "5. Данные (Dataset)",
-      "question": "Определена ли стратегия разметки данных (команда, платформа, контроль качества)?",
+      "section": "1.4 Previous Work",
+      "question": "Why did the current solution stop satisfying the business/users?",
+      "block_weight": 13,
+      "question_weight": 1
+    },
+    {
+      "id": 13,
+      "section": "1.5 Issues and Risks",
+      "question": "Are technical risks described (e.g., lack of infrastructure)?",
       "block_weight": 8,
       "question_weight": 3
     },
     {
-      "id": 13,
-      "section": "6. Схема валидации",
-      "question": "Соответствует ли схема валидации способу применения модели в реальности (например, временной сплит для временных рядов)?",
-      "block_weight": 5,
-      "question_weight": 3
-    },
-    {
       "id": 14,
-      "section": "6. Схема валидации",
-      "question": "Выделен ли независимый тестовый набор («золотой сет») для финальной оценки?",
-      "block_weight": 5,
-      "question_weight": 1
+      "section": "1.5 Issues and Risks",
+      "question": "Are business risks described?",
+      "block_weight": 8,
+      "question_weight": 2
     },
     {
       "id": 15,
-      "section": "6. Схема валидации",
-      "question": "Исключена ли возможность утечки данных (data leakage), например, через группировку по ID пользователя?",
-      "block_weight": 5,
-      "question_weight": 2
+      "section": "1.5 Issues and Risks",
+      "question": "Are business risks quantified in money? Is there a calculation of potential losses?",
+      "block_weight": 8,
+      "question_weight": 6
     },
     {
       "id": 16,
-      "section": "7. Базовое решение (Baseline)",
-      "question": "Описан ли константный baseline (медиана, среднее или случайный ответ) для сравнения?",
-      "block_weight": 6,
-      "question_weight": 2
+      "section": "1.5 Issues and Risks",
+      "question": "Are constraints/limitations described?",
+      "block_weight": 8,
+      "question_weight": 5
     },
     {
       "id": 17,
-      "section": "7. Базовое решение (Baseline)",
-      "question": "Предложен ли простой ML-baseline (линейная модель или эвристика) перед переходом к сложным моделям?",
-      "block_weight": 6,
-      "question_weight": 1
+      "section": "1.5 Issues and Risks",
+      "question": "Are non-functional requirements listed (latency SLA, cost of error, security)?",
+      "block_weight": 8,
+      "question_weight": 4
     },
     {
       "id": 18,
-      "section": "8. Ошибки и их анализ",
-      "question": "Предусмотрен ли план анализа кривых обучения (подбор размера данных, детекция переобучения)?",
-      "block_weight": 4,
-      "question_weight": 2
-    },
-    {
-      "id": 19,
-      "section": "8. Ошибки и их анализ",
-      "question": "Описан ли план анализа остатков (residuals) и поиска закономерностей в ошибках?",
-      "block_weight": 4,
-      "question_weight": 3
-    },
-    {
-      "id": 20,
-      "section": "8. Ошибки и их анализ",
-      "question": "Определены ли сценарии для анализа «краевых случаев» (corner cases)?",
-      "block_weight": 4,
+      "section": "1.5 Issues and Risks",
+      "question": "Is a risk model described (worst-case scenarios to avoid)?",
+      "block_weight": 8,
       "question_weight": 1
     },
     {
+      "id": 19,
+      "section": "2.1 Metrics and Loss Functions",
+      "question": "Are metrics split into online (business metrics) and offline (technical) ones?",
+      "block_weight": 12,
+      "question_weight": 1
+    },
+    {
+      "id": 20,
+      "section": "2.1 Metrics and Loss Functions",
+      "question": "Is the chosen loss function differentiable and suitable for optimizing the algorithm?",
+      "block_weight": 12,
+      "question_weight": 3
+    },
+    {
       "id": 21,
-      "section": "9. Пайплайны обучения",
-      "question": "Описаны ли шаги обеспечения воспроизводимости (версионирование кода, данных, конфигураций)?",
-      "block_weight": 3,
+      "section": "2.1 Metrics and Loss Functions",
+      "question": "Is a hierarchy of metrics built (linking proxy metrics to final goals)?",
+      "block_weight": 12,
       "question_weight": 2
     },
     {
       "id": 22,
-      "section": "9. Пайплайны обучения",
-      "question": "Предусмотрены ли «дымовые тесты» (smoke tests) для быстрой проверки работоспособности пайплайна?",
-      "block_weight": 3,
-      "question_weight": 1
-    },
-    {
-      "id": 23,
-      "section": "10. Признаки (Features)",
-      "question": "Оценена ли важность признаков (feature importance) и их вклад в объяснимость модели?",
-      "block_weight": 2,
-      "question_weight": 1
-    },
-    {
-      "id": 24,
-      "section": "10. Признаки (Features)",
-      "question": "Описаны ли тесты на корректность признаков (диапазоны значений, корреляции)?",
-      "block_weight": 2,
-      "question_weight": 2
-    },
-    {
-      "id": 25,
-      "section": "11. Измерение результатов",
-      "question": "Сформулирована ли гипотеза для A/B-тестирования (что меняем, на что влияем, ожидаемый эффект)?",
-      "block_weight": 3,
-      "question_weight": 2
-    },
-    {
-      "id": 26,
-      "section": "11. Измерение результатов",
-      "question": "Рассчитан ли минимально обнаруживаемый эффект (MDE) и длительность эксперимента?",
-      "block_weight": 3,
-      "question_weight": 1
-    },
-    {
-      "id": 27,
-      "section": "12. Интеграция и Serving",
-      "question": "Описан ли дизайн API (формат запросов и ответов, версионирование)?",
-      "block_weight": 2,
+      "section": "2.2 Dataset",
+      "question": "Are all data sources (internal and external) listed with metadata?",
+      "block_weight": 11,
       "question_weight": 3
     },
     {
+      "id": 23,
+      "section": "2.2 Dataset",
+      "question": "Is the data filtering process and handling of missing values/duplicates described?",
+      "block_weight": 11,
+      "question_weight": 2
+    },
+    {
+      "id": 24,
+      "section": "2.2 Dataset",
+      "question": "Is a data labeling strategy defined (team, platform, quality control)?",
+      "block_weight": 11,
+      "question_weight": 1
+    },
+    {
+      "id": 25,
+      "section": "2.3 Validation Scheme",
+      "question": "Does the validation scheme match how the model is applied in reality (e.g., time-based split for time series)?",
+      "block_weight": 10,
+      "question_weight": 3
+    },
+    {
+      "id": 26,
+      "section": "2.3 Validation Scheme",
+      "question": "Is an independent test set (\"golden set\") set aside for final evaluation?",
+      "block_weight": 10,
+      "question_weight": 2
+    },
+    {
+      "id": 27,
+      "section": "2.3 Validation Scheme",
+      "question": "Is data leakage ruled out (e.g., by grouping on user ID)?",
+      "block_weight": 10,
+      "question_weight": 1
+    },
+    {
       "id": 28,
-      "section": "12. Интеграция и Serving",
-      "question": "Определена ли стратегия отката (fallbacks) в случае отказа основной модели?",
-      "block_weight": 2,
+      "section": "2.4 Baseline",
+      "question": "Is a constant baseline (median, mean, or random answer) described for comparison?",
+      "block_weight": 9,
       "question_weight": 2
     },
     {
       "id": 29,
-      "section": "12. Интеграция и Serving",
-      "question": "Описан ли цикл релизов (blue-green или canary deployment)?",
-      "block_weight": 2,
+      "section": "2.4 Baseline",
+      "question": "Is a simple ML baseline (linear model or heuristic) proposed before moving to complex models?",
+      "block_weight": 9,
       "question_weight": 1
     },
     {
       "id": 30,
-      "section": "13. Мониторинг",
-      "question": "Настроены ли алерты на техническое здоровье (задержка, ошибки) и на дрейф данных (data drift)?",
-      "block_weight": 4,
+      "section": "3.1 Features",
+      "question": "Is feature importance evaluated, along with its contribution to model explainability?",
+      "block_weight": 7,
       "question_weight": 2
     },
     {
       "id": 31,
-      "section": "13. Мониторинг",
-      "question": "Предусмотрено ли логирование предсказаний для последующего дообучения и анализа?",
-      "block_weight": 4,
+      "section": "3.1 Features",
+      "question": "Are tests for feature correctness described (value ranges, correlations)?",
+      "block_weight": 7,
       "question_weight": 1
     },
     {
       "id": 32,
-      "section": "14. Эксплуатация",
-      "question": "Составлена ли матрица ответственности (RACI) для поддержки системы после запуска?",
-      "block_weight": 2,
+      "section": "3.2 Results Measurement",
+      "question": "Is a hypothesis for A/B testing formulated (what changes, what it affects, expected effect)?",
+      "block_weight": 6,
       "question_weight": 2
     },
     {
       "id": 33,
-      "section": "14. Эксплуатация",
-      "question": "Подготовлен ли план «на случай пожара» (runbook) для дежурных инженеров?",
-      "block_weight": 2,
+      "section": "3.2 Results Measurement",
+      "question": "Is the minimum detectable effect (MDE) and experiment duration calculated?",
+      "block_weight": 6,
       "question_weight": 1
     },
     {
       "id": 34,
-      "section": "15. между разделами",
-      "question": "Цели vs Метрики: Напрямую ли технические офлайн-метрики коррелируют с бизнес-KPI, указанными в целях?",
-      "block_weight": 10,
-      "question_weight": 5
-    },
-    {
-      "id": 35,
-      "section": "15. между разделами",
-      "question": "Риски vs Fallback: Предусмотрены ли в разделе интеграции стратегии отката именно для тех рисков, что описаны в начале документа?",
-      "block_weight": 10,
-      "question_weight": 4
-    },
-    {
-      "id": 36,
-      "section": "15. между разделами",
-      "question": "Baseline vs Fallback: Используется ли простейший baseline из соответствующего раздела в качестве одного из уровней fallback-стратегии?",
-      "block_weight": 10,
+      "section": "3.3 Error Analysis",
+      "question": "Is a plan for analyzing learning curves provided (data size selection, overfitting detection)?",
+      "block_weight": 5,
       "question_weight": 3
     },
     {
+      "id": 35,
+      "section": "3.3 Error Analysis",
+      "question": "Is a plan for residual analysis and finding patterns in errors described?",
+      "block_weight": 5,
+      "question_weight": 2
+    },
+    {
+      "id": 36,
+      "section": "3.3 Error Analysis",
+      "question": "Are scenarios for analyzing corner cases defined?",
+      "block_weight": 5,
+      "question_weight": 1
+    },
+    {
       "id": 37,
-      "section": "15. между разделами",
-      "question": "Данные vs Признаки: Соответствуют ли признаки, описанные в разделе Feature Engineering, доступным полям в описанных источниках данных?",
-      "block_weight": 10,
+      "section": "3.4 Training Pipelines",
+      "question": "Are steps for ensuring reproducibility described (versioning of code, data, and configs)?",
+      "block_weight": 4,
       "question_weight": 2
     },
     {
       "id": 38,
-      "section": "15. между разделами",
-      "question": "Валидация vs Мониторинг: Совпадают ли пороги метрик, считающиеся «нормой» при валидации, с порогами срабатывания алертов в мониторинге?",
+      "section": "3.4 Training Pipelines",
+      "question": "Are smoke tests provided for quickly checking that the pipeline works?",
+      "block_weight": 4,
+      "question_weight": 1
+    },
+    {
+      "id": 39,
+      "section": "4.1 Integration and Serving",
+      "question": "Is the API design described (request/response format, versioning)?",
+      "block_weight": 3,
+      "question_weight": 3
+    },
+    {
+      "id": 40,
+      "section": "4.1 Integration and Serving",
+      "question": "Is a fallback strategy defined in case the main model fails?",
+      "block_weight": 3,
+      "question_weight": 2
+    },
+    {
+      "id": 41,
+      "section": "4.1 Integration and Serving",
+      "question": "Is the release cycle described (blue-green or canary deployment)?",
+      "block_weight": 3,
+      "question_weight": 1
+    },
+    {
+      "id": 42,
+      "section": "4.2 Monitoring",
+      "question": "Are alerts set up for technical health (latency, errors) and for data drift?",
+      "block_weight": 2,
+      "question_weight": 1
+    },
+    {
+      "id": 43,
+      "section": "4.2 Monitoring",
+      "question": "Is prediction logging provided for later retraining and analysis?",
+      "block_weight": 2,
+      "question_weight": 2
+    },
+    {
+      "id": 44,
+      "section": "4.3 Operations",
+      "question": "Is a responsibility matrix (RACI) created for supporting the system after launch?",
+      "block_weight": 1,
+      "question_weight": 1
+    },
+    {
+      "id": 45,
+      "section": "4.3 Operations",
+      "question": "Is a runbook (\"in case of fire\" plan) prepared for on-call engineers?",
+      "block_weight": 1,
+      "question_weight": 2
+    },
+    {
+      "id": 46,
+      "section": "5.1 Goals vs Metrics",
+      "question": "Do the technical offline metrics directly correlate with the business KPIs stated in the goals?",
+      "block_weight": 10,
+      "question_weight": 5
+    },
+    {
+      "id": 47,
+      "section": "5.2 Risks vs Fallback",
+      "question": "Does the integration section provide fallback strategies specifically for the risks described at the start of the document?",
+      "block_weight": 10,
+      "question_weight": 4
+    },
+    {
+      "id": 48,
+      "section": "5.3 Baseline vs Fallback",
+      "question": "Is the simplest baseline from the relevant section used as one of the fallback-strategy levels?",
+      "block_weight": 10,
+      "question_weight": 3
+    },
+    {
+      "id": 49,
+      "section": "5.4 Data vs Features",
+      "question": "Do the features described in the Feature Engineering section correspond to available fields in the described data sources?",
+      "block_weight": 10,
+      "question_weight": 2
+    },
+    {
+      "id": 50,
+      "section": "5.5 Validation vs Monitoring",
+      "question": "Do the metric thresholds considered \"normal\" during validation match the alert-triggering thresholds in monitoring?",
       "block_weight": 10,
       "question_weight": 1
     }

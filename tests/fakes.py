@@ -32,7 +32,6 @@ def complete_critic_output(
     return CriticOutput(
         relevant=True,
         items=[
-            by_id.get(item.id, ItemAssessment(item_id=item.id, score=1))
-            for item in checklist.items
+            by_id.get(item.id, ItemAssessment(item_id=item.id, score=1)) for item in checklist.items
         ],
     )

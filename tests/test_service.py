@@ -1,9 +1,16 @@
+import pytest
 from fakes import FakeLLMClient, complete_critic_output
 
 from critic.config import Settings
 from critic.domain.checklist import load_default_checklist
+from critic.domain.critic_validation import CriticOutputValidationError
 from critic.domain.critique import IRRELEVANT_DOCUMENT_MESSAGE, CriticOutput, ItemAssessment
 from critic.service import ReviewService
+
+
+class FailingInferenceLogger:
+    def write_failure(self, **kwargs) -> str:
+        raise OSError("disk full")
 
 
 async def test_review_service_returns_ranked_review_result() -> None:
@@ -13,7 +20,7 @@ async def test_review_service_returns_ranked_review_result() -> None:
             complete_critic_output(
                 ItemAssessment(item_id=16, score=0.5, remark="Constant baseline is missing."),
                 ItemAssessment(
-                    item_id=34,
+                    item_id=46,
                     score=0,
                     remark="Metrics are disconnected from goals.",
                 ),
@@ -29,7 +36,7 @@ async def test_review_service_returns_ranked_review_result() -> None:
     assert result.relevant is True
     assert result.model == "test-model"
     assert result.checklist_version == checklist.version
-    assert [note.item_id for note in result.notes] == [34]
+    assert [note.item_id for note in result.notes] == [46]
 
 
 async def test_review_service_returns_message_for_irrelevant_document() -> None:
@@ -45,6 +52,19 @@ async def test_review_service_returns_message_for_irrelevant_document() -> None:
     assert result.relevant is False
     assert result.notes == []
     assert result.message == IRRELEVANT_DOCUMENT_MESSAGE
+
+
+async def test_review_service_preserves_validation_error_when_failure_logging_fails() -> None:
+    service = ReviewService(
+        llm_client=FakeLLMClient(CriticOutput(relevant=True, items=[])),
+        checklist=load_default_checklist(),
+        model="test-model",
+        top_n=5,
+        inference_logger=FailingInferenceLogger(),
+    )
+
+    with pytest.raises(CriticOutputValidationError, match="missing item ids"):
+        await service.review("design doc")
 
 
 def test_review_service_from_settings_disables_inference_logging_by_default(tmp_path) -> None:

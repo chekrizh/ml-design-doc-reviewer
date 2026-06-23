@@ -5,6 +5,7 @@ from critic.config import Settings
 
 
 def _set_required_env(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
     monkeypatch.setenv("OPENAI_BASE_URL", "https://openrouter.ai/api/v1")
     monkeypatch.setenv("CRITIC_MODEL", "openai/gpt-4o-mini")
     monkeypatch.setenv("CRITIC_TOP_N", "5")
@@ -14,8 +15,9 @@ def _set_required_env(monkeypatch: pytest.MonkeyPatch) -> None:
 def test_settings_reads_values_from_environment(monkeypatch: pytest.MonkeyPatch) -> None:
     _set_required_env(monkeypatch)
 
-    settings = Settings(openai_api_key="test-key", _env_file=None)
+    settings = Settings(_env_file=None)
 
+    assert settings.openai_api_key == "test-key"
     assert str(settings.openai_base_url) == "https://openrouter.ai/api/v1"
     assert settings.model == "openai/gpt-4o-mini"
     assert settings.top_n == 5
@@ -25,6 +27,7 @@ def test_settings_reads_values_from_environment(monkeypatch: pytest.MonkeyPatch)
 
 def test_settings_requires_env_values(monkeypatch: pytest.MonkeyPatch) -> None:
     for name in (
+        "OPENAI_API_KEY",
         "OPENAI_BASE_URL",
         "CRITIC_MODEL",
         "CRITIC_TOP_N",
@@ -33,7 +36,7 @@ def test_settings_requires_env_values(monkeypatch: pytest.MonkeyPatch) -> None:
         monkeypatch.delenv(name, raising=False)
 
     with pytest.raises(ValidationError):
-        Settings(openai_api_key="test-key", _env_file=None)
+        Settings(_env_file=None)
 
 
 def test_settings_accepts_critic_prefixed_overrides(monkeypatch: pytest.MonkeyPatch) -> None:

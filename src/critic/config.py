@@ -12,8 +12,8 @@ class Settings(BaseSettings):
         populate_by_name=True,
     )
 
-    openai_api_key: str
-    openai_base_url: str
+    openai_api_key: str = Field(alias="OPENAI_API_KEY")
+    openai_base_url: str = Field(alias="OPENAI_BASE_URL")
     model: str = Field(alias="CRITIC_MODEL")
     top_n: int = Field(alias="CRITIC_TOP_N", ge=1)
     log_file: Path = Field(alias="CRITIC_LOG_FILE")

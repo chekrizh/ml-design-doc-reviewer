@@ -19,8 +19,8 @@ class ChecklistItem(BaseModel):
     id: int = Field(ge=1)
     section: str = Field(min_length=1)
     question: str = Field(min_length=1)
-    block_weight: int = Field(ge=1, le=10)
-    question_weight: int = Field(ge=1, le=5)
+    block_weight: int = Field(ge=1, le=16)
+    question_weight: int = Field(ge=1, le=6)
 
 
 class Checklist(BaseModel):

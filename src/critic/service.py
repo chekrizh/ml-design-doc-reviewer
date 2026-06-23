@@ -112,15 +112,23 @@ class ReviewService:
     def _log_failure(self, document: str, exc: CriticOutputValidationError) -> None:
         if self._inference_logger is None:
             return
-        self._inference_logger.write_failure(
-            input_document=document,
-            critic_output=exc.critic_output,
-            model=self._model,
-            checklist_version=self._checklist.version,
-            top_n=self._top_n,
-            llm_duration_ms=exc.llm_duration_ms,
-            error=exc,
-        )
+        try:
+            self._inference_logger.write_failure(
+                input_document=document,
+                critic_output=exc.critic_output,
+                model=self._model,
+                checklist_version=self._checklist.version,
+                top_n=self._top_n,
+                llm_duration_ms=exc.llm_duration_ms,
+                error=exc,
+            )
+        except OSError as log_exc:
+            self._logger.warning(
+                "inference_failure_log_failed model=%s error=%s",
+                self._model,
+                log_exc,
+                exc_info=True,
+            )
 
     @classmethod
     def from_settings(cls, settings: Settings) -> "ReviewService":
