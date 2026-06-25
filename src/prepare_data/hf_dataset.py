@@ -22,6 +22,7 @@ DATASET_LAYOUT: dict[str, str] = {
     "raw_documents": "raw",
     "normalized_disdocs": "normalized",
     "flawed_disdocs": "flawed",
+    "disdoc_examples": "disdoc_examples",
     "evidently_ai_cases": "source/evidently_ai_cases",
     "byte_byte_go_cases": "source/byte_byte_go_cases",
 }
@@ -204,6 +205,7 @@ def download_dataset(
         "raw/**",
         "normalized/**",
         "flawed/**",
+        "disdoc_examples/**",
         "source/byte_byte_go_cases/**",
     ]
     if include_source_catalog:
@@ -273,6 +275,7 @@ Evaluation artifacts for the ML Design Doc Reviewer project.
 | `raw/images/` | Downloaded article images |
 | `normalized/` | Canonical 14-section ML design documents |
 | `flawed/` | Normalized docs with injected errors + `injection_log.csv` |
+| `disdoc_examples/` | Few-shot reference design docs for normalization |
 | `source/evidently_ai_cases/` | Optional upstream Evidently AI catalog CSV |
 | `source/byte_byte_go_cases/` | ByteByteGo ML system design case archives |
 

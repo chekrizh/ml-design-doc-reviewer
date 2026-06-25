@@ -25,6 +25,7 @@ data/normalized_disdocs/
 data/flawed_disdocs/
 data/evidently_ai_cases/
 data/byte_byte_go_cases/
+data/disdoc_examples/
 data/.hf_upload_staging/
 
 # Keep lightweight dataset config in git
@@ -32,5 +33,3 @@ data/.hf_upload_staging/
 !data/dataset_revision.txt
 !data/sample_manifest.csv
 !data/error_topology.csv
-!data/disdoc_examples/
-!data/disdoc_examples/**

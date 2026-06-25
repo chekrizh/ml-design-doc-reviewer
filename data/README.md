@@ -15,12 +15,12 @@ uv run prepare-data download-dataset
 | `sample_manifest.csv` | Stratified 100-case sample |
 | `error_topology.csv` | Controlled error taxonomy |
 | `dataset_revision.txt` | Pinned Hugging Face dataset revision |
-| `disdoc_examples/` | Few-shot reference design docs |
 
 ## Downloaded from Hugging Face
 
 | Local path | Remote prefix |
 |------------|---------------|
+| `disdoc_examples/` | `disdoc_examples/` |
 | `raw_documents/` | `raw/` |
 | `normalized_disdocs/` | `normalized/` |
 | `flawed_disdocs/` | `flawed/` |

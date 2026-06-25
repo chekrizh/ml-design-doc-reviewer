@@ -103,7 +103,6 @@ The `src/prepare_data` package builds the evaluation dataset. **Heavy artifacts 
 | `data/sample_manifest.csv` | Stratified 100-case sample |
 | `data/error_topology.csv` | Controlled error taxonomy |
 | `data/dataset_revision.txt` | Pinned HF dataset revision |
-| `data/disdoc_examples/` | Few-shot reference design docs |
 | `prompts/` | Normalization prompts |
 
 ### Download dataset from Hugging Face
@@ -167,6 +166,7 @@ The normalization prompt lives in [`prompts/normalize_to_disdoc.md`](prompts/nor
 | `data/raw_documents/` | Raw markdown exports, `.meta.json`, images |
 | `data/normalized_disdocs/` | Canonical 14-section ML design documents |
 | `data/flawed_disdocs/` | Docs with injected errors + `injection_log.csv` |
+| `data/disdoc_examples/` | Few-shot reference design docs for normalization |
 
 ## Architecture
 
