@@ -1,4 +1,4 @@
-"""Normalize raw documents into canonical ML design docs via OpenRouter."""
+"""Normalize raw documents into canonical ML design docs via an OpenAI-compatible API."""
 
 from __future__ import annotations
 
@@ -8,8 +8,7 @@ import re
 import time
 from pathlib import Path
 
-import httpx
-
+from prepare_data.llm_client import OpenAIChatClient
 from prepare_data.paths import to_repo_relative_path
 
 logger = logging.getLogger(__name__)
@@ -75,78 +74,8 @@ def build_user_message(
     )
 
 
-class OpenRouterClient:
-    """Minimal OpenRouter chat completions client."""
-
-    def __init__(
-        self,
-        api_key: str,
-        model: str,
-        base_url: str = "https://openrouter.ai/api/v1",
-        timeout: float = 300.0,
-    ) -> None:
-        self._api_key = api_key
-        self._model = model
-        self._base_url = base_url.rstrip("/")
-        self._timeout = timeout
-
-    def complete(
-        self,
-        system_prompt: str,
-        user_message: str,
-        *,
-        max_tokens: int = 8192,
-        max_retries: int = 6,
-        retry_base_seconds: float = 5.0,
-    ) -> str:
-        payload = {
-            "model": self._model,
-            "messages": [
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_message},
-            ],
-            "temperature": 0.2,
-            "max_tokens": max_tokens,
-        }
-        headers = {
-            "Authorization": f"Bearer {self._api_key}",
-            "Content-Type": "application/json",
-            "HTTP-Referer": "https://github.com/ml-design-doc-reviewer",
-            "X-Title": "ML Design Doc Reviewer - Dataset Prep",
-        }
-        url = f"{self._base_url}/chat/completions"
-        last_error: Exception | None = None
-
-        with httpx.Client(timeout=self._timeout) as client:
-            for attempt in range(max_retries):
-                response = client.post(url, json=payload, headers=headers)
-                if response.status_code == 429 and attempt < max_retries - 1:
-                    wait = retry_base_seconds * (2**attempt)
-                    logger.warning(
-                        "Rate limited by OpenRouter, retrying in %.0fs (attempt %d/%d)",
-                        wait,
-                        attempt + 1,
-                        max_retries,
-                    )
-                    time.sleep(wait)
-                    continue
-                try:
-                    response.raise_for_status()
-                except httpx.HTTPStatusError as exc:
-                    last_error = exc
-                    raise
-                data = response.json()
-                try:
-                    return data["choices"][0]["message"]["content"]
-                except (KeyError, IndexError, TypeError) as exc:
-                    logger.error("Unexpected OpenRouter response: %s", data)
-                    raise RuntimeError("Invalid response from OpenRouter") from exc
-
-        raise RuntimeError("OpenRouter request failed after retries") from last_error
-
-
 def normalize_document(
-    client: OpenRouterClient,
+    client: OpenAIChatClient,
     system_prompt: str,
     user_template: str,
     row: dict,
@@ -186,7 +115,7 @@ def normalize_manifest(
 
     system_prompt, user_template = load_normalize_prompt(prompt_path)
     examples_excerpt = load_disdoc_examples(examples_dir)
-    client = OpenRouterClient(api_key=api_key, model=model, base_url=base_url)
+    client = OpenAIChatClient(api_key=api_key, base_url=base_url, model=model)
 
     manifest = pd.read_csv(manifest_path)
     output_dir.mkdir(parents=True, exist_ok=True)

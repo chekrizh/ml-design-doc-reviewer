@@ -44,7 +44,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     subparsers.add_parser(
         "normalize",
-        help="Convert raw documents to canonical design docs via OpenRouter.",
+        help="Convert raw documents to canonical design docs via an OpenAI-compatible API.",
     )
     subparsers.add_parser("all", help="Run sample → fetch → normalize.")
     subparsers.add_parser(

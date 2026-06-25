@@ -35,10 +35,10 @@ class Settings:
     error_topology_path: Path
     flawed_disdocs_dir: Path
     injection_log_path: Path
-    openrouter_api_key: str | None
-    openrouter_model: str
-    openrouter_base_url: str
-    openrouter_max_tokens: int
+    openai_api_key: str | None
+    openai_base_url: str
+    normalize_model: str
+    normalize_max_tokens: int
     normalize_delay_seconds: float
     whisper_model: str
     whisper_device: str
@@ -90,10 +90,10 @@ class Settings:
                     data_dir / "flawed_disdocs" / "injection_log.csv",
                 )
             ),
-            openrouter_api_key=os.getenv("OPENROUTER_API_KEY"),
-            openrouter_model=os.getenv("OPENROUTER_MODEL", "google/gemma-4-31b-it:free"),
-            openrouter_base_url=os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1"),
-            openrouter_max_tokens=int(os.getenv("OPENROUTER_MAX_TOKENS", "8192")),
+            openai_api_key=os.getenv("OPENAI_API_KEY"),
+            openai_base_url=os.getenv("OPENAI_BASE_URL", "https://openrouter.ai/api/v1"),
+            normalize_model=os.getenv("NORMALIZE_MODEL", "google/gemini-2.5-pro"),
+            normalize_max_tokens=int(os.getenv("NORMALIZE_MAX_TOKENS", "8192")),
             normalize_delay_seconds=float(os.getenv("NORMALIZE_DELAY_SECONDS", "3.0")),
             whisper_model=os.getenv("WHISPER_MODEL", "small"),
             whisper_device=os.getenv("WHISPER_DEVICE", "cpu"),
@@ -113,13 +113,12 @@ class Settings:
             ),
         )
 
-    def require_openrouter_key(self) -> str:
-        if not self.openrouter_api_key:
+    def require_openai_key(self) -> str:
+        if not self.openai_api_key:
             raise RuntimeError(
-                "OPENROUTER_API_KEY is required for normalization. "
-                "Set it in .env or the environment."
+                "OPENAI_API_KEY is required for normalization. Set it in .env or the environment."
             )
-        return self.openrouter_api_key
+        return self.openai_api_key
 
 
 def _read_dataset_revision_file(path: Path) -> str:

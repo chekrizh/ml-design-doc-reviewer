@@ -132,7 +132,7 @@ huggingface-cli download ml-system-design/ml-design-doc-reviewer-data flawed --r
 - Python 3.12
 - [uv](https://docs.astral.sh/uv/)
 - `brew install tesseract` (OCR step)
-- OpenRouter API key (normalization step)
+- OpenAI-compatible API key (`OPENAI_API_KEY` + `OPENAI_BASE_URL`; OpenRouter works out of the box)
 - Hugging Face token (upload only; download works for public datasets)
 
 ### Regenerate locally (maintainers)
@@ -146,7 +146,7 @@ uv run prepare-data fetch
 uv run prepare-data enrich-images
 uv run prepare-data ocr-images
 
-# 3. Normalize via OpenRouter
+# 3. Normalize via OpenAI-compatible API
 uv run prepare-data normalize
 
 # 4. Inject controlled errors
