@@ -73,7 +73,7 @@ Planned initial surfaces:
 - structured JSON input in addition to plain text and Markdown;
 - image input support in addition to the current text-only flow;
 - human-readable Markdown report;
-- offline evaluation harness for WCS, direct-answer violations, and false critique rate;
+- offline evaluation harness for weighted checklist score, direct-answer violations, and false critique rate;
 - golden and synthetic dataset workflow for repeatable critic evaluation;
 - experiment observability for prompt, checklist, model, latency, and cost tracking;
 
