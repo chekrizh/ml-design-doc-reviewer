@@ -1,0 +1,355 @@
+{
+  "version": "critic-checklist-v4",
+  "items": [
+    {
+      "id": 1,
+      "section": "1.1 Problem Definition",
+      "question": "Is the business problem formulated in ML terms (classification, regression, ranking, etc.)?",
+      "block_weight": 16,
+      "question_weight": 4
+    },
+    {
+      "id": 2,
+      "section": "1.1 Problem Definition",
+      "question": "Was a root-cause analysis of the problem conducted (e.g., \"Five Whys\" or \"inverted pyramid\" method)?",
+      "block_weight": 16,
+      "question_weight": 3
+    },
+    {
+      "id": 3,
+      "section": "1.1 Problem Definition",
+      "question": "Is the business context of how the task arose described (current state of affairs, main business scenarios, and description of \"pain points\")?",
+      "block_weight": 16,
+      "question_weight": 2
+    },
+    {
+      "id": 4,
+      "section": "1.1 Problem Definition",
+      "question": "Is the task type formulated in machine-learning terms (e.g., fraud classification, regression for pricing, or ranking for search)?",
+      "block_weight": 16,
+      "question_weight": 1
+    },
+    {
+      "id": 5,
+      "section": "1.2 Relevance and Reasons",
+      "question": "Was an analysis of the existing process (flow analysis) conducted?",
+      "block_weight": 14,
+      "question_weight": 2
+    },
+    {
+      "id": 6,
+      "section": "1.2 Relevance and Reasons",
+      "question": "Is the impact of the existing process on business metrics (KPIs) and the estimate of potential benefit described?",
+      "block_weight": 14,
+      "question_weight": 1
+    },
+    {
+      "id": 7,
+      "section": "1.2 Relevance and Reasons",
+      "question": "Is an estimate of the potential benefit from implementing the new system described?",
+      "block_weight": 14,
+      "question_weight": 3
+    },
+    {
+      "id": 8,
+      "section": "1.3 Goals and Antigoals",
+      "question": "Is it described what the system must NOT do?",
+      "block_weight": 15,
+      "question_weight": 2
+    },
+    {
+      "id": 9,
+      "section": "1.3 Goals and Antigoals",
+      "question": "Are the system's goals described (what it must do)?",
+      "block_weight": 15,
+      "question_weight": 1
+    },
+    {
+      "id": 10,
+      "section": "1.4 Previous Work",
+      "question": "Has this task been solved before?",
+      "block_weight": 13,
+      "question_weight": 3
+    },
+    {
+      "id": 11,
+      "section": "1.4 Previous Work",
+      "question": "What methods were used (e.g., heuristics, expert judgment, or simple moving windows)?",
+      "block_weight": 13,
+      "question_weight": 2
+    },
+    {
+      "id": 12,
+      "section": "1.4 Previous Work",
+      "question": "Why did the current solution stop satisfying the business/users?",
+      "block_weight": 13,
+      "question_weight": 1
+    },
+    {
+      "id": 13,
+      "section": "1.5 Issues and Risks",
+      "question": "Are technical risks described (e.g., lack of infrastructure)?",
+      "block_weight": 8,
+      "question_weight": 3
+    },
+    {
+      "id": 14,
+      "section": "1.5 Issues and Risks",
+      "question": "Are business risks described?",
+      "block_weight": 8,
+      "question_weight": 2
+    },
+    {
+      "id": 15,
+      "section": "1.5 Issues and Risks",
+      "question": "Are business risks quantified in money? Is there a calculation of potential losses?",
+      "block_weight": 8,
+      "question_weight": 6
+    },
+    {
+      "id": 16,
+      "section": "1.5 Issues and Risks",
+      "question": "Are constraints/limitations described?",
+      "block_weight": 8,
+      "question_weight": 5
+    },
+    {
+      "id": 17,
+      "section": "1.5 Issues and Risks",
+      "question": "Are non-functional requirements listed (latency SLA, cost of error, security)?",
+      "block_weight": 8,
+      "question_weight": 4
+    },
+    {
+      "id": 18,
+      "section": "1.5 Issues and Risks",
+      "question": "Is a risk model described (worst-case scenarios to avoid)?",
+      "block_weight": 8,
+      "question_weight": 1
+    },
+    {
+      "id": 19,
+      "section": "2.1 Metrics and Loss Functions",
+      "question": "Are metrics split into online (business metrics) and offline (technical) ones?",
+      "block_weight": 12,
+      "question_weight": 1
+    },
+    {
+      "id": 20,
+      "section": "2.1 Metrics and Loss Functions",
+      "question": "Is the chosen loss function differentiable and suitable for optimizing the algorithm?",
+      "block_weight": 12,
+      "question_weight": 3
+    },
+    {
+      "id": 21,
+      "section": "2.1 Metrics and Loss Functions",
+      "question": "Is a hierarchy of metrics built (linking proxy metrics to final goals)?",
+      "block_weight": 12,
+      "question_weight": 2
+    },
+    {
+      "id": 22,
+      "section": "2.2 Dataset",
+      "question": "Are all data sources (internal and external) listed with metadata?",
+      "block_weight": 11,
+      "question_weight": 3
+    },
+    {
+      "id": 23,
+      "section": "2.2 Dataset",
+      "question": "Is the data filtering process and handling of missing values/duplicates described?",
+      "block_weight": 11,
+      "question_weight": 2
+    },
+    {
+      "id": 24,
+      "section": "2.2 Dataset",
+      "question": "Is a data labeling strategy defined (team, platform, quality control)?",
+      "block_weight": 11,
+      "question_weight": 1
+    },
+    {
+      "id": 25,
+      "section": "2.3 Validation Scheme",
+      "question": "Does the validation scheme match how the model is applied in reality (e.g., time-based split for time series)?",
+      "block_weight": 10,
+      "question_weight": 3
+    },
+    {
+      "id": 26,
+      "section": "2.3 Validation Scheme",
+      "question": "Is an independent test set (\"golden set\") set aside for final evaluation?",
+      "block_weight": 10,
+      "question_weight": 2
+    },
+    {
+      "id": 27,
+      "section": "2.3 Validation Scheme",
+      "question": "Is data leakage ruled out (e.g., by grouping on user ID)?",
+      "block_weight": 10,
+      "question_weight": 1
+    },
+    {
+      "id": 28,
+      "section": "2.4 Baseline",
+      "question": "Is a constant baseline (median, mean, or random answer) described for comparison?",
+      "block_weight": 9,
+      "question_weight": 2
+    },
+    {
+      "id": 29,
+      "section": "2.4 Baseline",
+      "question": "Is a simple ML baseline (linear model or heuristic) proposed before moving to complex models?",
+      "block_weight": 9,
+      "question_weight": 1
+    },
+    {
+      "id": 30,
+      "section": "3.1 Features",
+      "question": "Is feature importance evaluated, along with its contribution to model explainability?",
+      "block_weight": 7,
+      "question_weight": 2
+    },
+    {
+      "id": 31,
+      "section": "3.1 Features",
+      "question": "Are tests for feature correctness described (value ranges, correlations)?",
+      "block_weight": 7,
+      "question_weight": 1
+    },
+    {
+      "id": 32,
+      "section": "3.2 Results Measurement",
+      "question": "Is a hypothesis for A/B testing formulated (what changes, what it affects, expected effect)?",
+      "block_weight": 6,
+      "question_weight": 2
+    },
+    {
+      "id": 33,
+      "section": "3.2 Results Measurement",
+      "question": "Is the minimum detectable effect (MDE) and experiment duration calculated?",
+      "block_weight": 6,
+      "question_weight": 1
+    },
+    {
+      "id": 34,
+      "section": "3.3 Error Analysis",
+      "question": "Is a plan for analyzing learning curves provided (data size selection, overfitting detection)?",
+      "block_weight": 5,
+      "question_weight": 3
+    },
+    {
+      "id": 35,
+      "section": "3.3 Error Analysis",
+      "question": "Is a plan for residual analysis and finding patterns in errors described?",
+      "block_weight": 5,
+      "question_weight": 2
+    },
+    {
+      "id": 36,
+      "section": "3.3 Error Analysis",
+      "question": "Are scenarios for analyzing corner cases defined?",
+      "block_weight": 5,
+      "question_weight": 1
+    },
+    {
+      "id": 37,
+      "section": "3.4 Training Pipelines",
+      "question": "Are steps for ensuring reproducibility described (versioning of code, data, and configs)?",
+      "block_weight": 4,
+      "question_weight": 2
+    },
+    {
+      "id": 38,
+      "section": "3.4 Training Pipelines",
+      "question": "Are smoke tests provided for quickly checking that the pipeline works?",
+      "block_weight": 4,
+      "question_weight": 1
+    },
+    {
+      "id": 39,
+      "section": "4.1 Integration and Serving",
+      "question": "Is the API design described (request/response format, versioning)?",
+      "block_weight": 3,
+      "question_weight": 3
+    },
+    {
+      "id": 40,
+      "section": "4.1 Integration and Serving",
+      "question": "Is a fallback strategy defined in case the main model fails?",
+      "block_weight": 3,
+      "question_weight": 2
+    },
+    {
+      "id": 41,
+      "section": "4.1 Integration and Serving",
+      "question": "Is the release cycle described (blue-green or canary deployment)?",
+      "block_weight": 3,
+      "question_weight": 1
+    },
+    {
+      "id": 42,
+      "section": "4.2 Monitoring",
+      "question": "Are alerts set up for technical health (latency, errors) and for data drift?",
+      "block_weight": 2,
+      "question_weight": 1
+    },
+    {
+      "id": 43,
+      "section": "4.2 Monitoring",
+      "question": "Is prediction logging provided for later retraining and analysis?",
+      "block_weight": 2,
+      "question_weight": 2
+    },
+    {
+      "id": 44,
+      "section": "4.3 Operations",
+      "question": "Is a responsibility matrix (RACI) created for supporting the system after launch?",
+      "block_weight": 1,
+      "question_weight": 1
+    },
+    {
+      "id": 45,
+      "section": "4.3 Operations",
+      "question": "Is a runbook (\"in case of fire\" plan) prepared for on-call engineers?",
+      "block_weight": 1,
+      "question_weight": 2
+    },
+    {
+      "id": 46,
+      "section": "5.1 Goals vs Metrics",
+      "question": "Do the technical offline metrics directly correlate with the business KPIs stated in the goals?",
+      "block_weight": 10,
+      "question_weight": 5
+    },
+    {
+      "id": 47,
+      "section": "5.2 Risks vs Fallback",
+      "question": "Does the integration section provide fallback strategies specifically for the risks described at the start of the document?",
+      "block_weight": 10,
+      "question_weight": 4
+    },
+    {
+      "id": 48,
+      "section": "5.3 Baseline vs Fallback",
+      "question": "Is the simplest baseline from the relevant section used as one of the fallback-strategy levels?",
+      "block_weight": 10,
+      "question_weight": 3
+    },
+    {
+      "id": 49,
+      "section": "5.4 Data vs Features",
+      "question": "Do the features described in the Feature Engineering section correspond to available fields in the described data sources?",
+      "block_weight": 10,
+      "question_weight": 2
+    },
+    {
+      "id": 50,
+      "section": "5.5 Validation vs Monitoring",
+      "question": "Do the metric thresholds considered \"normal\" during validation match the alert-triggering thresholds in monitoring?",
+      "block_weight": 10,
+      "question_weight": 1
+    }
+  ]
+}

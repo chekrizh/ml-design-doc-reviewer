@@ -1,0 +1,46 @@
+[project]
+name = "ml-design-doc-reviewer"
+version = "0.1.0"
+description = "AI critic for ML system design documents."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "jinja2>=3.1.6",
+    "openai>=1.84.0",
+    "pydantic>=2.11.5",
+    "pydantic-settings>=2.9.1",
+]
+
+[project.scripts]
+critic = "critic.cli:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3.5",
+    "pytest-asyncio>=0.26.0",
+    "ruff>=0.11.12",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/critic"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"src/critic/data/critic_checklist.json" = "critic/data/critic_checklist.json"

@@ -22,31 +22,34 @@ Before opening a larger pull request, please consider opening an issue or discus
 
 ## Development Setup
 
-TBD
-
 ```bash
-# Placeholder
 git clone https://github.com/chekrizh/ml-design-doc-reviewer.git
 cd ml-design-doc-reviewer
+uv sync
 ```
 
 ## Project Structure
 
-TBD
+- `src/critic/cli.py` - CLI entrypoint.
+- `src/critic/service.py` - main review flow.
+- `src/critic/reviewer.py` - LLM critique call and output validation.
+- `src/critic/ranker.py` - deterministic top-N note ranking.
+- `src/critic/domain/` - checklist and review result models.
+- `src/critic/llm/` - LLM client adapters.
+- `tests/` - unit tests for the baseline.
 
 
 ## Running Tests
 
-TBD
-
 ```bash
-# Placeholder
-make test
+uv run ruff check .
+uv run ruff format --check .
+uv run pytest
 ```
 
 ## Running Evaluations
 
-TBD
+Offline evaluation is not implemented yet. The current baseline is covered by unit tests.
 
 
 ## Pull Request Guidelines
