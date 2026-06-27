@@ -2,6 +2,7 @@
 .env
 .env.*
 !.env.example
+!.env.prepare-data.example
 
 # Python
 __pycache__/
@@ -15,3 +16,21 @@ logs/
 
 # OS files
 .DS_Store
+
+# Transient normalization failure artifacts
+data/normalized_disdocs/*_ERROR.json
+
+# Heavy dataset artifacts (download via the prepare-data dependency group)
+data/raw_documents/
+data/normalized_disdocs/
+data/flawed_disdocs/
+data/evidently_ai_cases/
+data/byte_byte_go_cases/
+data/disdoc_examples/
+data/.hf_upload_staging/
+
+# Keep lightweight dataset config in git
+!data/README.md
+!data/dataset_revision.txt
+!data/sample_manifest.csv
+!data/error_topology.csv

@@ -92,6 +92,16 @@ cp .env.example .env
 uv run critic review design-doc.md
 ```
 
+## Dataset Preparation
+
+The `src/prepare_data` source tree is a maintainer-only tool for building the
+evaluation dataset. It is not included in the runtime wheel, and its heavier
+dependencies are installed only with the `prepare-data` dependency group.
+
+Ordinary critic users do not need to install or run it. Maintainer instructions
+for downloading or regenerating evaluation artifacts live in
+[`data/README.md`](data/README.md).
+
 ## Architecture
 
 The baseline keeps the review loop deliberately small:
