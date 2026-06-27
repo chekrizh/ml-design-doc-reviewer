@@ -113,7 +113,6 @@ def main(argv: list[str] | None = None) -> int:
             run_upload_dataset(settings)
         else:
             parser.error(f"Unknown command: {args.command}")
-            return 2
     except Exception:
         logger.exception("Pipeline failed")
         return 1

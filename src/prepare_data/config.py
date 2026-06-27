@@ -52,42 +52,44 @@ class Settings:
 
     @classmethod
     def from_env(cls) -> Settings:
-        data_dir = Path(os.getenv("DATA_DIR", PROJECT_ROOT / "data"))
-        prompts_dir = Path(os.getenv("PROMPTS_DIR", PROJECT_ROOT / "prompts"))
+        data_dir = Path(os.getenv("DATA_DIR", str(PROJECT_ROOT / "data")))
+        prompts_dir = Path(os.getenv("PROMPTS_DIR", str(PROJECT_ROOT / "prompts")))
 
         default_csv = data_dir / "evidently_ai_cases" / "800 ML and LLM use cases.csv"
         legacy_csv = data_dir / "800 ML and LLM use cases.csv"
         csv_default = default_csv if default_csv.exists() else legacy_csv
-        cases_csv = Path(os.getenv("CASES_CSV", csv_default))
+        cases_csv = Path(os.getenv("CASES_CSV", str(csv_default)))
 
         return cls(
             cases_csv=cases_csv,
             sample_size=int(os.getenv("SAMPLE_SIZE", "100")),
             random_seed=int(os.getenv("RANDOM_SEED", "42")),
             sample_manifest_path=Path(
-                os.getenv("SAMPLE_MANIFEST_PATH", data_dir / "sample_manifest.csv")
+                os.getenv("SAMPLE_MANIFEST_PATH", str(data_dir / "sample_manifest.csv"))
             ),
-            raw_documents_dir=Path(os.getenv("RAW_DOCUMENTS_DIR", data_dir / "raw_documents")),
+            raw_documents_dir=Path(os.getenv("RAW_DOCUMENTS_DIR", str(data_dir / "raw_documents"))),
             normalized_disdocs_dir=Path(
-                os.getenv("NORMALIZED_DISDOCS_DIR", data_dir / "normalized_disdocs")
+                os.getenv("NORMALIZED_DISDOCS_DIR", str(data_dir / "normalized_disdocs"))
             ),
             disdoc_examples_dir=Path(
-                os.getenv("DISDOC_EXAMPLES_DIR", data_dir / "disdoc_examples")
+                os.getenv("DISDOC_EXAMPLES_DIR", str(data_dir / "disdoc_examples"))
             ),
             normalize_prompt_path=Path(
                 os.getenv(
                     "NORMALIZE_PROMPT_PATH",
-                    prompts_dir / "normalize_to_disdoc.md",
+                    str(prompts_dir / "normalize_to_disdoc.md"),
                 )
             ),
             error_topology_path=Path(
-                os.getenv("ERROR_TOPOLOGY_PATH", data_dir / "error_topology.csv")
+                os.getenv("ERROR_TOPOLOGY_PATH", str(data_dir / "error_topology.csv"))
             ),
-            flawed_disdocs_dir=Path(os.getenv("FLAWED_DISDOCS_DIR", data_dir / "flawed_disdocs")),
+            flawed_disdocs_dir=Path(
+                os.getenv("FLAWED_DISDOCS_DIR", str(data_dir / "flawed_disdocs"))
+            ),
             injection_log_path=Path(
                 os.getenv(
                     "INJECTION_LOG_PATH",
-                    data_dir / "flawed_disdocs" / "injection_log.csv",
+                    str(data_dir / "flawed_disdocs" / "injection_log.csv"),
                 )
             ),
             openai_api_key=os.getenv("OPENAI_API_KEY"),
@@ -99,7 +101,7 @@ class Settings:
             whisper_device=os.getenv("WHISPER_DEVICE", "cpu"),
             whisper_compute_type=os.getenv("WHISPER_COMPUTE_TYPE", "int8"),
             fetch_timeout_seconds=float(os.getenv("FETCH_TIMEOUT_SECONDS", "30")),
-            fetch_delay_seconds=float(os.getenv("FETCH_DELAY_SECONDS", "1.0")),
+            fetch_delay_seconds=float(os.getenv("FETCH_DELAY_SECONDS", "2.0")),
             tesseract_cmd=os.getenv("TESSERACT_CMD"),
             tesseract_lang=os.getenv("TESSERACT_LANG", "eng"),
             hf_dataset_repo=os.getenv(
@@ -107,9 +109,7 @@ class Settings:
             ),
             hf_dataset_revision=os.getenv(
                 "HF_DATASET_REVISION",
-                _read_dataset_revision_file(
-                    Path(os.getenv("DATA_DIR", PROJECT_ROOT / "data")) / "dataset_revision.txt"
-                ),
+                _read_dataset_revision_file(data_dir / "dataset_revision.txt"),
             ),
         )
 

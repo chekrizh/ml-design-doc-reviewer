@@ -712,7 +712,6 @@ dependencies = [
     { name = "openai" },
     { name = "pydantic" },
     { name = "pydantic-settings" },
-    { name = "python-dotenv" },
 ]
 
 [package.dev-dependencies]
@@ -729,6 +728,7 @@ prepare-data = [
     { name = "pandas" },
     { name = "pillow" },
     { name = "pytesseract" },
+    { name = "python-dotenv" },
     { name = "tqdm" },
     { name = "trafilatura" },
     { name = "youtube-transcript-api" },
@@ -741,7 +741,6 @@ requires-dist = [
     { name = "openai", specifier = ">=1.84.0" },
     { name = "pydantic", specifier = ">=2.11.5" },
     { name = "pydantic-settings", specifier = ">=2.9.1" },
-    { name = "python-dotenv", specifier = ">=1.0.0" },
 ]
 
 [package.metadata.requires-dev]
@@ -758,6 +757,7 @@ prepare-data = [
     { name = "pandas", specifier = ">=2.2.0" },
     { name = "pillow", specifier = ">=11.0.0" },
     { name = "pytesseract", specifier = ">=0.3.13" },
+    { name = "python-dotenv", specifier = ">=1.0.0" },
     { name = "tqdm", specifier = ">=4.66.0" },
     { name = "trafilatura", specifier = ">=2.0.0" },
     { name = "youtube-transcript-api", specifier = ">=1.0.0" },

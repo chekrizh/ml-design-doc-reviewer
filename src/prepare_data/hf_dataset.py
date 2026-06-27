@@ -282,7 +282,7 @@ Evaluation artifacts for the ML Design Doc Reviewer project.
 ## Download
 
 ```bash
-uv run prepare-data download-dataset
+uv run --group prepare-data python -m prepare_data.cli download-dataset
 ```
 
 Or with the Hugging Face CLI:
