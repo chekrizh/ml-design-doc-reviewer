@@ -26,7 +26,7 @@ require `HF_TOKEN`.
 # Download raw / normalized / flawed docs + images.
 uv run --group prepare-data python -m prepare_data.cli download-dataset
 
-# Optional: also fetch the upstream Evidently AI catalog CSV for re-sampling.
+# Optional: also fetch upstream source catalogs for re-sampling/regeneration.
 uv run --group prepare-data python -m prepare_data.cli download-dataset --include-source-catalog
 ```
 
@@ -48,7 +48,7 @@ uv run --group prepare-data python -m prepare_data.cli download-dataset --includ
 | `normalized_disdocs/` | `normalized/` |
 | `flawed_disdocs/` | `flawed/` |
 | `evidently_ai_cases/` | `source/evidently_ai_cases/` (optional) |
-| `byte_byte_go_cases/` | `source/byte_byte_go_cases/` |
+| `byte_byte_go_cases/` | `source/byte_byte_go_cases/` (optional) |
 
 ## Regenerate locally
 
