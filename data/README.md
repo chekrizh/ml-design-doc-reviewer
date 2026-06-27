@@ -13,12 +13,14 @@ checkout, not from an installed `ml-design-doc-reviewer` package.
 
 ```bash
 uv sync --python 3.12 --group prepare-data
-cp .env.prepare-data.example .env
+cp .env.prepare-data.example .env.prepare-data
 ```
 
-Configure `HF_DATASET_REPO` and `HF_DATASET_REVISION` in `.env` to override the
-defaults. Downloads from the public dataset do not require a token; uploads
-require `HF_TOKEN`.
+Set `HF_TOKEN` in `.env.prepare-data` (create a token at
+[https://huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)).
+Downloads require authentication. `OPENAI_API_KEY` can live in
+`.env.prepare-data` or fall back to the shared `.env` used by critic. Override
+`HF_DATASET_REPO` and `HF_DATASET_REVISION` if needed.
 
 ## Download from Hugging Face
 
@@ -58,7 +60,7 @@ Prerequisites for the full pipeline:
 - [uv](https://docs.astral.sh/uv/)
 - `brew install tesseract` for the OCR step
 - OpenAI-compatible API key (`OPENAI_API_KEY` + `OPENAI_BASE_URL`)
-- Hugging Face token for upload only
+- Hugging Face token (`HF_TOKEN`) for download and upload
 
 ```bash
 # 1. Stratified sample (requires source catalog CSV).
@@ -76,7 +78,7 @@ uv run --group prepare-data python -m prepare_data.cli normalize
 uv run --group prepare-data python -m prepare_data.cli inject-errors
 
 # 5. Publish snapshot to Hugging Face.
-HF_TOKEN=... uv run --group prepare-data python -m prepare_data.cli upload-dataset
+uv run --group prepare-data python -m prepare_data.cli upload-dataset
 ```
 
 Use `--force` with `fetch`, `normalize`, or `all` to re-process existing outputs.

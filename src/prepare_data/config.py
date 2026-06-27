@@ -8,9 +8,11 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-load_dotenv()
-
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
+
+# Prefer maintainer-specific secrets; fall back to shared `.env` (e.g. OPENAI_API_KEY).
+load_dotenv(PROJECT_ROOT / ".env.prepare-data")
+load_dotenv(PROJECT_ROOT / ".env", override=False)
 
 
 def _require(name: str) -> str:
@@ -116,7 +118,8 @@ class Settings:
     def require_openai_key(self) -> str:
         if not self.openai_api_key:
             raise RuntimeError(
-                "OPENAI_API_KEY is required for normalization. Set it in .env or the environment."
+                "OPENAI_API_KEY is required for normalization. "
+                "Set it in .env.prepare-data, .env, or the environment."
             )
         return self.openai_api_key
 
