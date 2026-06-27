@@ -2,6 +2,7 @@
 .env
 .env.*
 !.env.example
+!.env.prepare-data.example
 
 # Python
 __pycache__/
@@ -19,7 +20,7 @@ logs/
 # Transient normalization failure artifacts
 data/normalized_disdocs/*_ERROR.json
 
-# Heavy dataset artifacts (download via: uv run prepare-data download-dataset)
+# Heavy dataset artifacts (download via the prepare-data dependency group)
 data/raw_documents/
 data/normalized_disdocs/
 data/flawed_disdocs/

@@ -5,7 +5,8 @@ Heavy evaluation artifacts are **not stored in git**. Download them from Hugging
 **Dataset:** [ml-system-design/ml-design-doc-reviewer-data](https://huggingface.co/datasets/ml-system-design/ml-design-doc-reviewer-data) (revision `v1.0.0`)
 
 ```bash
-uv run prepare-data download-dataset
+uv sync --group prepare-data
+uv run --group prepare-data python -m prepare_data.cli download-dataset
 ```
 
 ## Tracked in git (lightweight)

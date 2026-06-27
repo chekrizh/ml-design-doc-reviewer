@@ -94,7 +94,11 @@ uv run critic review design-doc.md
 
 ## Dataset Preparation
 
-The `src/prepare_data` package builds the evaluation dataset. **Heavy artifacts are hosted on [Hugging Face](https://huggingface.co/datasets/ml-system-design/ml-design-doc-reviewer-data)** — a git clone contains only lightweight config files (~300 KB).
+The `src/prepare_data` source tree is a maintainer-only tool for building the
+evaluation dataset. It is not included in the runtime wheel, and its heavier
+dependencies are installed only with the `prepare-data` dependency group.
+
+Heavy artifacts are hosted on [Hugging Face](https://huggingface.co/datasets/ml-system-design/ml-design-doc-reviewer-data) — a git clone contains only lightweight config files (~300 KB).
 
 ### What stays in git
 
@@ -108,17 +112,17 @@ The `src/prepare_data` package builds the evaluation dataset. **Heavy artifacts 
 ### Download dataset from Hugging Face
 
 ```bash
-uv sync --python 3.12
-cp .env.example .env
+uv sync --python 3.12 --group prepare-data
+cp .env.prepare-data.example .env
 
 # Download raw / normalized / flawed docs + images (~100 MB)
-uv run prepare-data download-dataset
+uv run --group prepare-data python -m prepare_data.cli download-dataset
 
 # Optional: also fetch the upstream Evidently AI catalog CSV for re-sampling
-uv run prepare-data download-dataset --include-source-catalog
+uv run --group prepare-data python -m prepare_data.cli download-dataset --include-source-catalog
 ```
 
-Configure `HF_DATASET_REPO` and `HF_DATASET_REVISION` in `.env` (defaults in `.env.example`).
+Configure `HF_DATASET_REPO` and `HF_DATASET_REVISION` in `.env` (defaults in `.env.prepare-data.example`).
 
 **Critic-only users** can download just the flawed split:
 
@@ -138,21 +142,21 @@ huggingface-cli download ml-system-design/ml-design-doc-reviewer-data flawed --r
 
 ```bash
 # 1. Stratified sample (requires source catalog CSV)
-uv run prepare-data sample
+uv run --group prepare-data python -m prepare_data.cli sample
 
 # 2. Fetch articles, OCR images
-uv run prepare-data fetch
-uv run prepare-data enrich-images
-uv run prepare-data ocr-images
+uv run --group prepare-data python -m prepare_data.cli fetch
+uv run --group prepare-data python -m prepare_data.cli enrich-images
+uv run --group prepare-data python -m prepare_data.cli ocr-images
 
 # 3. Normalize via OpenAI-compatible API
-uv run prepare-data normalize
+uv run --group prepare-data python -m prepare_data.cli normalize
 
 # 4. Inject controlled errors
-uv run prepare-data inject-errors
+uv run --group prepare-data python -m prepare_data.cli inject-errors
 
 # 5. Publish snapshot to Hugging Face
-HF_TOKEN=... uv run prepare-data upload-dataset
+HF_TOKEN=... uv run --group prepare-data python -m prepare_data.cli upload-dataset
 ```
 
 Use `--force` with `fetch`, `normalize`, or `all` to re-process existing outputs.
