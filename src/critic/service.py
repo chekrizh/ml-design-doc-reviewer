@@ -84,9 +84,7 @@ class ReviewService:
             self._top_n,
         )
 
-    def _log_completed(
-        self, inference_id: str, result: ReviewResult, llm_duration_ms: int
-    ) -> None:
+    def _log_completed(self, inference_id: str, result: ReviewResult, llm_duration_ms: int) -> None:
         self._logger.info(
             "review_completed inference_id=%s model=%s relevant=%s notes_count=%d "
             "llm_duration_ms=%s",
@@ -128,7 +126,9 @@ class ReviewService:
                 exc_info=True,
             )
 
-    def _log_failure(self, inference_id: str, document: str, exc: CriticOutputValidationError) -> None:
+    def _log_failure(
+        self, inference_id: str, document: str, exc: CriticOutputValidationError
+    ) -> None:
         if self._inference_logger is None:
             return
         try:
