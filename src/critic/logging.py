@@ -7,7 +7,8 @@ from uuid import uuid4
 from critic.domain.critique import CriticOutput, RankedNote, ReviewResult
 
 LOGGER_NAME = "critic"
-INFERENCE_LOG_SCHEMA_VERSION = "critic-inference-log-v1"
+INFERENCE_LOG_SCHEMA_VERSION = "critic-inference-log-v2"
+SNAPSHOT_DIR_NAME = "snapshots"
 
 
 def configure_file_logging(log_file: Path) -> logging.Logger:
@@ -44,6 +45,7 @@ class JsonlInferenceLogger:
     def write(
         self,
         *,
+        inference_id: str,
         input_document: str,
         critic_output: CriticOutput | None,
         top_n_notes: list[RankedNote],
@@ -51,22 +53,25 @@ class JsonlInferenceLogger:
         top_n: int,
         llm_duration_ms: int | None,
     ) -> str:
+        snapshot_ref = self._write_snapshot(inference_id, input_document)
         return self._persist(
+            inference_id,
             {
                 "model": final_result.model,
                 "checklist_version": final_result.checklist_version,
                 "top_n": top_n,
                 "timings": {"llm_duration_ms": llm_duration_ms},
-                "input": _input_log_entry(input_document),
+                "input": _input_log_entry(input_document, snapshot_ref),
                 "critic_output": critic_output.model_dump(mode="json") if critic_output else None,
                 "top_n_notes": [note.model_dump(mode="json") for note in top_n_notes],
                 "final_result": final_result.model_dump(mode="json"),
-            }
+            },
         )
 
     def write_failure(
         self,
         *,
+        inference_id: str,
         input_document: str,
         critic_output: CriticOutput | None,
         model: str,
@@ -75,24 +80,34 @@ class JsonlInferenceLogger:
         llm_duration_ms: int | None,
         error: Exception,
     ) -> str:
+        snapshot_ref = self._write_snapshot(inference_id, input_document)
         return self._persist(
+            inference_id,
             {
                 "status": "failed",
                 "model": model,
                 "checklist_version": checklist_version,
                 "top_n": top_n,
                 "timings": {"llm_duration_ms": llm_duration_ms},
-                "input": _input_log_entry(input_document),
+                "input": _input_log_entry(input_document, snapshot_ref),
                 "critic_output": critic_output.model_dump(mode="json") if critic_output else None,
                 "top_n_notes": [],
                 "final_result": None,
                 "error": {"type": type(error).__name__, "message": str(error)},
-            }
+            },
         )
 
-    def _persist(self, record: dict) -> str:
+    def _write_snapshot(self, inference_id: str, document: str) -> str:
+        # The full document lives in a sidecar file so that inference.jsonl stays
+        # small and greppable. The jsonl only keeps a relative reference.
+        snapshot_dir = self._log_file.parent / SNAPSHOT_DIR_NAME
+        snapshot_dir.mkdir(parents=True, exist_ok=True)
+        snapshot_path = snapshot_dir / f"{inference_id}.md"
+        snapshot_path.write_text(document, encoding="utf-8")
+        return f"{SNAPSHOT_DIR_NAME}/{inference_id}.md"
+
+    def _persist(self, inference_id: str, record: dict) -> str:
         self._log_file.parent.mkdir(parents=True, exist_ok=True)
-        inference_id = str(uuid4())
         # TODO(design-doc): add document/version lineage when partial snapshots
         # and dataset accumulation are introduced. For now this is a run id.
         entry = {
@@ -106,11 +121,15 @@ class JsonlInferenceLogger:
         return inference_id
 
 
-def _input_log_entry(document: str) -> dict[str, object]:
+def _input_log_entry(document: str, snapshot_ref: str) -> dict[str, object]:
     # The baseline treats the submitted file as the current document snapshot.
     # Snapshot metadata such as parent document id and completion percent is future work.
     return {
         "kind": "text",
         "document_length": len(document),
-        "snapshot": document,
+        "snapshot_ref": snapshot_ref,
     }
+
+
+def new_inference_id() -> str:
+    return str(uuid4())
