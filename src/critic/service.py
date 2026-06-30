@@ -11,7 +11,12 @@ from critic.domain.critique import (
 )
 from critic.llm.base import LLMClient
 from critic.llm.openai_client import OpenAILLMClient
-from critic.logging import LOGGER_NAME, JsonlInferenceLogger, configure_file_logging
+from critic.logging import (
+    LOGGER_NAME,
+    JsonlInferenceLogger,
+    configure_file_logging,
+    new_inference_id,
+)
 from critic.ranker import rank_notes
 from critic.reviewer import CriticResult, critique
 
@@ -35,21 +40,26 @@ class ReviewService:
         self._inference_logger = inference_logger
 
     async def review(self, document: str) -> ReviewResult:
-        self._log_started(document)
+        inference_id = new_inference_id()
+        self._log_started(inference_id, document)
         try:
             critic_result = await critique(self._llm_client, self._checklist, document)
         except CriticOutputValidationError as exc:
-            self._logger.exception("review_failed model=%s", self._model)
-            self._log_failure(document, exc)
+            self._logger.exception(
+                "review_failed inference_id=%s model=%s", inference_id, self._model
+            )
+            self._log_failure(inference_id, document, exc)
             raise
         except Exception:
-            self._logger.exception("review_failed model=%s", self._model)
+            self._logger.exception(
+                "review_failed inference_id=%s model=%s", inference_id, self._model
+            )
             raise
 
         notes = rank_notes(critic_result.output, self._checklist, top_n=self._top_n)
         result = self._build_result(critic_result.output, notes)
-        self._log_completed(result, critic_result.llm_duration_ms)
-        self._log_inference(document, critic_result, notes, result)
+        self._log_completed(inference_id, result, critic_result.llm_duration_ms)
+        self._log_inference(inference_id, document, critic_result, notes, result)
         return result
 
     def _build_result(self, output: CriticOutput, notes: list[RankedNote]) -> ReviewResult:
@@ -63,18 +73,22 @@ class ReviewService:
             model=self._model,
         )
 
-    def _log_started(self, document: str) -> None:
+    def _log_started(self, inference_id: str, document: str) -> None:
         self._logger.info(
-            "review_started model=%s checklist_version=%s document_length=%d top_n=%d",
+            "review_started inference_id=%s model=%s checklist_version=%s "
+            "document_length=%d top_n=%d",
+            inference_id,
             self._model,
             self._checklist.version,
             len(document),
             self._top_n,
         )
 
-    def _log_completed(self, result: ReviewResult, llm_duration_ms: int) -> None:
+    def _log_completed(self, inference_id: str, result: ReviewResult, llm_duration_ms: int) -> None:
         self._logger.info(
-            "review_completed model=%s relevant=%s notes_count=%d llm_duration_ms=%s",
+            "review_completed inference_id=%s model=%s relevant=%s notes_count=%d "
+            "llm_duration_ms=%s",
+            inference_id,
             self._model,
             result.relevant,
             len(result.notes),
@@ -83,6 +97,7 @@ class ReviewService:
 
     def _log_inference(
         self,
+        inference_id: str,
         document: str,
         critic_result: CriticResult,
         notes: list[RankedNote],
@@ -94,6 +109,7 @@ class ReviewService:
         # into a curated real dataset is a separate offline pipeline.
         try:
             self._inference_logger.write(
+                inference_id=inference_id,
                 input_document=document,
                 critic_output=critic_result.output,
                 top_n_notes=notes,
@@ -103,17 +119,21 @@ class ReviewService:
             )
         except OSError as exc:
             self._logger.warning(
-                "inference_log_failed model=%s error=%s",
+                "inference_log_failed inference_id=%s model=%s error=%s",
+                inference_id,
                 self._model,
                 exc,
                 exc_info=True,
             )
 
-    def _log_failure(self, document: str, exc: CriticOutputValidationError) -> None:
+    def _log_failure(
+        self, inference_id: str, document: str, exc: CriticOutputValidationError
+    ) -> None:
         if self._inference_logger is None:
             return
         try:
             self._inference_logger.write_failure(
+                inference_id=inference_id,
                 input_document=document,
                 critic_output=exc.critic_output,
                 model=self._model,
@@ -124,7 +144,8 @@ class ReviewService:
             )
         except OSError as log_exc:
             self._logger.warning(
-                "inference_failure_log_failed model=%s error=%s",
+                "inference_failure_log_failed inference_id=%s model=%s error=%s",
+                inference_id,
                 self._model,
                 log_exc,
                 exc_info=True,
