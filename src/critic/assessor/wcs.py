@@ -3,6 +3,8 @@ from critic.domain.assessor_checklist import AssessorChecklist
 
 
 def compute_wcs(output: AssessorOutput, checklist: AssessorChecklist) -> float:
+    # TODO(design-doc): keep this as the Assessor's North Star WCS. The Appendix
+    # WCS_Critic aggregate across all critique notes is a separate future metric.
     scores_by_id = {score.criterion_id: float(score.score) for score in output.criteria}
     weighted_score = sum(
         criterion.weight * scores_by_id[criterion.id] for criterion in checklist.criteria

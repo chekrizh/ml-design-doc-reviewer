@@ -70,6 +70,8 @@ class AssessorService:
         inference_record: dict,
         result: AssessorResult,
     ) -> dict:
+        # TODO(design-doc): Section Critique Recall and Cross-section Consistency
+        # Recall require joining these judgments with inject_errors.py ground truth.
         return {
             "schema_version": ASSESSMENT_LOG_SCHEMA_VERSION,
             "assessment_id": assessment_id,

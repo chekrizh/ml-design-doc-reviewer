@@ -19,6 +19,8 @@ class CriterionScore(BaseModel):
 
 
 class NoteJudgment(BaseModel):
+    # TODO(design-doc): aggregate these raw note-level flags into DAVR, FCR,
+    # and Grounded Claim Rate when the deferred metrics reporting step is built.
     item_id: int = Field(ge=1)
     direct_answer_violation: bool
     false_critique: bool
