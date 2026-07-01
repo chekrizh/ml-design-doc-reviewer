@@ -18,7 +18,7 @@ def rank_notes(output: CriticOutput, checklist: Checklist, *, top_n: int) -> lis
                 question=item.question,
                 score=float(assessment.score),
                 remark=assessment.remark or "",
-                severity=_severity_from_item(item),
+                severity=severity_from_item(item),
                 priority=_priority(item),
             )
         )
@@ -34,7 +34,7 @@ def _priority(item: ChecklistItem) -> float:
     return item.block_weight + item.question_weight / 10
 
 
-def _severity_from_item(item: ChecklistItem) -> Severity:
+def severity_from_item(item: ChecklistItem) -> Severity:
     if item.block_weight >= 8:
         return Severity.critical
     if item.block_weight >= 5:

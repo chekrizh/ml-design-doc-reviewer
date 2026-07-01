@@ -1,6 +1,8 @@
+import json
 from pathlib import Path
 
 from critic.cli import build_parser, main
+from critic.domain.assessor_checklist import load_default_assessor_checklist
 from critic.domain.critique import ReviewResult
 
 
@@ -87,7 +89,83 @@ def test_cli_assess_uses_env_output_with_assessor_factory(
     assert service.output_file == output_file
 
 
-def test_cli_help_lists_review_and_assess_commands() -> None:
+def test_cli_metrics_reads_logs_and_prints_report(tmp_path: Path, capsys) -> None:
+    assessment_log = tmp_path / "assessment-eval.jsonl"
+    inference_log = tmp_path / "inference.jsonl"
+    golden = tmp_path / "golden.json"
+    checklist = load_default_assessor_checklist()
+    assessment_log.write_text(
+        json.dumps(
+            {
+                "criteria": [
+                    {
+                        "criterion_id": criterion.id,
+                        "weight": criterion.weight,
+                        "score": 1,
+                    }
+                    for criterion in checklist.criteria
+                ],
+                "notes": [
+                    {
+                        "item_id": 1,
+                        "direct_answer_violation": False,
+                        "false_critique": False,
+                        "grounded": True,
+                    }
+                ],
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    inference_log.write_text(
+        json.dumps(
+            {
+                "critic_output": {
+                    "relevant": True,
+                    "items": [{"item_id": 1, "score": 1}],
+                }
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    golden.write_text(
+        json.dumps(
+            {
+                "total_section": 2,
+                "found_section": 1,
+                "total_cross": 4,
+                "found_cross": 3,
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    exit_code = main(
+        [
+            "metrics",
+            str(assessment_log),
+            "--inference-log",
+            str(inference_log),
+            "--golden",
+            str(golden),
+        ]
+    )
+
+    captured = capsys.readouterr()
+    payload = json.loads(captured.out)
+    assert exit_code == 0
+    assert payload["mean_wcs"] == 1.0
+    assert payload["wcs_quality_label"] == "excellent"
+    assert payload["direct_answer_violation_rate"] == 0.0
+    assert payload["grounded_claim_rate"] == 1.0
+    assert payload["section_critique_recall"] == 0.5
+    assert payload["cross_section_consistency_recall"] == 0.75
+    assert payload["mean_critic_score"] == 1.0
+
+
+def test_cli_help_lists_review_assess_and_metrics_commands() -> None:
     help_text = build_parser().format_help()
 
-    assert "{review,assess}" in help_text
+    assert "{review,assess,metrics}" in help_text

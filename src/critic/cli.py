@@ -9,7 +9,11 @@ from typing import Protocol
 
 from critic.assessor.service import AssessorService
 from critic.config import AssessorSettings, Settings
+from critic.domain.assessor_checklist import load_default_assessor_checklist
+from critic.domain.checklist import load_default_checklist
 from critic.domain.critique import ReviewResult
+from critic.metrics.records import load_golden_errors, parse_assessor_records, parse_critic_records
+from critic.metrics.report import build_metrics_report
 from critic.service import ReviewService
 
 
@@ -55,6 +59,25 @@ def build_parser() -> argparse.ArgumentParser:
         help="Path to write assessment-eval.jsonl",
     )
 
+    metrics_parser = subparsers.add_parser("metrics", help="Aggregate offline critic metrics")
+    metrics_parser.add_argument(
+        "path",
+        type=Path,
+        help="Path to assessment-eval.jsonl",
+    )
+    metrics_parser.add_argument(
+        "--inference-log",
+        type=Path,
+        default=None,
+        help="Optional path to critic inference.jsonl for mean critic score",
+    )
+    metrics_parser.add_argument(
+        "--golden",
+        type=Path,
+        default=None,
+        help="Optional path to golden error counts JSON for recall metrics",
+    )
+
     return parser
 
 
@@ -85,6 +108,25 @@ def main(
         output_file = args.output or settings.eval_log_file
         assessment_ids = asyncio.run(factory().assess_inference_log(args.path, output_file))
         print(json.dumps({"assessment_ids": assessment_ids}))
+        return 0
+
+    if args.command == "metrics":
+        report = build_metrics_report(
+            assessor_outputs=parse_assessor_records(args.path),
+            assessor_checklist=load_default_assessor_checklist(),
+            critic_outputs=(
+                parse_critic_records(args.inference_log)
+                if args.inference_log is not None
+                else None
+            ),
+            critic_checklist=(
+                load_default_checklist()
+                if args.inference_log is not None
+                else None
+            ),
+            golden=load_golden_errors(args.golden) if args.golden is not None else None,
+        )
+        print(report.model_dump_json(indent=2))
         return 0
 
     parser.error(f"unknown command: {args.command}")

@@ -1,6 +1,6 @@
-from critic.domain.checklist import load_default_checklist
+from critic.domain.checklist import Severity, load_default_checklist
 from critic.domain.critique import CriticOutput, ItemAssessment
-from critic.ranker import rank_notes
+from critic.ranker import rank_notes, severity_from_item
 
 
 def test_ranker_orders_incomplete_items_by_block_and_question_weight() -> None:
@@ -27,3 +27,11 @@ def test_ranker_returns_no_notes_for_irrelevant_documents() -> None:
     notes = rank_notes(CriticOutput(relevant=False, items=[]), load_default_checklist(), top_n=5)
 
     assert notes == []
+
+
+def test_severity_from_item_exposes_ranker_severity_mapping() -> None:
+    checklist = load_default_checklist()
+
+    assert severity_from_item(checklist.by_id(1)) == Severity.critical
+    assert severity_from_item(checklist.by_id(34)) == Severity.warning
+    assert severity_from_item(checklist.by_id(42)) == Severity.nice_to_have
