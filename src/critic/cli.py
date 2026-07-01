@@ -74,13 +74,15 @@ def main(
         return 0
 
     if args.command == "assess":
-        settings = None if assessor_service_factory else AssessorSettings()
+        settings = (
+            AssessorSettings()
+            if args.output is None or assessor_service_factory is None
+            else None
+        )
         factory = assessor_service_factory or (
             lambda: AssessorService.from_settings(settings or AssessorSettings())
         )
-        output_file = args.output or (
-            settings.eval_log_file if settings else Path("assessment-eval.jsonl")
-        )
+        output_file = args.output or settings.eval_log_file
         assessment_ids = asyncio.run(factory().assess_inference_log(args.path, output_file))
         print(json.dumps({"assessment_ids": assessment_ids}))
         return 0

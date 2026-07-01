@@ -68,6 +68,25 @@ def test_cli_assess_reads_inference_log_and_prints_assessment_ids(
     assert '"assessment_ids": ["assessment-1"]' in captured.out
 
 
+def test_cli_assess_uses_env_output_with_assessor_factory(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    inference_log = tmp_path / "inference.jsonl"
+    output_file = tmp_path / "env-assessment-eval.jsonl"
+    inference_log.write_text("", encoding="utf-8")
+    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
+    monkeypatch.setenv("OPENAI_BASE_URL", "https://openrouter.ai/api/v1")
+    monkeypatch.setenv("ASSESSOR_MODEL", "openai/gpt-4o-mini")
+    monkeypatch.setenv("ASSESSOR_EVAL_LOG_FILE", str(output_file))
+    service = FakeAssessorService()
+
+    exit_code = main(["assess", str(inference_log)], assessor_service_factory=lambda: service)
+
+    assert exit_code == 0
+    assert service.output_file == output_file
+
+
 def test_cli_help_lists_review_and_assess_commands() -> None:
     help_text = build_parser().format_help()
 
