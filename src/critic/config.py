@@ -22,3 +22,21 @@ class Settings(BaseSettings):
         default=None,
         alias="CRITIC_CHECKLIST_PATH",
     )
+
+
+class AssessorSettings(BaseSettings):
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_ignore_empty=True,
+        extra="ignore",
+        populate_by_name=True,
+    )
+
+    openai_api_key: str = Field(alias="OPENAI_API_KEY")
+    openai_base_url: str = Field(alias="OPENAI_BASE_URL")
+    model: str = Field(alias="ASSESSOR_MODEL")
+    eval_log_file: Path = Field(alias="ASSESSOR_EVAL_LOG_FILE")
+    checklist_path: Path | None = Field(
+        default=None,
+        alias="ASSESSOR_CHECKLIST_PATH",
+    )

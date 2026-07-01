@@ -58,3 +58,4 @@ packages = ["src/critic"]
 
 [tool.hatch.build.targets.wheel.force-include]
 "src/critic/data/critic_checklist.json" = "critic/data/critic_checklist.json"
+"src/critic/data/assessor_checklist.json" = "critic/data/assessor_checklist.json"
