@@ -1,6 +1,5 @@
 from collections.abc import Callable, Sequence
 
-from critic.assessor.kappa import compute_cohens_kappa as compute_cohens_kappa
 from critic.assessor.wcs import compute_wcs
 from critic.domain.assessment import AssessorOutput, NoteJudgment
 from critic.domain.assessor_checklist import AssessorChecklist

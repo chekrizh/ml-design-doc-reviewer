@@ -3,7 +3,6 @@ import pytest
 from critic.domain.assessment import AssessorOutput, CriterionScore, NoteJudgment
 from critic.domain.assessor_checklist import load_default_assessor_checklist
 from critic.metrics.offline import (
-    compute_cohens_kappa,
     cross_section_consistency_recall,
     direct_answer_violation_rate,
     false_critique_rate,
@@ -109,7 +108,3 @@ def test_recall_metrics_return_none_for_empty_denominators() -> None:
 
     assert section_critique_recall(golden) is None
     assert cross_section_consistency_recall(golden) is None
-
-
-def test_metrics_kappa_reuses_assessor_kappa() -> None:
-    assert compute_cohens_kappa([0, 0.5, 1], [0, 0.5, 1]) == 1.0

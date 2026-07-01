@@ -7,6 +7,7 @@ from pydantic import BaseModel, Field, model_validator
 
 from critic.domain.assessment import AssessorOutput, CriterionScore, NoteJudgment
 from critic.domain.critique import CriticOutput
+from critic.jsonl import read_jsonl
 
 
 class GoldenErrors(BaseModel):
@@ -29,7 +30,7 @@ class GoldenErrors(BaseModel):
 
 def parse_assessor_records(path: Path) -> list[AssessorOutput]:
     outputs: list[AssessorOutput] = []
-    for record in _read_jsonl(path):
+    for record in read_jsonl(path):
         outputs.append(
             AssessorOutput(
                 criteria=[
@@ -47,7 +48,7 @@ def parse_assessor_records(path: Path) -> list[AssessorOutput]:
 
 def parse_critic_records(path: Path) -> list[CriticOutput]:
     outputs: list[CriticOutput] = []
-    for record in _read_jsonl(path):
+    for record in read_jsonl(path):
         critic_output = record.get("critic_output")
         if critic_output is not None:
             outputs.append(CriticOutput.model_validate(critic_output))
@@ -56,11 +57,3 @@ def parse_critic_records(path: Path) -> list[CriticOutput]:
 
 def load_golden_errors(path: Path) -> GoldenErrors:
     return GoldenErrors.model_validate(json.loads(path.read_text(encoding="utf-8")))
-
-
-def _read_jsonl(path: Path) -> list[dict]:
-    records: list[dict] = []
-    for line in path.read_text(encoding="utf-8").splitlines():
-        if line.strip():
-            records.append(json.loads(line))
-    return records

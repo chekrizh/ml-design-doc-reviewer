@@ -7,7 +7,7 @@ from critic.domain.assessment import AssessorOutput
 from critic.domain.assessor_checklist import AssessorChecklist
 from critic.domain.checklist import Checklist
 from critic.domain.critique import CriticOutput
-from critic.metrics.critic_score import mean_critic_score as compute_mean_critic_score
+from critic.metrics.critic_score import mean_critic_score
 from critic.metrics.offline import (
     cross_section_consistency_recall,
     direct_answer_violation_rate,
@@ -57,7 +57,7 @@ def build_metrics_report(
         ),
         cohens_kappa=cohens_kappa,
         mean_critic_score=(
-            compute_mean_critic_score(critic_outputs, critic_checklist)
+            mean_critic_score(critic_outputs, critic_checklist)
             if critic_outputs is not None and critic_checklist is not None
             else None
         ),

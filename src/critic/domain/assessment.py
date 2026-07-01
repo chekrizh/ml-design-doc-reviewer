@@ -1,9 +1,9 @@
-from collections import Counter
 from typing import Literal
 
 from pydantic import BaseModel, Field
 
 from critic.domain.assessor_checklist import AssessorChecklist
+from critic.domain.id_validation import describe_id_set_problems
 
 Score = Literal[0, 0.5, 1]
 
@@ -40,43 +40,21 @@ def validate_assessor_output(
 ) -> None:
     expected_criterion_ids = {criterion.id for criterion in checklist.criteria}
     actual_criterion_ids = [score.criterion_id for score in output.criteria]
-    actual_criterion_id_set = set(actual_criterion_ids)
-
-    problems: list[str] = []
-    duplicate_criterion_ids = sorted(
-        criterion_id
-        for criterion_id, count in Counter(actual_criterion_ids).items()
-        if count > 1
+    problems = describe_id_set_problems(
+        actual_criterion_ids,
+        expected_criterion_ids,
+        label="criterion",
     )
-    unknown_criterion_ids = sorted(actual_criterion_id_set - expected_criterion_ids)
-    missing_criterion_ids = sorted(expected_criterion_ids - actual_criterion_id_set)
-
-    if duplicate_criterion_ids:
-        problems.append(f"duplicate criterion ids: {_format_ids(duplicate_criterion_ids)}")
-    if unknown_criterion_ids:
-        problems.append(f"unknown criterion ids: {_format_ids(unknown_criterion_ids)}")
-    if missing_criterion_ids:
-        problems.append(f"missing criterion ids: {_format_ids(missing_criterion_ids)}")
 
     expected_note_id_set = set(expected_note_ids)
     actual_note_ids = [note.item_id for note in output.notes]
-    actual_note_id_set = set(actual_note_ids)
-    duplicate_note_ids = sorted(
-        item_id for item_id, count in Counter(actual_note_ids).items() if count > 1
+    problems.extend(
+        describe_id_set_problems(
+            actual_note_ids,
+            expected_note_id_set,
+            label="note",
+        )
     )
-    unknown_note_ids = sorted(actual_note_id_set - expected_note_id_set)
-    missing_note_ids = sorted(expected_note_id_set - actual_note_id_set)
-
-    if duplicate_note_ids:
-        problems.append(f"duplicate note ids: {_format_ids(duplicate_note_ids)}")
-    if unknown_note_ids:
-        problems.append(f"unknown note ids: {_format_ids(unknown_note_ids)}")
-    if missing_note_ids:
-        problems.append(f"missing note ids: {_format_ids(missing_note_ids)}")
 
     if problems:
         raise AssessmentValidationError("; ".join(problems))
-
-
-def _format_ids(item_ids: list[int]) -> str:
-    return ", ".join(str(item_id) for item_id in item_ids)

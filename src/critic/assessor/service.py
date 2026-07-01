@@ -11,6 +11,7 @@ from critic.domain.assessor_checklist import (
     load_default_assessor_checklist,
 )
 from critic.domain.critique import RankedNote
+from critic.jsonl import read_jsonl
 from critic.llm.base import LLMClient
 from critic.llm.openai_client import OpenAILLMClient
 from critic.logging import new_inference_id
@@ -38,7 +39,7 @@ class AssessorService:
         assessment_ids: list[str] = []
         output_file.parent.mkdir(parents=True, exist_ok=True)
         with output_file.open("a", encoding="utf-8") as file:
-            for record in _read_jsonl(inference_log_file):
+            for record in read_jsonl(inference_log_file):
                 final_result = record.get("final_result")
                 if final_result is None:
                     continue
@@ -108,15 +109,6 @@ class AssessorService:
             model=settings.model,
         )
         return cls(llm_client=llm_client, checklist=checklist, model=settings.model)
-
-
-def _read_jsonl(path: Path) -> list[dict]:
-    records: list[dict] = []
-    for line in path.read_text(encoding="utf-8").splitlines():
-        if line.strip():
-            records.append(json.loads(line))
-    return records
-
 
 def _read_snapshot(log_dir: Path, record: dict) -> str:
     snapshot_ref = record["input"]["snapshot_ref"]
