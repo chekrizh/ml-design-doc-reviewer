@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Protocol
 
 from critic.assessor.service import AssessorService
-from critic.config import AssessorSettings, Settings
+from critic.config import AssessorOutputSettings, AssessorSettings, Settings
 from critic.domain.assessor_checklist import load_default_assessor_checklist
 from critic.domain.checklist import load_default_checklist
 from critic.domain.critique import ReviewResult
@@ -97,21 +97,7 @@ def main(
         return 0
 
     if args.command == "assess":
-        output_file = args.output
-        settings: AssessorSettings | None = None
-        if output_file is None or assessor_service_factory is None:
-            settings = AssessorSettings()
-            output_file = output_file or settings.eval_log_file
-
-        if assessor_service_factory is None:
-            assert settings is not None
-
-            def factory() -> _AssessorService:
-                return AssessorService.from_settings(settings)
-
-        else:
-            factory = assessor_service_factory
-
+        factory, output_file = _resolve_assessor(args, assessor_service_factory)
         assessment_ids = asyncio.run(factory().assess_inference_log(args.path, output_file))
         print(json.dumps({"assessment_ids": assessment_ids}))
         return 0
@@ -119,19 +105,39 @@ def main(
     if args.command == "metrics":
         critic_outputs = None
         critic_checklist = None
+        assessor_checklist = load_default_assessor_checklist()
         if args.inference_log is not None:
             critic_outputs = parse_critic_records(args.inference_log)
             critic_checklist = load_default_checklist()
 
         report = build_metrics_report(
-            assessor_outputs=parse_assessor_records(args.path),
-            assessor_checklist=load_default_assessor_checklist(),
+            assessor_outputs=parse_assessor_records(
+                args.path,
+                assessor_checklist=assessor_checklist,
+            ),
+            assessor_checklist=assessor_checklist,
             critic_outputs=critic_outputs,
             critic_checklist=critic_checklist,
             golden=load_golden_errors(args.golden) if args.golden is not None else None,
         )
         print(report.model_dump_json(indent=2))
         return 0
+
+    parser.error(f"unknown command: {args.command}")
+    return 2
+
+
+def _resolve_assessor(
+    args: argparse.Namespace,
+    assessor_service_factory: AssessorServiceFactory | None,
+) -> tuple[AssessorServiceFactory, Path]:
+    if assessor_service_factory is not None:
+        output_file = args.output or AssessorOutputSettings().eval_log_file
+        return assessor_service_factory, output_file
+
+    settings = AssessorSettings()
+    output_file = args.output or settings.eval_log_file
+    return lambda: AssessorService.from_settings(settings), output_file
 
 
 if __name__ == "__main__":

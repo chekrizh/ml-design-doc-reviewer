@@ -1,5 +1,8 @@
+import argparse
 import json
 from pathlib import Path
+
+import pytest
 
 from critic.cli import build_parser, main
 from critic.domain.assessor_checklist import load_default_assessor_checklist
@@ -89,6 +92,77 @@ def test_cli_assess_uses_env_output_with_assessor_factory(
     assert service.output_file == output_file
 
 
+def test_cli_assess_with_assessor_factory_does_not_require_service_settings(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    inference_log = tmp_path / "inference.jsonl"
+    output_file = tmp_path / "assessment-eval.jsonl"
+    inference_log.write_text("", encoding="utf-8")
+    for name in [
+        "OPENAI_API_KEY",
+        "OPENAI_BASE_URL",
+        "ASSESSOR_MODEL",
+        "ASSESSOR_EVAL_LOG_FILE",
+    ]:
+        monkeypatch.delenv(name, raising=False)
+    service = FakeAssessorService()
+
+    exit_code = main(
+        ["assess", str(inference_log), "--output", str(output_file)],
+        assessor_service_factory=lambda: service,
+    )
+
+    assert exit_code == 0
+    assert service.inference_log_file == inference_log
+    assert service.output_file == output_file
+
+
+def test_cli_assess_with_assessor_factory_without_output_uses_default_log_file(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    inference_log = tmp_path / "inference.jsonl"
+    inference_log.write_text("", encoding="utf-8")
+    monkeypatch.chdir(tmp_path)
+    for name in [
+        "OPENAI_API_KEY",
+        "OPENAI_BASE_URL",
+        "ASSESSOR_MODEL",
+        "ASSESSOR_EVAL_LOG_FILE",
+    ]:
+        monkeypatch.delenv(name, raising=False)
+    service = FakeAssessorService()
+
+    exit_code = main(["assess", str(inference_log)], assessor_service_factory=lambda: service)
+
+    assert exit_code == 0
+    assert service.inference_log_file == inference_log
+    assert service.output_file == Path("logs/assessment-eval.jsonl")
+
+
+def test_cli_assess_without_factory_without_output_uses_default_log_file(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    inference_log = tmp_path / "inference.jsonl"
+    inference_log.write_text("", encoding="utf-8")
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
+    monkeypatch.setenv("OPENAI_BASE_URL", "https://openrouter.ai/api/v1")
+    monkeypatch.setenv("ASSESSOR_MODEL", "openai/gpt-4o-mini")
+    monkeypatch.delenv("ASSESSOR_EVAL_LOG_FILE", raising=False)
+    service = FakeAssessorService()
+
+    monkeypatch.setattr("critic.cli.AssessorService.from_settings", lambda settings: service)
+
+    exit_code = main(["assess", str(inference_log)])
+
+    assert exit_code == 0
+    assert service.inference_log_file == inference_log
+    assert service.output_file == Path("logs/assessment-eval.jsonl")
+
+
 def test_cli_metrics_reads_logs_and_prints_report(tmp_path: Path, capsys) -> None:
     assessment_log = tmp_path / "assessment-eval.jsonl"
     inference_log = tmp_path / "inference.jsonl"
@@ -137,6 +211,8 @@ def test_cli_metrics_reads_logs_and_prints_report(tmp_path: Path, capsys) -> Non
                 "found_section": 1,
                 "total_cross": 4,
                 "found_cross": 3,
+                "expert_scores": [0, 0, 0.5, 0.5, 1, 1],
+                "assessor_scores": [0, 0.5, 0.5, 0.5, 1, 0],
             }
         ),
         encoding="utf-8",
@@ -162,6 +238,7 @@ def test_cli_metrics_reads_logs_and_prints_report(tmp_path: Path, capsys) -> Non
     assert payload["grounded_claim_rate"] == 1.0
     assert payload["section_critique_recall"] == 0.5
     assert payload["cross_section_consistency_recall"] == 0.75
+    assert payload["cohens_kappa"] == pytest.approx(0.5)
     assert payload["mean_critic_score"] == 1.0
 
 
@@ -169,3 +246,24 @@ def test_cli_help_lists_review_assess_and_metrics_commands() -> None:
     help_text = build_parser().format_help()
 
     assert "{review,assess,metrics}" in help_text
+
+
+def test_cli_errors_if_parser_returns_unknown_command(monkeypatch) -> None:
+    class ParserWithUnexpectedCommand:
+        error_message: str | None = None
+
+        def parse_args(self, argv):
+            return argparse.Namespace(command="unexpected")
+
+        def error(self, message):
+            self.error_message = message
+            raise SystemExit(2)
+
+    parser = ParserWithUnexpectedCommand()
+    monkeypatch.setattr("critic.cli.build_parser", lambda: parser)
+
+    with pytest.raises(SystemExit) as error:
+        main(["unexpected"])
+
+    assert error.value.code == 2
+    assert parser.error_message == "unknown command: unexpected"
