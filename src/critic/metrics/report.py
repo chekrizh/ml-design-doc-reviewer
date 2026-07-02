@@ -3,6 +3,7 @@ from typing import Literal
 
 from pydantic import BaseModel
 
+from critic.assessor.kappa import compute_cohens_kappa
 from critic.domain.assessment import AssessorOutput
 from critic.domain.assessor_checklist import AssessorChecklist
 from critic.domain.checklist import Checklist
@@ -49,13 +50,11 @@ def build_metrics_report(
         direct_answer_violation_rate=direct_answer_violation_rate(assessor_outputs),
         false_critique_rate=false_critique_rate(assessor_outputs),
         grounded_claim_rate=grounded_claim_rate(assessor_outputs),
-        section_critique_recall=(
-            section_critique_recall(golden) if golden is not None else None
-        ),
+        section_critique_recall=(section_critique_recall(golden) if golden is not None else None),
         cross_section_consistency_recall=(
             cross_section_consistency_recall(golden) if golden is not None else None
         ),
-        cohens_kappa=cohens_kappa,
+        cohens_kappa=_cohens_kappa_from_golden(golden, cohens_kappa),
         mean_critic_score=(
             mean_critic_score(critic_outputs, critic_checklist)
             if critic_outputs is not None and critic_checklist is not None
@@ -72,3 +71,14 @@ def wcs_quality_label(wcs: float | None) -> WcsQualityLabel:
     if wcs >= 0.6:
         return "good_with_gaps"
     return "needs_work"
+
+
+def _cohens_kappa_from_golden(
+    golden: GoldenErrors | None,
+    override: float | None,
+) -> float | None:
+    if override is not None:
+        return override
+    if golden is None or not golden.expert_scores:
+        return None
+    return compute_cohens_kappa(golden.expert_scores, golden.assessor_scores)

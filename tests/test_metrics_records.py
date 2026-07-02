@@ -1,6 +1,10 @@
 import json
 from pathlib import Path
 
+import pytest
+
+from critic.domain.assessment import AssessmentValidationError
+from critic.domain.assessor_checklist import load_default_assessor_checklist
 from critic.metrics.records import (
     GoldenErrors,
     load_golden_errors,
@@ -10,6 +14,7 @@ from critic.metrics.records import (
 
 
 def test_parse_assessor_records_rebuilds_assessor_output(tmp_path: Path) -> None:
+    checklist = load_default_assessor_checklist()
     log_path = tmp_path / "assessment-eval.jsonl"
     log_path.write_text(
         json.dumps(
@@ -17,11 +22,12 @@ def test_parse_assessor_records_rebuilds_assessor_output(tmp_path: Path) -> None
                 "assessment_id": "assessment-1",
                 "criteria": [
                     {
-                        "criterion_id": 1,
-                        "weight": 3,
-                        "score": 0.5,
+                        "criterion_id": criterion.id,
+                        "weight": criterion.weight,
+                        "score": 0.5 if criterion.id == 1 else 1,
                         "justification": "Partially tied to the checklist.",
                     }
+                    for criterion in checklist.criteria
                 ],
                 "notes": [
                     {
@@ -37,13 +43,34 @@ def test_parse_assessor_records_rebuilds_assessor_output(tmp_path: Path) -> None
         encoding="utf-8",
     )
 
-    [output] = parse_assessor_records(log_path)
+    [output] = parse_assessor_records(log_path, assessor_checklist=checklist)
 
     assert output.criteria[0].criterion_id == 1
     assert output.criteria[0].score == 0.5
     assert output.criteria[0].justification == "Partially tied to the checklist."
     assert output.notes[0].item_id == 2
     assert output.notes[0].false_critique is True
+
+
+def test_parse_assessor_records_rejects_missing_expected_criteria(tmp_path: Path) -> None:
+    log_path = tmp_path / "assessment-eval.jsonl"
+    log_path.write_text(
+        json.dumps(
+            {
+                "assessment_id": "assessment-1",
+                "criteria": [{"criterion_id": 1, "score": 1}],
+                "notes": [],
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    with pytest.raises(AssessmentValidationError, match="missing criterion ids"):
+        parse_assessor_records(
+            log_path,
+            assessor_checklist=load_default_assessor_checklist(),
+        )
 
 
 def test_parse_critic_records_rebuilds_critic_output(tmp_path: Path) -> None:
@@ -83,6 +110,8 @@ def test_load_golden_errors_reads_json_file(tmp_path: Path) -> None:
                 "found_section": 3,
                 "total_cross": 2,
                 "found_cross": 1,
+                "expert_scores": [0, 0, 0.5, 0.5, 1, 1],
+                "assessor_scores": [0, 0.5, 0.5, 0.5, 1, 0],
             }
         ),
         encoding="utf-8",
@@ -95,6 +124,8 @@ def test_load_golden_errors_reads_json_file(tmp_path: Path) -> None:
         found_section=3,
         total_cross=2,
         found_cross=1,
+        expert_scores=[0, 0, 0.5, 0.5, 1, 1],
+        assessor_scores=[0, 0.5, 0.5, 0.5, 1, 0],
     )
 
 
