@@ -19,13 +19,12 @@ def describe_id_set_problems(
 
     problems: list[str] = []
     if duplicate_ids:
-        problems.append(f"duplicate {label} ids: {_format_ids(duplicate_ids)}")
+        formatted_ids = ", ".join(str(item_id) for item_id in duplicate_ids)
+        problems.append(f"duplicate {label} ids: {formatted_ids}")
     if unknown_ids:
-        problems.append(f"unknown {label} ids: {_format_ids(unknown_ids)}")
+        formatted_ids = ", ".join(str(item_id) for item_id in unknown_ids)
+        problems.append(f"unknown {label} ids: {formatted_ids}")
     if missing_ids:
-        problems.append(f"missing {label} ids: {_format_ids(missing_ids)}")
+        formatted_ids = ", ".join(str(item_id) for item_id in missing_ids)
+        problems.append(f"missing {label} ids: {formatted_ids}")
     return problems
-
-
-def _format_ids(item_ids: list[int]) -> str:
-    return ", ".join(str(item_id) for item_id in item_ids)

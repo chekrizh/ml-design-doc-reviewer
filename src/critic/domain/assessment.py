@@ -1,11 +1,8 @@
-from typing import Literal
-
 from pydantic import BaseModel, Field
 
 from critic.domain.assessor_checklist import AssessorChecklist
 from critic.domain.id_validation import describe_id_set_problems
-
-Score = Literal[0, 0.5, 1]
+from critic.domain.scoring import Score
 
 
 class AssessmentValidationError(ValueError):
@@ -38,13 +35,7 @@ def validate_assessor_output(
     *,
     expected_note_ids: list[int],
 ) -> None:
-    expected_criterion_ids = {criterion.id for criterion in checklist.criteria}
-    actual_criterion_ids = [score.criterion_id for score in output.criteria]
-    problems = describe_id_set_problems(
-        actual_criterion_ids,
-        expected_criterion_ids,
-        label="criterion",
-    )
+    problems = _criterion_id_problems(output, checklist)
 
     expected_note_id_set = set(expected_note_ids)
     actual_note_ids = [note.item_id for note in output.notes]
@@ -58,3 +49,25 @@ def validate_assessor_output(
 
     if problems:
         raise AssessmentValidationError("; ".join(problems))
+
+
+def validate_assessor_criteria(
+    output: AssessorOutput,
+    checklist: AssessorChecklist,
+) -> None:
+    problems = _criterion_id_problems(output, checklist)
+    if problems:
+        raise AssessmentValidationError("; ".join(problems))
+
+
+def _criterion_id_problems(
+    output: AssessorOutput,
+    checklist: AssessorChecklist,
+) -> list[str]:
+    expected_criterion_ids = {criterion.id for criterion in checklist.criteria}
+    actual_criterion_ids = [score.criterion_id for score in output.criteria]
+    return describe_id_set_problems(
+        actual_criterion_ids,
+        expected_criterion_ids,
+        label="criterion",
+    )

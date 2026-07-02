@@ -1,5 +1,7 @@
+import pytest
+
 from critic.assessor.wcs import compute_wcs
-from critic.domain.assessment import AssessorOutput, CriterionScore
+from critic.domain.assessment import AssessmentValidationError, AssessorOutput, CriterionScore
 from critic.domain.assessor_checklist import load_default_assessor_checklist
 
 
@@ -38,3 +40,10 @@ def test_compute_wcs_uses_assessor_weights() -> None:
     )
 
     assert compute_wcs(output, checklist) == 12 / 19
+
+
+def test_compute_wcs_rejects_missing_criteria() -> None:
+    output = AssessorOutput(criteria=[CriterionScore(criterion_id=1, score=1)], notes=[])
+
+    with pytest.raises(AssessmentValidationError, match="missing criterion ids"):
+        compute_wcs(output, load_default_assessor_checklist())

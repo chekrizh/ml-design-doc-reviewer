@@ -1,10 +1,8 @@
-from typing import Literal
-
 from pydantic import BaseModel, Field, model_validator
 
 from critic.domain.checklist import Severity
+from critic.domain.scoring import Score
 
-Score = Literal[0, 0.5, 1]
 IRRELEVANT_DOCUMENT_MESSAGE = (
     "Please submit a document within ML System Design: problem statement, goals and "
     "anti-goals, metrics, validation schema, datasets, baseline, serving, monitoring, "
