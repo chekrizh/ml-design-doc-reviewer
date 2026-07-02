@@ -45,15 +45,11 @@ class ReviewService:
         try:
             critic_result = await critique(self._llm_client, self._checklist, document)
         except CriticOutputValidationError as exc:
-            self._logger.exception(
-                "review_failed inference_id=%s model=%s", inference_id, self._model
-            )
+            self._log_review_failed(inference_id)
             self._log_failure(inference_id, document, exc)
             raise
         except Exception:
-            self._logger.exception(
-                "review_failed inference_id=%s model=%s", inference_id, self._model
-            )
+            self._log_review_failed(inference_id)
             raise
 
         notes = rank_notes(critic_result.output, self._checklist, top_n=self._top_n)
@@ -93,6 +89,11 @@ class ReviewService:
             result.relevant,
             len(result.notes),
             llm_duration_ms,
+        )
+
+    def _log_review_failed(self, inference_id: str) -> None:
+        self._logger.exception(
+            "review_failed inference_id=%s model=%s", inference_id, self._model
         )
 
     def _log_inference(
