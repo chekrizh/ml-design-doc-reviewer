@@ -104,3 +104,37 @@ async def test_assessor_service_reads_inference_log_and_writes_assessment_log(
             "grounded": True,
         }
     ]
+
+
+async def test_assessor_service_allows_missing_inference_id(
+    tmp_path: Path,
+) -> None:
+    snapshot_dir = tmp_path / "snapshots"
+    snapshot_dir.mkdir()
+    (snapshot_dir / "snapshot.md").write_text("design doc body", encoding="utf-8")
+    inference_log = tmp_path / "inference.jsonl"
+    assessment_log = tmp_path / "assessment-eval.jsonl"
+    inference_log.write_text(
+        json.dumps(
+            {
+                "schema_version": "critic-inference-log-v2",
+                "input": {"snapshot_ref": "snapshots/snapshot.md"},
+                "final_result": {"notes": [_note().model_dump(mode="json")]},
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    service = AssessorService(
+        llm_client=FakeAssessorLLMClient(_complete_output()),
+        checklist=load_default_assessor_checklist(),
+        model="assessor-model",
+    )
+
+    await service.assess_inference_log(inference_log, assessment_log)
+
+    [record] = [
+        json.loads(line)
+        for line in assessment_log.read_text(encoding="utf-8").splitlines()
+    ]
+    assert record["inference_id"] is None

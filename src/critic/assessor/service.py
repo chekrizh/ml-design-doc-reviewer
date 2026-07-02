@@ -76,7 +76,7 @@ class AssessorService:
         return {
             "schema_version": ASSESSMENT_LOG_SCHEMA_VERSION,
             "assessment_id": assessment_id,
-            "inference_id": inference_record["inference_id"],
+            "inference_id": inference_record.get("inference_id"),
             "created_at": datetime.now(UTC).isoformat(),
             "model": self._model,
             "critic_model": inference_record.get("model"),
