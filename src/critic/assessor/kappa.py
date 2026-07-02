@@ -23,9 +23,10 @@ def compute_cohens_kappa(ratings_a: Sequence[float], ratings_b: Sequence[float])
         raise ValueError("ratings must include at least one item")
 
     total = len(ratings_a)
-    observed_agreement = sum(
-        rating_a == rating_b for rating_a, rating_b in zip(ratings_a, ratings_b, strict=True)
-    ) / total
+    observed_agreement = (
+        sum(rating_a == rating_b for rating_a, rating_b in zip(ratings_a, ratings_b, strict=True))
+        / total
+    )
 
     counts_a = Counter(ratings_a)
     counts_b = Counter(ratings_b)

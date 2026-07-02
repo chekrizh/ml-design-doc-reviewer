@@ -27,8 +27,7 @@ def _complete_output() -> AssessorOutput:
     checklist = load_default_assessor_checklist()
     return AssessorOutput(
         criteria=[
-            CriterionScore(criterion_id=criterion.id, score=1)
-            for criterion in checklist.criteria
+            CriterionScore(criterion_id=criterion.id, score=1) for criterion in checklist.criteria
         ],
         notes=[
             NoteJudgment(
@@ -85,8 +84,7 @@ async def test_assessor_service_reads_inference_log_and_writes_assessment_log(
 
     [assessment_id] = assessment_ids
     [record] = [
-        json.loads(line)
-        for line in assessment_log.read_text(encoding="utf-8").splitlines()
+        json.loads(line) for line in assessment_log.read_text(encoding="utf-8").splitlines()
     ]
     assert record["schema_version"] == ASSESSMENT_LOG_SCHEMA_VERSION
     assert record["assessment_id"] == assessment_id
@@ -134,7 +132,6 @@ async def test_assessor_service_allows_missing_inference_id(
     await service.assess_inference_log(inference_log, assessment_log)
 
     [record] = [
-        json.loads(line)
-        for line in assessment_log.read_text(encoding="utf-8").splitlines()
+        json.loads(line) for line in assessment_log.read_text(encoding="utf-8").splitlines()
     ]
     assert record["inference_id"] is None

@@ -30,8 +30,7 @@ def _complete_output() -> AssessorOutput:
     checklist = load_default_assessor_checklist()
     return AssessorOutput(
         criteria=[
-            CriterionScore(criterion_id=criterion.id, score=1)
-            for criterion in checklist.criteria
+            CriterionScore(criterion_id=criterion.id, score=1) for criterion in checklist.criteria
         ],
         notes=[
             NoteJudgment(

@@ -92,9 +92,7 @@ class ReviewService:
         )
 
     def _log_review_failed(self, inference_id: str) -> None:
-        self._logger.exception(
-            "review_failed inference_id=%s model=%s", inference_id, self._model
-        )
+        self._logger.exception("review_failed inference_id=%s model=%s", inference_id, self._model)
 
     def _log_inference(
         self,

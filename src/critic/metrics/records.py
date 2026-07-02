@@ -47,9 +47,7 @@ def parse_assessor_records(
     outputs: list[AssessorOutput] = []
     for record in read_jsonl(path):
         output = AssessorOutput(
-            criteria=[
-                CriterionScore.model_validate(score) for score in record.get("criteria", [])
-            ],
+            criteria=[CriterionScore.model_validate(score) for score in record.get("criteria", [])],
             notes=[NoteJudgment.model_validate(note) for note in record.get("notes", [])],
         )
         validate_assessor_criteria(output, assessor_checklist)

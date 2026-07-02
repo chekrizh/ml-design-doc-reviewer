@@ -43,10 +43,7 @@ class AssessorService:
                 final_result = record.get("final_result")
                 if final_result is None:
                     continue
-                notes = [
-                    RankedNote.model_validate(note)
-                    for note in final_result.get("notes", [])
-                ]
+                notes = [RankedNote.model_validate(note) for note in final_result.get("notes", [])]
                 document = _read_snapshot(inference_log_file.parent, record)
                 result = await assess(
                     self._llm_client,
@@ -109,6 +106,7 @@ class AssessorService:
             model=settings.model,
         )
         return cls(llm_client=llm_client, checklist=checklist, model=settings.model)
+
 
 def _read_snapshot(log_dir: Path, record: dict) -> str:
     snapshot_ref = record["input"]["snapshot_ref"]

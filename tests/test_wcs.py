@@ -9,8 +9,7 @@ def test_compute_wcs_returns_one_for_perfect_assessment() -> None:
     checklist = load_default_assessor_checklist()
     output = AssessorOutput(
         criteria=[
-            CriterionScore(criterion_id=criterion.id, score=1)
-            for criterion in checklist.criteria
+            CriterionScore(criterion_id=criterion.id, score=1) for criterion in checklist.criteria
         ],
         notes=[],
     )
