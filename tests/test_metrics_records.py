@@ -2,9 +2,11 @@ import json
 from pathlib import Path
 
 import pytest
+from pydantic import ValidationError
 
 from critic.domain.assessment import AssessmentValidationError
 from critic.domain.assessor_checklist import load_default_assessor_checklist
+from critic.domain.checklist import load_default_checklist
 from critic.metrics.records import (
     GoldenErrors,
     load_golden_errors,
@@ -73,6 +75,46 @@ def test_parse_assessor_records_rejects_missing_expected_criteria(tmp_path: Path
         )
 
 
+def test_parse_assessor_records_skips_failed_assessment_records(tmp_path: Path) -> None:
+    checklist = load_default_assessor_checklist()
+    log_path = tmp_path / "assessment-eval.jsonl"
+    log_path.write_text(
+        json.dumps(
+            {
+                "assessment_id": "failed-assessment",
+                "status": "failed",
+                "inference_id": "inf-1",
+                "error": {
+                    "type": "AssessmentValidationError",
+                    "message": "missing criterion ids: 1",
+                },
+            }
+        )
+        + "\n"
+        + json.dumps(
+            {
+                "assessment_id": "successful-assessment",
+                "criteria": [
+                    {
+                        "criterion_id": criterion.id,
+                        "score": 1,
+                    }
+                    for criterion in checklist.criteria
+                ],
+                "notes": [],
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    [output] = parse_assessor_records(log_path, assessor_checklist=checklist)
+
+    assert [score.criterion_id for score in output.criteria] == [
+        criterion.id for criterion in checklist.criteria
+    ]
+
+
 def test_parse_critic_records_rebuilds_critic_output(tmp_path: Path) -> None:
     log_path = tmp_path / "inference.jsonl"
     log_path.write_text(
@@ -99,6 +141,123 @@ def test_parse_critic_records_rebuilds_critic_output(tmp_path: Path) -> None:
     assert output.relevant is True
     assert [item.item_id for item in output.items] == [1, 2]
     assert output.items[1].remark == "Missing root cause analysis."
+
+
+def test_parse_critic_records_skips_failed_inference_records(tmp_path: Path) -> None:
+    log_path = tmp_path / "inference.jsonl"
+    log_path.write_text(
+        json.dumps(
+            {
+                "inference_id": "failed-inf",
+                "status": "failed",
+                "final_result": None,
+                "critic_output": {
+                    "relevant": True,
+                    "items": [{"item_id": 999999, "score": 1}],
+                },
+            }
+        )
+        + "\n"
+        + json.dumps(
+            {
+                "inference_id": "successful-inf",
+                "critic_output": {
+                    "relevant": True,
+                    "items": [{"item_id": 1, "score": 1}],
+                },
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    [output] = parse_critic_records(log_path)
+
+    assert [item.item_id for item in output.items] == [1]
+
+
+def test_parse_critic_records_accepts_guardrail_rejected_records_for_loaded_checklist(
+    tmp_path: Path,
+) -> None:
+    log_path = tmp_path / "inference.jsonl"
+    log_path.write_text(
+        json.dumps(
+            {
+                "inference_id": "irrelevant-inf",
+                "critic_output": {"relevant": False, "items": []},
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    [output] = parse_critic_records(log_path, critic_checklist=load_default_checklist())
+
+    assert output.relevant is False
+    assert output.items == []
+
+
+def test_parse_critic_records_rejects_invalid_critic_output_shape(tmp_path: Path) -> None:
+    log_path = tmp_path / "inference.jsonl"
+    log_path.write_text(
+        json.dumps(
+            {
+                "inference_id": "invalid-inf",
+                "critic_output": {
+                    "items": [{"item_id": 1, "score": 1}],
+                },
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValidationError, match="relevant"):
+        parse_critic_records(log_path)
+
+
+def test_parse_critic_records_rejects_unknown_item_ids_for_loaded_checklist(
+    tmp_path: Path,
+) -> None:
+    log_path = tmp_path / "inference.jsonl"
+    log_path.write_text(
+        json.dumps(
+            {
+                "inference_id": "drifted-inf",
+                "critic_output": {
+                    "relevant": True,
+                    "items": [{"item_id": 999999, "score": 1}],
+                },
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError, match="unknown item ids: 999999"):
+        parse_critic_records(log_path, critic_checklist=load_default_checklist())
+
+
+def test_parse_critic_records_rejects_missing_item_ids_for_loaded_checklist(
+    tmp_path: Path,
+) -> None:
+    log_path = tmp_path / "inference.jsonl"
+    log_path.write_text(
+        json.dumps(
+            {
+                "inference_id": "partial-inf",
+                "critic_output": {
+                    "relevant": True,
+                    "items": [{"item_id": 1, "score": 1}],
+                },
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError, match="missing item ids"):
+        parse_critic_records(log_path, critic_checklist=load_default_checklist())
 
 
 def test_load_golden_errors_reads_json_file(tmp_path: Path) -> None:

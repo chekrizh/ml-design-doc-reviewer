@@ -1,8 +1,8 @@
-"""Cohen's Kappa helpers for future Assessor calibration.
+"""Cohen's Kappa helpers for Assessor agreement metrics.
 
-This module is only the math primitive from the design doc's Calibration
-Mechanism. The expert-labeled validation set, drift diagnosis, and recalibration
-loop require a curated labeling dataset and are intentionally future work.
+The metric is used by the offline report when golden expert/assessor scores are
+available. The broader drift diagnosis and recalibration loop still require a
+curated labeling dataset and are intentionally future work.
 """
 
 from collections import Counter

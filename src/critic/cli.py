@@ -107,8 +107,11 @@ def main(
         critic_checklist = None
         assessor_checklist = load_default_assessor_checklist()
         if args.inference_log is not None:
-            critic_outputs = parse_critic_records(args.inference_log)
             critic_checklist = load_default_checklist()
+            critic_outputs = parse_critic_records(
+                args.inference_log,
+                critic_checklist=critic_checklist,
+            )
 
         report = build_metrics_report(
             assessor_outputs=parse_assessor_records(

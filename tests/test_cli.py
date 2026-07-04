@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 
 import pytest
+from fakes import complete_critic_output
 
 from critic.cli import build_parser, main
 from critic.domain.assessor_checklist import load_default_assessor_checklist
@@ -195,10 +196,7 @@ def test_cli_metrics_reads_logs_and_prints_report(tmp_path: Path, capsys) -> Non
     inference_log.write_text(
         json.dumps(
             {
-                "critic_output": {
-                    "relevant": True,
-                    "items": [{"item_id": 1, "score": 1}],
-                }
+                "critic_output": complete_critic_output().model_dump(mode="json"),
             }
         )
         + "\n",
@@ -239,6 +237,7 @@ def test_cli_metrics_reads_logs_and_prints_report(tmp_path: Path, capsys) -> Non
     assert payload["section_critique_recall"] == 0.5
     assert payload["cross_section_consistency_recall"] == 0.75
     assert payload["cohens_kappa"] == pytest.approx(0.5)
+    assert payload["kappa_agreement_label"] == "moderate"
     assert payload["mean_critic_score"] == 1.0
 
 

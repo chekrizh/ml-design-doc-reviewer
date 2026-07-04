@@ -7,6 +7,8 @@ from pathlib import Path
 
 from pydantic import BaseModel, Field, model_validator
 
+from critic.domain.id_validation import ensure_unique_ids
+
 
 class ChecklistItem(BaseModel):
     id: int = Field(ge=1)
@@ -22,9 +24,7 @@ class Checklist(BaseModel):
 
     @model_validator(mode="after")
     def validate_unique_ids(self) -> Checklist:
-        item_ids = [item.id for item in self.items]
-        if len(item_ids) != len(set(item_ids)):
-            raise ValueError("duplicate checklist item id")
+        ensure_unique_ids((item.id for item in self.items), label="checklist item")
         return self
 
     def by_id(self, item_id: int) -> ChecklistItem:

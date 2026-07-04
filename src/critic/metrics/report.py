@@ -3,7 +3,7 @@ from typing import Literal
 
 from pydantic import BaseModel
 
-from critic.assessor.kappa import compute_cohens_kappa
+from critic.assessor.kappa import compute_cohens_kappa, interpret_kappa
 from critic.domain.assessment import AssessorOutput
 from critic.domain.assessor_checklist import AssessorChecklist
 from critic.domain.checklist import Checklist
@@ -21,6 +21,7 @@ from critic.metrics.records import GoldenErrors
 
 WcsQualityLabel = Literal["excellent", "good_with_gaps", "needs_work", "not_available"]
 CriticScoreQualityLabel = Literal["excellent", "good", "normal", "bad", "not_available"]
+KappaAgreementLabel = Literal["poor", "moderate", "substantial", "not_available"]
 
 
 class MetricsReport(BaseModel):
@@ -32,6 +33,7 @@ class MetricsReport(BaseModel):
     section_critique_recall: float | None
     cross_section_consistency_recall: float | None
     cohens_kappa: float | None
+    kappa_agreement_label: KappaAgreementLabel
     mean_critic_score: float | None
     critic_score_quality_label: CriticScoreQualityLabel
 
@@ -51,6 +53,7 @@ def build_metrics_report(
         if critic_outputs is not None and critic_checklist is not None
         else None
     )
+    kappa = _cohens_kappa_from_golden(golden, cohens_kappa)
     return MetricsReport(
         mean_wcs=wcs,
         wcs_quality_label=wcs_quality_label(wcs),
@@ -61,32 +64,34 @@ def build_metrics_report(
         cross_section_consistency_recall=(
             cross_section_consistency_recall(golden) if golden is not None else None
         ),
-        cohens_kappa=_cohens_kappa_from_golden(golden, cohens_kappa),
+        cohens_kappa=kappa,
+        kappa_agreement_label=kappa_agreement_label(kappa),
         mean_critic_score=critic_score,
         critic_score_quality_label=critic_score_quality_label(critic_score),
     )
 
 
 def wcs_quality_label(wcs: float | None) -> WcsQualityLabel:
-    if wcs is None:
-        return "not_available"
-    if wcs >= 0.8:
-        return "excellent"
-    if wcs >= 0.6:
-        return "good_with_gaps"
-    return "needs_work"
+    return _bucket_label(wcs, [(0.8, "excellent"), (0.6, "good_with_gaps")], "needs_work")
 
 
 def critic_score_quality_label(score: float | None) -> CriticScoreQualityLabel:
-    if score is None:
+    return _bucket_label(score, [(0.8, "excellent"), (0.5, "good"), (0.3, "normal")], "bad")
+
+
+def kappa_agreement_label(kappa: float | None) -> KappaAgreementLabel:
+    if kappa is None:
         return "not_available"
-    if score >= 0.8:
-        return "excellent"
-    if score >= 0.5:
-        return "good"
-    if score >= 0.3:
-        return "normal"
-    return "bad"
+    return interpret_kappa(kappa).value
+
+
+def _bucket_label(value: float | None, thresholds: Sequence[tuple[float, str]], below: str) -> str:
+    if value is None:
+        return "not_available"
+    for cutoff, label in thresholds:
+        if value >= cutoff:
+            return label
+    return below
 
 
 def _cohens_kappa_from_golden(

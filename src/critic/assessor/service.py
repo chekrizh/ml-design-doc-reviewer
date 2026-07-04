@@ -43,15 +43,27 @@ class AssessorService:
                 final_result = record.get("final_result")
                 if final_result is None:
                     continue
-                notes = [RankedNote.model_validate(note) for note in final_result.get("notes", [])]
-                document = _read_snapshot(inference_log_file.parent, record)
-                result = await assess(
-                    self._llm_client,
-                    self._checklist,
-                    document=document,
-                    notes=notes,
-                )
                 assessment_id = new_inference_id()
+                try:
+                    notes = [
+                        RankedNote.model_validate(note) for note in final_result.get("notes", [])
+                    ]
+                    document = _read_snapshot(inference_log_file.parent, record)
+                    result = await assess(
+                        self._llm_client,
+                        self._checklist,
+                        document=document,
+                        notes=notes,
+                    )
+                except Exception as exc:
+                    file.write(
+                        json.dumps(
+                            self._failure_log_record(assessment_id, record, exc),
+                            ensure_ascii=False,
+                        )
+                        + "\n"
+                    )
+                    continue
                 file.write(
                     json.dumps(
                         self._log_record(assessment_id, record, result),
@@ -71,14 +83,7 @@ class AssessorService:
         # TODO(design-doc): Section Critique Recall and Cross-section Consistency
         # Recall require joining these judgments with inject_errors.py ground truth.
         return {
-            "schema_version": ASSESSMENT_LOG_SCHEMA_VERSION,
-            "assessment_id": assessment_id,
-            "inference_id": inference_record.get("inference_id"),
-            "created_at": datetime.now(UTC).isoformat(),
-            "model": self._model,
-            "critic_model": inference_record.get("model"),
-            "critic_checklist_version": inference_record.get("checklist_version"),
-            "assessor_checklist_version": self._checklist.version,
+            **self._record_header(assessment_id, inference_record),
             "timings": {"llm_duration_ms": result.llm_duration_ms},
             "criteria": [
                 {
@@ -91,6 +96,30 @@ class AssessorService:
             ],
             "notes": [note.model_dump(mode="json") for note in result.output.notes],
             "wcs": result.wcs,
+        }
+
+    def _failure_log_record(
+        self,
+        assessment_id: str,
+        inference_record: dict,
+        error: Exception,
+    ) -> dict:
+        return {
+            **self._record_header(assessment_id, inference_record),
+            "status": "failed",
+            "error": {"type": type(error).__name__, "message": str(error)},
+        }
+
+    def _record_header(self, assessment_id: str, inference_record: dict) -> dict:
+        return {
+            "schema_version": ASSESSMENT_LOG_SCHEMA_VERSION,
+            "assessment_id": assessment_id,
+            "inference_id": inference_record.get("inference_id"),
+            "created_at": datetime.now(UTC).isoformat(),
+            "model": self._model,
+            "critic_model": inference_record.get("model"),
+            "critic_checklist_version": inference_record.get("checklist_version"),
+            "assessor_checklist_version": self._checklist.version,
         }
 
     @classmethod

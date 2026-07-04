@@ -2,6 +2,12 @@ from collections import Counter
 from collections.abc import Iterable
 
 
+def ensure_unique_ids(ids: Iterable[int], *, label: str) -> None:
+    id_list = list(ids)
+    if len(id_list) != len(set(id_list)):
+        raise ValueError(f"duplicate {label} id")
+
+
 def describe_id_set_problems(
     actual_ids: Iterable[int],
     expected_ids: set[int],

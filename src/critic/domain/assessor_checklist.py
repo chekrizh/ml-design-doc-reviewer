@@ -7,6 +7,8 @@ from pathlib import Path
 
 from pydantic import BaseModel, Field, model_validator
 
+from critic.domain.id_validation import ensure_unique_ids
+
 
 class AssessorCriterion(BaseModel):
     id: int = Field(ge=1)
@@ -20,9 +22,7 @@ class AssessorChecklist(BaseModel):
 
     @model_validator(mode="after")
     def validate_unique_ids(self) -> AssessorChecklist:
-        criterion_ids = [criterion.id for criterion in self.criteria]
-        if len(criterion_ids) != len(set(criterion_ids)):
-            raise ValueError("duplicate assessor criterion id")
+        ensure_unique_ids((criterion.id for criterion in self.criteria), label="assessor criterion")
         return self
 
     def by_id(self, criterion_id: int) -> AssessorCriterion:

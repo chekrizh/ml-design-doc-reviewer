@@ -10,6 +10,7 @@ from critic.metrics.records import GoldenErrors
 from critic.metrics.report import (
     build_metrics_report,
     critic_score_quality_label,
+    kappa_agreement_label,
     wcs_quality_label,
 )
 
@@ -68,6 +69,23 @@ def test_critic_score_quality_label_uses_checklist_thresholds(
     assert critic_score_quality_label(score) == expected_label
 
 
+@pytest.mark.parametrize(
+    ("kappa", "expected_label"),
+    [
+        (None, "not_available"),
+        (0.39, "poor"),
+        (0.4, "moderate"),
+        (0.59, "moderate"),
+        (0.6, "substantial"),
+    ],
+)
+def test_kappa_agreement_label_uses_design_doc_thresholds(
+    kappa: float | None,
+    expected_label: str,
+) -> None:
+    assert kappa_agreement_label(kappa) == expected_label
+
+
 def test_build_metrics_report_populates_available_metrics() -> None:
     report = build_metrics_report(
         assessor_outputs=[_assessor_output(1)],
@@ -86,6 +104,7 @@ def test_build_metrics_report_populates_available_metrics() -> None:
     assert report.section_critique_recall == 0.5
     assert report.cross_section_consistency_recall == 0.75
     assert report.cohens_kappa == 0.7
+    assert report.kappa_agreement_label == "substantial"
     assert report.mean_critic_score == 1.0
     assert report.critic_score_quality_label == "excellent"
 
@@ -107,6 +126,7 @@ def test_metrics_report_serializes_unavailable_optional_metrics_as_null() -> Non
         "section_critique_recall": None,
         "cross_section_consistency_recall": None,
         "cohens_kappa": None,
+        "kappa_agreement_label": "not_available",
         "mean_critic_score": None,
         "critic_score_quality_label": "not_available",
     }
