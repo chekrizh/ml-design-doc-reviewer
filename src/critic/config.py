@@ -46,3 +46,7 @@ class AssessorOutputSettings(_CriticBaseSettings):
         default=Path("logs/assessment-eval.jsonl"),
         alias="ASSESSOR_EVAL_LOG_FILE",
     )
+    checklist_path: Path | None = Field(
+        default=None,
+        alias="ASSESSOR_CHECKLIST_PATH",
+    )

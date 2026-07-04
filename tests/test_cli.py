@@ -254,6 +254,47 @@ def test_cli_metrics_reads_logs_and_prints_report(tmp_path: Path, capsys) -> Non
     assert payload["assessment_failed_count"] == 1
 
 
+def test_cli_metrics_uses_custom_assessor_checklist_from_env(
+    tmp_path: Path,
+    monkeypatch,
+    capsys,
+) -> None:
+    assessment_log = tmp_path / "assessment-eval.jsonl"
+    checklist_path = tmp_path / "assessor-checklist.json"
+    checklist_path.write_text(
+        json.dumps(
+            {
+                "version": "custom-assessor-checklist",
+                "criteria": [
+                    {"id": 1, "question": "First criterion", "weight": 1},
+                    {"id": 2, "question": "Second criterion", "weight": 3},
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    assessment_log.write_text(
+        json.dumps(
+            {
+                "criteria": [
+                    {"criterion_id": 1, "score": 1},
+                    {"criterion_id": 2, "score": 0},
+                ],
+                "notes": [],
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setenv("ASSESSOR_CHECKLIST_PATH", str(checklist_path))
+
+    exit_code = main(["metrics", str(assessment_log)])
+
+    payload = json.loads(capsys.readouterr().out)
+    assert exit_code == 0
+    assert payload["mean_wcs"] == 0.25
+
+
 def test_cli_help_lists_review_assess_and_metrics_commands() -> None:
     help_text = build_parser().format_help()
 

@@ -9,7 +9,7 @@ from typing import Protocol
 
 from critic.assessor.service import AssessorService
 from critic.config import AssessorOutputSettings, AssessorSettings, Settings
-from critic.domain.assessor_checklist import load_default_assessor_checklist
+from critic.domain.assessor_checklist import AssessorChecklist, load_default_assessor_checklist
 from critic.domain.checklist import load_default_checklist
 from critic.domain.critique import ReviewResult
 from critic.metrics.records import (
@@ -110,7 +110,7 @@ def main(
     if args.command == "metrics":
         critic_outputs = None
         critic_checklist = None
-        assessor_checklist = load_default_assessor_checklist()
+        assessor_checklist = _load_assessor_checklist(AssessorOutputSettings().checklist_path)
         if args.inference_log is not None:
             critic_checklist = load_default_checklist()
             critic_outputs = parse_critic_records(
@@ -149,6 +149,12 @@ def _resolve_assessor(
     settings = AssessorSettings()
     output_file = args.output or settings.eval_log_file
     return lambda: AssessorService.from_settings(settings), output_file
+
+
+def _load_assessor_checklist(checklist_path: Path | None) -> AssessorChecklist:
+    if checklist_path is not None:
+        return AssessorChecklist.load(checklist_path)
+    return load_default_assessor_checklist()
 
 
 if __name__ == "__main__":
