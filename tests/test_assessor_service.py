@@ -35,20 +35,24 @@ class SequencedAssessorLLMClient:
         return self.outputs.pop(0)
 
 
-def _complete_output() -> AssessorOutput:
+def _complete_output(*, include_note: bool = True) -> AssessorOutput:
     checklist = load_default_assessor_checklist()
     return AssessorOutput(
         criteria=[
             CriterionScore(criterion_id=criterion.id, score=1) for criterion in checklist.criteria
         ],
-        notes=[
-            NoteJudgment(
-                item_id=2,
-                direct_answer_violation=False,
-                false_critique=False,
-                grounded=True,
-            )
-        ],
+        notes=(
+            [
+                NoteJudgment(
+                    item_id=2,
+                    direct_answer_violation=False,
+                    false_critique=False,
+                    grounded=True,
+                )
+            ]
+            if include_note
+            else []
+        ),
     )
 
 
@@ -146,6 +150,80 @@ async def test_assessor_service_allows_missing_inference_id(
         json.loads(line) for line in assessment_log.read_text(encoding="utf-8").splitlines()
     ]
     assert record["inference_id"] is None
+
+
+async def test_assessor_service_rejects_snapshot_refs_outside_snapshot_dir(
+    tmp_path: Path,
+) -> None:
+    log_dir = tmp_path / "logs"
+    log_dir.mkdir()
+    (tmp_path / "secret.txt").write_text("SECRET local file", encoding="utf-8")
+    inference_log = log_dir / "inference.jsonl"
+    assessment_log = tmp_path / "assessment-eval.jsonl"
+    inference_log.write_text(
+        json.dumps(
+            {
+                "schema_version": "critic-inference-log-v2",
+                "inference_id": "inf-1",
+                "input": {"snapshot_ref": "../secret.txt"},
+                "final_result": {"notes": []},
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    service = AssessorService(
+        llm_client=FakeAssessorLLMClient(_complete_output(include_note=False)),
+        checklist=load_default_assessor_checklist(),
+        model="assessor-model",
+    )
+
+    assessment_ids = await service.assess_inference_log(inference_log, assessment_log)
+
+    [record] = [
+        json.loads(line) for line in assessment_log.read_text(encoding="utf-8").splitlines()
+    ]
+    assert assessment_ids == []
+    assert record["status"] == "failed"
+    assert record["inference_id"] == "inf-1"
+    assert record["error"]["type"] == "ValueError"
+    assert "snapshot_ref" in record["error"]["message"]
+
+
+async def test_assessor_service_skips_already_assessed_inference_ids(
+    tmp_path: Path,
+) -> None:
+    snapshot_dir = tmp_path / "snapshots"
+    snapshot_dir.mkdir()
+    (snapshot_dir / "inf-1.md").write_text("design doc body", encoding="utf-8")
+    inference_log = tmp_path / "inference.jsonl"
+    assessment_log = tmp_path / "assessment-eval.jsonl"
+    inference_log.write_text(
+        json.dumps(
+            {
+                "schema_version": "critic-inference-log-v2",
+                "inference_id": "inf-1",
+                "input": {"snapshot_ref": "snapshots/inf-1.md"},
+                "final_result": {"notes": [_note().model_dump(mode="json")]},
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    service = AssessorService(
+        llm_client=FakeAssessorLLMClient(_complete_output()),
+        checklist=load_default_assessor_checklist(),
+        model="assessor-model",
+    )
+
+    first_ids = await service.assess_inference_log(inference_log, assessment_log)
+    second_ids = await service.assess_inference_log(inference_log, assessment_log)
+
+    records = [json.loads(line) for line in assessment_log.read_text(encoding="utf-8").splitlines()]
+    assert len(first_ids) == 1
+    assert second_ids == []
+    assert len(records) == 1
+    assert records[0]["inference_id"] == "inf-1"
 
 
 async def test_assessor_service_records_failed_assessment_and_continues_batch(

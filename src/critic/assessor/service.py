@@ -14,7 +14,7 @@ from critic.domain.critique import RankedNote
 from critic.jsonl import read_jsonl
 from critic.llm.base import LLMClient
 from critic.llm.openai_client import OpenAILLMClient
-from critic.logging import new_inference_id
+from critic.logging import SNAPSHOT_DIR_NAME, new_inference_id
 
 ASSESSMENT_LOG_SCHEMA_VERSION = "assessor-eval-log-v1"
 
@@ -37,11 +37,15 @@ class AssessorService:
         output_file: Path,
     ) -> list[str]:
         assessment_ids: list[str] = []
+        assessed_inference_ids = _existing_assessed_inference_ids(output_file)
         output_file.parent.mkdir(parents=True, exist_ok=True)
         with output_file.open("a", encoding="utf-8") as file:
             for record in read_jsonl(inference_log_file):
                 final_result = record.get("final_result")
                 if final_result is None:
+                    continue
+                inference_id = record.get("inference_id")
+                if inference_id is not None and inference_id in assessed_inference_ids:
                     continue
                 assessment_id = new_inference_id()
                 try:
@@ -63,6 +67,8 @@ class AssessorService:
                         )
                         + "\n"
                     )
+                    if inference_id is not None:
+                        assessed_inference_ids.add(inference_id)
                     continue
                 file.write(
                     json.dumps(
@@ -72,6 +78,8 @@ class AssessorService:
                     + "\n"
                 )
                 assessment_ids.append(assessment_id)
+                if inference_id is not None:
+                    assessed_inference_ids.add(inference_id)
         return assessment_ids
 
     def _log_record(
@@ -139,4 +147,25 @@ class AssessorService:
 
 def _read_snapshot(log_dir: Path, record: dict) -> str:
     snapshot_ref = record["input"]["snapshot_ref"]
-    return (log_dir / snapshot_ref).read_text(encoding="utf-8")
+    if not isinstance(snapshot_ref, str):
+        raise ValueError("snapshot_ref must be a relative path under snapshots/")
+
+    snapshot_path = Path(snapshot_ref)
+    snapshot_root = (log_dir / SNAPSHOT_DIR_NAME).resolve()
+    resolved_snapshot_path = (log_dir / snapshot_path).resolve()
+    try:
+        resolved_snapshot_path.relative_to(snapshot_root)
+    except ValueError as exc:
+        raise ValueError("snapshot_ref must be a relative path under snapshots/") from exc
+
+    return resolved_snapshot_path.read_text(encoding="utf-8")
+
+
+def _existing_assessed_inference_ids(output_file: Path) -> set[str]:
+    if not output_file.exists():
+        return set()
+    return {
+        inference_id
+        for record in read_jsonl(output_file)
+        if (inference_id := record.get("inference_id")) is not None
+    }

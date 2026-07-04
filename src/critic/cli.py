@@ -12,7 +12,12 @@ from critic.config import AssessorOutputSettings, AssessorSettings, Settings
 from critic.domain.assessor_checklist import load_default_assessor_checklist
 from critic.domain.checklist import load_default_checklist
 from critic.domain.critique import ReviewResult
-from critic.metrics.records import load_golden_errors, parse_assessor_records, parse_critic_records
+from critic.metrics.records import (
+    count_assessment_records,
+    load_golden_errors,
+    parse_assessor_records,
+    parse_critic_records,
+)
 from critic.metrics.report import build_metrics_report
 from critic.service import ReviewService
 
@@ -113,6 +118,7 @@ def main(
                 critic_checklist=critic_checklist,
             )
 
+        assessment_counts = count_assessment_records(args.path)
         report = build_metrics_report(
             assessor_outputs=parse_assessor_records(
                 args.path,
@@ -122,6 +128,8 @@ def main(
             critic_outputs=critic_outputs,
             critic_checklist=critic_checklist,
             golden=load_golden_errors(args.golden) if args.golden is not None else None,
+            assessment_total_count=assessment_counts.total,
+            assessment_failed_count=assessment_counts.failed,
         )
         print(report.model_dump_json(indent=2))
         return 0

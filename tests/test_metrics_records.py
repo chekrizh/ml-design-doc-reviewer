@@ -7,6 +7,7 @@ from pydantic import ValidationError
 from critic.domain.assessment import AssessmentValidationError
 from critic.domain.assessor_checklist import load_default_assessor_checklist
 from critic.domain.checklist import load_default_checklist
+from critic.metrics import records
 from critic.metrics.records import (
     GoldenErrors,
     load_golden_errors,
@@ -113,6 +114,23 @@ def test_parse_assessor_records_skips_failed_assessment_records(tmp_path: Path) 
     assert [score.criterion_id for score in output.criteria] == [
         criterion.id for criterion in checklist.criteria
     ]
+
+
+def test_count_assessment_records_reports_successful_and_failed_rows(tmp_path: Path) -> None:
+    log_path = tmp_path / "assessment-eval.jsonl"
+    log_path.write_text(
+        json.dumps({"assessment_id": "failed-assessment", "status": "failed"})
+        + "\n"
+        + json.dumps({"assessment_id": "successful-assessment", "criteria": [], "notes": []})
+        + "\n",
+        encoding="utf-8",
+    )
+
+    counts = records.count_assessment_records(log_path)
+
+    assert counts.total == 2
+    assert counts.successful == 1
+    assert counts.failed == 1
 
 
 def test_parse_critic_records_rebuilds_critic_output(tmp_path: Path) -> None:

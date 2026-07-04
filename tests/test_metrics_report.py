@@ -107,6 +107,20 @@ def test_build_metrics_report_populates_available_metrics() -> None:
     assert report.kappa_agreement_label == "substantial"
     assert report.mean_critic_score == 1.0
     assert report.critic_score_quality_label == "excellent"
+    assert report.assessment_total_count == 1
+    assert report.assessment_failed_count == 0
+
+
+def test_build_metrics_report_exposes_failed_assessment_count() -> None:
+    report = build_metrics_report(
+        assessor_outputs=[_assessor_output(1)],
+        assessor_checklist=load_default_assessor_checklist(),
+        assessment_total_count=2,
+        assessment_failed_count=1,
+    )
+
+    assert report.assessment_total_count == 2
+    assert report.assessment_failed_count == 1
 
 
 def test_metrics_report_serializes_unavailable_optional_metrics_as_null() -> None:
@@ -129,4 +143,7 @@ def test_metrics_report_serializes_unavailable_optional_metrics_as_null() -> Non
         "kappa_agreement_label": "not_available",
         "mean_critic_score": None,
         "critic_score_quality_label": "not_available",
+        "assessment_total_count": 0,
+        "assessment_failed_count": 0,
     }
+    assert "assessment_success_count" not in payload

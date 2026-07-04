@@ -36,6 +36,8 @@ class MetricsReport(BaseModel):
     kappa_agreement_label: KappaAgreementLabel
     mean_critic_score: float | None
     critic_score_quality_label: CriticScoreQualityLabel
+    assessment_total_count: int
+    assessment_failed_count: int
 
 
 def build_metrics_report(
@@ -46,6 +48,8 @@ def build_metrics_report(
     critic_checklist: Checklist | None = None,
     golden: GoldenErrors | None = None,
     cohens_kappa: float | None = None,
+    assessment_total_count: int | None = None,
+    assessment_failed_count: int = 0,
 ) -> MetricsReport:
     wcs = mean_wcs(assessor_outputs, assessor_checklist)
     critic_score = (
@@ -54,6 +58,11 @@ def build_metrics_report(
         else None
     )
     kappa = _cohens_kappa_from_golden(golden, cohens_kappa)
+    total_count = (
+        len(assessor_outputs) + assessment_failed_count
+        if assessment_total_count is None
+        else assessment_total_count
+    )
     return MetricsReport(
         mean_wcs=wcs,
         wcs_quality_label=wcs_quality_label(wcs),
@@ -68,6 +77,8 @@ def build_metrics_report(
         kappa_agreement_label=kappa_agreement_label(kappa),
         mean_critic_score=critic_score,
         critic_score_quality_label=critic_score_quality_label(critic_score),
+        assessment_total_count=total_count,
+        assessment_failed_count=assessment_failed_count,
     )
 
 

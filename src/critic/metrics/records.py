@@ -42,6 +42,12 @@ class GoldenErrors(BaseModel):
         return self
 
 
+class AssessmentRecordCounts(BaseModel):
+    total: int = Field(ge=0)
+    successful: int = Field(ge=0)
+    failed: int = Field(ge=0)
+
+
 def parse_assessor_records(
     path: Path,
     *,
@@ -56,6 +62,20 @@ def parse_assessor_records(
         validate_assessor_criteria(output, assessor_checklist)
         outputs.append(output)
     return outputs
+
+
+def count_assessment_records(path: Path) -> AssessmentRecordCounts:
+    total = 0
+    failed = 0
+    for record in read_jsonl(path):
+        total += 1
+        if record.get("status") == "failed":
+            failed += 1
+    return AssessmentRecordCounts(
+        total=total,
+        successful=total - failed,
+        failed=failed,
+    )
 
 
 def parse_critic_records(

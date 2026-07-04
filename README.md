@@ -16,9 +16,9 @@
 
 ML Design Doc Reviewer is an open-source agent for reviewing ML system design documents. It helps engineers practice ML system design by surfacing architectural gaps, cross-section inconsistencies, weak trade-offs, unsupported assumptions, and missing reasoning — returning focused critique and guiding questions instead of a finished design.
 
-ML system design improves through repeated feedback cycles. Human review is valuable but slow and hard to scale; generic LLM feedback is fast but often vague or too willing to solve the task for the author. 
+ML system design improves through repeated feedback cycles. Human review is valuable but slow and hard to scale; generic LLM feedback is fast but often vague or too willing to solve the task for the author.
 
-This project aims for the middle ground: 
+This project aims for the middle ground:
 - fast feedback on ML design documents;
 - structured findings tied to the submitted document;
 - focus on architecture and methodology;
