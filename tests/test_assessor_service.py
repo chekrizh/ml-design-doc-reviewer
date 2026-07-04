@@ -6,7 +6,6 @@ from pydantic import BaseModel
 from critic.assessor.service import ASSESSMENT_LOG_SCHEMA_VERSION, AssessorService
 from critic.domain.assessment import AssessorOutput, CriterionScore, NoteJudgment
 from critic.domain.assessor_checklist import load_default_assessor_checklist
-from critic.domain.checklist import Severity
 from critic.domain.critique import RankedNote
 
 
@@ -47,7 +46,6 @@ def _note() -> RankedNote:
         question="Was root-cause analysis conducted?",
         score=0,
         remark="No root-cause analysis is documented.",
-        severity=Severity.critical,
         priority=16.3,
     )
 

@@ -1,6 +1,5 @@
 from pydantic import BaseModel, Field, model_validator
 
-from critic.domain.checklist import Severity
 from critic.domain.scoring import Score
 
 IRRELEVANT_DOCUMENT_MESSAGE = (
@@ -33,7 +32,6 @@ class RankedNote(BaseModel):
     question: str
     score: float
     remark: str
-    severity: Severity
     priority: float
 
 

@@ -1,18 +1,11 @@
 from __future__ import annotations
 
 import json
-from enum import StrEnum
 from importlib import resources
 from importlib.resources.abc import Traversable
 from pathlib import Path
 
 from pydantic import BaseModel, Field, model_validator
-
-
-class Severity(StrEnum):
-    critical = "critical"
-    warning = "warning"
-    nice_to_have = "nice_to_have"
 
 
 class ChecklistItem(BaseModel):

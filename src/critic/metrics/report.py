@@ -20,6 +20,7 @@ from critic.metrics.offline import (
 from critic.metrics.records import GoldenErrors
 
 WcsQualityLabel = Literal["excellent", "good_with_gaps", "needs_work", "not_available"]
+CriticScoreQualityLabel = Literal["excellent", "good", "normal", "bad", "not_available"]
 
 
 class MetricsReport(BaseModel):
@@ -32,6 +33,7 @@ class MetricsReport(BaseModel):
     cross_section_consistency_recall: float | None
     cohens_kappa: float | None
     mean_critic_score: float | None
+    critic_score_quality_label: CriticScoreQualityLabel
 
 
 def build_metrics_report(
@@ -44,6 +46,11 @@ def build_metrics_report(
     cohens_kappa: float | None = None,
 ) -> MetricsReport:
     wcs = mean_wcs(assessor_outputs, assessor_checklist)
+    critic_score = (
+        mean_critic_score(critic_outputs, critic_checklist)
+        if critic_outputs is not None and critic_checklist is not None
+        else None
+    )
     return MetricsReport(
         mean_wcs=wcs,
         wcs_quality_label=wcs_quality_label(wcs),
@@ -55,11 +62,8 @@ def build_metrics_report(
             cross_section_consistency_recall(golden) if golden is not None else None
         ),
         cohens_kappa=_cohens_kappa_from_golden(golden, cohens_kappa),
-        mean_critic_score=(
-            mean_critic_score(critic_outputs, critic_checklist)
-            if critic_outputs is not None and critic_checklist is not None
-            else None
-        ),
+        mean_critic_score=critic_score,
+        critic_score_quality_label=critic_score_quality_label(critic_score),
     )
 
 
@@ -71,6 +75,18 @@ def wcs_quality_label(wcs: float | None) -> WcsQualityLabel:
     if wcs >= 0.6:
         return "good_with_gaps"
     return "needs_work"
+
+
+def critic_score_quality_label(score: float | None) -> CriticScoreQualityLabel:
+    if score is None:
+        return "not_available"
+    if score >= 0.8:
+        return "excellent"
+    if score >= 0.5:
+        return "good"
+    if score >= 0.3:
+        return "normal"
+    return "bad"
 
 
 def _cohens_kappa_from_golden(

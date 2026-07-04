@@ -1,14 +1,7 @@
 from collections.abc import Sequence
 
-from critic.domain.checklist import Checklist, Severity
+from critic.domain.checklist import Checklist
 from critic.domain.critique import CriticOutput
-from critic.ranker import severity_from_item
-
-SEVERITY_WEIGHTS = {
-    Severity.critical: 3,
-    Severity.warning: 2,
-    Severity.nice_to_have: 1,
-}
 
 
 def critic_document_score(output: CriticOutput, checklist: Checklist) -> float | None:
@@ -19,7 +12,9 @@ def critic_document_score(output: CriticOutput, checklist: Checklist) -> float |
     total_weight = 0
     for assessment in output.items:
         item = checklist.by_id(assessment.item_id)
-        weight = SEVERITY_WEIGHTS[severity_from_item(item)]
+        # Baseline scores full documents only, so B_F_T_i from the design doc
+        # formula is implicitly 1 until partial snapshots are introduced.
+        weight = item.block_weight * item.question_weight
         weighted_score += weight * float(assessment.score)
         total_weight += weight
     return weighted_score / total_weight

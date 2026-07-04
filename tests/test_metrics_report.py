@@ -7,7 +7,11 @@ from critic.domain.assessor_checklist import load_default_assessor_checklist
 from critic.domain.checklist import load_default_checklist
 from critic.domain.critique import CriticOutput, ItemAssessment
 from critic.metrics.records import GoldenErrors
-from critic.metrics.report import build_metrics_report, wcs_quality_label
+from critic.metrics.report import (
+    build_metrics_report,
+    critic_score_quality_label,
+    wcs_quality_label,
+)
 
 
 def _assessor_output(score: float) -> AssessorOutput:
@@ -45,6 +49,25 @@ def test_wcs_quality_label_uses_design_doc_thresholds(
     assert wcs_quality_label(wcs) == expected_label
 
 
+@pytest.mark.parametrize(
+    ("score", "expected_label"),
+    [
+        (None, "not_available"),
+        (0.29, "bad"),
+        (0.3, "normal"),
+        (0.49, "normal"),
+        (0.5, "good"),
+        (0.79, "good"),
+        (0.8, "excellent"),
+    ],
+)
+def test_critic_score_quality_label_uses_checklist_thresholds(
+    score: float | None,
+    expected_label: str,
+) -> None:
+    assert critic_score_quality_label(score) == expected_label
+
+
 def test_build_metrics_report_populates_available_metrics() -> None:
     report = build_metrics_report(
         assessor_outputs=[_assessor_output(1)],
@@ -64,6 +87,7 @@ def test_build_metrics_report_populates_available_metrics() -> None:
     assert report.cross_section_consistency_recall == 0.75
     assert report.cohens_kappa == 0.7
     assert report.mean_critic_score == 1.0
+    assert report.critic_score_quality_label == "excellent"
 
 
 def test_metrics_report_serializes_unavailable_optional_metrics_as_null() -> None:
@@ -84,4 +108,5 @@ def test_metrics_report_serializes_unavailable_optional_metrics_as_null() -> Non
         "cross_section_consistency_recall": None,
         "cohens_kappa": None,
         "mean_critic_score": None,
+        "critic_score_quality_label": "not_available",
     }

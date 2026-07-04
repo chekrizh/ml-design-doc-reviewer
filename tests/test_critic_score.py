@@ -19,7 +19,7 @@ def test_critic_document_score_returns_one_for_fully_satisfied_checklist_items()
     assert critic_document_score(output, checklist) == 1.0
 
 
-def test_critic_document_score_uses_severity_weights() -> None:
+def test_critic_document_score_uses_block_and_question_weights() -> None:
     checklist = load_default_checklist()
     output = CriticOutput(
         relevant=True,
@@ -30,7 +30,7 @@ def test_critic_document_score_uses_severity_weights() -> None:
         ],
     )
 
-    assert critic_document_score(output, checklist) == pytest.approx(4 / 6)
+    assert critic_document_score(output, checklist) == pytest.approx(71.5 / 81)
 
 
 def test_critic_document_score_returns_none_without_relevant_items() -> None:
