@@ -190,6 +190,17 @@ def test_cli_metrics_reads_logs_and_prints_report(tmp_path: Path, capsys) -> Non
                 ],
             }
         )
+        + "\n"
+        + json.dumps(
+            {
+                "assessment_id": "failed-assessment",
+                "status": "failed",
+                "error": {
+                    "type": "AssessmentValidationError",
+                    "message": "missing criterion ids: 1",
+                },
+            }
+        )
         + "\n",
         encoding="utf-8",
     )
@@ -239,6 +250,8 @@ def test_cli_metrics_reads_logs_and_prints_report(tmp_path: Path, capsys) -> Non
     assert payload["cohens_kappa"] == pytest.approx(0.5)
     assert payload["kappa_agreement_label"] == "moderate"
     assert payload["mean_critic_score"] == 1.0
+    assert payload["assessment_total_count"] == 2
+    assert payload["assessment_failed_count"] == 1
 
 
 def test_cli_help_lists_review_assess_and_metrics_commands() -> None:
