@@ -36,6 +36,8 @@ uv sync
 - `src/critic/ranker.py` - deterministic top-N note ranking.
 - `src/critic/domain/` - checklist and review result models.
 - `src/critic/llm/` - LLM client adapters.
+- `src/critic/assessor/` - offline Assessor agent (LLM-as-a-Judge) and Weighted Checklist Score / Cohen's Kappa helpers.
+- `src/critic/metrics/` - offline metrics aggregation (`critic metrics` CLI command).
 - `tests/` - unit tests for the baseline.
 
 
@@ -49,7 +51,7 @@ uv run pytest
 
 ## Running Evaluations
 
-Offline evaluation is not implemented yet. The current baseline is covered by unit tests.
+See the [Offline Evaluation](README.md#offline-evaluation) section in the README.
 
 
 ## Pull Request Guidelines
