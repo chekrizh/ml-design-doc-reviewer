@@ -39,7 +39,8 @@ Return only the JSON object: no markdown, no explanations, no ```json and no clo
 
 USER_PROMPT_TEMPLATE = Template(
     """\
-Assessor checklist version: {{ checklist.version }}
+Document:
+{{ document }}
 
 Assessor checklist:
 {% for criterion in checklist.criteria -%}
@@ -47,9 +48,6 @@ ID {{ criterion.id }} | weight: {{ criterion.weight }}
 Question: {{ criterion.question }}
 
 {% endfor %}
-Document:
-{{ document }}
-
 Critique notes to assess:
 {% for note in notes -%}
 item_id: {{ note.item_id }}

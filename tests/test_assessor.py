@@ -69,6 +69,10 @@ async def test_assess_calls_llm_with_assessor_schema_and_computes_wcs() -> None:
     assert llm_client.schema is AssessorOutput
     assert "design doc body" in (llm_client.user_prompt or "")
     assert "No root-cause analysis is documented." in (llm_client.user_prompt or "")
+    user_prompt = llm_client.user_prompt or ""
+    assert "Assessor checklist version:" not in user_prompt
+    assert user_prompt.index("design doc body") < user_prompt.index("Assessor checklist:")
+    assert user_prompt.index("Assessor checklist:") < user_prompt.index("Critique notes to assess:")
     assert result.output == llm_client.output
     assert result.wcs == 1.0
     assert result.llm_duration_ms == 250
