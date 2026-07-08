@@ -23,6 +23,7 @@ def test_settings_reads_values_from_environment(monkeypatch: pytest.MonkeyPatch)
     assert str(settings.openai_base_url) == "https://openrouter.ai/api/v1"
     assert settings.model == "openai/gpt-4o-mini"
     assert settings.top_n == 5
+    assert settings.checklist_batch_count == 1
     assert settings.log_file.name == "critic.log"
     assert settings.inference_log_file is None
 
@@ -45,11 +46,13 @@ def test_settings_accepts_critic_prefixed_overrides(monkeypatch: pytest.MonkeyPa
     _set_required_env(monkeypatch)
     monkeypatch.setenv("CRITIC_MODEL", "anthropic/claude-3.5-sonnet")
     monkeypatch.setenv("CRITIC_TOP_N", "3")
+    monkeypatch.setenv("CRITIC_CHECKLIST_BATCH_COUNT", "4")
 
     settings = Settings(openai_api_key="test-key", _env_file=None)
 
     assert settings.model == "anthropic/claude-3.5-sonnet"
     assert settings.top_n == 3
+    assert settings.checklist_batch_count == 4
 
 
 def test_settings_treats_blank_checklist_path_as_default(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -113,6 +116,7 @@ def test_assessor_settings_treats_blank_checklist_path_as_default(
 def test_env_example_documents_assessor_settings() -> None:
     env_example = Path(".env.example").read_text(encoding="utf-8")
 
+    assert "CRITIC_CHECKLIST_BATCH_COUNT=" in env_example
     assert "ASSESSOR_MODEL=" in env_example
     assert "ASSESSOR_EVAL_LOG_FILE=" in env_example
     assert "ASSESSOR_CHECKLIST_PATH=" in env_example

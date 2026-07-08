@@ -29,6 +29,7 @@ class ReviewService:
         checklist: Checklist,
         model: str,
         top_n: int,
+        checklist_batch_count: int = 1,
         logger: logging.Logger | None = None,
         inference_logger: JsonlInferenceLogger | None = None,
     ) -> None:
@@ -36,6 +37,7 @@ class ReviewService:
         self._checklist = checklist
         self._model = model
         self._top_n = top_n
+        self._checklist_batch_count = checklist_batch_count
         self._logger = logger or logging.getLogger(LOGGER_NAME)
         self._inference_logger = inference_logger
 
@@ -43,7 +45,12 @@ class ReviewService:
         inference_id = new_inference_id()
         self._log_started(inference_id, document)
         try:
-            critic_result = await critique(self._llm_client, self._checklist, document)
+            critic_result = await critique(
+                self._llm_client,
+                self._checklist,
+                document,
+                batch_count=self._checklist_batch_count,
+            )
         except CriticOutputValidationError as exc:
             self._log_review_failed(inference_id)
             self._log_failure(inference_id, document, exc)
@@ -72,12 +79,13 @@ class ReviewService:
     def _log_started(self, inference_id: str, document: str) -> None:
         self._logger.info(
             "review_started inference_id=%s model=%s checklist_version=%s "
-            "document_length=%d top_n=%d",
+            "document_length=%d top_n=%d checklist_batch_count=%d",
             inference_id,
             self._model,
             self._checklist.version,
             len(document),
             self._top_n,
+            self._checklist_batch_count,
         )
 
     def _log_completed(self, inference_id: str, result: ReviewResult, llm_duration_ms: int) -> None:
@@ -172,6 +180,7 @@ class ReviewService:
             checklist=checklist,
             model=settings.model,
             top_n=settings.top_n,
+            checklist_batch_count=settings.checklist_batch_count,
             logger=configure_file_logging(settings.log_file),
             inference_logger=inference_logger,
         )

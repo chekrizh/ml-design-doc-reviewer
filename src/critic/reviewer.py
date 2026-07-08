@@ -1,3 +1,4 @@
+import asyncio
 from collections.abc import Callable
 from dataclasses import dataclass
 from time import perf_counter
@@ -21,10 +22,23 @@ async def critique(
     document: str,
     *,
     clock: Callable[[], float] = perf_counter,
+    batch_count: int = 1,
 ) -> CriticResult:
-    prompts = render_critic_prompts(checklist, document)
+    batches = checklist.split(batch_count)
     started_at = clock()
-    output = await llm_client.parse(prompts.system_prompt, prompts.user_prompt, CriticOutput)
+    first_output = await _run_batch(llm_client, batches[0], document)
+
+    if not first_output.relevant or len(batches) == 1:
+        output = first_output
+    else:
+        rest_outputs = await asyncio.gather(
+            *(_run_batch(llm_client, batch, document) for batch in batches[1:])
+        )
+        merged_items = list(first_output.items)
+        for batch_output in rest_outputs:
+            merged_items.extend(batch_output.items)
+        output = CriticOutput(relevant=True, items=merged_items)
+
     llm_duration_ms = int((clock() - started_at) * 1000)
 
     try:
@@ -34,3 +48,12 @@ async def critique(
         raise
 
     return CriticResult(output=output, llm_duration_ms=llm_duration_ms)
+
+
+async def _run_batch(
+    llm_client: LLMClient,
+    checklist: Checklist,
+    document: str,
+) -> CriticOutput:
+    prompts = render_critic_prompts(checklist, document)
+    return await llm_client.parse(prompts.system_prompt, prompts.user_prompt, CriticOutput)

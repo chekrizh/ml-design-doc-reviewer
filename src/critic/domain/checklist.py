@@ -33,6 +33,22 @@ class Checklist(BaseModel):
                 return item
         raise KeyError(f"checklist item not found: {item_id}")
 
+    def split(self, batch_count: int) -> list[Checklist]:
+        if batch_count < 1:
+            raise ValueError("batch_count must be >= 1")
+
+        count = min(batch_count, len(self.items))
+        base_size, remainder = divmod(len(self.items), count)
+        chunks: list[Checklist] = []
+        start = 0
+        for index in range(count):
+            size = base_size + (1 if index < remainder else 0)
+            chunks.append(
+                Checklist(version=self.version, items=self.items[start : start + size])
+            )
+            start += size
+        return chunks
+
     @classmethod
     def load(cls, path: Path) -> Checklist:
         return _load_checklist(path)
