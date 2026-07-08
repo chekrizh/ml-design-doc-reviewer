@@ -153,7 +153,10 @@ class _UsageFallbackCompletions:
 
 
 async def test_openai_client_logs_cached_tokens_from_json_fallback_attempts(caplog) -> None:
-    client = OpenAILLMClient(raw_client=_raw_client(_UsageFallbackCompletions()), model="test-model")
+    client = OpenAILLMClient(
+        raw_client=_raw_client(_UsageFallbackCompletions()),
+        model="test-model",
+    )
     logger = logging.getLogger(LOGGER_NAME)
     previous_propagate = logger.propagate
 
