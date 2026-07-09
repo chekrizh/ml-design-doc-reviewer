@@ -1,9 +1,8 @@
-from dataclasses import dataclass
-
 from jinja2 import Template
 
 from critic.domain.assessor_checklist import AssessorChecklist
 from critic.domain.critique import RankedNote
+from critic.prompts.common import PromptPair
 
 SYSTEM_PROMPT = """\
 You are an independent LLM-as-a-Judge assessor for ML design document critique.
@@ -61,18 +60,12 @@ remark: {{ note.remark }}
 )
 
 
-@dataclass(frozen=True)
-class AssessorPrompts:
-    system_prompt: str
-    user_prompt: str
-
-
 def render_assessor_prompts(
     checklist: AssessorChecklist,
     document: str,
     notes: list[RankedNote],
-) -> AssessorPrompts:
-    return AssessorPrompts(
+) -> PromptPair:
+    return PromptPair(
         system_prompt=SYSTEM_PROMPT,
         user_prompt=USER_PROMPT_TEMPLATE.render(
             checklist=checklist,

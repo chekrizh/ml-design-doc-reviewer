@@ -3,12 +3,12 @@ from typing import Literal
 
 from pydantic import BaseModel
 
-from critic.assessor.kappa import compute_cohens_kappa, interpret_kappa
 from critic.domain.assessment import AssessorOutput
 from critic.domain.assessor_checklist import AssessorChecklist
 from critic.domain.checklist import Checklist
 from critic.domain.critique import CriticOutput
 from critic.metrics.critic_score import mean_critic_score
+from critic.metrics.kappa import compute_cohens_kappa, interpret_kappa
 from critic.metrics.offline import (
     cross_section_consistency_recall,
     direct_answer_violation_rate,

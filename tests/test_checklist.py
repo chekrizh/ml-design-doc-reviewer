@@ -1,10 +1,11 @@
+import json
 import subprocess
 import zipfile
 from pathlib import Path
 
 import pytest
 
-from critic.domain.checklist import load_default_checklist
+from critic.domain.checklist import Checklist, load_default_checklist
 
 
 def test_default_checklist_is_packaged_in_wheel(tmp_path: Path) -> None:
@@ -41,6 +42,30 @@ def test_default_checklist_preserves_source_weights() -> None:
     assert last.section == "5.5 Validation vs Monitoring"
     assert last.block_weight == 10
     assert last.question_weight == 1
+
+
+def test_checklist_load_or_default_supports_default_and_custom_paths(tmp_path: Path) -> None:
+    checklist_path = tmp_path / "checklist.json"
+    checklist_path.write_text(
+        json.dumps(
+            {
+                "version": "custom",
+                "items": [
+                    {
+                        "id": 1,
+                        "section": "Problem",
+                        "question": "Is the problem defined?",
+                        "block_weight": 2,
+                        "question_weight": 3,
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    assert Checklist.load_or_default(None).version == "critic-checklist-v4"
+    assert Checklist.load_or_default(checklist_path).version == "custom"
 
 
 def test_checklist_split_keeps_single_batch_behavior() -> None:

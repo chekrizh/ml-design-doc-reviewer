@@ -3,12 +3,37 @@ from types import SimpleNamespace
 
 from pydantic import BaseModel
 
+from critic.config import AssessorSettings
 from critic.llm.openai_client import OpenAILLMClient
 from critic.logging import LOGGER_NAME
 
 
 class Output(BaseModel):
     value: int
+
+
+def test_openai_client_from_settings_uses_shared_connection_settings(monkeypatch) -> None:
+    created_with: dict[str, str] = {}
+
+    def create_raw_client(*, api_key: str, base_url: str) -> object:
+        created_with.update(api_key=api_key, base_url=base_url)
+        return object()
+
+    monkeypatch.setattr("critic.llm.openai_client.AsyncOpenAI", create_raw_client)
+    settings = AssessorSettings(
+        openai_api_key="test-key",
+        openai_base_url="https://example.test/v1",
+        model="test-model",
+        _env_file=None,
+    )
+
+    client = OpenAILLMClient.from_settings(settings)
+
+    assert created_with == {
+        "api_key": "test-key",
+        "base_url": "https://example.test/v1",
+    }
+    assert client._model == "test-model"
 
 
 def _usage(

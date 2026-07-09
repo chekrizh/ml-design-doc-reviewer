@@ -32,6 +32,18 @@ def test_checklist_finds_item_by_id() -> None:
     assert checklist.by_id(7) == item
 
 
+def test_checklist_item_exposes_combined_weight() -> None:
+    item = ChecklistItem(
+        id=7,
+        section="Metrics",
+        question="Are online and offline metrics separated?",
+        block_weight=7,
+        question_weight=3,
+    )
+
+    assert item.weight == 21
+
+
 def test_item_assessment_requires_remark_when_score_is_not_complete() -> None:
     with pytest.raises(ValidationError, match="remark is required"):
         ItemAssessment(item_id=1, score=0.5)

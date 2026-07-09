@@ -7,10 +7,7 @@ from pathlib import Path
 
 from critic.assessor.assessor import AssessorResult, assess
 from critic.config import AssessorSettings
-from critic.domain.assessor_checklist import (
-    AssessorChecklist,
-    load_default_assessor_checklist,
-)
+from critic.domain.assessor_checklist import AssessorChecklist
 from critic.domain.critique import RankedNote
 from critic.jsonl import read_jsonl
 from critic.llm.base import LLMClient
@@ -143,17 +140,11 @@ class AssessorService:
 
     @classmethod
     def from_settings(cls, settings: AssessorSettings) -> AssessorService:
-        checklist = (
-            AssessorChecklist.load(settings.checklist_path)
-            if settings.checklist_path is not None
-            else load_default_assessor_checklist()
-        )
-        llm_client = OpenAILLMClient(
-            api_key=settings.openai_api_key,
-            base_url=settings.openai_base_url,
+        return cls(
+            llm_client=OpenAILLMClient.from_settings(settings),
+            checklist=AssessorChecklist.load_or_default(settings.checklist_path),
             model=settings.model,
         )
-        return cls(llm_client=llm_client, checklist=checklist, model=settings.model)
 
 
 def _read_snapshot(log_dir: Path, record: dict) -> str:

@@ -1,3 +1,5 @@
+import logging
+
 import pytest
 from fakes import FakeLLMClient, complete_critic_output
 from pydantic import BaseModel
@@ -101,18 +103,29 @@ async def test_review_service_passes_checklist_batch_count_to_critique() -> None
     assert "ID 26 |" in llm.user_prompts[1]
 
 
-async def test_review_service_preserves_validation_error_when_failure_logging_fails() -> None:
+async def test_review_service_preserves_validation_error_when_failure_logging_fails(
+    caplog,
+) -> None:
+    logger = logging.getLogger("test.inference_failure_log_failure")
     service = ReviewService(
         llm_client=FakeLLMClient(CriticOutput(relevant=True, items=[])),
         checklist=load_default_checklist(),
         model="test-model",
         top_n=5,
         checklist_batch_count=1,
+        logger=logger,
         inference_logger=FailingInferenceLogger(),
     )
 
-    with pytest.raises(CriticOutputValidationError, match="missing item ids"):
+    with (
+        caplog.at_level(logging.WARNING, logger=logger.name),
+        pytest.raises(CriticOutputValidationError, match="missing item ids"),
+    ):
         await service.review("design doc")
+
+    assert "inference_failure_log_failed" in caplog.text
+    assert "model=test-model" in caplog.text
+    assert "error=disk full" in caplog.text
 
 
 def test_review_service_from_settings_disables_inference_logging_by_default(tmp_path) -> None:

@@ -6,6 +6,7 @@ from typing import Any
 from openai import AsyncOpenAI, BadRequestError
 from pydantic import ValidationError
 
+from critic.config import AssessorSettings, Settings
 from critic.llm.base import SchemaT
 from critic.llm.json_response import extract_json_payload
 from critic.logging import LOGGER_NAME
@@ -25,6 +26,14 @@ class OpenAILLMClient:
         self._model = model
         self._temperature = temperature
         self._logger = logging.getLogger(LOGGER_NAME)
+
+    @classmethod
+    def from_settings(cls, settings: Settings | AssessorSettings) -> OpenAILLMClient:
+        return cls(
+            api_key=settings.openai_api_key,
+            base_url=settings.openai_base_url,
+            model=settings.model,
+        )
 
     async def parse(self, system_prompt: str, user_prompt: str, schema: type[SchemaT]) -> SchemaT:
         try:
