@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 
+import pytest
 from pydantic import BaseModel
 
 from critic.assessor.service import ASSESSMENT_LOG_SCHEMA_VERSION, AssessorService
@@ -95,9 +96,10 @@ async def test_assessor_service_reads_inference_log_and_writes_assessment_log(
         model="assessor-model",
     )
 
-    assessment_ids = await service.assess_inference_log(inference_log, assessment_log)
+    run_result = await service.assess_inference_log(inference_log, assessment_log)
 
-    [assessment_id] = assessment_ids
+    [assessment_id] = run_result.assessment_ids
+    assert run_result.failed_count == 0
     [record] = [
         json.loads(line) for line in assessment_log.read_text(encoding="utf-8").splitlines()
     ]
@@ -119,9 +121,7 @@ async def test_assessor_service_reads_inference_log_and_writes_assessment_log(
     ]
 
 
-async def test_assessor_service_allows_missing_inference_id(
-    tmp_path: Path,
-) -> None:
+async def test_assessor_service_requires_inference_id(tmp_path: Path) -> None:
     snapshot_dir = tmp_path / "snapshots"
     snapshot_dir.mkdir()
     (snapshot_dir / "snapshot.md").write_text("design doc body", encoding="utf-8")
@@ -144,12 +144,8 @@ async def test_assessor_service_allows_missing_inference_id(
         model="assessor-model",
     )
 
-    await service.assess_inference_log(inference_log, assessment_log)
-
-    [record] = [
-        json.loads(line) for line in assessment_log.read_text(encoding="utf-8").splitlines()
-    ]
-    assert record["inference_id"] is None
+    with pytest.raises(ValueError, match="inference_id is required"):
+        await service.assess_inference_log(inference_log, assessment_log)
 
 
 async def test_assessor_service_rejects_snapshot_refs_outside_snapshot_dir(
@@ -178,16 +174,48 @@ async def test_assessor_service_rejects_snapshot_refs_outside_snapshot_dir(
         model="assessor-model",
     )
 
-    assessment_ids = await service.assess_inference_log(inference_log, assessment_log)
+    run_result = await service.assess_inference_log(inference_log, assessment_log)
 
     [record] = [
         json.loads(line) for line in assessment_log.read_text(encoding="utf-8").splitlines()
     ]
-    assert assessment_ids == []
+    assert run_result.assessment_ids == []
+    assert run_result.failed_count == 1
     assert record["status"] == "failed"
     assert record["inference_id"] == "inf-1"
     assert record["error"]["type"] == "ValueError"
     assert "snapshot_ref" in record["error"]["message"]
+
+
+async def test_assessor_service_records_malformed_input_and_continues(tmp_path: Path) -> None:
+    inference_log = tmp_path / "inference.jsonl"
+    assessment_log = tmp_path / "assessment-eval.jsonl"
+    inference_log.write_text(
+        json.dumps(
+            {
+                "inference_id": "inf-1",
+                "input": None,
+                "final_result": {"notes": []},
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    service = AssessorService(
+        llm_client=FakeAssessorLLMClient(_complete_output(include_note=False)),
+        checklist=load_default_assessor_checklist(),
+        model="assessor-model",
+    )
+
+    run_result = await service.assess_inference_log(inference_log, assessment_log)
+
+    [record] = [
+        json.loads(line) for line in assessment_log.read_text(encoding="utf-8").splitlines()
+    ]
+    assert run_result.assessment_ids == []
+    assert run_result.failed_count == 1
+    assert record["status"] == "failed"
+    assert record["error"]["type"] == "TypeError"
 
 
 async def test_assessor_service_skips_already_assessed_inference_ids(
@@ -216,12 +244,14 @@ async def test_assessor_service_skips_already_assessed_inference_ids(
         model="assessor-model",
     )
 
-    first_ids = await service.assess_inference_log(inference_log, assessment_log)
-    second_ids = await service.assess_inference_log(inference_log, assessment_log)
+    first_result = await service.assess_inference_log(inference_log, assessment_log)
+    second_result = await service.assess_inference_log(inference_log, assessment_log)
 
     records = [json.loads(line) for line in assessment_log.read_text(encoding="utf-8").splitlines()]
-    assert len(first_ids) == 1
-    assert second_ids == []
+    assert len(first_result.assessment_ids) == 1
+    assert first_result.failed_count == 0
+    assert second_result.assessment_ids == []
+    assert second_result.failed_count == 0
     assert len(records) == 1
     assert records[0]["inference_id"] == "inf-1"
 
@@ -261,12 +291,13 @@ async def test_assessor_service_records_failed_assessment_and_continues_batch(
         model="assessor-model",
     )
 
-    assessment_ids = await service.assess_inference_log(inference_log, assessment_log)
+    run_result = await service.assess_inference_log(inference_log, assessment_log)
 
     [failed_record, successful_record] = [
         json.loads(line) for line in assessment_log.read_text(encoding="utf-8").splitlines()
     ]
-    assert assessment_ids == [successful_record["assessment_id"]]
+    assert run_result.assessment_ids == [successful_record["assessment_id"]]
+    assert run_result.failed_count == 1
     assert failed_record["status"] == "failed"
     assert failed_record["inference_id"] == "inf-1"
     assert failed_record["model"] == "assessor-model"
@@ -274,3 +305,43 @@ async def test_assessor_service_records_failed_assessment_and_continues_batch(
     assert "missing criterion ids" in failed_record["error"]["message"]
     assert "status" not in successful_record
     assert successful_record["inference_id"] == "inf-2"
+
+
+async def test_assessor_service_retries_failed_assessment_on_next_run(tmp_path: Path) -> None:
+    snapshot_dir = tmp_path / "snapshots"
+    snapshot_dir.mkdir()
+    (snapshot_dir / "inf-1.md").write_text("design doc body", encoding="utf-8")
+    inference_log = tmp_path / "inference.jsonl"
+    assessment_log = tmp_path / "assessment-eval.jsonl"
+    inference_log.write_text(
+        json.dumps(
+            {
+                "inference_id": "inf-1",
+                "input": {"snapshot_ref": "snapshots/inf-1.md"},
+                "final_result": {"notes": [_note().model_dump(mode="json")]},
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    service = AssessorService(
+        llm_client=SequencedAssessorLLMClient(
+            [
+                AssessorOutput(criteria=[], notes=[]),
+                _complete_output(),
+            ]
+        ),
+        checklist=load_default_assessor_checklist(),
+        model="assessor-model",
+    )
+
+    first_result = await service.assess_inference_log(inference_log, assessment_log)
+    second_result = await service.assess_inference_log(inference_log, assessment_log)
+
+    records = [json.loads(line) for line in assessment_log.read_text(encoding="utf-8").splitlines()]
+    assert first_result.assessment_ids == []
+    assert first_result.failed_count == 1
+    assert second_result.assessment_ids == [records[1]["assessment_id"]]
+    assert second_result.failed_count == 0
+    assert records[0]["status"] == "failed"
+    assert "status" not in records[1]

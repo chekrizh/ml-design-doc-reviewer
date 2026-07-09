@@ -43,9 +43,7 @@ class Checklist(BaseModel):
         start = 0
         for index in range(count):
             size = base_size + (1 if index < remainder else 0)
-            chunks.append(
-                Checklist(version=self.version, items=self.items[start : start + size])
-            )
+            chunks.append(Checklist(version=self.version, items=self.items[start : start + size]))
             start += size
         return chunks
 

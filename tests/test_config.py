@@ -23,7 +23,7 @@ def test_settings_reads_values_from_environment(monkeypatch: pytest.MonkeyPatch)
     assert str(settings.openai_base_url) == "https://openrouter.ai/api/v1"
     assert settings.model == "openai/gpt-4o-mini"
     assert settings.top_n == 5
-    assert settings.checklist_batch_count == 1
+    assert settings.checklist_batch_count == 5
     assert settings.log_file.name == "critic.log"
     assert settings.inference_log_file is None
 

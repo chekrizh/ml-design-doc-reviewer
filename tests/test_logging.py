@@ -34,6 +34,7 @@ async def test_review_service_logs_lifecycle_without_document_content(tmp_path: 
         checklist=load_default_checklist(),
         model="test-model",
         top_n=5,
+        checklist_batch_count=1,
         logger=logger,
     )
 
@@ -55,6 +56,7 @@ async def test_review_service_correlates_human_log_with_inference_id(tmp_path: P
         checklist=load_default_checklist(),
         model="test-model",
         top_n=5,
+        checklist_batch_count=1,
         logger=logger,
         inference_logger=JsonlInferenceLogger(inference_log_file),
     )
@@ -82,6 +84,7 @@ async def test_review_service_writes_structured_inference_log_with_text_snapshot
         checklist=checklist,
         model="test-model",
         top_n=5,
+        checklist_batch_count=1,
         inference_logger=JsonlInferenceLogger(inference_log_file),
     )
     document = "Need model baseline"
@@ -123,6 +126,7 @@ async def test_review_service_returns_result_when_inference_log_write_fails(
         checklist=load_default_checklist(),
         model="test-model",
         top_n=5,
+        checklist_batch_count=1,
         logger=logger,
         inference_logger=JsonlInferenceLogger(tmp_path),
     )
@@ -150,6 +154,7 @@ async def test_review_service_writes_inference_log_on_critic_validation_failure(
         checklist=load_default_checklist(),
         model="test-model",
         top_n=5,
+        checklist_batch_count=1,
         inference_logger=JsonlInferenceLogger(inference_log_file),
     )
 

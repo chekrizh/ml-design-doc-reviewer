@@ -29,7 +29,7 @@ class ReviewService:
         checklist: Checklist,
         model: str,
         top_n: int,
-        checklist_batch_count: int = 1,
+        checklist_batch_count: int = 5,
         logger: logging.Logger | None = None,
         inference_logger: JsonlInferenceLogger | None = None,
     ) -> None:

@@ -22,12 +22,19 @@ class Settings(_OpenAISettings):
     model: str = Field(alias="CRITIC_MODEL")
     top_n: int = Field(alias="CRITIC_TOP_N", ge=1)
     checklist_batch_count: int = Field(
-        default=1,
+        default=5,
         alias="CRITIC_CHECKLIST_BATCH_COUNT",
         ge=1,
     )
     log_file: Path = Field(alias="CRITIC_LOG_FILE")
     inference_log_file: Path | None = Field(default=None, alias="CRITIC_INFERENCE_LOG_FILE")
+    checklist_path: Path | None = Field(
+        default=None,
+        alias="CRITIC_CHECKLIST_PATH",
+    )
+
+
+class CriticOutputSettings(_CriticBaseSettings):
     checklist_path: Path | None = Field(
         default=None,
         alias="CRITIC_CHECKLIST_PATH",

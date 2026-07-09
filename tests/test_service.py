@@ -52,6 +52,7 @@ async def test_review_service_returns_ranked_review_result() -> None:
         checklist=checklist,
         model="test-model",
         top_n=1,
+        checklist_batch_count=1,
     )
 
     result = await service.review("design doc")
@@ -106,6 +107,7 @@ async def test_review_service_preserves_validation_error_when_failure_logging_fa
         checklist=load_default_checklist(),
         model="test-model",
         top_n=5,
+        checklist_batch_count=1,
         inference_logger=FailingInferenceLogger(),
     )
 
