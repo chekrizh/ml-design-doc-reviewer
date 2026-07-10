@@ -10,6 +10,7 @@ from critic.domain.critique import (
     RankedNote,
     ReviewResult,
 )
+from critic.image_parsing import ImageToReview
 from critic.llm.base import LLMClient
 from critic.llm.openai_client import OpenAILLMClient
 from critic.logging import (
@@ -42,7 +43,7 @@ class ReviewService:
         self._logger = logger or logging.getLogger(LOGGER_NAME)
         self._inference_logger = inference_logger
 
-    async def review(self, document: str) -> ReviewResult:
+    async def review(self, document: str, images: list[ImageToReview]) -> ReviewResult:
         inference_id = new_inference_id()
         self._log_started(inference_id, document)
         try:
@@ -50,6 +51,7 @@ class ReviewService:
                 self._llm_client,
                 self._checklist,
                 document,
+                images,
                 batch_count=self._checklist_batch_count,
             )
         except CriticOutputValidationError as exc:
