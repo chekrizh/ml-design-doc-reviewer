@@ -40,20 +40,20 @@ class OpenAILLMClient:
         self,
         system_prompt: str,
         user_prompt: str,
-        images: list[ImageToReview] | None,
         schema: type[SchemaT],
+        images: list[ImageToReview] | None = None,
     ) -> SchemaT:
         try:
-            return await self._parse_native(system_prompt, user_prompt, images, schema)
+            return await self._parse_native(system_prompt, user_prompt, schema, images)
         except (AttributeError, TypeError, NotImplementedError, BadRequestError, ValidationError):
-            return await self._parse_json_fallback(system_prompt, user_prompt, images, schema)
+            return await self._parse_json_fallback(system_prompt, user_prompt, schema, images)
 
     async def _parse_native(
         self,
         system_prompt: str,
         user_prompt: str,
-        images: list[ImageToReview] | None,
         schema: type[SchemaT],
+        images: list[ImageToReview] | None = None,
     ) -> SchemaT:
         messages = self._messages(system_prompt, user_prompt, images)
         response = await self._client.beta.chat.completions.parse(
@@ -72,8 +72,8 @@ class OpenAILLMClient:
         self,
         system_prompt: str,
         user_prompt: str,
-        images: list[ImageToReview] | None,
         schema: type[SchemaT],
+        images: list[ImageToReview] | None = None,
     ) -> SchemaT:
         last_error: Exception | None = None
         for attempt in range(2):
@@ -101,7 +101,7 @@ class OpenAILLMClient:
 
     @staticmethod
     def _messages(
-        system_prompt: str, user_prompt: str, images: list[ImageToReview] | None
+        system_prompt: str, user_prompt: str, images: list[ImageToReview] | None = None
     ) -> list[dict[str, str | list]]:
         if images is None:
             images = []

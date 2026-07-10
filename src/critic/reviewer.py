@@ -21,7 +21,7 @@ async def critique(
     llm_client: LLMClient,
     checklist: Checklist,
     document: str,
-    images: list[ImageToReview] = None,
+    images: list[ImageToReview] | None = None,
     *,
     clock: Callable[[], float] = perf_counter,
     batch_count: int = 5,
@@ -75,14 +75,14 @@ async def _run_batch(
     llm_client: LLMClient,
     checklist: Checklist,
     document: str,
-    images: list[ImageToReview],
+    images: list[ImageToReview] | None,
 ) -> CriticOutput:
     prompts = render_critic_prompts(checklist, document)
     return await llm_client.parse(
         prompts.system_prompt,
         prompts.user_prompt,
-        images,
         CriticOutput,
+        images,
     )
 
 
@@ -90,7 +90,7 @@ async def _run_relevant_batch(
     llm_client: LLMClient,
     checklist: Checklist,
     document: str,
-    images: list[ImageToReview],
+    images: list[ImageToReview] | None,
 ) -> CriticOutput:
     output = await _run_batch(llm_client, checklist, document, images)
     if not output.relevant:
