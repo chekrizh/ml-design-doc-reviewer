@@ -17,6 +17,7 @@ class RecordingLLMClient:
         system_prompt: str,
         user_prompt: str,
         schema: type[CriticOutput],
+        images: list | None = None,
     ) -> CriticOutput:
         self.user_prompts.append(user_prompt)
         return self.outputs.pop(0)

@@ -8,12 +8,18 @@ from typing import Protocol
 
 from critic.config import Settings
 from critic.domain.critique import ReviewResult
-from critic.image_parsing import parse_images_from_directory, parse_images_from_metadata_file
+from critic.image_parsing import (
+    ImageToReview,
+    parse_images_from_directory,
+    parse_images_from_metadata_file,
+)
 from critic.service import ReviewService
 
 
 class _ReviewService(Protocol):
-    async def review(self, document: str) -> ReviewResult:
+    async def review(
+        self, document: str, images: list[ImageToReview] | None = None
+    ) -> ReviewResult:
         """Review a design document."""
 
 
