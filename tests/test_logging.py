@@ -46,6 +46,32 @@ async def test_review_service_logs_lifecycle_without_document_content(tmp_path: 
     assert "SECRET user design doc content" not in log_content
 
 
+async def test_review_service_correlates_human_log_with_inference_id(tmp_path: Path) -> None:
+    log_file = tmp_path / "critic.log"
+    inference_log_file = tmp_path / "inference.jsonl"
+    logger = configure_file_logging(log_file)
+    service = ReviewService(
+        llm_client=FakeLLMClient(),
+        checklist=load_default_checklist(),
+        model="test-model",
+        top_n=5,
+        logger=logger,
+        inference_logger=JsonlInferenceLogger(inference_log_file),
+    )
+
+    await service.review("Need model baseline")
+
+    records = [
+        json.loads(line)
+        for line in inference_log_file.read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
+    inference_id = records[0]["inference_id"]
+    log_content = log_file.read_text(encoding="utf-8")
+    assert f"inference_id={inference_id}" in log_content
+    assert log_content.count(f"inference_id={inference_id}") >= 2
+
+
 async def test_review_service_writes_structured_inference_log_with_text_snapshot(
     tmp_path: Path,
 ) -> None:
@@ -70,11 +96,16 @@ async def test_review_service_writes_structured_inference_log_with_text_snapshot
     assert len(records) == 1
     record = records[0]
     assert record["schema_version"] == INFERENCE_LOG_SCHEMA_VERSION
+    snapshot_ref = record["input"]["snapshot_ref"]
     assert record["input"] == {
         "kind": "text",
         "document_length": len(document),
-        "snapshot": document,
+        "snapshot_ref": snapshot_ref,
     }
+    assert "snapshot" not in record["input"]
+    assert snapshot_ref == f"snapshots/{record['inference_id']}.md"
+    snapshot_path = inference_log_file.parent / snapshot_ref
+    assert snapshot_path.read_text(encoding="utf-8") == document
     assert record["critic_output"]["relevant"] is True
     assert len(record["critic_output"]["items"]) == len(checklist.items)
     assert record["top_n_notes"] == []

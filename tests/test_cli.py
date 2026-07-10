@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from critic.cli import main
+from critic.cli import build_parser, main
 from critic.domain.critique import ReviewResult
 
 
@@ -30,3 +30,9 @@ def test_cli_reads_document_and_prints_review_json(tmp_path: Path, capsys) -> No
     assert service.document == "design doc"
     assert '"relevant": true' in captured.out
     assert '"model": "test-model"' in captured.out
+
+
+def test_cli_help_lists_review_as_the_only_command() -> None:
+    help_text = build_parser().format_help()
+
+    assert "{review}" in help_text
