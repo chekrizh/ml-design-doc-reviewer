@@ -10,16 +10,19 @@ class FakeLLMClient:
         self.system_prompt: str | None = None
         self.user_prompt: str | None = None
         self.schema: type[BaseModel] | None = None
+        self.images: list | None = None
 
     async def parse(
         self,
         system_prompt: str,
         user_prompt: str,
         schema: type[BaseModel],
+        images: list | None = None,
     ) -> CriticOutput:
         self.system_prompt = system_prompt
         self.user_prompt = user_prompt
         self.schema = schema
+        self.images = images
         return self.output
 
 

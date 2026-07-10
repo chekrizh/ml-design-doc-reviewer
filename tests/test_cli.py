@@ -14,9 +14,11 @@ from critic.domain.critique import ReviewResult
 class FakeService:
     def __init__(self) -> None:
         self.document: str | None = None
+        self.images: list | None = None
 
-    async def review(self, document: str) -> ReviewResult:
+    async def review(self, document: str, images: list | None = None) -> ReviewResult:
         self.document = document
+        self.images = images
         return ReviewResult(
             relevant=True,
             notes=[],
