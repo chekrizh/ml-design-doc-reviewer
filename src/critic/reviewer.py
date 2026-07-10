@@ -20,14 +20,14 @@ async def critique(
     llm_client: LLMClient,
     checklist: Checklist,
     document: str,
-    images: list[ImageToReview] = None,
+    images: list[ImageToReview] | None = None,
     *,
     clock: Callable[[], float] = perf_counter,
 ) -> CriticResult:
     prompts = render_critic_prompts(checklist, document)
     started_at = clock()
     output = await llm_client.parse(
-        prompts.system_prompt, prompts.user_prompt, images, CriticOutput
+        prompts.system_prompt, prompts.user_prompt, CriticOutput, images
     )
     llm_duration_ms = int((clock() - started_at) * 1000)
 
