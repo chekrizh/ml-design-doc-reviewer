@@ -40,7 +40,7 @@ class OpenAILLMClient:
         self,
         system_prompt: str,
         user_prompt: str,
-        images: list[ImageToReview],
+        images: list[ImageToReview] | None,
         schema: type[SchemaT],
     ) -> SchemaT:
         try:
@@ -52,7 +52,7 @@ class OpenAILLMClient:
         self,
         system_prompt: str,
         user_prompt: str,
-        images: list[ImageToReview],
+        images: list[ImageToReview] | None,
         schema: type[SchemaT],
     ) -> SchemaT:
         messages = self._messages(system_prompt, user_prompt, images)
@@ -72,7 +72,7 @@ class OpenAILLMClient:
         self,
         system_prompt: str,
         user_prompt: str,
-        images: list[ImageToReview],
+        images: list[ImageToReview] | None,
         schema: type[SchemaT],
     ) -> SchemaT:
         last_error: Exception | None = None
@@ -101,8 +101,11 @@ class OpenAILLMClient:
 
     @staticmethod
     def _messages(
-        system_prompt: str, user_prompt: str, images: list[ImageToReview]
+        system_prompt: str, user_prompt: str, images: list[ImageToReview] | None
     ) -> list[dict[str, str | list]]:
+        if images is None:
+            images = []
+
         user_content = []
         for image in sorted(images, key=lambda x: x.label):
             user_content.append({"text": f"Image: {image.label}"})

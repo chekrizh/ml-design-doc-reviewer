@@ -21,7 +21,7 @@ async def critique(
     llm_client: LLMClient,
     checklist: Checklist,
     document: str,
-    images: list[ImageToReview],
+    images: list[ImageToReview] = None,
     *,
     clock: Callable[[], float] = perf_counter,
     batch_count: int = 5,
