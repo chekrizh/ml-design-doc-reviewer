@@ -6,6 +6,7 @@ from typing import Any
 from openai import AsyncOpenAI, BadRequestError
 from pydantic import ValidationError
 
+from critic.image_parsing import ImageToReview
 from critic.llm.base import SchemaT
 from critic.llm.json_response import extract_json_payload
 from critic.logging import LOGGER_NAME
@@ -26,21 +27,29 @@ class OpenAILLMClient:
         self._temperature = temperature
         self._logger = logging.getLogger(LOGGER_NAME)
 
-    async def parse(self, system_prompt: str, user_prompt: str, schema: type[SchemaT]) -> SchemaT:
+    async def parse(
+        self,
+        system_prompt: str,
+        user_prompt: str,
+        images: list[ImageToReview],
+        schema: type[SchemaT],
+    ) -> SchemaT:
         try:
-            return await self._parse_native(system_prompt, user_prompt, schema)
+            return await self._parse_native(system_prompt, user_prompt, images, schema)
         except (AttributeError, TypeError, NotImplementedError, BadRequestError, ValidationError):
-            return await self._parse_json_fallback(system_prompt, user_prompt, schema)
+            return await self._parse_json_fallback(system_prompt, user_prompt, images, schema)
 
     async def _parse_native(
         self,
         system_prompt: str,
         user_prompt: str,
+        images: list[ImageToReview],
         schema: type[SchemaT],
     ) -> SchemaT:
+        messages = self._messages(system_prompt, user_prompt, images)
         response = await self._client.beta.chat.completions.parse(
             model=self._model,
-            messages=self._messages(system_prompt, user_prompt),
+            messages=messages,
             response_format=schema,
             temperature=self._temperature,
         )
@@ -53,13 +62,14 @@ class OpenAILLMClient:
         self,
         system_prompt: str,
         user_prompt: str,
+        images: list[ImageToReview],
         schema: type[SchemaT],
     ) -> SchemaT:
         last_error: Exception | None = None
         for attempt in range(2):
             response = await self._client.chat.completions.create(
                 model=self._model,
-                messages=self._messages(system_prompt, user_prompt),
+                messages=self._messages(system_prompt, user_prompt, images),
                 response_format={"type": "json_object"},
                 temperature=self._temperature,
             )
@@ -79,8 +89,22 @@ class OpenAILLMClient:
         raise last_error
 
     @staticmethod
-    def _messages(system_prompt: str, user_prompt: str) -> list[dict[str, str]]:
+    def _messages(
+        system_prompt: str, user_prompt: str, images: list[ImageToReview]
+    ) -> list[dict[str, str | list]]:
+        user_content = []
+        for image in sorted(images, key=lambda x: x.label):
+            user_content.append({"text": f"Image: {image.label}"})
+            user_content.append(
+                {
+                    "type": "image_url",
+                    "image_url": {"url": f"data:{image.mime_type};base64,{image.b64content}"},
+                }
+            )
+
+        user_content.append({"type": "text", "text": user_prompt})
+
         return [
             {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_prompt},
+            {"role": "user", "content": user_content},
         ]

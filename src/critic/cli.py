@@ -8,6 +8,7 @@ from typing import Protocol
 
 from critic.config import Settings
 from critic.domain.critique import ReviewResult
+from critic.image_parsing import parse_images_from_directory, parse_images_from_metadata_file
 from critic.service import ReviewService
 
 
@@ -29,6 +30,16 @@ def build_parser() -> argparse.ArgumentParser:
         type=Path,
         help="Path to a markdown or text design document",
     )
+    review_parser.add_argument(
+        "--images-dir",
+        type=Path,
+        help="Path to a directory to load images from",
+    )
+    review_parser.add_argument(
+        "--metadata",
+        type=Path,
+        help="Path to a file with design documents metadata to get images from",
+    )
 
     return parser
 
@@ -39,8 +50,16 @@ def main(argv: Sequence[str] | None = None, service_factory: ServiceFactory | No
 
     if args.command == "review":
         document = args.path.read_text(encoding="utf-8")
+
+        if args.images_dir:
+            images = parse_images_from_directory(Path(args.images_dir))
+        elif args.metadata:
+            images = parse_images_from_metadata_file(Path(args.metadata))
+        else:
+            images = []
+
         factory = service_factory or (lambda: ReviewService.from_settings(Settings()))
-        result = asyncio.run(factory().review(document))
+        result = asyncio.run(factory().review(document, images))
         print(result.model_dump_json(indent=2))
         return 0
 

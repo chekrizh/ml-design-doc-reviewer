@@ -9,6 +9,7 @@ from critic.domain.critique import (
     RankedNote,
     ReviewResult,
 )
+from critic.image_parsing import ImageToReview
 from critic.llm.base import LLMClient
 from critic.llm.openai_client import OpenAILLMClient
 from critic.logging import LOGGER_NAME, JsonlInferenceLogger, configure_file_logging
@@ -34,10 +35,10 @@ class ReviewService:
         self._logger = logger or logging.getLogger(LOGGER_NAME)
         self._inference_logger = inference_logger
 
-    async def review(self, document: str) -> ReviewResult:
+    async def review(self, document: str, images: list[ImageToReview]) -> ReviewResult:
         self._log_started(document)
         try:
-            critic_result = await critique(self._llm_client, self._checklist, document)
+            critic_result = await critique(self._llm_client, self._checklist, document, images)
         except CriticOutputValidationError as exc:
             self._logger.exception("review_failed model=%s", self._model)
             self._log_failure(document, exc)
