@@ -25,7 +25,7 @@ def parse_images_from_directory(path: Path) -> list[ImageToReview]:
             b64 = base64.b64encode(image.read_bytes()).decode()
             images.append(ImageToReview(b64content=b64, mime_type=mime_type, label=image.stem))
         else:
-            all_extensions = ', '.join_MIME_BY_EXTENSION.keys()
+            all_extensions = ", ".join_MIME_BY_EXTENSION.keys()
             print(f"Image {image} has unknown extension. Expected one of these: {all_extensions}")
     return images
 
