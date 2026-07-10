@@ -60,6 +60,7 @@ This repository is an early baseline implementation.
 Current scope:
 
 - text or Markdown document input;
+- image input;
 - one LLM call that scores the full critic checklist and writes remarks;
 - prompt-level input relevance guardrail;
 - document-grounded, pedagogical critique without ready-made solutions;
@@ -71,7 +72,6 @@ Planned initial surfaces:
 - Dockerized FastAPI service for reviewing design documents;
 - simple web UI for submitting documents and reading critique;
 - structured JSON input in addition to plain text and Markdown;
-- image input support in addition to the current text-only flow;
 - human-readable Markdown report;
 - offline evaluation harness for weighted checklist score, direct-answer violations, and false critique rate;
 - golden and synthetic dataset workflow for repeatable critic evaluation;
@@ -90,6 +90,13 @@ uv sync
 cp .env.example .env
 # in .env, set OPENAI_API_KEY=your-key-here
 uv run critic review design-doc.md
+```
+
+### Passing images
+```bash
+uv run critic review design-doc.md --images-dir dir-with-images/
+# or
+uv run critic review design-doc.md --metadata file.meta.json
 ```
 
 ## Dataset Preparation
