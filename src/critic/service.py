@@ -40,12 +40,10 @@ class ReviewService:
         self._logger = logger or logging.getLogger(LOGGER_NAME)
         self._inference_logger = inference_logger
 
-    async def review(self, document: str, images: list[ImageToReview] = None) -> ReviewResult:
+    async def review(self, document: str, images: list[ImageToReview] | None = None) -> ReviewResult:
         inference_id = new_inference_id()
         self._log_started(inference_id, document)
 
-        if images is None:
-            images = []
         try:
             critic_result = await critique(self._llm_client, self._checklist, document, images)
         except CriticOutputValidationError as exc:

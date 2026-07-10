@@ -12,7 +12,7 @@ class LLMClient(Protocol):
         self,
         system_prompt: str,
         user_prompt: str,
-        images: list[ImageToReview],
+        images: list[ImageToReview] | None,
         schema: type[SchemaT],
     ) -> SchemaT:
         """Return a validated structured response from the model."""
