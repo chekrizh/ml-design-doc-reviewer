@@ -43,7 +43,9 @@ class ReviewService:
         self._logger = logger or logging.getLogger(LOGGER_NAME)
         self._inference_logger = inference_logger
 
-    async def review(self, document: str, images: list[ImageToReview] | None = None) -> ReviewResult:
+    async def review(
+        self, document: str, images: list[ImageToReview] | None = None
+    ) -> ReviewResult:
         inference_id = new_inference_id()
         self._log_started(inference_id, document)
 
