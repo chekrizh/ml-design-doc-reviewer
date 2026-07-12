@@ -1,7 +1,6 @@
-from collections import Counter
-
 from critic.domain.checklist import Checklist
 from critic.domain.critique import CriticOutput
+from critic.domain.id_validation import describe_id_set_problems
 
 
 class CriticOutputValidationError(ValueError):
@@ -30,23 +29,7 @@ def validate_critic_output(output: CriticOutput, checklist: Checklist) -> None:
 
     expected_ids = {item.id for item in checklist.items}
     actual_ids = [item.item_id for item in output.items]
-    actual_id_set = set(actual_ids)
-
-    duplicate_ids = sorted(id for id, count in Counter(actual_ids).items() if count > 1)
-    unknown_ids = sorted(actual_id_set - expected_ids)
-    missing_ids = sorted(expected_ids - actual_id_set)
-
-    problems: list[str] = []
-    if duplicate_ids:
-        problems.append(f"duplicate item ids: {_format_ids(duplicate_ids)}")
-    if unknown_ids:
-        problems.append(f"unknown item ids: {_format_ids(unknown_ids)}")
-    if missing_ids:
-        problems.append(f"missing item ids: {_format_ids(missing_ids)}")
+    problems = describe_id_set_problems(actual_ids, expected_ids, label="item")
 
     if problems:
         raise CriticOutputValidationError("; ".join(problems), critic_output=output)
-
-
-def _format_ids(item_ids: list[int]) -> str:
-    return ", ".join(str(item_id) for item_id in item_ids)

@@ -1,18 +1,13 @@
 from __future__ import annotations
 
 import json
-from enum import StrEnum
 from importlib import resources
 from importlib.resources.abc import Traversable
 from pathlib import Path
 
 from pydantic import BaseModel, Field, model_validator
 
-
-class Severity(StrEnum):
-    critical = "critical"
-    warning = "warning"
-    nice_to_have = "nice_to_have"
+from critic.domain.id_validation import ensure_unique_ids
 
 
 class ChecklistItem(BaseModel):
@@ -29,9 +24,7 @@ class Checklist(BaseModel):
 
     @model_validator(mode="after")
     def validate_unique_ids(self) -> Checklist:
-        item_ids = [item.id for item in self.items]
-        if len(item_ids) != len(set(item_ids)):
-            raise ValueError("duplicate checklist item id")
+        ensure_unique_ids((item.id for item in self.items), label="checklist item")
         return self
 
     def by_id(self, item_id: int) -> ChecklistItem:

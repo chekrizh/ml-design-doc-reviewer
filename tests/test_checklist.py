@@ -16,6 +16,7 @@ def test_default_checklist_is_packaged_in_wheel(tmp_path: Path) -> None:
 
     with zipfile.ZipFile(wheel_path) as wheel:
         assert "critic/data/critic_checklist.json" in wheel.namelist()
+        assert "critic/data/assessor_checklist.json" in wheel.namelist()
 
 
 def test_default_checklist_loads_all_appendix_items() -> None:

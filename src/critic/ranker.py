@@ -1,4 +1,4 @@
-from critic.domain.checklist import Checklist, ChecklistItem, Severity
+from critic.domain.checklist import Checklist, ChecklistItem
 from critic.domain.critique import CriticOutput, RankedNote
 
 
@@ -18,7 +18,6 @@ def rank_notes(output: CriticOutput, checklist: Checklist, *, top_n: int) -> lis
                 question=item.question,
                 score=float(assessment.score),
                 remark=assessment.remark or "",
-                severity=_severity_from_item(item),
                 priority=_priority(item),
             )
         )
@@ -29,14 +28,4 @@ def rank_notes(output: CriticOutput, checklist: Checklist, *, top_n: int) -> lis
 
 
 def _priority(item: ChecklistItem) -> float:
-    # TODO(design-doc): switch to explicit Critical/Warning/Nice-to-have weights
-    # if the checklist starts storing those categories directly.
-    return item.block_weight + item.question_weight / 10
-
-
-def _severity_from_item(item: ChecklistItem) -> Severity:
-    if item.block_weight >= 8:
-        return Severity.critical
-    if item.block_weight >= 5:
-        return Severity.warning
-    return Severity.nice_to_have
+    return item.block_weight * item.question_weight

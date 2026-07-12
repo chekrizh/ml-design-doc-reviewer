@@ -14,31 +14,30 @@
 
 ## Overview
 
-ML Design Doc Reviewer is an open-source agent for reviewing ML system design documents.
+ML Design Doc Reviewer is an open-source agent for reviewing ML system design documents. It helps engineers practice ML system design by surfacing architectural gaps, cross-section inconsistencies, weak trade-offs, unsupported assumptions, and missing reasoning — returning focused critique and guiding questions instead of a finished design.
 
-It helps engineers practice ML system design by surfacing architectural gaps, cross-section inconsistencies, weak trade-offs, unsupported assumptions, and missing reasoning. Instead of generating a finished design, it returns focused critique and guiding questions for the next revision.
+ML system design improves through repeated feedback cycles. Human review is valuable but slow and hard to scale; generic LLM feedback is fast but often vague or too willing to solve the task for the author.
 
-The project is currently in early design. The first implementation will focus on a simple review loop over design documents, with evaluation and grounding capabilities added incrementally.
-
-## Quick Start
-
-The current baseline reviews a plain text or Markdown ML design document from the CLI.
-
-```bash
-uv run critic review path/to/design-doc.md
-```
-
-## Why This Exists
-
-ML system design improves through repeated feedback cycles. Human review is valuable, but it is slow, expensive, and hard to scale. Generic LLM feedback is fast, but often too vague, too confident, or too willing to solve the task for the author.
-
-This project aims to provide a middle ground:
-
+This project aims for the middle ground:
 - fast feedback on ML design documents;
 - structured findings tied to the submitted document;
 - focus on architecture and methodology;
 - grounded in real production ML systems;
 - measurable review quality through offline evaluation.
+
+The project is currently in early design. The first implementation focuses on a simple review loop over design documents, with evaluation and grounding capabilities added incrementally.
+
+## Quick Start
+
+```bash
+uv sync
+cp .env.example .env
+# in .env, set OPENAI_API_KEY=your-key-here
+
+uv run critic review path/to/design-doc.md
+```
+
+Input is a plain text or Markdown ML design document.
 
 ## What It Reviews
 
@@ -53,55 +52,6 @@ The reviewer is intended for ML system design documents that cover topics such a
 - deployment, monitoring, and operations;
 - trade-offs, constraints, and failure modes.
 
-## Status
-
-This repository is an early baseline implementation.
-
-Current scope:
-
-- text or Markdown document input;
-- one LLM call that scores the full critic checklist and writes remarks;
-- prompt-level input relevance guardrail;
-- document-grounded, pedagogical critique without ready-made solutions;
-- deterministic ranking of the most important remarks;
-- structured JSON output for automation;
-
-Planned initial surfaces:
-
-- Dockerized FastAPI service for reviewing design documents;
-- simple web UI for submitting documents and reading critique;
-- structured JSON input in addition to plain text and Markdown;
-- image input support in addition to the current text-only flow;
-- human-readable Markdown report;
-- offline evaluation harness for weighted checklist score, direct-answer violations, and false critique rate;
-- golden and synthetic dataset workflow for repeatable critic evaluation;
-- experiment observability for prompt, checklist, model, latency, and cost tracking;
-
-
-## Installation
-
-```bash
-uv sync
-```
-
-## Usage
-
-```bash
-cp .env.example .env
-# in .env, set OPENAI_API_KEY=your-key-here
-uv run critic review design-doc.md
-```
-
-## Dataset Preparation
-
-The `src/prepare_data` source tree is a maintainer-only tool for building the
-evaluation dataset. It is not included in the runtime wheel, and its heavier
-dependencies are installed only with the `prepare-data` dependency group.
-
-Ordinary critic users do not need to install or run it. Maintainer instructions
-for downloading or regenerating evaluation artifacts live in
-[`data/README.md`](data/README.md).
-
 ## Architecture
 
 The baseline keeps the review loop deliberately small:
@@ -113,6 +63,43 @@ The baseline keeps the review loop deliberately small:
 5. The service returns a `ReviewResult` JSON object and writes optional lifecycle/inference logs.
 
 No RAG, verifier, chat history, JSON document schema, or partial-document snapshots are part of this baseline.
+
+The offline evaluation loop (see [Offline Evaluation](#offline-evaluation)) is separate from, and not part of, the online review path above.
+
+## Offline Evaluation
+
+```bash
+uv run critic assess logs/inference.jsonl --output logs/assessment-eval.jsonl
+uv run critic metrics logs/assessment-eval.jsonl --inference-log logs/inference.jsonl
+```
+
+`critic assess` runs an Assessor agent (LLM-as-a-Judge) that scores each critic output against a checklist. `critic metrics` aggregates those scores into the Weighted Checklist Score, direct-answer/false-critique/grounded-claim rates, and Cohen's Kappa against golden data.
+
+## Dataset Preparation
+
+The `src/prepare_data` source tree is a maintainer-only tool for building the evaluation dataset. It is not included in the runtime wheel, and its heavier dependencies are installed only with the `prepare-data` dependency group.
+
+Ordinary critic users do not need to install or run it. Maintainer instructions for downloading or regenerating evaluation artifacts live in [`data/README.md`](data/README.md).
+
+## Status & Roadmap
+
+This repository is an early baseline implementation. Current scope:
+
+- text or Markdown document input;
+- one LLM call that scores the full critic checklist and writes remarks;
+- prompt-level input relevance guardrail;
+- document-grounded, pedagogical critique without ready-made solutions;
+- deterministic ranking of the most important remarks;
+- structured JSON output for automation;
+- offline evaluation harness (see [Offline Evaluation](#offline-evaluation)).
+
+Planned next:
+
+- Dockerized FastAPI service and a simple web UI for submitting documents;
+- structured JSON and image input, in addition to plain text and Markdown;
+- human-readable Markdown report;
+- golden and synthetic dataset workflow for repeatable critic evaluation;
+- experiment observability for prompt, checklist, model, latency, and cost tracking.
 
 ## License
 
