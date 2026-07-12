@@ -58,7 +58,8 @@ The baseline keeps the review loop deliberately small:
 
 1. `critic.cli` reads the design document as text.
 2. `ReviewService` calls `critique()` with the document and checklist.
-3. `critique()` renders the prompt, asks the LLM for structured JSON, and validates that every checklist item was scored.
+3. `critique()` renders prompts, asks the LLM for structured JSON, and validates that every
+   checklist item was scored.
 4. `rank_notes()` keeps only incomplete items, orders them by checklist importance, and returns the top-N notes.
 5. The service returns a `ReviewResult` JSON object and writes optional lifecycle/inference logs.
 
@@ -86,7 +87,7 @@ Ordinary critic users do not need to install or run it. Maintainer instructions 
 This repository is an early baseline implementation. Current scope:
 
 - text or Markdown document input;
-- one LLM call that scores the full critic checklist and writes remarks;
+- one or more LLM calls that score the full critic checklist and write remarks;
 - prompt-level input relevance guardrail;
 - document-grounded, pedagogical critique without ready-made solutions;
 - deterministic ranking of the most important remarks;

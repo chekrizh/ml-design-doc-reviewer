@@ -43,7 +43,8 @@ closing ```. The first character of the response must be {, the last — }.
 
 USER_PROMPT_TEMPLATE = Template(
     """\
-Checklist version: {{ checklist.version }}
+Document:
+{{ document }}
 
 Critic checklist:
 {% for item in checklist.items -%}
@@ -52,8 +53,6 @@ Importance: block {{ item.block_weight }}/16, question {{ item.question_weight }
 Question: {{ item.question }}
 
 {% endfor %}
-Document:
-{{ document }}
 """
 )
 

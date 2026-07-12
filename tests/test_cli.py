@@ -5,6 +5,7 @@ from pathlib import Path
 import pytest
 from fakes import complete_critic_output
 
+from critic.assessor.service import AssessmentRunResult
 from critic.cli import build_parser, main
 from critic.domain.assessor_checklist import load_default_assessor_checklist
 from critic.domain.critique import ReviewResult
@@ -33,10 +34,19 @@ class FakeAssessorService:
         self,
         inference_log_file: Path,
         output_file: Path,
-    ) -> list[str]:
+    ) -> AssessmentRunResult:
         self.inference_log_file = inference_log_file
         self.output_file = output_file
-        return ["assessment-1"]
+        return AssessmentRunResult(assessment_ids=["assessment-1"], failed_count=0)
+
+
+class FailingAssessorService:
+    async def assess_inference_log(
+        self,
+        inference_log_file: Path,
+        output_file: Path,
+    ) -> AssessmentRunResult:
+        return AssessmentRunResult(assessment_ids=[], failed_count=1)
 
 
 def test_cli_reads_document_and_prints_review_json(tmp_path: Path, capsys) -> None:
@@ -72,6 +82,25 @@ def test_cli_assess_reads_inference_log_and_prints_assessment_ids(
     assert service.inference_log_file == inference_log
     assert service.output_file == output_file
     assert '"assessment_ids": ["assessment-1"]' in captured.out
+    assert '"failed_count": 0' in captured.out
+
+
+def test_cli_assess_returns_nonzero_when_any_assessment_fails(
+    tmp_path: Path,
+    capsys,
+) -> None:
+    inference_log = tmp_path / "inference.jsonl"
+    output_file = tmp_path / "assessment-eval.jsonl"
+    inference_log.write_text("", encoding="utf-8")
+
+    exit_code = main(
+        ["assess", str(inference_log), "--output", str(output_file)],
+        assessor_service_factory=FailingAssessorService,
+    )
+
+    payload = json.loads(capsys.readouterr().out)
+    assert exit_code == 1
+    assert payload == {"assessment_ids": [], "failed_count": 1}
 
 
 def test_cli_assess_uses_env_output_with_assessor_factory(
@@ -293,6 +322,53 @@ def test_cli_metrics_uses_custom_assessor_checklist_from_env(
     payload = json.loads(capsys.readouterr().out)
     assert exit_code == 0
     assert payload["mean_wcs"] == 0.25
+
+
+def test_cli_metrics_uses_custom_critic_checklist_from_env(
+    tmp_path: Path,
+    monkeypatch,
+    capsys,
+) -> None:
+    assessment_log = tmp_path / "assessment-eval.jsonl"
+    inference_log = tmp_path / "inference.jsonl"
+    checklist_path = tmp_path / "critic-checklist.json"
+    assessment_log.write_text("", encoding="utf-8")
+    checklist_path.write_text(
+        json.dumps(
+            {
+                "version": "custom-critic-checklist",
+                "items": [
+                    {
+                        "id": 99,
+                        "section": "Custom",
+                        "question": "Is the custom requirement covered?",
+                        "block_weight": 1,
+                        "question_weight": 1,
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    inference_log.write_text(
+        json.dumps(
+            {
+                "critic_output": {
+                    "relevant": True,
+                    "items": [{"item_id": 99, "score": 1, "remark": None}],
+                }
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setenv("CRITIC_CHECKLIST_PATH", str(checklist_path))
+
+    exit_code = main(["metrics", str(assessment_log), "--inference-log", str(inference_log)])
+
+    payload = json.loads(capsys.readouterr().out)
+    assert exit_code == 0
+    assert payload["mean_critic_score"] == 1.0
 
 
 def test_cli_help_lists_review_assess_and_metrics_commands() -> None:

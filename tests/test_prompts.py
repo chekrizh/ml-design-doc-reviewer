@@ -29,3 +29,7 @@ def test_render_critic_prompts_includes_guardrail_and_no_direct_answer_rules() -
     assert "B_T_F" not in prompts.user_prompt
     assert "Is the business problem formulated?" in prompts.user_prompt
     assert "## Design doc\nSome content" in prompts.user_prompt
+    assert "Checklist version:" not in prompts.user_prompt
+    assert prompts.user_prompt.index("## Design doc\nSome content") < prompts.user_prompt.index(
+        "Critic checklist:"
+    )

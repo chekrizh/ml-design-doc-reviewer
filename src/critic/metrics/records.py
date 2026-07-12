@@ -54,7 +54,15 @@ def parse_assessor_records(
     assessor_checklist: AssessorChecklist,
 ) -> list[AssessorOutput]:
     outputs: list[AssessorOutput] = []
-    for record in _successful_records(path):
+    for record in _latest_assessment_records(path):
+        if record.get("status") == "failed":
+            continue
+        _validate_checklist_version(
+            record,
+            field="assessor_checklist_version",
+            expected=assessor_checklist.version,
+            label="assessor",
+        )
         output = AssessorOutput(
             criteria=[CriterionScore.model_validate(score) for score in record.get("criteria", [])],
             notes=[NoteJudgment.model_validate(note) for note in record.get("notes", [])],
@@ -65,12 +73,9 @@ def parse_assessor_records(
 
 
 def count_assessment_records(path: Path) -> AssessmentRecordCounts:
-    total = 0
-    failed = 0
-    for record in read_jsonl(path):
-        total += 1
-        if record.get("status") == "failed":
-            failed += 1
+    records = _latest_assessment_records(path)
+    total = len(records)
+    failed = sum(record.get("status") == "failed" for record in records)
     return AssessmentRecordCounts(
         total=total,
         successful=total - failed,
@@ -87,6 +92,13 @@ def parse_critic_records(
     for record in _successful_records(path):
         critic_output = record.get("critic_output")
         if critic_output is not None:
+            if critic_checklist is not None:
+                _validate_checklist_version(
+                    record,
+                    field="checklist_version",
+                    expected=critic_checklist.version,
+                    label="critic",
+                )
             output = CriticOutput.model_validate(critic_output)
             if critic_checklist is not None:
                 _validate_critic_metric_item_ids(
@@ -102,6 +114,37 @@ def _successful_records(path: Path) -> Iterator[dict]:
     for record in read_jsonl(path):
         if record.get("status") != "failed":
             yield record
+
+
+def _latest_assessment_records(path: Path) -> list[dict]:
+    latest_by_source: dict[str, dict] = {}
+    for index, record in enumerate(read_jsonl(path)):
+        latest_by_source[_assessment_record_key(record, index)] = record
+    return list(latest_by_source.values())
+
+
+def _assessment_record_key(record: dict, index: int) -> str:
+    inference_id = record.get("inference_id")
+    if inference_id is not None:
+        return f"inference_id:{inference_id}"
+    assessment_id = record.get("assessment_id")
+    if assessment_id is not None:
+        return f"assessment_id:{assessment_id}"
+    return f"row:{index}"
+
+
+def _validate_checklist_version(
+    record: dict,
+    *,
+    field: str,
+    expected: str,
+    label: str,
+) -> None:
+    actual = record.get(field)
+    if actual is not None and actual != expected:
+        raise ValueError(
+            f"{label} checklist version mismatch: expected {expected!r}, got {actual!r}"
+        )
 
 
 def _validate_critic_metric_item_ids(

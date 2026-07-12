@@ -7,10 +7,10 @@ from collections.abc import Callable, Sequence
 from pathlib import Path
 from typing import Protocol
 
-from critic.assessor.service import AssessorService
-from critic.config import AssessorOutputSettings, AssessorSettings, Settings
+from critic.assessor.service import AssessmentRunResult, AssessorService
+from critic.config import AssessorOutputSettings, AssessorSettings, CriticOutputSettings, Settings
 from critic.domain.assessor_checklist import AssessorChecklist, load_default_assessor_checklist
-from critic.domain.checklist import load_default_checklist
+from critic.domain.checklist import Checklist, load_default_checklist
 from critic.domain.critique import ReviewResult
 from critic.metrics.records import (
     count_assessment_records,
@@ -32,7 +32,7 @@ class _AssessorService(Protocol):
         self,
         inference_log_file: Path,
         output_file: Path,
-    ) -> list[str]:
+    ) -> AssessmentRunResult:
         """Assess critic inference records."""
 
 
@@ -103,16 +103,23 @@ def main(
 
     if args.command == "assess":
         factory, output_file = _resolve_assessor(args, assessor_service_factory)
-        assessment_ids = asyncio.run(factory().assess_inference_log(args.path, output_file))
-        print(json.dumps({"assessment_ids": assessment_ids}))
-        return 0
+        run_result = asyncio.run(factory().assess_inference_log(args.path, output_file))
+        print(
+            json.dumps(
+                {
+                    "assessment_ids": run_result.assessment_ids,
+                    "failed_count": run_result.failed_count,
+                }
+            )
+        )
+        return 1 if run_result.failed_count else 0
 
     if args.command == "metrics":
         critic_outputs = None
         critic_checklist = None
         assessor_checklist = _load_assessor_checklist(AssessorOutputSettings().checklist_path)
         if args.inference_log is not None:
-            critic_checklist = load_default_checklist()
+            critic_checklist = _load_critic_checklist(CriticOutputSettings().checklist_path)
             critic_outputs = parse_critic_records(
                 args.inference_log,
                 critic_checklist=critic_checklist,
@@ -155,6 +162,12 @@ def _load_assessor_checklist(checklist_path: Path | None) -> AssessorChecklist:
     if checklist_path is not None:
         return AssessorChecklist.load(checklist_path)
     return load_default_assessor_checklist()
+
+
+def _load_critic_checklist(checklist_path: Path | None) -> Checklist:
+    if checklist_path is not None:
+        return Checklist.load(checklist_path)
+    return load_default_checklist()
 
 
 if __name__ == "__main__":
