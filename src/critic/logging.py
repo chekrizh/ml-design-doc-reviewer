@@ -121,7 +121,7 @@ class JsonlInferenceLogger:
         status: str | None = None,
         error: Exception | None = None,
     ) -> dict:
-        snapshot_document_ref, snapshot_images_dir = self._write_snapshot(inference_id, input_document)
+        snapshot_document_ref, snapshot_images_dir = self._write_snapshot(inference_id, input_document, input_images)
         record: dict = {}
         if status is not None:
             record["status"] = status
@@ -156,18 +156,19 @@ class JsonlInferenceLogger:
         # TODO: Currently images are stored in folder alongside the document file for backward
         # compatibility. Consider making snapshot a separate directory for document, images and
         # other potential stuff.
-        snapshot_images_dir = None
+        snapshot_images_dir_ref = None
         if images:
             snapshot_images_dir = (
                 self._log_file.parent / f"{SNAPSHOT_IMAGES_DIR_PREFIX}-{inference_id}"
             )
             snapshot_images_dir.mkdir(parents=True, exist_ok=True)
+            snapshot_images_dir_ref = str(snapshot_images_dir)
             for image in images:
                 bytes_ = base64.b64decode(image.b64content.encode())
                 image_path = snapshot_images_dir / f"{image.label}{image.suffix}"
                 image_path.write_bytes(bytes_)
 
-        return f"{SNAPSHOT_DIR_NAME}/{inference_id}.md", str(snapshot_images_dir)
+        return f"{SNAPSHOT_DIR_NAME}/{inference_id}.md", snapshot_images_dir_ref
 
     def _persist(self, inference_id: str, record: dict) -> str:
         self._log_file.parent.mkdir(parents=True, exist_ok=True)
