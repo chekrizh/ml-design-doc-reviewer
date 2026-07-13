@@ -52,7 +52,7 @@ class ReviewService:
             self._logger.exception(
                 "review_failed inference_id=%s model=%s", inference_id, self._model
             )
-            self._log_failure(inference_id, document, exc)
+            self._log_failure(inference_id, document, images, exc)
             raise
         except Exception:
             self._logger.exception(
@@ -63,7 +63,7 @@ class ReviewService:
         notes = rank_notes(critic_result.output, self._checklist, top_n=self._top_n)
         result = self._build_result(critic_result.output, notes)
         self._log_completed(inference_id, result, critic_result.llm_duration_ms)
-        self._log_inference(inference_id, document, critic_result, notes, result)
+        self._log_inference(inference_id, document, images, critic_result, notes, result)
         return result
 
     def _build_result(self, output: CriticOutput, notes: list[RankedNote]) -> ReviewResult:
@@ -103,6 +103,7 @@ class ReviewService:
         self,
         inference_id: str,
         document: str,
+        images: list[ImageToReview] | None,
         critic_result: CriticResult,
         notes: list[RankedNote],
         result: ReviewResult,
@@ -115,6 +116,7 @@ class ReviewService:
             self._inference_logger.write(
                 inference_id=inference_id,
                 input_document=document,
+                input_images=images,
                 critic_output=critic_result.output,
                 top_n_notes=notes,
                 final_result=result,
@@ -131,7 +133,11 @@ class ReviewService:
             )
 
     def _log_failure(
-        self, inference_id: str, document: str, exc: CriticOutputValidationError
+        self,
+        inference_id: str,
+        document: str,
+        images: list[ImageToReview] | None,
+        exc: CriticOutputValidationError,
     ) -> None:
         if self._inference_logger is None:
             return
@@ -139,6 +145,7 @@ class ReviewService:
             self._inference_logger.write_failure(
                 inference_id=inference_id,
                 input_document=document,
+                input_images=images,
                 critic_output=exc.critic_output,
                 model=self._model,
                 checklist_version=self._checklist.version,

@@ -1,3 +1,4 @@
+import base64
 import json
 import logging
 from datetime import UTC, datetime
@@ -5,10 +6,12 @@ from pathlib import Path
 from uuid import uuid4
 
 from critic.domain.critique import CriticOutput, RankedNote, ReviewResult
+from critic.image_parsing import ImageToReview
 
 LOGGER_NAME = "critic"
 INFERENCE_LOG_SCHEMA_VERSION = "critic-inference-log-v2"
 SNAPSHOT_DIR_NAME = "snapshots"
+SNAPSHOT_IMAGES_DIR_PREFIX = f"{SNAPSHOT_DIR_NAME}/images"
 
 
 def configure_file_logging(log_file: Path) -> logging.Logger:
@@ -47,13 +50,16 @@ class JsonlInferenceLogger:
         *,
         inference_id: str,
         input_document: str,
+        input_images: list[ImageToReview] | None,
         critic_output: CriticOutput | None,
         top_n_notes: list[RankedNote],
         final_result: ReviewResult,
         top_n: int,
         llm_duration_ms: int | None,
     ) -> str:
-        snapshot_ref = self._write_snapshot(inference_id, input_document)
+        snapshot_document_ref, snapshot_images_dir = self._write_snapshot(
+            inference_id, input_document, input_images
+        )
         return self._persist(
             inference_id,
             {
@@ -61,7 +67,9 @@ class JsonlInferenceLogger:
                 "checklist_version": final_result.checklist_version,
                 "top_n": top_n,
                 "timings": {"llm_duration_ms": llm_duration_ms},
-                "input": _input_log_entry(input_document, snapshot_ref),
+                "input": _input_log_entry(
+                    input_document, snapshot_document_ref, snapshot_images_dir
+                ),
                 "critic_output": critic_output.model_dump(mode="json") if critic_output else None,
                 "top_n_notes": [note.model_dump(mode="json") for note in top_n_notes],
                 "final_result": final_result.model_dump(mode="json"),
@@ -73,6 +81,7 @@ class JsonlInferenceLogger:
         *,
         inference_id: str,
         input_document: str,
+        input_images: list[ImageToReview] | None,
         critic_output: CriticOutput | None,
         model: str,
         checklist_version: str,
@@ -80,7 +89,9 @@ class JsonlInferenceLogger:
         llm_duration_ms: int | None,
         error: Exception,
     ) -> str:
-        snapshot_ref = self._write_snapshot(inference_id, input_document)
+        snapshot_document_ref, snapshot_images_dir = self._write_snapshot(
+            inference_id, input_document, input_images
+        )
         return self._persist(
             inference_id,
             {
@@ -89,7 +100,9 @@ class JsonlInferenceLogger:
                 "checklist_version": checklist_version,
                 "top_n": top_n,
                 "timings": {"llm_duration_ms": llm_duration_ms},
-                "input": _input_log_entry(input_document, snapshot_ref),
+                "input": _input_log_entry(
+                    input_document, snapshot_document_ref, snapshot_images_dir
+                ),
                 "critic_output": critic_output.model_dump(mode="json") if critic_output else None,
                 "top_n_notes": [],
                 "final_result": None,
@@ -97,14 +110,31 @@ class JsonlInferenceLogger:
             },
         )
 
-    def _write_snapshot(self, inference_id: str, document: str) -> str:
+    def _write_snapshot(
+        self, inference_id: str, document: str, images: list[ImageToReview] | None
+    ) -> tuple[str, str | None]:
         # The full document lives in a sidecar file so that inference.jsonl stays
         # small and greppable. The jsonl only keeps a relative reference.
         snapshot_dir = self._log_file.parent / SNAPSHOT_DIR_NAME
         snapshot_dir.mkdir(parents=True, exist_ok=True)
         snapshot_path = snapshot_dir / f"{inference_id}.md"
         snapshot_path.write_text(document, encoding="utf-8")
-        return f"{SNAPSHOT_DIR_NAME}/{inference_id}.md"
+
+        # TODO: Currently images are stored in folder alongside the document file for backward
+        # compatibility. Consider making snapshot a separate directory for document, images and
+        # other potential stuff.
+        snapshot_images_dir = None
+        if images:
+            snapshot_images_dir = (
+                self._log_file.parent / f"{SNAPSHOT_IMAGES_DIR_PREFIX}-{inference_id}"
+            )
+            snapshot_images_dir.mkdir(parents=True, exist_ok=True)
+            for image in images:
+                bytes_ = base64.b64decode(image.b64content.encode())
+                image_path = snapshot_images_dir / f"{image.label}{image.suffix}"
+                image_path.write_bytes(bytes_)
+
+        return f"{SNAPSHOT_DIR_NAME}/{inference_id}.md", str(snapshot_images_dir)
 
     def _persist(self, inference_id: str, record: dict) -> str:
         self._log_file.parent.mkdir(parents=True, exist_ok=True)
@@ -121,14 +151,20 @@ class JsonlInferenceLogger:
         return inference_id
 
 
-def _input_log_entry(document: str, snapshot_ref: str) -> dict[str, object]:
+def _input_log_entry(
+    document: str, snapshot_ref: str, snapshot_images_dir: str | None
+) -> dict[str, object]:
     # The baseline treats the submitted file as the current document snapshot.
     # Snapshot metadata such as parent document id and completion percent is future work.
-    return {
+    data = {
         "kind": "text",
         "document_length": len(document),
         "snapshot_ref": snapshot_ref,
     }
+    if snapshot_images_dir:
+        data["snapshot_images_dir"] = snapshot_images_dir
+
+    return data
 
 
 def new_inference_id() -> str:
