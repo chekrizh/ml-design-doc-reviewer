@@ -49,8 +49,8 @@ def parse_images_from_metadata_file(path: Path) -> list[ImageToReview]:
         # Relies on the filepath in the metadata containing the project root folder
         # as the first component,
         # e.g., `ml-design-doc-reviewer/data/raw_documents/images/case_001/img_002.png`
-        dir_above_root = Path(__file__).resolve().parents[3]
-        image_path = dir_above_root / image["local_path"]
+        project_root_dir = Path(__file__).resolve().parents[2]
+        image_path = project_root_dir / Path(*Path(image["local_path"]).parts[1:])
 
         suffix = image_path.suffix.lower()
         if mime_type := _MIME_BY_EXTENSION.get(suffix):
