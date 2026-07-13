@@ -1,3 +1,4 @@
+import base64
 import json
 import logging
 from pathlib import Path
@@ -8,6 +9,7 @@ from fakes import FakeLLMClient
 from critic.domain.checklist import load_default_checklist
 from critic.domain.critic_validation import CriticOutputValidationError
 from critic.domain.critique import CriticOutput, ItemAssessment
+from critic.image_parsing import ImageToReview
 from critic.logging import (
     INFERENCE_LOG_SCHEMA_VERSION,
     JsonlInferenceLogger,
@@ -114,6 +116,42 @@ async def test_review_service_writes_structured_inference_log_with_text_snapshot
     assert record["top_n_notes"] == []
     assert record["final_result"]["model"] == "test-model"
     assert record["timings"]["llm_duration_ms"] >= 0
+
+
+async def test_review_service_writes_image_snapshots_with_relative_dir_ref(
+    tmp_path: Path,
+) -> None:
+    checklist = load_default_checklist()
+    inference_log_file = tmp_path / "inference.jsonl"
+    service = ReviewService(
+        llm_client=FakeLLMClient(),
+        checklist=checklist,
+        model="test-model",
+        top_n=5,
+        checklist_batch_count=1,
+        inference_logger=JsonlInferenceLogger(inference_log_file),
+    )
+    images = [
+        ImageToReview(
+            b64content=base64.b64encode(b"fake-png-bytes").decode(),
+            mime_type="image/png",
+            label="img_001",
+            suffix=".png",
+        )
+    ]
+
+    await service.review("Need model baseline", images)
+
+    records = [
+        json.loads(line)
+        for line in inference_log_file.read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
+    record = records[0]
+    snapshot_images_dir = record["input"]["snapshot_images_dir"]
+    assert snapshot_images_dir == f"snapshots/images-{record['inference_id']}"
+    image_path = inference_log_file.parent / snapshot_images_dir / "img_001.png"
+    assert image_path.read_bytes() == b"fake-png-bytes"
 
 
 async def test_review_service_returns_result_when_inference_log_write_fails(

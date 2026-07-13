@@ -9,6 +9,7 @@ from critic.assessor.assessor import AssessorResult, assess
 from critic.config import AssessorSettings
 from critic.domain.assessor_checklist import AssessorChecklist
 from critic.domain.critique import RankedNote
+from critic.image_parsing import ImageToReview, parse_images_from_directory
 from critic.jsonl import read_jsonl
 from critic.llm.base import LLMClient
 from critic.llm.openai_client import OpenAILLMClient
@@ -60,11 +61,13 @@ class AssessorService:
                         RankedNote.model_validate(note) for note in final_result.get("notes", [])
                     ]
                     document = _read_snapshot(inference_log_file.parent, record)
+                    images = _read_snapshot_images(inference_log_file.parent, record)
                     result = await assess(
                         self._llm_client,
                         self._checklist,
                         document=document,
                         notes=notes,
+                        images=images,
                     )
                 except Exception as exc:
                     file.write(
@@ -161,6 +164,23 @@ def _read_snapshot(log_dir: Path, record: dict) -> str:
         raise ValueError("snapshot_ref must be a relative path under snapshots/") from exc
 
     return resolved_snapshot_path.read_text(encoding="utf-8")
+
+
+def _read_snapshot_images(log_dir: Path, record: dict) -> list[ImageToReview] | None:
+    snapshot_images_dir = record["input"].get("snapshot_images_dir")
+    if not snapshot_images_dir:
+        return None
+    if not isinstance(snapshot_images_dir, str):
+        raise ValueError("snapshot_images_dir must be a relative path under snapshots/")
+
+    snapshot_root = (log_dir / SNAPSHOT_DIR_NAME).resolve()
+    resolved_images_dir = (log_dir / snapshot_images_dir).resolve()
+    try:
+        resolved_images_dir.relative_to(snapshot_root)
+    except ValueError as exc:
+        raise ValueError("snapshot_images_dir must be a relative path under snapshots/") from exc
+
+    return parse_images_from_directory(resolved_images_dir)
 
 
 def _existing_successful_inference_ids(output_file: Path) -> set[str]:

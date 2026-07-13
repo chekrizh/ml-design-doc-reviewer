@@ -159,11 +159,9 @@ class JsonlInferenceLogger:
         # other potential stuff.
         snapshot_images_dir_ref = None
         if images:
-            snapshot_images_dir = (
-                self._log_file.parent / f"{SNAPSHOT_IMAGES_DIR_PREFIX}-{inference_id}"
-            )
+            snapshot_images_dir_ref = f"{SNAPSHOT_IMAGES_DIR_PREFIX}-{inference_id}"
+            snapshot_images_dir = self._log_file.parent / snapshot_images_dir_ref
             snapshot_images_dir.mkdir(parents=True, exist_ok=True)
-            snapshot_images_dir_ref = str(snapshot_images_dir)
             for image in images:
                 bytes_ = base64.b64decode(image.b64content.encode())
                 image_path = snapshot_images_dir / f"{image.label}{image.suffix}"

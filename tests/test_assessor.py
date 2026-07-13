@@ -4,6 +4,7 @@ from critic.assessor.assessor import assess
 from critic.domain.assessment import AssessorOutput, CriterionScore, NoteJudgment
 from critic.domain.assessor_checklist import load_default_assessor_checklist
 from critic.domain.critique import RankedNote
+from critic.image_parsing import ImageToReview
 
 
 class FakeAssessorLLMClient:
@@ -12,16 +13,19 @@ class FakeAssessorLLMClient:
         self.system_prompt: str | None = None
         self.user_prompt: str | None = None
         self.schema: type[BaseModel] | None = None
+        self.images: list | None = None
 
     async def parse(
         self,
         system_prompt: str,
         user_prompt: str,
         schema: type[BaseModel],
+        images: list | None = None,
     ) -> AssessorOutput:
         self.system_prompt = system_prompt
         self.user_prompt = user_prompt
         self.schema = schema
+        self.images = images
         return self.output
 
 
@@ -76,3 +80,21 @@ async def test_assess_calls_llm_with_assessor_schema_and_computes_wcs() -> None:
     assert result.output == llm_client.output
     assert result.wcs == 1.0
     assert result.llm_duration_ms == 250
+
+
+async def test_assess_forwards_images_to_llm_client() -> None:
+    checklist = load_default_assessor_checklist()
+    llm_client = FakeAssessorLLMClient(_complete_output())
+    images = [
+        ImageToReview(b64content="Zm9v", mime_type="image/png", label="img_001", suffix=".png")
+    ]
+
+    await assess(
+        llm_client,
+        checklist,
+        document="design doc body",
+        notes=[_note()],
+        images=images,
+    )
+
+    assert llm_client.images == images
