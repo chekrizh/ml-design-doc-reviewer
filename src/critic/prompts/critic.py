@@ -1,8 +1,7 @@
-from dataclasses import dataclass
-
 from jinja2 import Template
 
 from critic.domain.checklist import Checklist
+from critic.prompts.common import PromptPair
 
 SYSTEM_PROMPT = """\
 You are an experienced ML design document reviewer.
@@ -43,7 +42,8 @@ closing ```. The first character of the response must be {, the last — }.
 
 USER_PROMPT_TEMPLATE = Template(
     """\
-Checklist version: {{ checklist.version }}
+Document:
+{{ document }}
 
 Critic checklist:
 {% for item in checklist.items -%}
@@ -52,20 +52,12 @@ Importance: block {{ item.block_weight }}/16, question {{ item.question_weight }
 Question: {{ item.question }}
 
 {% endfor %}
-Document:
-{{ document }}
 """
 )
 
 
-@dataclass(frozen=True)
-class CriticPrompts:
-    system_prompt: str
-    user_prompt: str
-
-
-def render_critic_prompts(checklist: Checklist, document: str) -> CriticPrompts:
-    return CriticPrompts(
+def render_critic_prompts(checklist: Checklist, document: str) -> PromptPair:
+    return PromptPair(
         system_prompt=SYSTEM_PROMPT,
         user_prompt=USER_PROMPT_TEMPLATE.render(checklist=checklist, document=document),
     )

@@ -1,7 +1,8 @@
 import logging
+from collections.abc import Callable
 
 from critic.config import Settings
-from critic.domain.checklist import Checklist, load_default_checklist
+from critic.domain.checklist import Checklist
 from critic.domain.critic_validation import CriticOutputValidationError
 from critic.domain.critique import (
     IRRELEVANT_DOCUMENT_MESSAGE,
@@ -30,6 +31,7 @@ class ReviewService:
         checklist: Checklist,
         model: str,
         top_n: int,
+        checklist_batch_count: int = 5,
         logger: logging.Logger | None = None,
         inference_logger: JsonlInferenceLogger | None = None,
     ) -> None:
@@ -37,6 +39,7 @@ class ReviewService:
         self._checklist = checklist
         self._model = model
         self._top_n = top_n
+        self._checklist_batch_count = checklist_batch_count
         self._logger = logger or logging.getLogger(LOGGER_NAME)
         self._inference_logger = inference_logger
 
@@ -47,23 +50,25 @@ class ReviewService:
         self._log_started(inference_id, document)
 
         try:
-            critic_result = await critique(self._llm_client, self._checklist, document, images)
-        except CriticOutputValidationError as exc:
-            self._logger.exception(
-                "review_failed inference_id=%s model=%s", inference_id, self._model
+            critic_result = await critique(
+                self._llm_client,
+                self._checklist,
+                document,
+                images,
+                batch_count=self._checklist_batch_count,
             )
-            self._log_failure(inference_id, document, images, exc)
+        except CriticOutputValidationError as exc:
+            self._log_review_failed(inference_id)
+            self._log_failure(inference_id, document, exc)
             raise
         except Exception:
-            self._logger.exception(
-                "review_failed inference_id=%s model=%s", inference_id, self._model
-            )
+            self._log_review_failed(inference_id)
             raise
 
         notes = rank_notes(critic_result.output, self._checklist, top_n=self._top_n)
         result = self._build_result(critic_result.output, notes)
         self._log_completed(inference_id, result, critic_result.llm_duration_ms)
-        self._log_inference(inference_id, document, images, critic_result, notes, result)
+        self._log_inference(inference_id, document, critic_result, notes, result)
         return result
 
     def _build_result(self, output: CriticOutput, notes: list[RankedNote]) -> ReviewResult:
@@ -80,12 +85,13 @@ class ReviewService:
     def _log_started(self, inference_id: str, document: str) -> None:
         self._logger.info(
             "review_started inference_id=%s model=%s checklist_version=%s "
-            "document_length=%d top_n=%d",
+            "document_length=%d top_n=%d checklist_batch_count=%d",
             inference_id,
             self._model,
             self._checklist.version,
             len(document),
             self._top_n,
+            self._checklist_batch_count,
         )
 
     def _log_completed(self, inference_id: str, result: ReviewResult, llm_duration_ms: int) -> None:
@@ -99,91 +105,84 @@ class ReviewService:
             llm_duration_ms,
         )
 
+    def _log_review_failed(self, inference_id: str) -> None:
+        self._logger.exception("review_failed inference_id=%s model=%s", inference_id, self._model)
+
     def _log_inference(
         self,
         inference_id: str,
         document: str,
-        images: list[ImageToReview] | None,
         critic_result: CriticResult,
         notes: list[RankedNote],
         result: ReviewResult,
     ) -> None:
-        if self._inference_logger is None:
-            return
         # Baseline writes raw inference records only. Turning these logs
         # into a curated real dataset is a separate offline pipeline.
-        try:
-            self._inference_logger.write(
+        self._safe_inference_log(
+            inference_id,
+            failure_event="inference_log_failed",
+            write=lambda logger: logger.write(
                 inference_id=inference_id,
                 input_document=document,
-                input_images=images,
                 critic_output=critic_result.output,
                 top_n_notes=notes,
                 final_result=result,
                 top_n=self._top_n,
                 llm_duration_ms=critic_result.llm_duration_ms,
-            )
-        except OSError as exc:
-            self._logger.warning(
-                "inference_log_failed inference_id=%s model=%s error=%s",
-                inference_id,
-                self._model,
-                exc,
-                exc_info=True,
-            )
+            ),
+        )
 
     def _log_failure(
-        self,
-        inference_id: str,
-        document: str,
-        images: list[ImageToReview] | None,
-        exc: CriticOutputValidationError,
+        self, inference_id: str, document: str, exc: CriticOutputValidationError
     ) -> None:
-        if self._inference_logger is None:
-            return
-        try:
-            self._inference_logger.write_failure(
+        self._safe_inference_log(
+            inference_id,
+            failure_event="inference_failure_log_failed",
+            write=lambda logger: logger.write_failure(
                 inference_id=inference_id,
                 input_document=document,
-                input_images=images,
                 critic_output=exc.critic_output,
                 model=self._model,
                 checklist_version=self._checklist.version,
                 top_n=self._top_n,
                 llm_duration_ms=exc.llm_duration_ms,
                 error=exc,
-            )
-        except OSError as log_exc:
+            ),
+        )
+
+    def _safe_inference_log(
+        self,
+        inference_id: str,
+        *,
+        failure_event: str,
+        write: Callable[[JsonlInferenceLogger], None],
+    ) -> None:
+        if self._inference_logger is None:
+            return
+        try:
+            write(self._inference_logger)
+        except OSError as exc:
             self._logger.warning(
-                "inference_failure_log_failed inference_id=%s model=%s error=%s",
+                f"{failure_event} inference_id=%s model=%s error=%s",
                 inference_id,
                 self._model,
-                log_exc,
+                exc,
                 exc_info=True,
             )
 
     @classmethod
     def from_settings(cls, settings: Settings) -> "ReviewService":
-        checklist = (
-            Checklist.load(settings.checklist_path)
-            if settings.checklist_path is not None
-            else load_default_checklist()
-        )
-        llm_client = OpenAILLMClient(
-            api_key=settings.openai_api_key,
-            base_url=settings.openai_base_url,
-            model=settings.model,
-        )
         inference_logger = (
             JsonlInferenceLogger(settings.inference_log_file)
             if settings.inference_log_file is not None
             else None
         )
         return cls(
-            llm_client=llm_client,
-            checklist=checklist,
+            llm_client=OpenAILLMClient.from_settings(settings),
+            checklist=Checklist.load_or_default(settings.checklist_path),
             model=settings.model,
             top_n=settings.top_n,
+            checklist_batch_count=settings.checklist_batch_count,
             logger=configure_file_logging(settings.log_file),
             inference_logger=inference_logger,
         )

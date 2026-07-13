@@ -1,0 +1,50 @@
+{
+  "version": "assessor-checklist-v1",
+  "criteria": [
+    {
+      "id": 1,
+      "question": "Critique is explicitly tied to a concrete document section or checklist item and is not an abstract statement.",
+      "weight": 3
+    },
+    {
+      "id": 2,
+      "question": "Critique is grounded in a retrieved source or a concrete fragment of the current document rather than generic industry practice.",
+      "weight": 3
+    },
+    {
+      "id": 3,
+      "question": "Critic does not provide a ready-made solution and does not violate the direct-answer constraint.",
+      "weight": 3
+    },
+    {
+      "id": 4,
+      "question": "Critic's claim is factually correct and matches expert consensus rather than being false critique.",
+      "weight": 3
+    },
+    {
+      "id": 5,
+      "question": "Critic correctly identifies cross-section contradictions when they are present and does not invent extra ones.",
+      "weight": 2
+    },
+    {
+      "id": 6,
+      "question": "The wording is clear, constructive, and explains the consequence of the problem or the area to reconsider.",
+      "weight": 2
+    },
+    {
+      "id": 7,
+      "question": "When context is insufficient, Critic states that explicitly instead of inventing facts or criticizing nonexistent content.",
+      "weight": 1
+    },
+    {
+      "id": 8,
+      "question": "The critique does not duplicate other critical comments in the same session.",
+      "weight": 1
+    },
+    {
+      "id": 9,
+      "question": "The critique avoids excessive detail that could confuse the user and stays focused on the main issue.",
+      "weight": 1
+    }
+  ]
+}

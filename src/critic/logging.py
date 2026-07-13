@@ -1,4 +1,5 @@
 import base64
+import base64
 import json
 import logging
 from datetime import UTC, datetime
@@ -57,23 +58,20 @@ class JsonlInferenceLogger:
         top_n: int,
         llm_duration_ms: int | None,
     ) -> str:
-        snapshot_document_ref, snapshot_images_dir = self._write_snapshot(
-            inference_id, input_document, input_images
-        )
         return self._persist(
             inference_id,
-            {
-                "model": final_result.model,
-                "checklist_version": final_result.checklist_version,
-                "top_n": top_n,
-                "timings": {"llm_duration_ms": llm_duration_ms},
-                "input": _input_log_entry(
-                    input_document, snapshot_document_ref, snapshot_images_dir
-                ),
-                "critic_output": critic_output.model_dump(mode="json") if critic_output else None,
-                "top_n_notes": [note.model_dump(mode="json") for note in top_n_notes],
-                "final_result": final_result.model_dump(mode="json"),
-            },
+            self._record(
+                inference_id=inference_id,
+                input_document=input_document,
+                input_images=input_images,
+                model=final_result.model,
+                checklist_version=final_result.checklist_version,
+                top_n=top_n,
+                llm_duration_ms=llm_duration_ms,
+                critic_output=critic_output,
+                top_n_notes=top_n_notes,
+                final_result=final_result,
+            ),
         )
 
     def write_failure(
@@ -89,13 +87,46 @@ class JsonlInferenceLogger:
         llm_duration_ms: int | None,
         error: Exception,
     ) -> str:
-        snapshot_document_ref, snapshot_images_dir = self._write_snapshot(
-            inference_id, input_document, input_images
-        )
         return self._persist(
             inference_id,
+            self._record(
+                inference_id=inference_id,
+                input_document=input_document,
+                input_images=input_images,
+                model=model,
+                checklist_version=checklist_version,
+                top_n=top_n,
+                llm_duration_ms=llm_duration_ms,
+                critic_output=critic_output,
+                top_n_notes=[],
+                final_result=None,
+                status="failed",
+                error=error,
+            ),
+        )
+
+    def _record(
+        self,
+        *,
+        inference_id: str,
+        input_document: str,
+        input_images: list[ImageToReview] | None,
+        model: str,
+        checklist_version: str,
+        top_n: int,
+        llm_duration_ms: int | None,
+        critic_output: CriticOutput | None,
+        top_n_notes: list[RankedNote],
+        final_result: ReviewResult | None,
+        status: str | None = None,
+        error: Exception | None = None,
+    ) -> dict:
+        snapshot_document_ref, snapshot_images_dir = self._write_snapshot(inference_id, input_document)
+        record: dict = {}
+        if status is not None:
+            record["status"] = status
+        record.update(
             {
-                "status": "failed",
                 "model": model,
                 "checklist_version": checklist_version,
                 "top_n": top_n,
@@ -104,11 +135,13 @@ class JsonlInferenceLogger:
                     input_document, snapshot_document_ref, snapshot_images_dir
                 ),
                 "critic_output": critic_output.model_dump(mode="json") if critic_output else None,
-                "top_n_notes": [],
-                "final_result": None,
-                "error": {"type": type(error).__name__, "message": str(error)},
-            },
+                "top_n_notes": [note.model_dump(mode="json") for note in top_n_notes],
+                "final_result": final_result.model_dump(mode="json") if final_result else None,
+            }
         )
+        if error is not None:
+            record["error"] = {"type": type(error).__name__, "message": str(error)}
+        return record
 
     def _write_snapshot(
         self, inference_id: str, document: str, images: list[ImageToReview] | None

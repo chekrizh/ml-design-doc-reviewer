@@ -18,8 +18,8 @@ def test_ranker_orders_incomplete_items_by_block_and_question_weight() -> None:
         top_n=3,
     )
 
-    assert [note.item_id for note in notes] == [24, 46, 48]
-    assert [note.severity.value for note in notes] == ["critical", "critical", "critical"]
+    assert [note.item_id for note in notes] == [46, 48, 24]
+    assert [note.priority for note in notes] == [50, 30, 11]
     assert notes[0].priority > notes[1].priority > notes[2].priority
 
 

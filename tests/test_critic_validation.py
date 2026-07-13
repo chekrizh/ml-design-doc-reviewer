@@ -1,7 +1,8 @@
 import pytest
 from fakes import complete_critic_output
 
-from critic.domain.checklist import load_default_checklist
+from critic.domain import critic_validation
+from critic.domain.checklist import Checklist, ChecklistItem, load_default_checklist
 from critic.domain.critic_validation import CriticOutputValidationError, validate_critic_output
 from critic.domain.critique import CriticOutput, ItemAssessment
 
@@ -46,3 +47,39 @@ def test_validate_critic_output_rejects_irrelevant_output_with_items() -> None:
         match="irrelevant output must not include checklist items",
     ):
         validate_critic_output(output, load_default_checklist())
+
+
+def test_critic_item_id_problems_describes_contract_violations() -> None:
+    checklist = Checklist(
+        version="test",
+        items=[
+            ChecklistItem(
+                id=1,
+                section="Problem",
+                question="Is the problem defined?",
+                block_weight=1,
+                question_weight=1,
+            ),
+            ChecklistItem(
+                id=2,
+                section="Metrics",
+                question="Are metrics defined?",
+                block_weight=1,
+                question_weight=1,
+            ),
+        ],
+    )
+    output = CriticOutput(
+        relevant=True,
+        items=[
+            ItemAssessment(item_id=1, score=1),
+            ItemAssessment(item_id=1, score=1),
+            ItemAssessment(item_id=3, score=1),
+        ],
+    )
+
+    assert critic_validation.critic_item_id_problems(output, checklist) == [
+        "duplicate item ids: 1",
+        "unknown item ids: 3",
+        "missing item ids: 2",
+    ]

@@ -6,6 +6,7 @@ from typing import Any
 from openai import AsyncOpenAI, BadRequestError
 from pydantic import ValidationError
 
+from critic.config import AssessorSettings, Settings
 from critic.image_parsing import ImageToReview
 from critic.llm.base import SchemaT
 from critic.llm.json_response import extract_json_payload
@@ -26,6 +27,14 @@ class OpenAILLMClient:
         self._model = model
         self._temperature = temperature
         self._logger = logging.getLogger(LOGGER_NAME)
+
+    @classmethod
+    def from_settings(cls, settings: Settings | AssessorSettings) -> OpenAILLMClient:
+        return cls(
+            api_key=settings.openai_api_key,
+            base_url=settings.openai_base_url,
+            model=settings.model,
+        )
 
     async def parse(
         self,
@@ -53,6 +62,7 @@ class OpenAILLMClient:
             response_format=schema,
             temperature=self._temperature,
         )
+        self._log_usage(response)
         parsed = response.choices[0].message.parsed
         if not isinstance(parsed, schema):
             return schema.model_validate(parsed)
@@ -73,6 +83,7 @@ class OpenAILLMClient:
                 response_format={"type": "json_object"},
                 temperature=self._temperature,
             )
+            self._log_usage(response, attempt=attempt + 1)
             content = response.choices[0].message.content or "{}"
             try:
                 return schema.model_validate_json(extract_json_payload(content))
@@ -111,3 +122,19 @@ class OpenAILLMClient:
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_content},
         ]
+
+    def _log_usage(self, response: Any, *, attempt: int | None = None) -> None:
+        usage = getattr(response, "usage", None)
+        if usage is None:
+            return
+
+        details = getattr(usage, "prompt_tokens_details", None)
+        self._logger.info(
+            "llm_usage_recorded model=%s attempt=%s prompt_tokens=%s cached_tokens=%s "
+            "completion_tokens=%s",
+            self._model,
+            attempt,
+            getattr(usage, "prompt_tokens", None),
+            getattr(details, "cached_tokens", None) if details is not None else None,
+            getattr(usage, "completion_tokens", None),
+        )
