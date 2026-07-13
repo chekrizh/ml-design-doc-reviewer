@@ -1,6 +1,6 @@
 import pytest
 
-from critic.assessor.kappa import (
+from critic.metrics.kappa import (
     KappaAgreementLevel,
     compute_cohens_kappa,
     interpret_kappa,

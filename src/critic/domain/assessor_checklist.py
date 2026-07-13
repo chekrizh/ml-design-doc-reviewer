@@ -1,13 +1,12 @@
 from __future__ import annotations
 
-import json
 from importlib import resources
-from importlib.resources.abc import Traversable
 from pathlib import Path
 
 from pydantic import BaseModel, Field, model_validator
 
 from critic.domain.id_validation import ensure_unique_ids
+from critic.domain.loading import find_by_id, load_json_model
 
 
 class AssessorCriterion(BaseModel):
@@ -26,21 +25,17 @@ class AssessorChecklist(BaseModel):
         return self
 
     def by_id(self, criterion_id: int) -> AssessorCriterion:
-        for criterion in self.criteria:
-            if criterion.id == criterion_id:
-                return criterion
-        raise KeyError(f"assessor criterion not found: {criterion_id}")
+        return find_by_id(self.criteria, criterion_id, label="assessor criterion")
 
     @classmethod
     def load(cls, path: Path) -> AssessorChecklist:
-        return _load_assessor_checklist(path)
+        return load_json_model(path, cls)
+
+    @classmethod
+    def load_or_default(cls, path: Path | None) -> AssessorChecklist:
+        return cls.load(path) if path is not None else load_default_assessor_checklist()
 
 
 def load_default_assessor_checklist() -> AssessorChecklist:
     checklist_path = resources.files("critic.data").joinpath("assessor_checklist.json")
-    return _load_assessor_checklist(checklist_path)
-
-
-def _load_assessor_checklist(source: Path | Traversable) -> AssessorChecklist:
-    with source.open(encoding="utf-8") as file:
-        return AssessorChecklist.model_validate(json.load(file))
+    return load_json_model(checklist_path, AssessorChecklist)

@@ -27,9 +27,12 @@ def validate_critic_output(output: CriticOutput, checklist: Checklist) -> None:
             )
         return
 
-    expected_ids = {item.id for item in checklist.items}
-    actual_ids = [item.item_id for item in output.items]
-    problems = describe_id_set_problems(actual_ids, expected_ids, label="item")
-
+    problems = critic_item_id_problems(output, checklist)
     if problems:
         raise CriticOutputValidationError("; ".join(problems), critic_output=output)
+
+
+def critic_item_id_problems(output: CriticOutput, checklist: Checklist) -> list[str]:
+    expected_ids = {item.id for item in checklist.items}
+    actual_ids = [item.item_id for item in output.items]
+    return describe_id_set_problems(actual_ids, expected_ids, label="item")

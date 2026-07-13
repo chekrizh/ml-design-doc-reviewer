@@ -9,8 +9,8 @@ from typing import Protocol
 
 from critic.assessor.service import AssessmentRunResult, AssessorService
 from critic.config import AssessorOutputSettings, AssessorSettings, CriticOutputSettings, Settings
-from critic.domain.assessor_checklist import AssessorChecklist, load_default_assessor_checklist
-from critic.domain.checklist import Checklist, load_default_checklist
+from critic.domain.assessor_checklist import AssessorChecklist
+from critic.domain.checklist import Checklist
 from critic.domain.critique import ReviewResult
 from critic.metrics.records import (
     count_assessment_records,
@@ -95,54 +95,69 @@ def main(
     args = parser.parse_args(argv)
 
     if args.command == "review":
-        document = args.path.read_text(encoding="utf-8")
-        factory = service_factory or (lambda: ReviewService.from_settings(Settings()))
-        result = asyncio.run(factory().review(document))
-        print(result.model_dump_json(indent=2))
-        return 0
+        return _run_review(args, service_factory)
 
     if args.command == "assess":
-        factory, output_file = _resolve_assessor(args, assessor_service_factory)
-        run_result = asyncio.run(factory().assess_inference_log(args.path, output_file))
-        print(
-            json.dumps(
-                {
-                    "assessment_ids": run_result.assessment_ids,
-                    "failed_count": run_result.failed_count,
-                }
-            )
-        )
-        return 1 if run_result.failed_count else 0
+        return _run_assess(args, assessor_service_factory)
 
     if args.command == "metrics":
-        critic_outputs = None
-        critic_checklist = None
-        assessor_checklist = _load_assessor_checklist(AssessorOutputSettings().checklist_path)
-        if args.inference_log is not None:
-            critic_checklist = _load_critic_checklist(CriticOutputSettings().checklist_path)
-            critic_outputs = parse_critic_records(
-                args.inference_log,
-                critic_checklist=critic_checklist,
-            )
-
-        assessment_counts = count_assessment_records(args.path)
-        report = build_metrics_report(
-            assessor_outputs=parse_assessor_records(
-                args.path,
-                assessor_checklist=assessor_checklist,
-            ),
-            assessor_checklist=assessor_checklist,
-            critic_outputs=critic_outputs,
-            critic_checklist=critic_checklist,
-            golden=load_golden_errors(args.golden) if args.golden is not None else None,
-            assessment_total_count=assessment_counts.total,
-            assessment_failed_count=assessment_counts.failed,
-        )
-        print(report.model_dump_json(indent=2))
-        return 0
+        return _run_metrics(args)
 
     parser.error(f"unknown command: {args.command}")
     return 2
+
+
+def _run_review(args: argparse.Namespace, service_factory: ServiceFactory | None) -> int:
+    document = args.path.read_text(encoding="utf-8")
+    factory = service_factory or (lambda: ReviewService.from_settings(Settings()))
+    result = asyncio.run(factory().review(document))
+    print(result.model_dump_json(indent=2))
+    return 0
+
+
+def _run_assess(
+    args: argparse.Namespace,
+    assessor_service_factory: AssessorServiceFactory | None,
+) -> int:
+    factory, output_file = _resolve_assessor(args, assessor_service_factory)
+    run_result = asyncio.run(factory().assess_inference_log(args.path, output_file))
+    print(
+        json.dumps(
+            {
+                "assessment_ids": run_result.assessment_ids,
+                "failed_count": run_result.failed_count,
+            }
+        )
+    )
+    return 1 if run_result.failed_count else 0
+
+
+def _run_metrics(args: argparse.Namespace) -> int:
+    critic_outputs = None
+    critic_checklist = None
+    assessor_checklist = AssessorChecklist.load_or_default(AssessorOutputSettings().checklist_path)
+    if args.inference_log is not None:
+        critic_checklist = Checklist.load_or_default(CriticOutputSettings().checklist_path)
+        critic_outputs = parse_critic_records(
+            args.inference_log,
+            critic_checklist=critic_checklist,
+        )
+
+    assessment_counts = count_assessment_records(args.path)
+    report = build_metrics_report(
+        assessor_outputs=parse_assessor_records(
+            args.path,
+            assessor_checklist=assessor_checklist,
+        ),
+        assessor_checklist=assessor_checklist,
+        critic_outputs=critic_outputs,
+        critic_checklist=critic_checklist,
+        golden=load_golden_errors(args.golden) if args.golden is not None else None,
+        assessment_total_count=assessment_counts.total,
+        assessment_failed_count=assessment_counts.failed,
+    )
+    print(report.model_dump_json(indent=2))
+    return 0
 
 
 def _resolve_assessor(
@@ -156,18 +171,6 @@ def _resolve_assessor(
     settings = AssessorSettings()
     output_file = args.output or settings.eval_log_file
     return lambda: AssessorService.from_settings(settings), output_file
-
-
-def _load_assessor_checklist(checklist_path: Path | None) -> AssessorChecklist:
-    if checklist_path is not None:
-        return AssessorChecklist.load(checklist_path)
-    return load_default_assessor_checklist()
-
-
-def _load_critic_checklist(checklist_path: Path | None) -> Checklist:
-    if checklist_path is not None:
-        return Checklist.load(checklist_path)
-    return load_default_checklist()
 
 
 if __name__ == "__main__":

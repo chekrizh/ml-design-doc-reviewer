@@ -14,8 +14,8 @@ from critic.domain.assessment import (
 )
 from critic.domain.assessor_checklist import AssessorChecklist
 from critic.domain.checklist import Checklist
+from critic.domain.critic_validation import critic_item_id_problems
 from critic.domain.critique import CriticOutput
-from critic.domain.id_validation import describe_id_set_problems
 from critic.domain.scoring import Score
 from critic.jsonl import read_jsonl
 
@@ -159,9 +159,7 @@ def _validate_critic_metric_item_ids(
     if not output.relevant:
         return
 
-    actual_ids = [item.item_id for item in output.items]
-    expected_ids = {item.id for item in checklist.items}
-    problems = describe_id_set_problems(actual_ids, expected_ids, label="item")
+    problems = critic_item_id_problems(output, checklist)
     if problems:
         context = (
             f"inference_id={inference_id}" if inference_id is not None else "unknown inference_id"

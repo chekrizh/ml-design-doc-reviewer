@@ -14,7 +14,7 @@ def critic_document_score(output: CriticOutput, checklist: Checklist) -> float |
         item = checklist.by_id(assessment.item_id)
         # Baseline scores full documents only, so B_F_T_i from the design doc
         # formula is implicitly 1 until partial snapshots are introduced.
-        weight = item.block_weight * item.question_weight
+        weight = item.weight
         weighted_score += weight * float(assessment.score)
         total_weight += weight
     return weighted_score / total_weight
