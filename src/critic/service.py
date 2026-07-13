@@ -135,7 +135,11 @@ class ReviewService:
         )
 
     def _log_failure(
-        self, inference_id: str, document: str, images: list[ImageToReview] | None, exc: CriticOutputValidationError
+        self,
+        inference_id: str,
+        document: str,
+        images: list[ImageToReview] | None,
+        exc: CriticOutputValidationError,
     ) -> None:
         self._safe_inference_log(
             inference_id,

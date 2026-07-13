@@ -1,5 +1,4 @@
 import base64
-import base64
 import json
 import logging
 from datetime import UTC, datetime
@@ -121,7 +120,9 @@ class JsonlInferenceLogger:
         status: str | None = None,
         error: Exception | None = None,
     ) -> dict:
-        snapshot_document_ref, snapshot_images_dir = self._write_snapshot(inference_id, input_document, input_images)
+        snapshot_document_ref, snapshot_images_dir = self._write_snapshot(
+            inference_id, input_document, input_images
+        )
         record: dict = {}
         if status is not None:
             record["status"] = status
