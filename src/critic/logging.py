@@ -164,7 +164,7 @@ class JsonlInferenceLogger:
             snapshot_images_dir.mkdir(parents=True, exist_ok=True)
             for image in images:
                 bytes_ = base64.b64decode(image.b64content.encode())
-                image_path = snapshot_images_dir / f"{image.label}{image.suffix}"
+                image_path = snapshot_images_dir / f"{image.stem}{image.suffix}"
                 image_path.write_bytes(bytes_)
 
         return f"{SNAPSHOT_DIR_NAME}/{inference_id}.md", snapshot_images_dir_ref
