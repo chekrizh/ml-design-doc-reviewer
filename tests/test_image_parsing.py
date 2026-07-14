@@ -43,7 +43,7 @@ def test_parse_images_from_directory_returns_image_to_review_instances(tmp_path:
         b64content=base64.b64encode(b"fake-png-bytes").decode(),
         mime_type="image/png",
         label="asd",
-        filename="asd.png"
+        filename="asd.png",
     )
 
 

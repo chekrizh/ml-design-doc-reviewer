@@ -65,7 +65,7 @@ def parse_images_from_directory(path: Path) -> list[ImageToReview]:
                 b64content=base64.b64encode(content).decode(),
                 mime_type=mime_type,
                 label=image.stem,
-                filename=image.with_suffix(suffix).name
+                filename=image.with_suffix(suffix).name,
             )
         )
 
@@ -102,7 +102,7 @@ def parse_images_from_metadata_file(
                 b64content=base64.b64encode(content).decode(),
                 mime_type=mime_type,
                 label=f"{image_path.stem} ({image['alt_text']})",
-                filename=image_path.with_suffix(suffix).name
+                filename=image_path.with_suffix(suffix).name,
             )
         )
 

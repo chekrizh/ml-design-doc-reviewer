@@ -136,7 +136,7 @@ async def test_review_service_writes_image_snapshots_with_relative_dir_ref(
             b64content=base64.b64encode(b"fake-png-bytes").decode(),
             mime_type="image/png",
             label="img_001",
-            filename="asd.png"
+            filename="asd.png",
         )
     ]
 
