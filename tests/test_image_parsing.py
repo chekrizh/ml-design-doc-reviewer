@@ -28,22 +28,22 @@ def test_parse_images_from_directory_reads_known_extensions(tmp_path: Path) -> N
     by_label = {image.label: image for image in images}
     assert set(by_label) == {"diagram", "screenshot"}
     assert by_label["diagram"].mime_type == "image/png"
-    assert by_label["diagram"].suffix == ".png"
+    assert by_label["diagram"].filename.endswith(".png")
     assert by_label["diagram"].b64content == base64.b64encode(b"fake-png-bytes").decode()
     assert by_label["screenshot"].mime_type == "image/jpeg"
-    assert by_label["screenshot"].suffix == ".jpg"
+    assert by_label["screenshot"].filename.endswith(".jpg")
 
 
 def test_parse_images_from_directory_returns_image_to_review_instances(tmp_path: Path) -> None:
-    (tmp_path / "diagram.png").write_bytes(b"fake-png-bytes")
+    (tmp_path / "asd.png").write_bytes(b"fake-png-bytes")
 
     [image] = parse_images_from_directory(tmp_path)
 
     assert image == ImageToReview(
         b64content=base64.b64encode(b"fake-png-bytes").decode(),
         mime_type="image/png",
-        label="diagram",
-        suffix=".png",
+        label="asd",
+        filename="asd.png"
     )
 
 
@@ -83,7 +83,7 @@ def test_parse_images_from_directory_converts_unsupported_format_to_png(
 
     assert image.label == "diagram"
     assert image.mime_type == "image/png"
-    assert image.suffix == ".png"
+    assert image.filename.endswith(".png")
     converted = Image.open(BytesIO(base64.b64decode(image.b64content)))
     assert converted.format == "PNG"
     assert converted.size == (2, 2)
@@ -119,7 +119,7 @@ def test_parse_images_from_metadata_file_resolves_paths_relative_to_project_root
 
     assert image.label == "img_002 (Architecture diagram)"
     assert image.mime_type == "image/png"
-    assert image.suffix == ".png"
+    assert image.filename.endswith(".png")
     assert image.b64content == base64.b64encode(b"fake-png-bytes").decode()
 
 
@@ -182,7 +182,7 @@ def test_parse_images_from_metadata_file_converts_unsupported_format_to_png(
     [image] = parse_images_from_metadata_file(metadata_file, project_root=project_root)
 
     assert image.mime_type == "image/png"
-    assert image.suffix == ".png"
+    assert image.filename.endswith(".png")
     converted = Image.open(BytesIO(base64.b64decode(image.b64content)))
     assert converted.format == "PNG"
     assert converted.size == (2, 2)

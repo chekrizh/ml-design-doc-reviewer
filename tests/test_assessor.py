@@ -86,7 +86,7 @@ async def test_assess_forwards_images_to_llm_client() -> None:
     checklist = load_default_assessor_checklist()
     llm_client = FakeAssessorLLMClient(_complete_output())
     images = [
-        ImageToReview(b64content="Zm9v", mime_type="image/png", label="img_001", suffix=".png")
+        ImageToReview(b64content="Zm9v", mime_type="image/png", label="img_001", filename="asd.png")
     ]
 
     await assess(

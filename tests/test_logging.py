@@ -136,7 +136,7 @@ async def test_review_service_writes_image_snapshots_with_relative_dir_ref(
             b64content=base64.b64encode(b"fake-png-bytes").decode(),
             mime_type="image/png",
             label="img_001",
-            suffix=".png",
+            filename="asd.png"
         )
     ]
 
@@ -150,7 +150,7 @@ async def test_review_service_writes_image_snapshots_with_relative_dir_ref(
     record = records[0]
     snapshot_images_dir = record["input"]["snapshot_images_dir"]
     assert snapshot_images_dir == f"snapshots/images-{record['inference_id']}"
-    image_path = inference_log_file.parent / snapshot_images_dir / "img_001.png"
+    image_path = inference_log_file.parent / snapshot_images_dir / "asd.png"
     assert image_path.read_bytes() == b"fake-png-bytes"
 
 
