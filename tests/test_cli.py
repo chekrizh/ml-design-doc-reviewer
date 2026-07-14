@@ -373,9 +373,7 @@ def test_cli_metrics_uses_custom_critic_checklist_from_env(
     assert payload["mean_critic_score"] == 1.0
 
 
-def test_cli_review_rejects_images_dir_and_metadata_together(
-    tmp_path: Path, capsys
-) -> None:
+def test_cli_review_rejects_images_dir_and_metadata_together(tmp_path: Path, capsys) -> None:
     document_path = tmp_path / "doc.md"
     document_path.write_text("design doc", encoding="utf-8")
     images_dir = tmp_path / "images"
