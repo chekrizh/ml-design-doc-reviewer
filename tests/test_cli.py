@@ -373,6 +373,32 @@ def test_cli_metrics_uses_custom_critic_checklist_from_env(
     assert payload["mean_critic_score"] == 1.0
 
 
+def test_cli_review_rejects_images_dir_and_metadata_together(
+    tmp_path: Path, capsys
+) -> None:
+    document_path = tmp_path / "doc.md"
+    document_path.write_text("design doc", encoding="utf-8")
+    images_dir = tmp_path / "images"
+    images_dir.mkdir()
+    metadata_path = tmp_path / "metadata.json"
+    metadata_path.write_text("{}", encoding="utf-8")
+
+    with pytest.raises(SystemExit) as error:
+        build_parser().parse_args(
+            [
+                "review",
+                str(document_path),
+                "--images-dir",
+                str(images_dir),
+                "--metadata",
+                str(metadata_path),
+            ]
+        )
+
+    assert error.value.code == 2
+    assert "not allowed with argument" in capsys.readouterr().err
+
+
 def test_cli_help_lists_review_assess_and_metrics_commands() -> None:
     help_text = build_parser().format_help()
 

@@ -57,12 +57,13 @@ def build_parser() -> argparse.ArgumentParser:
         type=Path,
         help="Path to a markdown or text design document",
     )
-    review_parser.add_argument(
+    images_group = review_parser.add_mutually_exclusive_group()
+    images_group.add_argument(
         "--images-dir",
         type=Path,
         help="Path to a directory to load images from",
     )
-    review_parser.add_argument(
+    images_group.add_argument(
         "--metadata",
         type=Path,
         help="Path to a file with design documents metadata to get images from",
