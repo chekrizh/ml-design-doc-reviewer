@@ -1,15 +1,22 @@
 import base64
 import json
+from io import BytesIO
 from pathlib import Path
 
 import pytest
+from PIL import Image
 
-from critic import image_parsing
 from critic.image_parsing import (
     ImageToReview,
     parse_images_from_directory,
     parse_images_from_metadata_file,
 )
+
+
+def _bmp_bytes() -> bytes:
+    buffer = BytesIO()
+    Image.new("RGB", (2, 2), color=(255, 0, 0)).save(buffer, format="BMP")
+    return buffer.getvalue()
 
 
 def test_parse_images_from_directory_reads_known_extensions(tmp_path: Path) -> None:
@@ -67,6 +74,21 @@ def test_parse_images_from_directory_returns_empty_list_for_empty_directory(
     assert parse_images_from_directory(tmp_path) == []
 
 
+def test_parse_images_from_directory_converts_unsupported_format_to_png(
+    tmp_path: Path,
+) -> None:
+    (tmp_path / "diagram.bmp").write_bytes(_bmp_bytes())
+
+    [image] = parse_images_from_directory(tmp_path)
+
+    assert image.label == "diagram"
+    assert image.mime_type == "image/png"
+    assert image.suffix == ".png"
+    converted = Image.open(BytesIO(base64.b64decode(image.b64content)))
+    assert converted.format == "PNG"
+    assert converted.size == (2, 2)
+
+
 def _write_metadata(
     metadata_file: Path, *, local_path: str, alt_text: str, content_type: str | None = None
 ) -> None:
@@ -79,19 +101,10 @@ def _write_metadata(
     )
 
 
-def _patch_project_root(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
-    # parse_images_from_metadata_file resolves paths relative to
-    # Path(__file__).resolve().parents[2], so faking the module's __file__
-    # two directories below tmp_path makes tmp_path the "project root".
-    fake_module_file = tmp_path / "src" / "critic" / "image_parsing.py"
-    monkeypatch.setattr(image_parsing, "__file__", str(fake_module_file))
-    return tmp_path
-
-
 def test_parse_images_from_metadata_file_resolves_paths_relative_to_project_root(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    tmp_path: Path,
 ) -> None:
-    project_root = _patch_project_root(tmp_path, monkeypatch)
+    project_root = tmp_path
     image_dir = project_root / "data" / "raw_documents" / "images" / "case_001"
     image_dir.mkdir(parents=True)
     (image_dir / "img_002.png").write_bytes(b"fake-png-bytes")
@@ -102,7 +115,7 @@ def test_parse_images_from_metadata_file_resolves_paths_relative_to_project_root
         alt_text="Architecture diagram",
     )
 
-    [image] = parse_images_from_metadata_file(metadata_file)
+    [image] = parse_images_from_metadata_file(metadata_file, project_root=project_root)
 
     assert image.label == "img_002 (Architecture diagram)"
     assert image.mime_type == "image/png"
@@ -113,7 +126,7 @@ def test_parse_images_from_metadata_file_resolves_paths_relative_to_project_root
 def test_parse_images_from_metadata_file_ignores_current_working_directory(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    project_root = _patch_project_root(tmp_path, monkeypatch)
+    project_root = tmp_path
     image_dir = project_root / "data" / "raw_documents" / "images" / "case_001"
     image_dir.mkdir(parents=True)
     (image_dir / "img_002.png").write_bytes(b"fake-png-bytes")
@@ -127,15 +140,15 @@ def test_parse_images_from_metadata_file_ignores_current_working_directory(
     other_dir.mkdir()
     monkeypatch.chdir(other_dir)
 
-    [image] = parse_images_from_metadata_file(metadata_file)
+    [image] = parse_images_from_metadata_file(metadata_file, project_root=project_root)
 
     assert image.b64content == base64.b64encode(b"fake-png-bytes").decode()
 
 
 def test_parse_images_from_metadata_file_infers_mime_type_from_extension(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    tmp_path: Path,
 ) -> None:
-    project_root = _patch_project_root(tmp_path, monkeypatch)
+    project_root = tmp_path
     image_dir = project_root / "data" / "raw_documents" / "images" / "case_001"
     image_dir.mkdir(parents=True)
     (image_dir / "img_002.png").write_bytes(b"fake-png-bytes")
@@ -147,15 +160,38 @@ def test_parse_images_from_metadata_file_infers_mime_type_from_extension(
         content_type="application/octet-stream",
     )
 
-    [image] = parse_images_from_metadata_file(metadata_file)
+    [image] = parse_images_from_metadata_file(metadata_file, project_root=project_root)
 
     assert image.mime_type == "image/png"
 
 
-def test_parse_images_from_metadata_file_skips_unsupported_extension(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+def test_parse_images_from_metadata_file_converts_unsupported_format_to_png(
+    tmp_path: Path,
 ) -> None:
-    project_root = _patch_project_root(tmp_path, monkeypatch)
+    project_root = tmp_path
+    image_dir = project_root / "data" / "raw_documents" / "images" / "case_001"
+    image_dir.mkdir(parents=True)
+    (image_dir / "diagram.bmp").write_bytes(_bmp_bytes())
+    metadata_file = tmp_path / "metadata.json"
+    _write_metadata(
+        metadata_file,
+        local_path="ml-design-doc-reviewer/data/raw_documents/images/case_001/diagram.bmp",
+        alt_text="Bitmap diagram",
+    )
+
+    [image] = parse_images_from_metadata_file(metadata_file, project_root=project_root)
+
+    assert image.mime_type == "image/png"
+    assert image.suffix == ".png"
+    converted = Image.open(BytesIO(base64.b64decode(image.b64content)))
+    assert converted.format == "PNG"
+    assert converted.size == (2, 2)
+
+
+def test_parse_images_from_metadata_file_skips_unreadable_file(
+    tmp_path: Path,
+) -> None:
+    project_root = tmp_path
     image_dir = project_root / "data" / "raw_documents" / "images" / "case_001"
     image_dir.mkdir(parents=True)
     (image_dir / "diagram.psd").write_bytes(b"unsupported-bytes")
@@ -166,7 +202,59 @@ def test_parse_images_from_metadata_file_skips_unsupported_extension(
         alt_text="Unsupported format",
     )
 
-    assert parse_images_from_metadata_file(metadata_file) == []
+    assert parse_images_from_metadata_file(metadata_file, project_root=project_root) == []
+
+
+def test_parse_images_from_metadata_file_skips_paths_that_escape_project_root(
+    tmp_path: Path,
+) -> None:
+    project_root = tmp_path / "project"
+    project_root.mkdir()
+    outside_file = tmp_path / "secret.png"
+    outside_file.write_bytes(b"outside-bytes")
+    metadata_file = project_root / "metadata.json"
+    _write_metadata(
+        metadata_file,
+        local_path="ml-design-doc-reviewer/../secret.png",
+        alt_text="Escaping path",
+    )
+
+    assert parse_images_from_metadata_file(metadata_file, project_root=project_root) == []
+
+
+def test_parse_images_from_metadata_file_discovers_project_root_without_explicit_arg(
+    tmp_path: Path,
+) -> None:
+    project_root = tmp_path / "project"
+    (project_root / "src" / "critic").mkdir(parents=True)
+    (project_root / "pyproject.toml").write_text("", encoding="utf-8")
+    image_dir = project_root / "data" / "raw_documents" / "images" / "case_001"
+    image_dir.mkdir(parents=True)
+    (image_dir / "img_002.png").write_bytes(b"fake-png-bytes")
+    metadata_file = project_root / "data" / "raw_documents" / "metadata.json"
+    _write_metadata(
+        metadata_file,
+        local_path="ml-design-doc-reviewer/data/raw_documents/images/case_001/img_002.png",
+        alt_text="Architecture diagram",
+    )
+
+    [image] = parse_images_from_metadata_file(metadata_file)
+
+    assert image.b64content == base64.b64encode(b"fake-png-bytes").decode()
+
+
+def test_parse_images_from_metadata_file_raises_when_no_project_root_found(
+    tmp_path: Path,
+) -> None:
+    metadata_file = tmp_path / "metadata.json"
+    _write_metadata(
+        metadata_file,
+        local_path="ml-design-doc-reviewer/data/raw_documents/images/case_001/img_002.png",
+        alt_text="Architecture diagram",
+    )
+
+    with pytest.raises(FileNotFoundError):
+        parse_images_from_metadata_file(metadata_file)
 
 
 def test_parse_images_from_metadata_file_returns_empty_list_when_no_images_key(
@@ -179,9 +267,9 @@ def test_parse_images_from_metadata_file_returns_empty_list_when_no_images_key(
 
 
 def test_parse_images_from_metadata_file_reads_multiple_images(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    tmp_path: Path,
 ) -> None:
-    project_root = _patch_project_root(tmp_path, monkeypatch)
+    project_root = tmp_path
     image_dir = project_root / "data" / "raw_documents" / "images" / "case_001"
     image_dir.mkdir(parents=True)
     (image_dir / "img_001.png").write_bytes(b"first-bytes")
@@ -209,7 +297,7 @@ def test_parse_images_from_metadata_file_reads_multiple_images(
         encoding="utf-8",
     )
 
-    images = parse_images_from_metadata_file(metadata_file)
+    images = parse_images_from_metadata_file(metadata_file, project_root=project_root)
 
     assert [image.label for image in images] == [
         "img_001 (First diagram)",

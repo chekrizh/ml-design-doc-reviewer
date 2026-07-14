@@ -710,6 +710,7 @@ source = { editable = "." }
 dependencies = [
     { name = "jinja2" },
     { name = "openai" },
+    { name = "pillow" },
     { name = "pydantic" },
     { name = "pydantic-settings" },
 ]
@@ -726,7 +727,6 @@ prepare-data = [
     { name = "httpx" },
     { name = "huggingface-hub" },
     { name = "pandas" },
-    { name = "pillow" },
     { name = "pytesseract" },
     { name = "python-dotenv" },
     { name = "tqdm" },
@@ -739,6 +739,7 @@ prepare-data = [
 requires-dist = [
     { name = "jinja2", specifier = ">=3.1.6" },
     { name = "openai", specifier = ">=1.84.0" },
+    { name = "pillow", specifier = ">=11.0.0" },
     { name = "pydantic", specifier = ">=2.11.5" },
     { name = "pydantic-settings", specifier = ">=2.9.1" },
 ]
@@ -755,7 +756,6 @@ prepare-data = [
     { name = "httpx", specifier = ">=0.28.0" },
     { name = "huggingface-hub", specifier = ">=0.28.0" },
     { name = "pandas", specifier = ">=2.2.0" },
-    { name = "pillow", specifier = ">=11.0.0" },
     { name = "pytesseract", specifier = ">=0.3.13" },
     { name = "python-dotenv", specifier = ">=1.0.0" },
     { name = "tqdm", specifier = ">=4.66.0" },
