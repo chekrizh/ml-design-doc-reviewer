@@ -9,11 +9,14 @@ from critic.assessor.assessor import AssessorResult, assess
 from critic.config import AssessorSettings
 from critic.domain.assessor_checklist import AssessorChecklist
 from critic.domain.critique import RankedNote
-from critic.image_parsing import ImageToReview, parse_images_from_directory
+from critic.image_parsing import (
+    ImageToReview,
+    parse_images_from_metadata_file,
+)
 from critic.jsonl import read_jsonl
 from critic.llm.base import LLMClient
 from critic.llm.openai_client import OpenAILLMClient
-from critic.logging import SNAPSHOT_DIR_NAME, new_inference_id
+from critic.logging import SNAPSHOT_MANIFEST_FILENAME, SNAPSHOTS_DIR_NAME, new_inference_id
 
 ASSESSMENT_LOG_SCHEMA_VERSION = "assessor-eval-log-v1"
 
@@ -60,8 +63,7 @@ class AssessorService:
                     notes = [
                         RankedNote.model_validate(note) for note in final_result.get("notes", [])
                     ]
-                    document = _read_snapshot(inference_log_file.parent, record)
-                    images = _read_snapshot_images(inference_log_file.parent, record)
+                    document, images = _read_snapshot(inference_log_file.parent, record)
                     result = await assess(
                         self._llm_client,
                         self._checklist,
@@ -150,37 +152,31 @@ class AssessorService:
         )
 
 
-def _read_snapshot(log_dir: Path, record: dict) -> str:
-    snapshot_ref = record["input"]["snapshot_ref"]
+def _read_snapshot(log_dir: Path, record: dict) -> tuple[str, list[ImageToReview]]:
+    snapshot_ref = record["input_snapshot_dir"]
     if not isinstance(snapshot_ref, str):
-        raise ValueError("snapshot_ref must be a relative path under snapshots/")
+        raise ValueError(f"input_snapshot_dir must be a relative path under {SNAPSHOTS_DIR_NAME}/")
 
     snapshot_path = Path(snapshot_ref)
-    snapshot_root = (log_dir / SNAPSHOT_DIR_NAME).resolve()
+    snapshot_root = (log_dir / SNAPSHOTS_DIR_NAME).resolve()
     resolved_snapshot_path = (log_dir / snapshot_path).resolve()
     try:
         resolved_snapshot_path.relative_to(snapshot_root)
     except ValueError as exc:
-        raise ValueError("snapshot_ref must be a relative path under snapshots/") from exc
+        raise ValueError(
+            f"input_snapshot_dir must be a relative path under {SNAPSHOTS_DIR_NAME}/"
+        ) from exc
 
-    return resolved_snapshot_path.read_text(encoding="utf-8")
+    manifest_path = resolved_snapshot_path / SNAPSHOT_MANIFEST_FILENAME
+    with open(manifest_path, encoding="utf-8") as f:
+        snapshot_manifest = json.load(f)
 
+    document_path = resolved_snapshot_path / snapshot_manifest["document_ref"]
+    document = document_path.read_text(encoding="utf-8")
 
-def _read_snapshot_images(log_dir: Path, record: dict) -> list[ImageToReview] | None:
-    snapshot_images_dir = record["input"].get("snapshot_images_dir")
-    if not snapshot_images_dir:
-        return None
-    if not isinstance(snapshot_images_dir, str):
-        raise ValueError("snapshot_images_dir must be a relative path under snapshots/")
+    images = parse_images_from_metadata_file(manifest_path, resolved_snapshot_path)
 
-    snapshot_root = (log_dir / SNAPSHOT_DIR_NAME).resolve()
-    resolved_images_dir = (log_dir / snapshot_images_dir).resolve()
-    try:
-        resolved_images_dir.relative_to(snapshot_root)
-    except ValueError as exc:
-        raise ValueError("snapshot_images_dir must be a relative path under snapshots/") from exc
-
-    return parse_images_from_directory(resolved_images_dir)
+    return document, images
 
 
 def _existing_successful_inference_ids(output_file: Path) -> set[str]:

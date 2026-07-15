@@ -107,8 +107,8 @@ class OpenAILLMClient:
             images = []
 
         user_content = []
-        for image in sorted(images, key=lambda x: x.label):
-            user_content.append({"type": "text", "text": f"Image: {image.label}"})
+        for image in sorted(images, key=lambda x: x.b64content):
+            user_content.append({"type": "text", "text": f"Image: {image.alt_text}"})
             user_content.append(
                 {
                     "type": "image_url",

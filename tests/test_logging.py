@@ -12,6 +12,7 @@ from critic.domain.critique import CriticOutput, ItemAssessment
 from critic.image_parsing import ImageToReview
 from critic.logging import (
     INFERENCE_LOG_SCHEMA_VERSION,
+    SNAPSHOT_IMAGES_DIR_NAME,
     JsonlInferenceLogger,
     configure_file_logging,
 )
@@ -101,16 +102,11 @@ async def test_review_service_writes_structured_inference_log_with_text_snapshot
     assert len(records) == 1
     record = records[0]
     assert record["schema_version"] == INFERENCE_LOG_SCHEMA_VERSION
-    snapshot_ref = record["input"]["snapshot_ref"]
-    assert record["input"] == {
-        "kind": "text",
-        "document_length": len(document),
-        "snapshot_ref": snapshot_ref,
-    }
-    assert "snapshot" not in record["input"]
-    assert snapshot_ref == f"snapshots/{record['inference_id']}.md"
+    snapshot_ref = record["input_snapshot_dir"]
+    assert snapshot_ref == f"snapshots/{record['inference_id']}"
     snapshot_path = inference_log_file.parent / snapshot_ref
-    assert snapshot_path.read_text(encoding="utf-8") == document
+    document_path = snapshot_path / f"{record['inference_id']}.md"
+    assert document_path.read_text(encoding="utf-8") == document
     assert record["critic_output"]["relevant"] is True
     assert len(record["critic_output"]["items"]) == len(checklist.items)
     assert record["top_n_notes"] == []
@@ -135,8 +131,7 @@ async def test_review_service_writes_image_snapshots_with_relative_dir_ref(
         ImageToReview(
             b64content=base64.b64encode(b"fake-png-bytes").decode(),
             mime_type="image/png",
-            label="img_001",
-            filename="asd.png",
+            suffix=".png",
         )
     ]
 
@@ -148,9 +143,9 @@ async def test_review_service_writes_image_snapshots_with_relative_dir_ref(
         if line.strip()
     ]
     record = records[0]
-    snapshot_images_dir = record["input"]["snapshot_images_dir"]
-    assert snapshot_images_dir == f"snapshots/images-{record['inference_id']}"
-    image_path = inference_log_file.parent / snapshot_images_dir / "asd.png"
+    snapshot_dir = record["input_snapshot_dir"]
+    assert snapshot_dir == f"snapshots/{record['inference_id']}"
+    image_path = inference_log_file.parent / snapshot_dir / SNAPSHOT_IMAGES_DIR_NAME / "image_1.png"
     assert image_path.read_bytes() == b"fake-png-bytes"
 
 

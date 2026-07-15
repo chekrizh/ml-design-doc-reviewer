@@ -34,8 +34,8 @@ def _discover_project_root(start: Path) -> Path:
 class ImageToReview:
     b64content: str
     mime_type: str
-    label: str
-    filename: str
+    suffix: str
+    alt_text: str = ""
 
 
 def _load_image(path: Path) -> tuple[bytes, str, str] | None:
@@ -64,8 +64,7 @@ def parse_images_from_directory(path: Path) -> list[ImageToReview]:
             ImageToReview(
                 b64content=base64.b64encode(content).decode(),
                 mime_type=mime_type,
-                label=image.stem,
-                filename=image.with_suffix(suffix).name,
+                suffix=suffix,
             )
         )
 
@@ -101,8 +100,8 @@ def parse_images_from_metadata_file(
             ImageToReview(
                 b64content=base64.b64encode(content).decode(),
                 mime_type=mime_type,
-                label=f"{image_path.stem} ({image['alt_text']})",
-                filename=image_path.with_suffix(suffix).name,
+                suffix=suffix,
+                alt_text=image.get("alt_text", ""),
             )
         )
 

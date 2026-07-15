@@ -25,13 +25,12 @@ def test_parse_images_from_directory_reads_known_extensions(tmp_path: Path) -> N
 
     images = parse_images_from_directory(tmp_path)
 
-    by_label = {image.label: image for image in images}
-    assert set(by_label) == {"diagram", "screenshot"}
-    assert by_label["diagram"].mime_type == "image/png"
-    assert by_label["diagram"].filename.endswith(".png")
-    assert by_label["diagram"].b64content == base64.b64encode(b"fake-png-bytes").decode()
-    assert by_label["screenshot"].mime_type == "image/jpeg"
-    assert by_label["screenshot"].filename.endswith(".jpg")
+    by_mime = {image.mime_type: image for image in images}
+    assert set(by_mime) == {"image/png", "image/jpeg"}
+    assert by_mime["image/png"].suffix == ".png"
+    assert by_mime["image/png"].b64content == base64.b64encode(b"fake-png-bytes").decode()
+    assert by_mime["image/jpeg"].suffix == ".jpg"
+    assert by_mime["image/jpeg"].b64content == base64.b64encode(b"fake-jpg-bytes").decode()
 
 
 def test_parse_images_from_directory_returns_image_to_review_instances(tmp_path: Path) -> None:
@@ -42,8 +41,7 @@ def test_parse_images_from_directory_returns_image_to_review_instances(tmp_path:
     assert image == ImageToReview(
         b64content=base64.b64encode(b"fake-png-bytes").decode(),
         mime_type="image/png",
-        label="asd",
-        filename="asd.png",
+        suffix=".png",
     )
 
 
@@ -54,7 +52,9 @@ def test_parse_images_from_directory_skips_unknown_extensions(tmp_path: Path) ->
 
     images = parse_images_from_directory(tmp_path)
 
-    assert [image.label for image in images] == ["diagram"]
+    [image] = images
+    assert image.suffix == ".png"
+    assert image.b64content == base64.b64encode(b"fake-png-bytes").decode()
 
 
 def test_parse_images_from_directory_skips_subdirectories(tmp_path: Path) -> None:
@@ -65,7 +65,9 @@ def test_parse_images_from_directory_skips_subdirectories(tmp_path: Path) -> Non
 
     images = parse_images_from_directory(tmp_path)
 
-    assert [image.label for image in images] == ["diagram"]
+    [image] = images
+    assert image.suffix == ".png"
+    assert image.b64content == base64.b64encode(b"fake-png-bytes").decode()
 
 
 def test_parse_images_from_directory_returns_empty_list_for_empty_directory(
@@ -81,9 +83,8 @@ def test_parse_images_from_directory_converts_unsupported_format_to_png(
 
     [image] = parse_images_from_directory(tmp_path)
 
-    assert image.label == "diagram"
     assert image.mime_type == "image/png"
-    assert image.filename.endswith(".png")
+    assert image.suffix == ".png"
     converted = Image.open(BytesIO(base64.b64decode(image.b64content)))
     assert converted.format == "PNG"
     assert converted.size == (2, 2)
@@ -117,9 +118,9 @@ def test_parse_images_from_metadata_file_resolves_paths_relative_to_project_root
 
     [image] = parse_images_from_metadata_file(metadata_file, project_root=project_root)
 
-    assert image.label == "img_002 (Architecture diagram)"
+    assert image.alt_text == "Architecture diagram"
     assert image.mime_type == "image/png"
-    assert image.filename.endswith(".png")
+    assert image.suffix == ".png"
     assert image.b64content == base64.b64encode(b"fake-png-bytes").decode()
 
 
@@ -182,7 +183,8 @@ def test_parse_images_from_metadata_file_converts_unsupported_format_to_png(
     [image] = parse_images_from_metadata_file(metadata_file, project_root=project_root)
 
     assert image.mime_type == "image/png"
-    assert image.filename.endswith(".png")
+    assert image.suffix == ".png"
+    assert image.alt_text == "Bitmap diagram"
     converted = Image.open(BytesIO(base64.b64decode(image.b64content)))
     assert converted.format == "PNG"
     assert converted.size == (2, 2)
@@ -299,8 +301,5 @@ def test_parse_images_from_metadata_file_reads_multiple_images(
 
     images = parse_images_from_metadata_file(metadata_file, project_root=project_root)
 
-    assert [image.label for image in images] == [
-        "img_001 (First diagram)",
-        "img_002 (Second diagram)",
-    ]
+    assert [image.alt_text for image in images] == ["First diagram", "Second diagram"]
     assert [image.mime_type for image in images] == ["image/png", "image/jpeg"]
