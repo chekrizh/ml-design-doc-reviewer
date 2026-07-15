@@ -7,6 +7,7 @@ from critic.assessor.wcs import compute_wcs
 from critic.domain.assessment import AssessorOutput, validate_assessor_output
 from critic.domain.assessor_checklist import AssessorChecklist
 from critic.domain.critique import RankedNote
+from critic.image_parsing import ImageToReview
 from critic.llm.base import LLMClient
 
 
@@ -23,11 +24,14 @@ async def assess(
     *,
     document: str,
     notes: list[RankedNote],
+    images: list[ImageToReview] | None = None,
     clock: Callable[[], float] = perf_counter,
 ) -> AssessorResult:
     prompts = render_assessor_prompts(checklist, document, notes)
     started_at = clock()
-    output = await llm_client.parse(prompts.system_prompt, prompts.user_prompt, AssessorOutput)
+    output = await llm_client.parse(
+        prompts.system_prompt, prompts.user_prompt, AssessorOutput, images
+    )
     llm_duration_ms = int((clock() - started_at) * 1000)
 
     validate_assessor_output(

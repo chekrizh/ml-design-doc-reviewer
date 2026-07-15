@@ -7,6 +7,7 @@ requires-python = ">=3.12"
 dependencies = [
     "jinja2>=3.1.6",
     "openai>=1.84.0",
+    "pillow>=11.0.0",
     "pydantic>=2.11.5",
     "pydantic-settings>=2.9.1",
 ]
@@ -26,7 +27,6 @@ prepare-data = [
     "httpx>=0.28.0",
     "huggingface_hub>=0.28.0",
     "pandas>=2.2.0",
-    "pillow>=11.0.0",
     "python-dotenv>=1.0.0",
     "pytesseract>=0.3.13",
     "tqdm>=4.66.0",

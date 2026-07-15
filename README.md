@@ -39,6 +39,14 @@ uv run critic review path/to/design-doc.md
 
 Input is a plain text or Markdown ML design document.
 
+To include images:
+
+```bash
+uv run critic review path/to/design-doc.md --images-dir dir-with-images/
+# or
+uv run critic review path/to/design-doc.md --metadata file.meta.json
+```
+
 ## What It Reviews
 
 The reviewer is intended for ML system design documents that cover topics such as:
@@ -87,6 +95,7 @@ Ordinary critic users do not need to install or run it. Maintainer instructions 
 This repository is an early baseline implementation. Current scope:
 
 - text or Markdown document input;
+- image input;
 - one or more LLM calls that score the full critic checklist and write remarks;
 - prompt-level input relevance guardrail;
 - document-grounded, pedagogical critique without ready-made solutions;
@@ -97,7 +106,7 @@ This repository is an early baseline implementation. Current scope:
 Planned next:
 
 - Dockerized FastAPI service and a simple web UI for submitting documents;
-- structured JSON and image input, in addition to plain text and Markdown;
+- structured JSON input, in addition to plain text and Markdown;
 - human-readable Markdown report;
 - golden and synthetic dataset workflow for repeatable critic evaluation;
 - experiment observability for prompt, checklist, model, latency, and cost tracking.

@@ -6,6 +6,7 @@ from time import perf_counter
 from critic.domain.checklist import Checklist
 from critic.domain.critic_validation import CriticOutputValidationError, validate_critic_output
 from critic.domain.critique import CriticOutput
+from critic.image_parsing import ImageToReview
 from critic.llm.base import LLMClient
 from critic.prompts.critic import render_critic_prompts
 
@@ -20,13 +21,14 @@ async def critique(
     llm_client: LLMClient,
     checklist: Checklist,
     document: str,
+    images: list[ImageToReview] | None = None,
     *,
     clock: Callable[[], float] = perf_counter,
     batch_count: int = 5,
 ) -> CriticResult:
     batches = checklist.split(batch_count)
     started_at = clock()
-    first_output = await _run_batch(llm_client, batches[0], document)
+    first_output = await _run_batch(llm_client, batches[0], document, images)
 
     try:
         validate_critic_output(first_output, batches[0])
@@ -37,7 +39,7 @@ async def critique(
     rest_outputs: list[CriticOutput] = []
     if first_output.relevant and len(batches) > 1:
         tasks = [
-            asyncio.create_task(_run_relevant_batch(llm_client, batch, document))
+            asyncio.create_task(_run_relevant_batch(llm_client, batch, document, images))
             for batch in batches[1:]
         ]
         try:
@@ -73,17 +75,24 @@ async def _run_batch(
     llm_client: LLMClient,
     checklist: Checklist,
     document: str,
+    images: list[ImageToReview] | None,
 ) -> CriticOutput:
     prompts = render_critic_prompts(checklist, document)
-    return await llm_client.parse(prompts.system_prompt, prompts.user_prompt, CriticOutput)
+    return await llm_client.parse(
+        prompts.system_prompt,
+        prompts.user_prompt,
+        CriticOutput,
+        images,
+    )
 
 
 async def _run_relevant_batch(
     llm_client: LLMClient,
     checklist: Checklist,
     document: str,
+    images: list[ImageToReview] | None,
 ) -> CriticOutput:
-    output = await _run_batch(llm_client, checklist, document)
+    output = await _run_batch(llm_client, checklist, document, images)
     if not output.relevant:
         raise CriticOutputValidationError(
             "inconsistent relevance across checklist batches",

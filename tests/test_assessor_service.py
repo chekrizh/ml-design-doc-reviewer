@@ -10,6 +10,42 @@ from critic.domain.assessor_checklist import load_default_assessor_checklist
 from critic.domain.critique import RankedNote
 
 
+def _write_snapshot(
+    log_dir: Path,
+    inference_id: str,
+    document: str,
+    *,
+    images: list[tuple[str, bytes]] | None = None,
+) -> str:
+    """Writes a snapshot dir/manifest.json matching JsonlInferenceLogger's on-disk format.
+
+    `images` is a list of (alt_text, content) pairs. Returns the value to use for the
+    top-level record's `input_snapshot_dir` field.
+    """
+    snapshot_dir = log_dir / "snapshots" / inference_id
+    snapshot_dir.mkdir(parents=True)
+    document_path = snapshot_dir / f"{inference_id}.md"
+    document_path.write_text(document, encoding="utf-8")
+    manifest: dict = {
+        "version": "snapshot-manifest-v1",
+        "document_length": len(document),
+        "document_ref": document_path.name,
+    }
+    if images:
+        images_dir = snapshot_dir / "images"
+        images_dir.mkdir()
+        manifest["images"] = []
+        for index, (alt_text, content) in enumerate(images, start=1):
+            image_path = images_dir / f"image_{index}.png"
+            image_path.write_bytes(content)
+            manifest["images"].append(
+                {"alt_text": alt_text, "local_path": f"IGNORED/images/{image_path.name}"}
+            )
+        manifest["image_count"] = len(images)
+    (snapshot_dir / "manifest.json").write_text(json.dumps(manifest), encoding="utf-8")
+    return f"snapshots/{inference_id}"
+
+
 class FakeAssessorLLMClient:
     def __init__(self, output: AssessorOutput) -> None:
         self.output = output
@@ -19,7 +55,24 @@ class FakeAssessorLLMClient:
         system_prompt: str,
         user_prompt: str,
         schema: type[BaseModel],
+        images: list | None = None,
     ) -> AssessorOutput:
+        return self.output
+
+
+class RecordingAssessorLLMClient:
+    def __init__(self, output: AssessorOutput) -> None:
+        self.output = output
+        self.images: list | None = None
+
+    async def parse(
+        self,
+        system_prompt: str,
+        user_prompt: str,
+        schema: type[BaseModel],
+        images: list | None = None,
+    ) -> AssessorOutput:
+        self.images = images
         return self.output
 
 
@@ -32,6 +85,7 @@ class SequencedAssessorLLMClient:
         system_prompt: str,
         user_prompt: str,
         schema: type[BaseModel],
+        images: list | None = None,
     ) -> AssessorOutput:
         return self.outputs.pop(0)
 
@@ -71,19 +125,17 @@ def _note() -> RankedNote:
 async def test_assessor_service_reads_inference_log_and_writes_assessment_log(
     tmp_path: Path,
 ) -> None:
-    snapshot_dir = tmp_path / "snapshots"
-    snapshot_dir.mkdir()
-    (snapshot_dir / "inf-1.md").write_text("design doc body", encoding="utf-8")
+    snapshot_ref = _write_snapshot(tmp_path, "inf-1", "design doc body")
     inference_log = tmp_path / "inference.jsonl"
     assessment_log = tmp_path / "assessment-eval.jsonl"
     inference_log.write_text(
         json.dumps(
             {
-                "schema_version": "critic-inference-log-v2",
+                "schema_version": "critic-inference-log-v3",
                 "inference_id": "inf-1",
                 "model": "critic-model",
                 "checklist_version": "critic-checklist-v4",
-                "input": {"snapshot_ref": "snapshots/inf-1.md"},
+                "input_snapshot_dir": snapshot_ref,
                 "final_result": {"notes": [_note().model_dump(mode="json")]},
             }
         )
@@ -121,17 +173,122 @@ async def test_assessor_service_reads_inference_log_and_writes_assessment_log(
     ]
 
 
-async def test_assessor_service_requires_inference_id(tmp_path: Path) -> None:
-    snapshot_dir = tmp_path / "snapshots"
-    snapshot_dir.mkdir()
-    (snapshot_dir / "snapshot.md").write_text("design doc body", encoding="utf-8")
+async def test_assessor_service_loads_snapshot_images_and_forwards_them(
+    tmp_path: Path,
+) -> None:
+    snapshot_ref = _write_snapshot(
+        tmp_path, "inf-1", "design doc body", images=[("img_001", b"fake-png-bytes")]
+    )
     inference_log = tmp_path / "inference.jsonl"
     assessment_log = tmp_path / "assessment-eval.jsonl"
     inference_log.write_text(
         json.dumps(
             {
-                "schema_version": "critic-inference-log-v2",
-                "input": {"snapshot_ref": "snapshots/snapshot.md"},
+                "schema_version": "critic-inference-log-v3",
+                "inference_id": "inf-1",
+                "input_snapshot_dir": snapshot_ref,
+                "final_result": {"notes": [_note().model_dump(mode="json")]},
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    llm_client = RecordingAssessorLLMClient(_complete_output())
+    service = AssessorService(
+        llm_client=llm_client,
+        checklist=load_default_assessor_checklist(),
+        model="assessor-model",
+    )
+
+    run_result = await service.assess_inference_log(inference_log, assessment_log)
+
+    assert run_result.failed_count == 0
+    [image] = llm_client.images or []
+    assert image.alt_text == "img_001"
+    assert image.mime_type == "image/png"
+
+
+async def test_assessor_service_treats_missing_snapshot_images_dir_as_no_images(
+    tmp_path: Path,
+) -> None:
+    snapshot_ref = _write_snapshot(tmp_path, "inf-1", "design doc body")
+    inference_log = tmp_path / "inference.jsonl"
+    assessment_log = tmp_path / "assessment-eval.jsonl"
+    inference_log.write_text(
+        json.dumps(
+            {
+                "schema_version": "critic-inference-log-v3",
+                "inference_id": "inf-1",
+                "input_snapshot_dir": snapshot_ref,
+                "final_result": {"notes": [_note().model_dump(mode="json")]},
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    llm_client = RecordingAssessorLLMClient(_complete_output())
+    service = AssessorService(
+        llm_client=llm_client,
+        checklist=load_default_assessor_checklist(),
+        model="assessor-model",
+    )
+
+    run_result = await service.assess_inference_log(inference_log, assessment_log)
+
+    assert run_result.failed_count == 0
+    assert llm_client.images == []
+
+
+async def test_assessor_service_skips_snapshot_images_that_escape_snapshot_dir(
+    tmp_path: Path,
+) -> None:
+    log_dir = tmp_path / "logs"
+    snapshot_ref = _write_snapshot(log_dir, "inf-1", "design doc body")
+    secret_dir = tmp_path / "secret_images"
+    secret_dir.mkdir()
+    (secret_dir / "leak.png").write_bytes(b"SECRET")
+    manifest_path = log_dir / snapshot_ref / "manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest["images"] = [
+        {"alt_text": "leak", "local_path": "IGNORED/../../../secret_images/leak.png"}
+    ]
+    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+    inference_log = log_dir / "inference.jsonl"
+    assessment_log = tmp_path / "assessment-eval.jsonl"
+    inference_log.write_text(
+        json.dumps(
+            {
+                "schema_version": "critic-inference-log-v3",
+                "inference_id": "inf-1",
+                "input_snapshot_dir": snapshot_ref,
+                "final_result": {"notes": []},
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    llm_client = RecordingAssessorLLMClient(_complete_output(include_note=False))
+    service = AssessorService(
+        llm_client=llm_client,
+        checklist=load_default_assessor_checklist(),
+        model="assessor-model",
+    )
+
+    run_result = await service.assess_inference_log(inference_log, assessment_log)
+
+    assert run_result.failed_count == 0
+    assert llm_client.images == []
+
+
+async def test_assessor_service_requires_inference_id(tmp_path: Path) -> None:
+    snapshot_ref = _write_snapshot(tmp_path, "snapshot", "design doc body")
+    inference_log = tmp_path / "inference.jsonl"
+    assessment_log = tmp_path / "assessment-eval.jsonl"
+    inference_log.write_text(
+        json.dumps(
+            {
+                "schema_version": "critic-inference-log-v3",
+                "input_snapshot_dir": snapshot_ref,
                 "final_result": {"notes": [_note().model_dump(mode="json")]},
             }
         )
@@ -159,9 +316,9 @@ async def test_assessor_service_rejects_snapshot_refs_outside_snapshot_dir(
     inference_log.write_text(
         json.dumps(
             {
-                "schema_version": "critic-inference-log-v2",
+                "schema_version": "critic-inference-log-v3",
                 "inference_id": "inf-1",
-                "input": {"snapshot_ref": "../secret.txt"},
+                "input_snapshot_dir": "../secret.txt",
                 "final_result": {"notes": []},
             }
         )
@@ -184,7 +341,7 @@ async def test_assessor_service_rejects_snapshot_refs_outside_snapshot_dir(
     assert record["status"] == "failed"
     assert record["inference_id"] == "inf-1"
     assert record["error"]["type"] == "ValueError"
-    assert "snapshot_ref" in record["error"]["message"]
+    assert "input_snapshot_dir" in record["error"]["message"]
 
 
 async def test_assessor_service_records_malformed_input_and_continues(tmp_path: Path) -> None:
@@ -194,7 +351,6 @@ async def test_assessor_service_records_malformed_input_and_continues(tmp_path: 
         json.dumps(
             {
                 "inference_id": "inf-1",
-                "input": None,
                 "final_result": {"notes": []},
             }
         )
@@ -215,23 +371,21 @@ async def test_assessor_service_records_malformed_input_and_continues(tmp_path: 
     assert run_result.assessment_ids == []
     assert run_result.failed_count == 1
     assert record["status"] == "failed"
-    assert record["error"]["type"] == "TypeError"
+    assert record["error"]["type"] == "KeyError"
 
 
 async def test_assessor_service_skips_already_assessed_inference_ids(
     tmp_path: Path,
 ) -> None:
-    snapshot_dir = tmp_path / "snapshots"
-    snapshot_dir.mkdir()
-    (snapshot_dir / "inf-1.md").write_text("design doc body", encoding="utf-8")
+    snapshot_ref = _write_snapshot(tmp_path, "inf-1", "design doc body")
     inference_log = tmp_path / "inference.jsonl"
     assessment_log = tmp_path / "assessment-eval.jsonl"
     inference_log.write_text(
         json.dumps(
             {
-                "schema_version": "critic-inference-log-v2",
+                "schema_version": "critic-inference-log-v3",
                 "inference_id": "inf-1",
-                "input": {"snapshot_ref": "snapshots/inf-1.md"},
+                "input_snapshot_dir": snapshot_ref,
                 "final_result": {"notes": [_note().model_dump(mode="json")]},
             }
         )
@@ -259,22 +413,19 @@ async def test_assessor_service_skips_already_assessed_inference_ids(
 async def test_assessor_service_records_failed_assessment_and_continues_batch(
     tmp_path: Path,
 ) -> None:
-    snapshot_dir = tmp_path / "snapshots"
-    snapshot_dir.mkdir()
-    (snapshot_dir / "inf-1.md").write_text("first design doc", encoding="utf-8")
-    (snapshot_dir / "inf-2.md").write_text("second design doc", encoding="utf-8")
     inference_log = tmp_path / "inference.jsonl"
     assessment_log = tmp_path / "assessment-eval.jsonl"
+    documents = {"inf-1": "first design doc", "inf-2": "second design doc"}
     records = [
         {
-            "schema_version": "critic-inference-log-v2",
+            "schema_version": "critic-inference-log-v3",
             "inference_id": inference_id,
             "model": "critic-model",
             "checklist_version": "critic-checklist-v4",
-            "input": {"snapshot_ref": f"snapshots/{inference_id}.md"},
+            "input_snapshot_dir": _write_snapshot(tmp_path, inference_id, document),
             "final_result": {"notes": [_note().model_dump(mode="json")]},
         }
-        for inference_id in ["inf-1", "inf-2"]
+        for inference_id, document in documents.items()
     ]
     inference_log.write_text(
         "\n".join(json.dumps(record) for record in records) + "\n",
@@ -308,16 +459,14 @@ async def test_assessor_service_records_failed_assessment_and_continues_batch(
 
 
 async def test_assessor_service_retries_failed_assessment_on_next_run(tmp_path: Path) -> None:
-    snapshot_dir = tmp_path / "snapshots"
-    snapshot_dir.mkdir()
-    (snapshot_dir / "inf-1.md").write_text("design doc body", encoding="utf-8")
+    snapshot_ref = _write_snapshot(tmp_path, "inf-1", "design doc body")
     inference_log = tmp_path / "inference.jsonl"
     assessment_log = tmp_path / "assessment-eval.jsonl"
     inference_log.write_text(
         json.dumps(
             {
                 "inference_id": "inf-1",
-                "input": {"snapshot_ref": "snapshots/inf-1.md"},
+                "input_snapshot_dir": snapshot_ref,
                 "final_result": {"notes": [_note().model_dump(mode="json")]},
             }
         )

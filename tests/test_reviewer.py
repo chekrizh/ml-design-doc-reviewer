@@ -19,6 +19,7 @@ class RecordingLLMClient:
         system_prompt: str,
         user_prompt: str,
         schema: type[CriticOutput],
+        images: list | None = None,
     ) -> CriticOutput:
         self.user_prompts.append(user_prompt)
         return self.outputs.pop(0)
@@ -36,6 +37,7 @@ class CancellationAwareLLMClient:
         system_prompt: str,
         user_prompt: str,
         schema: type[CriticOutput],
+        images: list | None = None,
     ) -> CriticOutput:
         self._call_count += 1
         if self._call_count == 1:

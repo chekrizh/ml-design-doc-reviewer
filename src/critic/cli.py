@@ -12,6 +12,11 @@ from critic.config import AssessorOutputSettings, AssessorSettings, CriticOutput
 from critic.domain.assessor_checklist import AssessorChecklist
 from critic.domain.checklist import Checklist
 from critic.domain.critique import ReviewResult
+from critic.image_parsing import (
+    ImageToReview,
+    parse_images_from_directory,
+    parse_images_from_metadata_file,
+)
 from critic.metrics.records import (
     count_assessment_records,
     load_golden_errors,
@@ -23,7 +28,9 @@ from critic.service import ReviewService
 
 
 class _ReviewService(Protocol):
-    async def review(self, document: str) -> ReviewResult:
+    async def review(
+        self, document: str, images: list[ImageToReview] | None = None
+    ) -> ReviewResult:
         """Review a design document."""
 
 
@@ -49,6 +56,17 @@ def build_parser() -> argparse.ArgumentParser:
         "path",
         type=Path,
         help="Path to a markdown or text design document",
+    )
+    images_group = review_parser.add_mutually_exclusive_group()
+    images_group.add_argument(
+        "--images-dir",
+        type=Path,
+        help="Path to a directory to load images from",
+    )
+    images_group.add_argument(
+        "--metadata",
+        type=Path,
+        help="Path to a file with design documents metadata to get images from",
     )
 
     assess_parser = subparsers.add_parser("assess", help="Assess critic inference logs")
@@ -109,8 +127,15 @@ def main(
 
 def _run_review(args: argparse.Namespace, service_factory: ServiceFactory | None) -> int:
     document = args.path.read_text(encoding="utf-8")
+    if args.images_dir:
+        images = parse_images_from_directory(args.images_dir)
+    elif args.metadata:
+        images = parse_images_from_metadata_file(args.metadata)
+    else:
+        images = []
+
     factory = service_factory or (lambda: ReviewService.from_settings(Settings()))
-    result = asyncio.run(factory().review(document))
+    result = asyncio.run(factory().review(document, images))
     print(result.model_dump_json(indent=2))
     return 0
 

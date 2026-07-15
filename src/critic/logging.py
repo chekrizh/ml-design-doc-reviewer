@@ -1,14 +1,20 @@
+import base64
 import json
 import logging
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import Any
 from uuid import uuid4
 
 from critic.domain.critique import CriticOutput, RankedNote, ReviewResult
+from critic.image_parsing import ImageToReview
 
 LOGGER_NAME = "critic"
-INFERENCE_LOG_SCHEMA_VERSION = "critic-inference-log-v2"
-SNAPSHOT_DIR_NAME = "snapshots"
+INFERENCE_LOG_SCHEMA_VERSION = "critic-inference-log-v3"
+SNAPSHOT_MANIFEST_VERSION = "snapshot-manifest-v1"
+SNAPSHOT_MANIFEST_FILENAME = "manifest.json"
+SNAPSHOTS_DIR_NAME = "snapshots"
+SNAPSHOT_IMAGES_DIR_NAME = "images"
 
 
 def configure_file_logging(log_file: Path) -> logging.Logger:
@@ -47,6 +53,7 @@ class JsonlInferenceLogger:
         *,
         inference_id: str,
         input_document: str,
+        input_images: list[ImageToReview] | None,
         critic_output: CriticOutput | None,
         top_n_notes: list[RankedNote],
         final_result: ReviewResult,
@@ -58,6 +65,7 @@ class JsonlInferenceLogger:
             self._record(
                 inference_id=inference_id,
                 input_document=input_document,
+                input_images=input_images,
                 model=final_result.model,
                 checklist_version=final_result.checklist_version,
                 top_n=top_n,
@@ -73,6 +81,7 @@ class JsonlInferenceLogger:
         *,
         inference_id: str,
         input_document: str,
+        input_images: list[ImageToReview] | None,
         critic_output: CriticOutput | None,
         model: str,
         checklist_version: str,
@@ -85,6 +94,7 @@ class JsonlInferenceLogger:
             self._record(
                 inference_id=inference_id,
                 input_document=input_document,
+                input_images=input_images,
                 model=model,
                 checklist_version=checklist_version,
                 top_n=top_n,
@@ -102,6 +112,7 @@ class JsonlInferenceLogger:
         *,
         inference_id: str,
         input_document: str,
+        input_images: list[ImageToReview] | None,
         model: str,
         checklist_version: str,
         top_n: int,
@@ -112,7 +123,7 @@ class JsonlInferenceLogger:
         status: str | None = None,
         error: Exception | None = None,
     ) -> dict:
-        snapshot_ref = self._write_snapshot(inference_id, input_document)
+        snapshot_dir = self._write_snapshot(inference_id, input_document, input_images)
         record: dict = {}
         if status is not None:
             record["status"] = status
@@ -122,7 +133,7 @@ class JsonlInferenceLogger:
                 "checklist_version": checklist_version,
                 "top_n": top_n,
                 "timings": {"llm_duration_ms": llm_duration_ms},
-                "input": _input_log_entry(input_document, snapshot_ref),
+                "input_snapshot_dir": str(snapshot_dir.relative_to(self._log_file.parent)),
                 "critic_output": critic_output.model_dump(mode="json") if critic_output else None,
                 "top_n_notes": [note.model_dump(mode="json") for note in top_n_notes],
                 "final_result": final_result.model_dump(mode="json") if final_result else None,
@@ -132,14 +143,43 @@ class JsonlInferenceLogger:
             record["error"] = {"type": type(error).__name__, "message": str(error)}
         return record
 
-    def _write_snapshot(self, inference_id: str, document: str) -> str:
+    def _write_snapshot(
+        self, inference_id: str, document: str, images: list[ImageToReview] | None
+    ) -> Path:
+        snapshot_manifest: dict[str, Any] = {"version": SNAPSHOT_MANIFEST_VERSION}
+
         # The full document lives in a sidecar file so that inference.jsonl stays
         # small and greppable. The jsonl only keeps a relative reference.
-        snapshot_dir = self._log_file.parent / SNAPSHOT_DIR_NAME
+        snapshot_dir = self._log_file.parent / SNAPSHOTS_DIR_NAME / inference_id
         snapshot_dir.mkdir(parents=True, exist_ok=True)
-        snapshot_path = snapshot_dir / f"{inference_id}.md"
-        snapshot_path.write_text(document, encoding="utf-8")
-        return f"{SNAPSHOT_DIR_NAME}/{inference_id}.md"
+
+        snapshot_document_path = snapshot_dir / f"{inference_id}.md"
+        snapshot_document_path.write_text(document, encoding="utf-8")
+        snapshot_manifest["document_length"] = len(document)
+        snapshot_manifest["document_ref"] = snapshot_document_path.name
+
+        if images:
+            snapshot_images_dir = snapshot_dir / SNAPSHOT_IMAGES_DIR_NAME
+            snapshot_images_dir.mkdir(parents=True, exist_ok=True)
+            snapshot_manifest["images"] = []
+            for index, image in enumerate(images, start=1):
+                bytes_ = base64.b64decode(image.b64content.encode())
+                image_path = snapshot_images_dir / f"image_{index}{image.suffix}"
+                image_path.write_bytes(bytes_)
+
+                local_path = str(
+                    "padding_that_will_be_removed_to_satisfy_metadata_path_format"
+                    / Path(*image_path.parts[-2:])
+                )
+                snapshot_manifest["images"].append(
+                    {"alt_text": image.alt_text, "local_path": local_path}
+                )
+
+            snapshot_manifest["image_count"] = len(images)
+        with open(snapshot_dir / SNAPSHOT_MANIFEST_FILENAME, "w", encoding="utf-8") as f:
+            json.dump(snapshot_manifest, f, indent=2)
+
+        return snapshot_dir
 
     def _persist(self, inference_id: str, record: dict) -> str:
         self._log_file.parent.mkdir(parents=True, exist_ok=True)
@@ -154,16 +194,6 @@ class JsonlInferenceLogger:
         with self._log_file.open("a", encoding="utf-8") as file:
             file.write(json.dumps(entry, ensure_ascii=False) + "\n")
         return inference_id
-
-
-def _input_log_entry(document: str, snapshot_ref: str) -> dict[str, object]:
-    # The baseline treats the submitted file as the current document snapshot.
-    # Snapshot metadata such as parent document id and completion percent is future work.
-    return {
-        "kind": "text",
-        "document_length": len(document),
-        "snapshot_ref": snapshot_ref,
-    }
 
 
 def new_inference_id() -> str:
