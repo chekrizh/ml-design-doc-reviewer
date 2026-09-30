@@ -271,3 +271,9 @@ Format:
 ## m11-07
 - [x] AI Review opens a popover with one item, 'Full review' (`e2e/canvas.spec.ts` m11-07)
 - [x] 'Full review' is disabled and shows a 'Coming soon' tooltip; wiring to a skill is M2
+
+## m11-08
+- [x] Every section in Document mode has an editable rationale area, including empty sections (`e2e/document.spec.ts` doc-04 / m11-08)
+- [x] An empty section shows 'Not filled yet — start typing…' inside that area (filled sections with no text show 'Add rationale & notes…')
+- [x] Typing there fills the section's Rationale & Notes, visible in the Component Editor (m11-08)
+- [x] Empty placeholders are not printed and not exported (m11-08, doc-03)

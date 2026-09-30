@@ -13,12 +13,15 @@ export function RichTextEditor({
   onChange,
   label,
   bare = false,
+  placeholder,
 }: {
   value: RichText | null
   onChange: (v: RichText) => void
   label: string
   /** Document mode: no frame, toolbar only while editing. */
   bare?: boolean
+  /** Shown while the editor is empty; never printed. */
+  placeholder?: string
 }) {
   const editor = useEditor({
     extensions: [StarterKit.configure({ link: { openOnClick: false } })],
@@ -49,6 +52,7 @@ export function RichTextEditor({
       bullet: e.isActive('bulletList'),
       ordered: e.isActive('orderedList'),
       link: e.isActive('link'),
+      empty: e.isEmpty,
     }),
   })
   const chain = () => editor.chain().focus()
@@ -79,6 +83,17 @@ export function RichTextEditor({
           <button type="button" aria-label="Image (coming soon)" disabled className={`${btn(false)} cursor-not-allowed opacity-40`}>🖼</button>
         </span>
       </div>
+      {placeholder && active.empty && (
+        // Clicking the hint puts the cursor into the editor underneath.
+        <p
+          aria-hidden
+          onMouseDown={(e) => e.preventDefault()}
+          onClick={() => editor.view.focus()}
+          className="absolute inset-x-0 top-0 z-[1] cursor-text text-slate-400 italic print:hidden"
+        >
+          {placeholder}
+        </p>
+      )}
       <EditorContent editor={editor} />
     </div>
   )

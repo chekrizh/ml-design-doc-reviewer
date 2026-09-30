@@ -582,7 +582,7 @@
         "Typing there fills the section's Rationale & Notes, visible in the Component Editor",
         "Empty placeholders are not printed and not exported"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m11-09",

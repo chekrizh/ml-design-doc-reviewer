@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { SECTIONS, type SectionId } from '../model/design'
-import { diagramNonEmpty, richTextEmpty, sectionEmpty } from '../model/rules'
+import { diagramNonEmpty, sectionEmpty } from '../model/rules'
 import { InlineText } from '../editor/InlineText'
 import { RichTextEditor } from '../editor/RichTextEditor'
 import { TradeoffMatrix } from '../editor/TradeoffMatrix'
@@ -13,10 +13,7 @@ function DocSection({ sid, n, name }: { sid: SectionId; n: number; name: string 
   const s = useSection(sid)
   const a = useDesign.getState()
   const img = useDiagramImage(s.diagram)
-  // Keep the rationale editor mounted while it has focus, even if the user clears it to retype.
-  const [editingRationale, setEditingRationale] = useState(false)
-  const showRationale = editingRationale || !richTextEmpty(s.rationale)
-  const empty = sectionEmpty(s) && !editingRationale
+  const empty = sectionEmpty(s)
   const hasValues = s.keyProperties.some((p) => p.value.trim())
 
   return (
@@ -24,43 +21,39 @@ function DocSection({ sid, n, name }: { sid: SectionId; n: number; name: string 
       <h2 id={`${docAnchor(sid)}-h`} className="mb-5 border-b border-slate-100 pb-3 text-2xl font-semibold">
         {n}. {name}
       </h2>
-      {empty ? (
-        <p className="text-slate-400 italic">Not filled yet</p>
-      ) : (
-        <div className="space-y-6">
-          {hasValues && (
-            <dl data-testid="key-properties" className="flex flex-wrap gap-x-8 gap-y-3 rounded-2xl border border-slate-100 bg-slate-50 px-5 py-4 break-inside-avoid">
-              {s.keyProperties.map((p) => (
-                <div key={p.id} className="min-w-0">
-                  <dt className="text-xs font-medium tracking-wide text-slate-400 uppercase">{p.key}</dt>
-                  <dd className="flex">
-                    <InlineText label={p.key || 'value'} value={p.value} placeholder="—" onSave={(value) => a.updateKeyProperty(sid, p.id, { value })} />
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          )}
-          {showRationale && (
-            <div
-              data-testid="rationale"
-              className="leading-relaxed text-slate-700"
-              onFocus={() => setEditingRationale(true)}
-              onBlur={(e) => !e.currentTarget.contains(e.relatedTarget) && setEditingRationale(false)}
-            >
-              <RichTextEditor bare label={`${name} rationale`} value={s.rationale} onChange={(v) => a.setRationale(sid, v)} />
-            </div>
-          )}
-          {s.tradeoffs.options.length > 0 && (
-            <div data-testid="doc-matrix" className="break-inside-avoid">
-              <h3 className="mb-3 text-sm font-semibold">Trade-off Matrix</h3>
-              <TradeoffMatrix sid={sid} editable={false} />
-            </div>
-          )}
-          {diagramNonEmpty(s.diagram) && img && (
-            <img src={img} alt={`${name} diagram`} className="mx-auto max-h-96 max-w-full break-inside-avoid" />
-          )}
+      <div className="space-y-6">
+        {hasValues && (
+          <dl data-testid="key-properties" className="flex flex-wrap gap-x-8 gap-y-3 rounded-2xl border border-slate-100 bg-slate-50 px-5 py-4 break-inside-avoid">
+            {s.keyProperties.map((p) => (
+              <div key={p.id} className="min-w-0">
+                <dt className="text-xs font-medium tracking-wide text-slate-400 uppercase">{p.key}</dt>
+                <dd className="flex">
+                  <InlineText label={p.key || 'value'} value={p.value} placeholder="—" onSave={(value) => a.updateKeyProperty(sid, p.id, { value })} />
+                </dd>
+              </div>
+            ))}
+          </dl>
+        )}
+        {/* Free text of the section, also for empty sections: it is the section's Rationale & Notes. */}
+        <div data-testid="rationale" className="leading-relaxed text-slate-700">
+          <RichTextEditor
+            bare
+            label={`${name} rationale`}
+            placeholder={empty ? 'Not filled yet — start typing…' : 'Add rationale & notes…'}
+            value={s.rationale}
+            onChange={(v) => a.setRationale(sid, v)}
+          />
         </div>
-      )}
+        {s.tradeoffs.options.length > 0 && (
+          <div data-testid="doc-matrix" className="break-inside-avoid">
+            <h3 className="mb-3 text-sm font-semibold">Trade-off Matrix</h3>
+            <TradeoffMatrix sid={sid} editable={false} />
+          </div>
+        )}
+        {diagramNonEmpty(s.diagram) && img && (
+          <img src={img} alt={`${name} diagram`} className="mx-auto max-h-96 max-w-full break-inside-avoid" />
+        )}
+      </div>
     </section>
   )
 }

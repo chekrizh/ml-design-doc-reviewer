@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
 import {
   addCriterion, addOption, card, cardBox, closeEditor, dialog, docSection, dragCard, drawRectangle, indicator,
-  loadExample, openApp, openDetails, SECTION_ORDER, setCardValue, setTitle, toMode,
+  downloadText, exportMarkdown, loadExample, openApp, openDetails, SECTION_ORDER, setCardValue, setTitle, toMode,
 } from './helpers'
 
 const names = SECTION_ORDER.map(([, n]) => n)
@@ -59,19 +59,56 @@ test('doc-03 filled section: plate, rationale, matrix with chosen mark, diagram 
   await dialog(page).getByRole('textbox', { name: 'Rationale' }).fill('')
   await closeEditor(page)
   await toMode(page, 'Document')
-  await expect(ps.getByTestId('rationale')).toHaveCount(0)
+  // m11-08: the free-text area stays for typing, but shows only a hint that is never printed.
+  await expect(ps.getByRole('textbox', { name: 'Problem Space rationale' })).toHaveText('')
+  await expect(ps.getByText('Add rationale & notes…')).toBeVisible()
+  await page.emulateMedia({ media: 'print' })
+  await expect(ps.getByText('Add rationale & notes…')).toBeHidden()
 })
 
-test('doc-04 empty section shows heading and Not filled yet', async ({ page }) => {
+test('doc-04 / m11-08 empty section shows its heading and a typing hint in the free-text area', async ({ page }) => {
   await openApp(page)
   await setCardValue(page, 'baseline', 'Approach', 'Rules')
   await toMode(page, 'Document')
   for (const [sid, name] of SECTION_ORDER) {
     const s = docSection(page, sid)
     await expect(s.getByRole('heading')).toContainText(name)
+    await expect(s.getByRole('textbox', { name: `${name} rationale` })).toBeVisible()
     if (sid === 'baseline') await expect(s.getByText('Not filled yet')).toHaveCount(0)
-    else await expect(s.getByText('Not filled yet')).toBeVisible()
+    else await expect(s.getByText('Not filled yet — start typing…')).toBeVisible()
   }
+})
+
+test('m11-08 typing into an empty section fills its Rationale & Notes; hints are not printed or exported', async ({ page }) => {
+  await openApp(page)
+  await toMode(page, 'Document')
+  const s = docSection(page, 'integration')
+  await s.getByText('Not filled yet — start typing…').click()
+  await page.keyboard.type('Batch nightly')
+  await expect(s.getByText('Not filled yet')).toHaveCount(0)
+  await expect(s.getByRole('textbox', { name: 'Integration rationale' })).toHaveText('Batch nightly')
+  // Clearing it while focused keeps the area for retyping.
+  await page.keyboard.press('ControlOrMeta+A')
+  await page.keyboard.press('Backspace')
+  await expect(s.getByRole('textbox', { name: 'Integration rationale' })).toBeFocused()
+  await page.keyboard.type('Batch nightly')
+  await toMode(page, 'Canvas')
+  await openDetails(page, 'integration')
+  await expect(dialog(page).getByRole('textbox', { name: 'Rationale' })).toHaveText('Batch nightly')
+  await closeEditor(page)
+
+  await toMode(page, 'Document')
+  await page.emulateMedia({ media: 'print' })
+  const printed = await page.getByTestId('document').innerText()
+  expect(printed).not.toContain('start typing')
+  expect(printed).not.toContain('Add rationale & notes')
+  await page.emulateMedia({ media: 'screen' })
+  const { warning, download } = await exportMarkdown(page, 'accept')
+  expect(warning).toMatch(/\b8\b/)
+  const md = await downloadText(download!)
+  expect(md).toContain('Batch nightly')
+  expect(md).not.toContain('start typing')
+  expect(md).not.toContain('Add rationale')
 })
 
 test('doc-05 TOC lists all sections, scrolls on click, highlights the section in view', async ({ page }) => {
