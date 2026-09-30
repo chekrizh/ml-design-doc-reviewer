@@ -44,3 +44,7 @@ Format:
 ## model-03
 - [x] A pure function returns true when the Excalidraw scene has at least one non-deleted element (`diagramNonEmpty`, added with model-02)
 - [x] Unit tests cover an empty scene, a scene with only deleted elements, and a scene with elements
+
+## model-04
+- [x] A pure function returns true when all key property values are empty, rationale is empty, the trade-off matrix has no options and the diagram is empty (`sectionEmpty`, added with model-02)
+- [x] Unit tests cover each part

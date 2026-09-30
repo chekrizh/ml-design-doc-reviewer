@@ -92,7 +92,7 @@
         "A pure function returns true when all key property values are empty, rationale is empty, the trade-off matrix has no options and the diagram is empty",
         "Unit tests cover each part"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "model-05",
