@@ -458,7 +458,7 @@
         "The user can continue or cancel",
         "With no empty sections there is no warning"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "ui-01",

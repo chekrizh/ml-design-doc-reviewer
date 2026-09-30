@@ -205,3 +205,8 @@ Format:
 - [x] 'Export PDF' opens the browser print dialog for the document (`e2e/export.spec.ts`, `window.print` stubbed)
 - [x] Print styles show only the document: no header, toggle or table of contents
 - [x] `page.pdf()` in Playwright produces a PDF that contains every filled section heading
+
+## export-05
+- [x] If any section is empty, both exports first show a warning with the number of empty sections (`e2e/export.spec.ts`)
+- [x] The user can continue or cancel
+- [x] With no empty sections there is no warning
