@@ -1,0 +1,493 @@
+{
+  "milestone": "M1: Canvas + Document",
+  "spec": "docs/mvp-spec.md",
+  "rules": [
+    "Work on features in order unless a later one is blocked only by an earlier one you already finished.",
+    "Only change the `passes` field. Never delete, reword, reorder, or merge features.",
+    "Set `passes` to true only after every step is verified by an automated test (Vitest or Playwright) that is committed and green.",
+    "If the spec and a feature disagree, the spec wins; record the conflict in progress.md instead of editing the feature."
+  ],
+  "features": [
+    {
+      "id": "setup-01",
+      "category": "setup",
+      "description": "Project scaffold: pnpm, Vite, React, TypeScript (strict), Tailwind.",
+      "steps": [
+        "`pnpm install` succeeds on a clean checkout with Node 22",
+        "`pnpm dev` serves the app and the page renders without console errors",
+        "`pnpm build` produces a static `dist/`"
+      ],
+      "passes": false
+    },
+    {
+      "id": "setup-02",
+      "category": "setup",
+      "description": "Quality commands: lint, typecheck, unit tests.",
+      "steps": [
+        "`pnpm lint`, `pnpm typecheck` and `pnpm test` each run with one command and exit 0",
+        "`pnpm test` runs at least one Vitest test",
+        "`pnpm check` runs lint, typecheck, unit tests and build in sequence"
+      ],
+      "passes": false
+    },
+    {
+      "id": "setup-03",
+      "category": "setup",
+      "description": "Playwright e2e harness.",
+      "steps": [
+        "`pnpm e2e` builds or starts the app and runs Playwright in headless Chromium",
+        "A smoke test opens the app and finds the Canvas/Document toggle",
+        "Each e2e test starts from an empty IndexedDB"
+      ],
+      "passes": false
+    },
+    {
+      "id": "setup-04",
+      "category": "setup",
+      "description": "Static build deployable to Vercel.",
+      "steps": [
+        "`pnpm build && pnpm preview` serves a working app",
+        "The app needs no server-side code or environment variables"
+      ],
+      "passes": false
+    },
+    {
+      "id": "model-01",
+      "category": "model",
+      "description": "Design data model and empty-design factory with template keys.",
+      "steps": [
+        "Types exist for Design (title, sections, layout, updatedAt) and Section (keyProperties, rationale, tradeoffs, diagram)",
+        "The empty design has exactly 9 sections in canonical order: Problem Space, Evaluation (Offline), Baseline, Validation, Data & Features, Evaluation (Online), Integration, Monitoring, Target Solution & Architecture",
+        "Each section has the template keys from the spec table with empty values; Validation has none",
+        "Unit tests cover the factory"
+      ],
+      "passes": false
+    },
+    {
+      "id": "model-02",
+      "category": "model",
+      "description": "Trade-offs completeness rule.",
+      "steps": [
+        "A pure function returns true only when there are >=2 options, >=1 criterion, every cell is non-empty and exactly one option is chosen",
+        "Unit tests cover each failing condition separately and the passing case"
+      ],
+      "passes": false
+    },
+    {
+      "id": "model-03",
+      "category": "model",
+      "description": "Diagram non-empty rule.",
+      "steps": [
+        "A pure function returns true when the Excalidraw scene has at least one non-deleted element",
+        "Unit tests cover an empty scene, a scene with only deleted elements, and a scene with elements"
+      ],
+      "passes": false
+    },
+    {
+      "id": "model-04",
+      "category": "model",
+      "description": "Section emptiness rule used by the document and export.",
+      "steps": [
+        "A pure function returns true when all key property values are empty, rationale is empty, the trade-off matrix has no options and the diagram is empty",
+        "Unit tests cover each part"
+      ],
+      "passes": false
+    },
+    {
+      "id": "model-05",
+      "category": "model",
+      "description": "Single Zustand store is the only source of truth for both modes.",
+      "steps": [
+        "Actions exist for title, key properties, rationale, trade-offs, diagram and layout changes",
+        "Unit tests cover each action",
+        "Canvas and Document components read and write only through the store"
+      ],
+      "passes": false
+    },
+    {
+      "id": "persist-01",
+      "category": "persistence",
+      "description": "Autosave to IndexedDB.",
+      "steps": [
+        "Edit a key property value, reload the page: the value is still there",
+        "Draw on a whiteboard, reload: the drawing is still there",
+        "First visit with empty storage shows the empty design"
+      ],
+      "passes": false
+    },
+    {
+      "id": "persist-02",
+      "category": "persistence",
+      "description": "Load example design.",
+      "steps": [
+        "A 'Load example' control exists",
+        "Clicking it asks for confirmation because it overwrites the current design",
+        "Cancel keeps the current design unchanged",
+        "Confirm loads the Churn Prediction (Telecom) example, which fills every section, has complete trade-offs in at least 3 sections and diagrams in at least 2",
+        "The example lives in one fixture file reused by e2e tests"
+      ],
+      "passes": false
+    },
+    {
+      "id": "canvas-01",
+      "category": "canvas",
+      "description": "Header.",
+      "steps": [
+        "Header shows the design title, the Canvas/Document toggle and export controls",
+        "No avatars, Share button or contributor count"
+      ],
+      "passes": false
+    },
+    {
+      "id": "canvas-02",
+      "category": "canvas",
+      "description": "Editable design title.",
+      "steps": [
+        "Clicking the title turns it into an input; Enter saves, Escape cancels",
+        "An empty title is shown as 'Untitled design'",
+        "The title persists after reload"
+      ],
+      "passes": false
+    },
+    {
+      "id": "canvas-03",
+      "category": "canvas",
+      "description": "Nine section cards in the mockup's initial layout.",
+      "steps": [
+        "All 9 cards render with icon and uppercase section name",
+        "Initial layout matches docs/mockups/canvas.png: three rows of cards, Target Solution & Architecture spanning full width at the bottom",
+        "Evaluation (Offline) is used instead of Evaluation Strategy"
+      ],
+      "passes": false
+    },
+    {
+      "id": "canvas-04",
+      "category": "canvas",
+      "description": "Key properties on the card.",
+      "steps": [
+        "A card shows at most the first 4 key properties as key/value pairs",
+        "With more than 4, a '+N' counter shows the number of hidden ones",
+        "Empty values show a muted placeholder"
+      ],
+      "passes": false
+    },
+    {
+      "id": "canvas-05",
+      "category": "canvas",
+      "description": "Inline editing of key property values on the card.",
+      "steps": [
+        "Clicking a value on a card turns it into an input",
+        "Enter or blur saves, Escape cancels",
+        "The new value appears in the Component Editor and the Document"
+      ],
+      "passes": false
+    },
+    {
+      "id": "canvas-06",
+      "category": "canvas",
+      "description": "Diagram thumbnail on the card.",
+      "steps": [
+        "A card whose diagram is non-empty shows an SVG thumbnail of it",
+        "A card with an empty diagram shows no thumbnail area",
+        "Editing the diagram updates the thumbnail after the editor closes"
+      ],
+      "passes": false
+    },
+    {
+      "id": "canvas-07",
+      "category": "canvas",
+      "description": "Trade-offs and Diagram indicators.",
+      "steps": [
+        "Each card footer shows a Details button and two indicators, Trade-offs and Diagram, which are not clickable",
+        "Each indicator has exactly two states: off and bright",
+        "Trade-offs is bright only when the completeness rule (model-02) holds",
+        "Diagram is bright only when the diagram is non-empty (model-03)"
+      ],
+      "passes": false
+    },
+    {
+      "id": "canvas-08",
+      "category": "canvas",
+      "description": "Drag to reorder cards.",
+      "steps": [
+        "Cards can be dragged to new positions",
+        "The layout persists after reload",
+        "Dragging does not change section content"
+      ],
+      "passes": false
+    },
+    {
+      "id": "canvas-09",
+      "category": "canvas",
+      "description": "Resize cards.",
+      "steps": [
+        "Cards can be resized from a corner handle within sensible min sizes",
+        "The new size persists after reload"
+      ],
+      "passes": false
+    },
+    {
+      "id": "canvas-10",
+      "category": "canvas",
+      "description": "Reset layout.",
+      "steps": [
+        "A 'Reset layout' control restores the initial mockup layout",
+        "Section content is unchanged after reset"
+      ],
+      "passes": false
+    },
+    {
+      "id": "editor-01",
+      "category": "editor",
+      "description": "Component Editor modal.",
+      "steps": [
+        "Details on a card opens a modal titled with the section name",
+        "The modal closes with the X button, Escape, and a click outside",
+        "A 'Saved' indicator reflects autosave state",
+        "The modal has four parts in order: Decisions & Properties, Rationale & Notes, Trade-off Matrix, Whiteboard"
+      ],
+      "passes": false
+    },
+    {
+      "id": "editor-02",
+      "category": "editor",
+      "description": "Decisions & Properties editing.",
+      "steps": [
+        "'+ Add Property' adds an empty key/value row",
+        "Keys and values are editable, including template keys",
+        "A row can be deleted",
+        "Changes appear on the card immediately"
+      ],
+      "passes": false
+    },
+    {
+      "id": "editor-03",
+      "category": "editor",
+      "description": "Rationale & Notes rich text.",
+      "steps": [
+        "TipTap editor with bold, italic, inline code, bullet list, ordered list and link",
+        "Content persists after reload"
+      ],
+      "passes": false
+    },
+    {
+      "id": "editor-04",
+      "category": "editor",
+      "description": "Image button placeholder.",
+      "steps": [
+        "The toolbar has an image button that is disabled and shows a 'Coming soon' tooltip"
+      ],
+      "passes": false
+    },
+    {
+      "id": "editor-05",
+      "category": "editor",
+      "description": "Trade-off Matrix editing.",
+      "steps": [
+        "'Add Option (Row)' and 'Add Criteria (Col)' add a row and a column",
+        "Option names, criterion names and cells are editable",
+        "Rows and columns can be deleted"
+      ],
+      "passes": false
+    },
+    {
+      "id": "editor-06",
+      "category": "editor",
+      "description": "Chosen option in the matrix.",
+      "steps": [
+        "Exactly one option can be marked as chosen; marking another moves the mark",
+        "The chosen option is visually highlighted",
+        "The card's Trade-offs indicator updates live as the matrix changes",
+        "Choosing an option does not change key properties"
+      ],
+      "passes": false
+    },
+    {
+      "id": "editor-07",
+      "category": "editor",
+      "description": "Excalidraw whiteboard in every section.",
+      "steps": [
+        "The whiteboard is the @excalidraw/excalidraw React component, not an iframe",
+        "Drawing persists after reload",
+        "The card's Diagram indicator and thumbnail update"
+      ],
+      "passes": false
+    },
+    {
+      "id": "doc-01",
+      "category": "document",
+      "description": "Document mode shell.",
+      "steps": [
+        "The toggle switches to Document mode and back without losing state",
+        "The document heading is the design title, with 'ML System Architecture Spec' as subtitle and a 'Last updated' line",
+        "Layout matches docs/mockups/document.png: document column and an 'On this page' table of contents on the right"
+      ],
+      "passes": false
+    },
+    {
+      "id": "doc-02",
+      "category": "document",
+      "description": "Canonical section order.",
+      "steps": [
+        "Sections appear as numbered headings in canonical order",
+        "Reordering cards on the canvas does not change the document order"
+      ],
+      "passes": false
+    },
+    {
+      "id": "doc-03",
+      "category": "document",
+      "description": "Section rendering.",
+      "steps": [
+        "Each filled section shows a key properties plate, the rationale, the trade-off matrix as a table with the chosen option marked, and the diagram as an image",
+        "Parts that are empty inside a filled section are omitted"
+      ],
+      "passes": false
+    },
+    {
+      "id": "doc-04",
+      "category": "document",
+      "description": "Empty sections.",
+      "steps": [
+        "An empty section (model-04) shows its heading and a 'Not filled yet' placeholder"
+      ],
+      "passes": false
+    },
+    {
+      "id": "doc-05",
+      "category": "document",
+      "description": "Table of contents.",
+      "steps": [
+        "'On this page' lists all 9 sections",
+        "Clicking an entry scrolls to the section",
+        "The entry of the section in view is highlighted"
+      ],
+      "passes": false
+    },
+    {
+      "id": "doc-06",
+      "category": "document",
+      "description": "Inline editing of key properties in the document.",
+      "steps": [
+        "Clicking a value on the key properties plate makes it editable",
+        "After saving, the canvas card shows the new value"
+      ],
+      "passes": false
+    },
+    {
+      "id": "doc-07",
+      "category": "document",
+      "description": "Inline editing of rationale in the document.",
+      "steps": [
+        "The rationale is editable in place with the same TipTap editor",
+        "After editing, the Component Editor shows the same content"
+      ],
+      "passes": false
+    },
+    {
+      "id": "doc-08",
+      "category": "document",
+      "description": "Inline editing of the trade-off matrix in the document.",
+      "steps": [
+        "Cells, option names and the chosen mark are editable in place",
+        "Changes appear in the Component Editor and update the card indicator"
+      ],
+      "passes": false
+    },
+    {
+      "id": "sync-01",
+      "category": "sync",
+      "description": "Live two-way sync.",
+      "steps": [
+        "An edit in Canvas mode is visible in Document mode right after switching, without reload",
+        "An edit in Document mode is visible in Canvas mode right after switching, without reload",
+        "Covered for key properties, rationale, trade-offs and diagram"
+      ],
+      "passes": false
+    },
+    {
+      "id": "export-01",
+      "category": "export",
+      "description": "Markdown generator.",
+      "steps": [
+        "A pure function turns a Design into Markdown: title, subtitle, numbered section headings, key properties table, rationale as Markdown, trade-off matrix as a table with the chosen option marked, diagram image links to images/<section-id>.svg",
+        "Empty sections are excluded",
+        "A snapshot test runs on the example fixture"
+      ],
+      "passes": false
+    },
+    {
+      "id": "export-02",
+      "category": "export",
+      "description": "Markdown download without diagrams.",
+      "steps": [
+        "With no non-empty diagrams, 'Export Markdown' downloads a single `<title-slug>.md`",
+        "The file content equals the generator output"
+      ],
+      "passes": false
+    },
+    {
+      "id": "export-03",
+      "category": "export",
+      "description": "Markdown download with diagrams as ZIP.",
+      "steps": [
+        "With at least one non-empty diagram, 'Export Markdown' downloads `<title-slug>.zip`",
+        "The ZIP contains `<title-slug>.md` and `images/*.svg`, one per non-empty diagram",
+        "Every image link in the Markdown resolves to a file in the ZIP"
+      ],
+      "passes": false
+    },
+    {
+      "id": "export-04",
+      "category": "export",
+      "description": "PDF export via print.",
+      "steps": [
+        "'Export PDF' opens the browser print dialog for the document",
+        "Print styles show only the document: no header, toggle or table of contents",
+        "`page.pdf()` in Playwright produces a PDF that contains every filled section heading"
+      ],
+      "passes": false
+    },
+    {
+      "id": "export-05",
+      "category": "export",
+      "description": "Empty-sections warning before export.",
+      "steps": [
+        "If any section is empty, both exports first show a warning with the number of empty sections",
+        "The user can continue or cancel",
+        "With no empty sections there is no warning"
+      ],
+      "passes": false
+    },
+    {
+      "id": "ui-01",
+      "category": "ui",
+      "description": "Desktop only.",
+      "steps": [
+        "Below 1280px viewport width the app shows an 'Open on desktop' screen instead of the editor",
+        "At 1280px and above the app works normally"
+      ],
+      "passes": false
+    },
+    {
+      "id": "ui-02",
+      "category": "ui",
+      "description": "Visual check against mockups.",
+      "steps": [
+        "An e2e test saves screenshots of the canvas, the Component Editor and the document with the example loaded to `e2e/screenshots/`",
+        "Each screenshot is compared by eye with the matching file in docs/mockups/ and differences are noted in progress.md"
+      ],
+      "passes": false
+    },
+    {
+      "id": "final-01",
+      "category": "quality",
+      "description": "Green build.",
+      "steps": [
+        "`pnpm check` and `pnpm e2e` pass on a clean checkout",
+        "No TODOs left for features marked as passing"
+      ],
+      "passes": false
+    }
+  ]
+}
