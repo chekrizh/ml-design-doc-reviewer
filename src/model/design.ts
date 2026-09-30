@@ -91,17 +91,18 @@ export const SECTIONS: { id: SectionId; name: string; keys: string[] }[] = [
 
 export const sectionName = (id: SectionId) => SECTIONS.find((s) => s.id === id)!.name
 
-/** Mockup layout on a 12-column grid: three rows of cards, Target Solution full width at the bottom. */
+/** Mockup order and widths on a 12-column grid: three rows of cards, Target Solution full width at the bottom.
+ * Heights (h) follow card content on the canvas; the values here are only a first guess. */
 export const INITIAL_LAYOUT: LayoutItem[] = [
-  { i: 'problem-space', x: 0, y: 0, w: 6, h: 8 },
-  { i: 'evaluation-offline', x: 6, y: 0, w: 3, h: 8 },
-  { i: 'baseline', x: 9, y: 0, w: 3, h: 8 },
-  { i: 'validation', x: 0, y: 8, w: 6, h: 8 },
-  { i: 'data-features', x: 6, y: 8, w: 6, h: 8 },
-  { i: 'evaluation-online', x: 0, y: 16, w: 3, h: 8 },
-  { i: 'integration', x: 3, y: 16, w: 6, h: 8 },
-  { i: 'monitoring', x: 9, y: 16, w: 3, h: 8 },
-  { i: 'target-solution', x: 0, y: 24, w: 12, h: 9 },
+  { i: 'problem-space', x: 0, y: 0, w: 6, h: 10 },
+  { i: 'evaluation-offline', x: 6, y: 0, w: 3, h: 10 },
+  { i: 'baseline', x: 9, y: 0, w: 3, h: 10 },
+  { i: 'validation', x: 0, y: 10, w: 6, h: 10 },
+  { i: 'data-features', x: 6, y: 10, w: 6, h: 10 },
+  { i: 'evaluation-online', x: 0, y: 20, w: 3, h: 10 },
+  { i: 'integration', x: 3, y: 20, w: 6, h: 10 },
+  { i: 'monitoring', x: 9, y: 20, w: 3, h: 10 },
+  { i: 'target-solution', x: 0, y: 30, w: 12, h: 10 },
 ]
 
 export const newId = () => crypto.randomUUID()

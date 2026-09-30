@@ -95,12 +95,14 @@ export async function drawRectangle(page: Page) {
   await page.mouse.up()
 }
 
-/** Grid position and size of a card, in pixels, once its CSS transition has settled. */
+/** Grid position and size of a card, in page pixels, once its CSS transition has settled. */
 export async function cardBox(page: Page, sid: SectionId) {
-  const read = async () => {
-    const b = (await page.locator(`[data-grid-item="${sid}"]`).boundingBox())!
-    return { x: Math.round(b.x), y: Math.round(b.y), w: Math.round(b.width), h: Math.round(b.height) }
-  }
+  // Page coordinates, so scrolling does not change the result.
+  const read = () =>
+    page.locator(`[data-grid-item="${sid}"]`).evaluate((e) => {
+      const b = e.getBoundingClientRect()
+      return { x: Math.round(b.x + scrollX), y: Math.round(b.y + scrollY), w: Math.round(b.width), h: Math.round(b.height) }
+    })
   let prev = await read()
   for (;;) {
     await page.waitForTimeout(100)
@@ -122,6 +124,7 @@ export async function dragCard(page: Page, from: SectionId, to: SectionId) {
 
 export async function resizeCard(page: Page, sid: SectionId, dx: number, dy: number) {
   const handle = page.locator(`[data-grid-item="${sid}"] .react-resizable-handle`)
+  await handle.scrollIntoViewIfNeeded()
   const b = (await handle.boundingBox())!
   await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2)
   await page.mouse.down()
@@ -186,4 +189,15 @@ export async function savedDesign(page: Page) {
         }
       }),
   )
+}
+
+/** Pixels between the bottom of a card's last content element and the top of its footer. */
+export async function contentGap(page: Page, sid: SectionId) {
+  return card(page, sid).evaluate((a) => {
+    const footer = a.querySelector('footer')!.getBoundingClientRect().top
+    const body = a.querySelector('header')!.nextElementSibling!
+    const bottoms = [...body.querySelectorAll('dt, dd, [data-testid="thumbnail"]')].map((e) => e.getBoundingClientRect().bottom)
+    const last = bottoms.length ? Math.max(...bottoms) : body.getBoundingClientRect().top
+    return footer - last
+  })
 }

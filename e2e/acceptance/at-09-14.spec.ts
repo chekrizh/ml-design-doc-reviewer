@@ -21,7 +21,10 @@ test('AT-09 everything survives a reload', async ({ page }) => {
   await drawRectangle(page)
   await closeEditor(page)
   await dragCard(page, 'monitoring', 'problem-space')
-  await resizeCard(page, 'integration', 0, 120)
+  const before = await cardBox(page, 'integration')
+  // Card height follows content (M1.1), so the size the user changes is the width.
+  await resizeCard(page, 'integration', 150, 0)
+  expect((await cardBox(page, 'integration')).w).toBeGreaterThan(before.w)
   const boxes = await Promise.all(ids.map((sid) => cardBox(page, sid)))
 
   await reload(page)
@@ -49,7 +52,7 @@ test('AT-10 reset layout', async ({ page }) => {
   const content = await Promise.all(ids.map((sid) => card(page, sid).innerText()))
   await dragCard(page, 'monitoring', 'problem-space')
   await dragCard(page, 'baseline', 'validation')
-  await resizeCard(page, 'integration', 0, 120)
+  await resizeCard(page, 'integration', -150, 0)
   expect(await Promise.all(ids.map((sid) => cardBox(page, sid)))).not.toEqual(initial)
   await page.getByRole('button', { name: 'Reset layout' }).click()
   await expect.poll(() => Promise.all(ids.map((sid) => cardBox(page, sid)))).toEqual(initial)

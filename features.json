@@ -535,7 +535,7 @@
         "Reset layout restores the mockup order and widths",
         "Record the approach in docs/decisions.md"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m11-05",

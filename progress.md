@@ -247,3 +247,10 @@ Format:
 
 ## m11-03
 - [x] Details is the only control in the card footer and is aligned to the right edge (`e2e/canvas.spec.ts` m11-03)
+
+## m11-04
+- [x] Card height is computed from its content (key properties, +N, thumbnail); the user changes only width and order (`e2e/canvas.spec.ts` m11-04, `src/canvas/flow.test.ts`)
+- [x] The resize handle changes width only (canvas-09, m11-04)
+- [x] When content grows or shrinks, the card height follows and cards below move (m11-04)
+- [x] Reset layout restores the mockup order and widths (canvas-10, AT-10)
+- [x] Approach recorded in docs/decisions.md (D9)

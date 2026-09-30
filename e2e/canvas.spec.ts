@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 import {
-  card, cardBox, closeEditor, dialog, docSection, dragCard, drawRectangle, indicator, loadExample, openApp,
+  card, cardBox, closeEditor, contentGap, dialog, docSection, dragCard, drawRectangle, indicator, loadExample, openApp,
   openDetails, reload, resizeCard, SECTION_ORDER, setCardValue, setTitle, toMode, addCriterion, addOption,
 } from './helpers'
 
@@ -82,7 +82,7 @@ test('canvas-05 inline edit on card: Enter/blur save, Escape cancels, visible in
   await expect(ps.getByRole('button', { name: 'Edit Domain' })).toHaveText('Payments')
   await ps.getByRole('button', { name: 'Edit ML Task' }).click()
   await ps.getByRole('textbox', { name: 'ML Task' }).fill('Classification')
-  await page.locator('main').click({ position: { x: 5, y: 5 } })
+  await page.locator('header').first().click({ position: { x: 3, y: 3 } })
   await expect(ps.getByRole('button', { name: 'Edit ML Task' })).toHaveText('Classification')
   await ps.getByRole('button', { name: 'Edit Domain' }).click()
   await ps.getByRole('textbox', { name: 'Domain' }).fill('Nope')
@@ -156,18 +156,19 @@ test('canvas-08 drag reorders cards, persists, keeps content', async ({ page }) 
   expect(await card(page, 'monitoring').innerText()).toBe(before)
 })
 
-test('canvas-09 resize from corner, respects min size, persists', async ({ page }) => {
+test('canvas-09 resize changes width only, respects min width, persists (m11-04)', async ({ page }) => {
   await openApp(page)
-  const start = await cardBox(page, 'baseline')
-  await resizeCard(page, 'baseline', 0, 150)
-  const bigger = await cardBox(page, 'baseline')
-  expect(bigger.h).toBeGreaterThan(start.h)
+  const start = await cardBox(page, 'integration')
+  await resizeCard(page, 'integration', 200, 150)
+  const wider = await cardBox(page, 'integration')
+  expect(wider.w).toBeGreaterThan(start.w)
+  expect(wider.h).toBe(start.h)
   await reload(page)
-  expect(await cardBox(page, 'baseline')).toEqual(bigger)
-  await resizeCard(page, 'baseline', -1000, -1000)
-  const min = await cardBox(page, 'baseline')
+  expect(await cardBox(page, 'integration')).toEqual(wider)
+  await resizeCard(page, 'integration', -1000, 0)
+  const min = await cardBox(page, 'integration')
   expect(min.w).toBeGreaterThanOrEqual(200)
-  expect(min.h).toBeGreaterThanOrEqual(150)
+  expect(min.h).toBe(start.h)
 })
 
 test('canvas-10 reset layout restores initial layout, content unchanged', async ({ page }) => {
@@ -177,7 +178,7 @@ test('canvas-10 reset layout restores initial layout, content unchanged', async 
   const initial = await Promise.all(ids.map((sid) => cardBox(page, sid)))
   const content = await Promise.all(ids.map((sid) => card(page, sid).innerText()))
   await dragCard(page, 'monitoring', 'problem-space')
-  await resizeCard(page, 'integration', 0, 120)
+  await resizeCard(page, 'integration', -150, 0)
   expect(await Promise.all(ids.map((sid) => cardBox(page, sid)))).not.toEqual(initial)
   await page.getByRole('button', { name: 'Reset layout' }).click()
   await expect.poll(() => Promise.all(ids.map((sid) => cardBox(page, sid)))).toEqual(initial)
@@ -244,4 +245,40 @@ test('m11-03 Details is the only footer control and sits at the right edge', asy
     expect(rightGap).toBeLessThanOrEqual(24)
     expect(bb.x - fb.x).toBeGreaterThan(rightGap)
   }
+})
+
+test('m11-04 card height follows content; resize is horizontal; cards below move', async ({ page }) => {
+  await openApp(page)
+  for (const [sid] of SECTION_ORDER) await expect.poll(() => contentGap(page, sid), sid).toBeLessThanOrEqual(32)
+  const ps = await cardBox(page, 'problem-space')
+  const v0 = await cardBox(page, 'validation')
+  expect(v0.h).toBeLessThan(ps.h)
+  await expect(page.locator('.react-resizable-handle')).toHaveCount(9)
+  await expect(page.locator('.react-resizable-handle-e')).toHaveCount(9)
+  const below0 = await cardBox(page, 'evaluation-online')
+
+  await openDetails(page, 'validation')
+  await drawRectangle(page)
+  await closeEditor(page)
+  await expect(card(page, 'validation').getByTestId('thumbnail').locator('img')).toBeVisible()
+  const v1 = await cardBox(page, 'validation')
+  expect(v1.h).toBeGreaterThan(v0.h)
+  expect((await cardBox(page, 'evaluation-online')).y).toBeGreaterThan(below0.y)
+  for (const [sid] of SECTION_ORDER) await expect.poll(() => contentGap(page, sid), sid).toBeLessThanOrEqual(32)
+
+  // Content shrinks: the card follows back.
+  await openDetails(page, 'validation')
+  await dialog(page).getByTestId('whiteboard').locator('canvas.interactive').click()
+  await page.keyboard.press('ControlOrMeta+A')
+  await page.keyboard.press('Delete')
+  await closeEditor(page)
+  await expect(card(page, 'validation').getByTestId('thumbnail')).toHaveCount(0)
+  await expect.poll(() => cardBox(page, 'validation')).toEqual(v0)
+  expect(await cardBox(page, 'evaluation-online')).toEqual(below0)
+
+  await resizeCard(page, 'problem-space', 150, 200)
+  const wider = await cardBox(page, 'problem-space')
+  expect(wider.w).toBeGreaterThan(ps.w)
+  expect(wider.h).toBe(ps.h)
+  await expect.poll(() => contentGap(page, 'problem-space')).toBeLessThanOrEqual(32)
 })

@@ -1,3 +1,4 @@
+import { useLayoutEffect, useRef } from 'react'
 import { sectionName, type SectionId } from '../model/design'
 import { diagramNonEmpty, tradeoffsComplete } from '../model/rules'
 import { InlineText } from '../editor/InlineText'
@@ -45,7 +46,32 @@ function TradeoffsStatus({ sid, on }: { sid: SectionId; on: boolean }) {
   )
 }
 
-export function Card({ sid, onDetails }: { sid: SectionId; onDetails: () => void }) {
+/** Height the card needs for its content, whatever height the grid gives it now. */
+function useNaturalHeight(onHeight: (px: number) => void) {
+  const article = useRef<HTMLElement>(null)
+  const body = useRef<HTMLDivElement>(null)
+  const inner = useRef<HTMLDivElement>(null)
+  const report = useRef(onHeight)
+  useLayoutEffect(() => {
+    report.current = onHeight
+  })
+  useLayoutEffect(() => {
+    const measure = () => {
+      const a = article.current!, b = body.current!, i = inner.current!
+      const cs = getComputedStyle(b)
+      const pad = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom)
+      report.current(Math.ceil(a.offsetHeight - b.clientHeight + pad + i.offsetHeight))
+    }
+    const ro = new ResizeObserver(measure)
+    ro.observe(article.current!)
+    ro.observe(inner.current!)
+    return () => ro.disconnect()
+  }, [])
+  return { article, body, inner }
+}
+
+export function Card({ sid, onDetails, onHeight }: { sid: SectionId; onDetails: () => void; onHeight: (px: number) => void }) {
+  const { article, body, inner } = useNaturalHeight(onHeight)
   const section = useSection(sid)
   const update = useDesign((s) => s.updateKeyProperty)
   const thumb = useDiagramImage(section.diagram)
@@ -54,13 +80,14 @@ export function Card({ sid, onDetails }: { sid: SectionId; onDetails: () => void
   const hasDiagram = diagramNonEmpty(section.diagram)
 
   return (
-    <article data-testid={`card-${sid}`} aria-label={sectionName(sid)} className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <article ref={article} data-testid={`card-${sid}`} aria-label={sectionName(sid)} className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white shadow-sm">
       <header className="card-drag flex cursor-move items-center gap-3 border-b border-slate-100 px-4 py-3">
         <SectionIcon id={sid} className="h-5 w-5 text-slate-700" />
         <h2 className="text-sm font-semibold tracking-wide uppercase">{sectionName(sid)}</h2>
         <TradeoffsStatus sid={sid} on={tradeoffsComplete(section.tradeoffs)} />
       </header>
-      <div className="flex min-h-0 flex-1 gap-4 overflow-hidden px-4 py-3">
+      <div ref={body} className="min-h-0 flex-1 overflow-hidden px-4 pt-3 pb-2">
+        <div ref={inner} className="flex items-start gap-4">
         <dl className="grid min-w-0 flex-1 auto-rows-min grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 text-sm">
           {shown.map((p) => (
             <div key={p.id} className="contents">
@@ -73,10 +100,11 @@ export function Card({ sid, onDetails }: { sid: SectionId; onDetails: () => void
           {hidden > 0 && <dd className="col-span-2 text-xs font-medium text-slate-400">+{hidden}</dd>}
         </dl>
         {hasDiagram && (
-          <div data-testid="thumbnail" className="flex max-w-[60%] min-w-0 flex-1 items-center justify-center rounded-xl border border-slate-100 bg-slate-50 p-2">
+          <div data-testid="thumbnail" className="flex h-36 max-w-[60%] min-w-0 flex-1 items-center justify-center rounded-xl border border-slate-100 bg-slate-50 p-2">
             {thumb && <img src={thumb} alt={`${sectionName(sid)} diagram`} className="max-h-full max-w-full object-contain" />}
           </div>
         )}
+        </div>
       </div>
       <footer className="flex items-center justify-end gap-2 border-t border-slate-100 px-4 py-3">
         <button type="button" onClick={onDetails} className="rounded-lg bg-slate-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-slate-700">
