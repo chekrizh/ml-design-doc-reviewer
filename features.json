@@ -312,7 +312,7 @@
         "Drawing persists after reload",
         "The card's Diagram indicator and thumbnail update"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "doc-01",

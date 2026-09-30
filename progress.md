@@ -143,3 +143,8 @@ Format:
 - [x] The chosen option is visually highlighted
 - [x] The card's Trade-offs indicator updates live as the matrix changes
 - [x] Choosing an option does not change key properties
+
+## editor-07
+- [x] The whiteboard is the @excalidraw/excalidraw React component, not an iframe (`e2e/editor.spec.ts`)
+- [x] Drawing persists after reload
+- [x] The card's Diagram indicator and thumbnail update
