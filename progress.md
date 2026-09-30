@@ -109,3 +109,7 @@ Format:
 ## canvas-09
 - [x] Cards can be resized from a corner handle within sensible min sizes (`e2e/canvas.spec.ts`; min 3 cols x 5 rows)
 - [x] The new size persists after reload
+
+## canvas-10
+- [x] A 'Reset layout' control restores the initial mockup layout (`e2e/canvas.spec.ts`)
+- [x] Section content is unchanged after reset

@@ -235,7 +235,7 @@
         "A 'Reset layout' control restores the initial mockup layout",
         "Section content is unchanged after reset"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "editor-01",
