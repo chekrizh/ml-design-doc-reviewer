@@ -195,3 +195,8 @@ Format:
 ## export-02
 - [x] With no non-empty diagrams, 'Export Markdown' downloads a single `<title-slug>.md` (`e2e/export.spec.ts`)
 - [x] The file content equals the generator output
+
+## export-03
+- [x] With at least one non-empty diagram, 'Export Markdown' downloads `<title-slug>.zip` (`e2e/export.spec.ts`)
+- [x] The ZIP contains `<title-slug>.md` and `images/*.svg`, one per non-empty diagram
+- [x] Every image link in the Markdown resolves to a file in the ZIP

@@ -436,7 +436,7 @@
         "The ZIP contains `<title-slug>.md` and `images/*.svg`, one per non-empty diagram",
         "Every image link in the Markdown resolves to a file in the ZIP"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "export-04",
