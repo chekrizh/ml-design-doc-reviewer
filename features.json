@@ -500,7 +500,7 @@
         "`pnpm check` and `pnpm e2e` (including e2e/acceptance/) pass on a clean checkout",
         "No TODOs left for features marked as passing"
       ],
-      "passes": false
+      "passes": true
     }
   ],
   "acceptance": "docs/acceptance-tests.md"
