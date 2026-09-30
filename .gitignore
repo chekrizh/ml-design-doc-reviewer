@@ -24,3 +24,4 @@ test-results/
 playwright-report/
 .claude/ralph-loop.local.md
 .playwright-mcp/
+e2e/screenshots/*.png

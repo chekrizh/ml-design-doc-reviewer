@@ -468,7 +468,7 @@
         "Below 1280px viewport width the app shows an 'Open on desktop' screen instead of the editor",
         "At 1280px and above the app works normally"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "ui-02",

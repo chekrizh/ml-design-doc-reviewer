@@ -210,3 +210,7 @@ Format:
 - [x] If any section is empty, both exports first show a warning with the number of empty sections (`e2e/export.spec.ts`)
 - [x] The user can continue or cancel
 - [x] With no empty sections there is no warning
+
+## ui-01
+- [x] Below 1280px viewport width the app shows an 'Open on desktop' screen instead of the editor (`e2e/ui.spec.ts`)
+- [x] At 1280px and above the app works normally
