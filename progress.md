@@ -191,3 +191,7 @@ Format:
 - [x] A pure function turns a Design into Markdown: title, subtitle, numbered section headings, key properties table, rationale as Markdown, trade-off matrix as a table with the chosen option marked, diagram image links to images/<section-id>.svg (`src/export/markdown.ts`, `src/export/markdown.test.ts`)
 - [x] Empty sections are excluded
 - [x] A snapshot test runs on the example fixture
+
+## export-02
+- [x] With no non-empty diagrams, 'Export Markdown' downloads a single `<title-slug>.md` (`e2e/export.spec.ts`)
+- [x] The file content equals the generator output

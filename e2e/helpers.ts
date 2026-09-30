@@ -128,3 +128,62 @@ export async function resizeCard(page: Page, sid: SectionId, dx: number, dy: num
   await page.mouse.move(b.x + b.width / 2 + dx, b.y + b.height / 2 + dy, { steps: 10 })
   await page.mouse.up()
 }
+
+/** Clicks Export Markdown, handles the empty-sections warning, returns the download. */
+export async function exportMarkdown(page: Page, onWarning: 'accept' | 'dismiss' | 'none' = 'accept') {
+  let warning: string | null = null
+  const handler = (d: import('@playwright/test').Dialog) => {
+    warning = d.message()
+    void (onWarning === 'dismiss' ? d.dismiss() : d.accept())
+  }
+  page.once('dialog', handler)
+  if (onWarning === 'dismiss') {
+    const downloads: unknown[] = []
+    page.on('download', (d) => downloads.push(d))
+    await page.getByRole('button', { name: 'Export Markdown' }).click()
+    await page.waitForTimeout(1000)
+    return { warning: warning as string | null, download: null, downloads: downloads.length }
+  }
+  const [download] = await Promise.all([page.waitForEvent('download'), page.getByRole('button', { name: 'Export Markdown' }).click()])
+  page.off('dialog', handler)
+  return { warning: warning as string | null, download, downloads: 1 }
+}
+
+export async function downloadText(download: import('@playwright/test').Download) {
+  const { readFile } = await import('node:fs/promises')
+  return readFile((await download.path())!, 'utf8')
+}
+
+export async function readZip(download: import('@playwright/test').Download) {
+  const { readFile } = await import('node:fs/promises')
+  const JSZip = (await import('jszip')).default
+  return JSZip.loadAsync(await readFile((await download.path())!))
+}
+
+/** Text of a PDF printed from the page (print media). */
+export async function pdfText(page: Page) {
+  const { getDocument } = await import('pdfjs-dist/legacy/build/pdf.mjs')
+  const data = new Uint8Array(await page.pdf({ printBackground: true }))
+  const pdf = await getDocument({ data }).promise
+  let text = ''
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const content = await (await pdf.getPage(i)).getTextContent()
+    text += content.items.map((it) => ('str' in it ? it.str : '')).join(' ') + '\n'
+  }
+  return text
+}
+
+/** The saved design, read from IndexedDB. */
+export async function savedDesign(page: Page) {
+  await waitSaved(page)
+  return page.evaluate(
+    () =>
+      new Promise<import('../src/model/design').Design>((resolve) => {
+        const req = indexedDB.open('ml-design-trainer')
+        req.onsuccess = () => {
+          const get = req.result.transaction('designs').objectStore('designs').get('current')
+          get.onsuccess = () => resolve(get.result)
+        }
+      }),
+  )
+}

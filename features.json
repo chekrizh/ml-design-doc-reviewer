@@ -425,7 +425,7 @@
         "With no non-empty diagrams, 'Export Markdown' downloads a single `<title-slug>.md`",
         "The file content equals the generator output"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "export-03",
