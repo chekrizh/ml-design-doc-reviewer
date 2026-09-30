@@ -5,7 +5,7 @@
     "Work on features in order unless a later one is blocked only by an earlier one you already finished.",
     "Only change the `passes` field. Never delete, reword, reorder, or merge features.",
     "Set `passes` to true only after every step is verified by an automated test (Vitest or Playwright) that is committed and green.",
-    "If the spec and a feature disagree, the spec wins; record the conflict in progress.md instead of editing the feature.",
+    "If the spec and a feature disagree, the spec wins; record the conflict in open-questions.md instead of editing the feature.",
     "docs/acceptance-tests.md is human-owned: never edit it. Implement each scenario as a Playwright test in e2e/acceptance/ that checks every expected outcome; never weaken or skip them."
   ],
   "features": [
@@ -476,7 +476,7 @@
       "description": "Visual check against mockups.",
       "steps": [
         "An e2e test saves screenshots of the canvas, the Component Editor and the document with the example loaded to `e2e/screenshots/`",
-        "Each screenshot is compared by eye with the matching file in docs/mockups/ and differences are noted in progress.md"
+        "Each screenshot is compared by eye with the matching file in docs/mockups/ and differences are noted in open-questions.md"
       ],
       "passes": false
     },

@@ -22,6 +22,22 @@ Apply the same philosophy to your own engineering decisions in this repo: when m
 - Acceptance scenarios: `docs/acceptance-tests.md`. Human-owned: never edit, weaken, or skip them; implement each as a Playwright test in `e2e/acceptance/`.
 - Decision log with alternatives: `docs/decisions.md`. Add an entry for every non-trivial decision.
 
+## Autonomous run protocol
+
+At the start of every session and after every context compaction:
+
+1. Read `CLAUDE.md`, then `progress.md`, then `git log -10`.
+2. Run `pnpm check` (once the scaffold exists). If anything is red, fix it before starting new work.
+3. Take the first feature in `features.json` with `passes: false`.
+
+For each feature:
+
+- Work on branch `m1/autonomous`. Never touch `main`, never push.
+- When every step of the feature is verified by a committed, green test, set its `passes` to true and append a section to `progress.md` listing each step as `- [x]`.
+- Commit once per feature, only with `pnpm check` green. Message starts with the feature ID, e.g. `canvas-05: inline edit on card`.
+- Record non-trivial engineering choices in `docs/decisions.md`.
+- Conflicts between spec, features and acceptance scenarios, or differences from mockups, go to `open-questions.md`. Do not resolve them silently; continue with other features.
+
 ## Notes
 
 - `data/raw_ByteByteGo_examples/` is not used by the project. Ignore it.
