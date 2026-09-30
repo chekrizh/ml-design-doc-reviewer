@@ -129,3 +129,6 @@ Format:
 ## editor-03
 - [x] TipTap editor with bold, italic, inline code, bullet list, ordered list and link (`e2e/editor.spec.ts`)
 - [x] Content persists after reload
+
+## editor-04
+- [x] The toolbar has an image button that is disabled and shows a 'Coming soon' tooltip (`e2e/editor.spec.ts`)

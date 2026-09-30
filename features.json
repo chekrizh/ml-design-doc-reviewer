@@ -278,7 +278,7 @@
       "steps": [
         "The toolbar has an image button that is disabled and shows a 'Coming soon' tooltip"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "editor-05",
