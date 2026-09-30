@@ -132,3 +132,8 @@ Format:
 
 ## editor-04
 - [x] The toolbar has an image button that is disabled and shows a 'Coming soon' tooltip (`e2e/editor.spec.ts`)
+
+## editor-05
+- [x] 'Add Option (Row)' and 'Add Criteria (Col)' add a row and a column (`e2e/editor.spec.ts`)
+- [x] Option names, criterion names and cells are editable
+- [x] Rows and columns can be deleted

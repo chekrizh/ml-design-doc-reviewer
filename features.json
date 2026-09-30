@@ -289,7 +289,7 @@
         "Option names, criterion names and cells are editable",
         "Rows and columns can be deleted"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "editor-06",
