@@ -513,7 +513,7 @@
         "Hover or keyboard focus shows a tooltip: off 'Trade-offs not filled yet. Weigh the alternatives and make a considered choice.', on 'Trade-offs filled: alternatives weighed, choice made.'",
         "The icon keeps an accessible name and a data-state of 'on'/'off' for tests"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m11-03",

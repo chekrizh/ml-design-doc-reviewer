@@ -238,3 +238,9 @@ Format:
 ## m11-01
 - [x] Cards have no Diagram indicator; a non-empty diagram is shown only by its thumbnail (`e2e/canvas.spec.ts` canvas-07, `e2e/acceptance/at-01-08.spec.ts` AT-05)
 - [x] diagramNonEmpty (model-03) is still used for thumbnails, the document and export (`src/model/rules.test.ts`, AT-05, AT-12)
+
+## m11-02
+- [x] A scales icon sits in the top-right corner of every card header; it is a status, not a button, and has no click action (`e2e/canvas.spec.ts` m11-02)
+- [x] Off: grey scales. On: green scales with a check mark
+- [x] Hover or keyboard focus shows the off/on tooltip
+- [x] The icon keeps an accessible name and a data-state of 'on'/'off'

@@ -9,3 +9,6 @@
 .prose-rt h1, .prose-rt h2, .prose-rt h3 { font-weight: 600; margin: 0.6em 0 0.3em; }
 
 @page { margin: 16mm; }
+
+/* Lift the hovered/focused card so its trade-offs tooltip paints over the neighbours. */
+.react-grid-item:hover, .react-grid-item:focus-within { z-index: 10; }

@@ -7,16 +7,40 @@ import { SectionIcon } from './SectionIcon'
 
 const MAX_PROPS = 4
 
-function Indicator({ label, on }: { label: string; on: boolean }) {
+export const TRADEOFFS_TIP = {
+  off: 'Trade-offs not filled yet. Weigh the alternatives and make a considered choice.',
+  on: 'Trade-offs filled: alternatives weighed, choice made.',
+}
+
+// A status, not a button: focusable only so keyboard users can read the tooltip.
+function TradeoffsStatus({ sid, on }: { sid: SectionId; on: boolean }) {
+  const tip = on ? TRADEOFFS_TIP.on : TRADEOFFS_TIP.off
   return (
     <span
-      role="status"
-      aria-label={`${label} ${on ? 'filled' : 'not filled'}`}
-      data-indicator={label}
+      role="img"
+      tabIndex={0}
+      aria-label={`Trade-offs ${on ? 'filled' : 'not filled'}`}
+      aria-describedby={`tradeoffs-tip-${sid}`}
+      data-indicator="Trade-offs"
       data-state={on ? 'on' : 'off'}
-      className={`rounded-lg px-3 py-1.5 text-sm font-medium select-none ${on ? 'bg-violet-100 text-violet-700' : 'bg-slate-50 text-slate-300'}`}
+      onMouseDown={(e) => e.stopPropagation()}
+      className={`group relative ml-auto rounded-md p-1 outline-none focus-visible:ring-2 focus-visible:ring-violet-400 ${on ? 'text-emerald-600' : 'text-slate-300'}`}
     >
-      {label}
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5" aria-hidden>
+        <path d="M12 3v18M7 21h10M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2M2 16l3-8 3 8c-.9.7-1.9 1-3 1s-2.1-.3-3-1zM16 16l3-8 3 8c-.9.7-1.9 1-3 1s-2.1-.3-3-1z" />
+      </svg>
+      {on && (
+        <svg viewBox="0 0 24 24" className="absolute -right-0.5 -bottom-0.5 h-3 w-3 rounded-full bg-emerald-600 text-white" aria-hidden data-check>
+          <path d="M6 12l4 4 8-8" fill="none" stroke="currentColor" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      )}
+      <span
+        id={`tradeoffs-tip-${sid}`}
+        role="tooltip"
+        className="pointer-events-none absolute top-full right-0 z-20 mt-2 hidden w-64 rounded-lg bg-slate-900 px-3 py-2 text-xs font-normal normal-case tracking-normal text-white shadow-lg group-hover:block group-focus-visible:block"
+      >
+        {tip}
+      </span>
     </span>
   )
 }
@@ -30,10 +54,11 @@ export function Card({ sid, onDetails }: { sid: SectionId; onDetails: () => void
   const hasDiagram = diagramNonEmpty(section.diagram)
 
   return (
-    <article data-testid={`card-${sid}`} aria-label={sectionName(sid)} className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <article data-testid={`card-${sid}`} aria-label={sectionName(sid)} className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white shadow-sm">
       <header className="card-drag flex cursor-move items-center gap-3 border-b border-slate-100 px-4 py-3">
         <SectionIcon id={sid} className="h-5 w-5 text-slate-700" />
         <h2 className="text-sm font-semibold tracking-wide uppercase">{sectionName(sid)}</h2>
+        <TradeoffsStatus sid={sid} on={tradeoffsComplete(section.tradeoffs)} />
       </header>
       <div className="flex min-h-0 flex-1 gap-4 overflow-hidden px-4 py-3">
         <dl className="grid min-w-0 flex-1 auto-rows-min grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 text-sm">
@@ -57,7 +82,6 @@ export function Card({ sid, onDetails }: { sid: SectionId; onDetails: () => void
         <button type="button" onClick={onDetails} className="rounded-lg bg-slate-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-slate-700">
           Details
         </button>
-        <Indicator label="Trade-offs" on={tradeoffsComplete(section.tradeoffs)} />
       </footer>
     </article>
   )

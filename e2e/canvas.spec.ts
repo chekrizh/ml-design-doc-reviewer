@@ -38,7 +38,7 @@ test('canvas-03 nine cards with icon and uppercase name in mockup layout', async
     const c = card(page, sid)
     await expect(c.getByRole('heading')).toHaveText(name)
     await expect(c.getByRole('heading')).toHaveCSS('text-transform', 'uppercase')
-    await expect(c.locator('header svg')).toBeVisible()
+    await expect(c.locator('header > svg')).toBeVisible()
   }
   await expect(page.getByText('Evaluation Strategy')).toHaveCount(0)
   const b = Object.fromEntries(await Promise.all(SECTION_ORDER.map(async ([sid]) => [sid, await cardBox(page, sid)])))
@@ -114,7 +114,7 @@ test('canvas-06 thumbnail only for non-empty diagram, updates after editing', as
   await expect.poll(() => img.getAttribute('src')).not.toBe(src1)
 })
 
-test('canvas-07 footer: Details plus a non-clickable Trade-offs indicator with two states; no Diagram indicator (m11-01)', async ({ page }) => {
+test('canvas-07 footer has only Details; non-clickable Trade-offs indicator with two states (m11-02); no Diagram indicator (m11-01)', async ({ page }) => {
   await openApp(page)
   for (const [sid] of SECTION_ORDER) {
     const c = card(page, sid)
@@ -182,4 +182,52 @@ test('canvas-10 reset layout restores initial layout, content unchanged', async 
   await page.getByRole('button', { name: 'Reset layout' }).click()
   await expect.poll(() => Promise.all(ids.map((sid) => cardBox(page, sid)))).toEqual(initial)
   expect(await Promise.all(ids.map((sid) => card(page, sid).innerText()))).toEqual(content)
+})
+
+const TIP_OFF = 'Trade-offs not filled yet. Weigh the alternatives and make a considered choice.'
+const TIP_ON = 'Trade-offs filled: alternatives weighed, choice made.'
+
+test('m11-02 trade-offs status icon: top-right, not a button, two states, tooltip on hover and focus', async ({ page }) => {
+  await openApp(page)
+  for (const [sid] of SECTION_ORDER) {
+    const c = card(page, sid)
+    const ind = indicator(c, 'Trade-offs')
+    await expect(c.locator('header').locator('[data-indicator="Trade-offs"]')).toHaveCount(1)
+    await expect(ind).toHaveAttribute('data-state', 'off')
+    await expect(ind).toHaveAccessibleName('Trade-offs not filled')
+    const hb = (await c.locator('header').boundingBox())!
+    const ib = (await ind.boundingBox())!
+    expect(hb.x + hb.width - (ib.x + ib.width)).toBeLessThan(24)
+    expect(ib.y - hb.y).toBeLessThan(hb.height / 2)
+    await expect(c.getByRole('button', { name: /trade-offs/i })).toHaveCount(0)
+  }
+  const ind = indicator(card(page, 'baseline'), 'Trade-offs')
+  await ind.click()
+  await expect(dialog(page)).toHaveCount(0)
+  const tip = page.getByRole('tooltip').filter({ visible: true })
+  await ind.hover()
+  await expect(tip).toHaveText(TIP_OFF)
+  await page.mouse.move(0, 0)
+  await expect(tip).toHaveCount(0)
+  // Keyboard focus shows it too: Tab from the element just before the icon.
+  await card(page, 'baseline').getByRole('heading').evaluate((h) => { h.tabIndex = -1; h.focus() })
+  await page.keyboard.press('Tab')
+  await expect(ind).toBeFocused()
+  await expect(tip).toHaveText(TIP_OFF)
+  await page.keyboard.press('Tab')
+
+  await openDetails(page, 'baseline')
+  const d = dialog(page)
+  await addCriterion(d, 'Cost')
+  await addOption(d, 'Rules', ['Low'])
+  await addOption(d, 'LogReg', ['Low'])
+  await d.getByRole('button', { name: 'Choose option 1' }).click()
+  await closeEditor(page)
+  await expect(ind).toHaveAttribute('data-state', 'on')
+  await expect(ind).toHaveAccessibleName('Trade-offs filled')
+  await expect(ind.locator('[data-check]')).toBeVisible()
+  await ind.hover()
+  await expect(tip).toHaveText(TIP_ON)
+  const color = (sid: 'baseline' | 'validation') => indicator(card(page, sid), 'Trade-offs').evaluate((e) => getComputedStyle(e).color)
+  expect(await color('baseline')).not.toBe(await color('validation'))
 })
