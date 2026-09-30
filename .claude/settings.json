@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm *)",
+      "Bash(npx playwright *)",
+      "Bash(git status*)",
+      "Bash(git log*)",
+      "Bash(git diff*)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "mcp__plugin_context7_context7",
+      "mcp__plugin_playwright_playwright"
+    ],
+    "deny": [
+      "Bash(git push*)",
+      "Bash(git checkout main*)",
+      "Bash(git switch main*)",
+      "Bash(git reset --hard*)",
+      "Bash(git branch -D*)",
+      "Bash(git worktree remove*)",
+      "Bash(rm -rf /*)",
+      "Bash(rm -rf ~*)",
+      "Bash(rm -rf ..*)",
+      "Bash(sudo *)",
+      "Edit(docs/acceptance-tests.md)",
+      "Bash(*acceptance-tests.md*)"
+    ]
+  }
+}
