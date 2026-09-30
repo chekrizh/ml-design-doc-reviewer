@@ -50,7 +50,7 @@
         "`pnpm build && pnpm preview` serves a working app",
         "The app needs no server-side code or environment variables"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "model-01",

@@ -26,3 +26,7 @@ Format:
 - [x] `pnpm e2e` builds or starts the app and runs Playwright in headless Chromium (`playwright.config.ts` webServer)
 - [x] A smoke test opens the app and finds the Canvas/Document toggle (`e2e/smoke.spec.ts`)
 - [x] Each e2e test starts from an empty IndexedDB (fresh context per test; `e2e/smoke.spec.ts`)
+
+## setup-04
+- [x] `pnpm build && pnpm preview` serves a working app (all e2e run against preview)
+- [x] The app needs no server-side code or environment variables (`e2e/build.spec.ts`)
