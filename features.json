@@ -546,7 +546,7 @@
         "Add a WebKit project to playwright.config.ts that runs e2e/acceptance/; Chromium keeps running the whole suite",
         "Install the WebKit browser for Playwright if missing (`pnpm exec playwright install webkit`)"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m11-06",

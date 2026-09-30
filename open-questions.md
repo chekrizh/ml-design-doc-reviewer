@@ -30,3 +30,11 @@ Format:
   - Header keeps Export Markdown next to Export PDF (spec: both exports in the header).
   - TOC active entry has no chevron.
 - What I did meanwhile: followed the spec where it differs from the mockups; left the rest as is.
+
+## AT-14 in WebKit: `page.pdf()` is Chromium-only
+- Conflict: AT-14 says to generate the PDF with `page.pdf()`, and M1.1 requires every acceptance test to be green in Chromium and WebKit. Playwright supports `page.pdf()` only in Chromium.
+- What I did meanwhile: Chromium checks the real PDF text as before. WebKit checks the same expectations (all filled headings present; no "Canvas", "Document", "Share", "AI Review", export buttons or "On this page") on the visible text of the page under print media (`emulateMedia({ media: 'print' })`, `innerText` hides `display: none` chrome). Please confirm or say how WebKit should cover AT-14.
+
+## m11-05: Safari side gaps not reproduced as an engine difference
+- Conflict: none; a note on the root cause. Playwright WebKit and Chromium give identical card geometry at 1280–1920px. The side gaps appear in both engines when the window is wider than 1600px: the canvas was capped at `max-w-[1600px]` while the header spans the full width. A 1728px MacBook display is exactly that case, so it likely showed up only in the Safari window.
+- What I did meanwhile: removed the cap; `e2e/layout.spec.ts` checks full-width cards at 1440/1728/1920px in both engines. If the gaps you saw were something else, please attach a screenshot and the window width.

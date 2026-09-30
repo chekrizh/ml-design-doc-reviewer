@@ -254,3 +254,8 @@ Format:
 - [x] When content grows or shrinks, the card height follows and cards below move (m11-04)
 - [x] Reset layout restores the mockup order and widths (canvas-10, AT-10)
 - [x] Approach recorded in docs/decisions.md (D9)
+
+## m11-05
+- [x] Side gaps reproduced (windows wider than 1600px: canvas capped at `max-w-[1600px]` under a full-width header) and fixed at the root; engine geometry is identical in Chromium and WebKit (`e2e/layout.spec.ts`, runs in both; note in open-questions.md)
+- [x] WebKit project in playwright.config.ts runs e2e/acceptance/ (plus layout.spec.ts); Chromium runs the whole suite
+- [x] WebKit browser installed (`pnpm exec playwright install webkit`)

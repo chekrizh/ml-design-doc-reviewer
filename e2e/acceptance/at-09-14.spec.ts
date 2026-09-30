@@ -133,14 +133,16 @@ test('AT-13 empty sections', async ({ page }) => {
   expect(headings).toHaveLength(2)
 })
 
-test('AT-14 PDF has the filled headings and none of the app chrome', async ({ page }) => {
+test('AT-14 PDF has the filled headings and none of the app chrome', async ({ page, browserName }) => {
   await openApp(page)
   await loadExample(page)
   await toMode(page, 'Document')
   await expect(docSection(page, 'validation').getByRole('img')).toBeVisible()
   await page.emulateMedia({ media: 'print' })
-  const text = await pdfText(page)
+  // page.pdf() exists only in Chromium. In WebKit the same checks run on the text the print
+  // rendering shows (see open-questions.md, AT-14 in WebKit).
+  const text = browserName === 'chromium' ? await pdfText(page) : await page.locator('body').innerText()
   for (const [, name] of SECTION_ORDER) expect(text).toContain(name)
-  for (const chrome of ['Canvas', 'Document', 'Export PDF', 'Export Markdown', 'Load example', 'Reset layout', 'On this page'])
+  for (const chrome of ['Canvas', 'Document', 'Share', 'AI Review', 'Export PDF', 'Export Markdown', 'Load example', 'Reset layout', 'On this page'])
     expect(text).not.toContain(chrome)
 })

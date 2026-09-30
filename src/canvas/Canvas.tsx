@@ -36,7 +36,7 @@ export function Canvas() {
   const onHeight = (sid: SectionId) => (px: number) => setHeights((h) => (h[sid] === px ? h : { ...h, [sid]: px }))
 
   return (
-    <main className="mx-auto max-w-[1600px] px-4 py-4">
+    <main className="px-4 py-4">
       <div ref={containerRef}>
       {mounted && (
         <GridLayout

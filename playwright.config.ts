@@ -10,7 +10,11 @@ export default defineConfig({
     viewport: { width: 1440, height: 900 },
     acceptDownloads: true,
   },
-  projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 } } }],
+  projects: [
+    { name: 'chromium', use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 } } },
+    // Safari engine: the acceptance scenarios plus the canvas layout check.
+    { name: 'webkit', testMatch: ['acceptance/**/*.spec.ts', 'layout.spec.ts'], use: { ...devices['Desktop Safari'], viewport: { width: 1440, height: 900 } } },
+  ],
   webServer: {
     command: 'pnpm build && pnpm preview --port 4173 --strictPort',
     url: 'http://localhost:4173',
