@@ -89,3 +89,8 @@ Format:
 - [x] Clicking a value on a card turns it into an input (`e2e/canvas.spec.ts`)
 - [x] Enter or blur saves, Escape cancels
 - [x] The new value appears in the Component Editor and the Document
+
+## canvas-06
+- [x] A card whose diagram is non-empty shows an SVG thumbnail of it (`e2e/canvas.spec.ts`)
+- [x] A card with an empty diagram shows no thumbnail area
+- [x] Editing the diagram updates the thumbnail after the editor closes

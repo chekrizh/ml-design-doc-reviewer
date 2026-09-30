@@ -192,7 +192,7 @@
         "A card with an empty diagram shows no thumbnail area",
         "Editing the diagram updates the thumbnail after the editor closes"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "canvas-07",
