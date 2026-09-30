@@ -5,7 +5,8 @@
     "Work on features in order unless a later one is blocked only by an earlier one you already finished.",
     "Only change the `passes` field. Never delete, reword, reorder, or merge features.",
     "Set `passes` to true only after every step is verified by an automated test (Vitest or Playwright) that is committed and green.",
-    "If the spec and a feature disagree, the spec wins; record the conflict in progress.md instead of editing the feature."
+    "If the spec and a feature disagree, the spec wins; record the conflict in progress.md instead of editing the feature.",
+    "docs/acceptance-tests.md is human-owned: never edit it. Implement each scenario as a Playwright test in e2e/acceptance/ that checks every expected outcome; never weaken or skip them."
   ],
   "features": [
     {
@@ -480,14 +481,27 @@
       "passes": false
     },
     {
+      "id": "acceptance-01",
+      "category": "quality",
+      "description": "Acceptance scenarios AT-01..AT-14 from docs/acceptance-tests.md.",
+      "steps": [
+        "Each scenario AT-01..AT-14 has its own Playwright test in e2e/acceptance/ whose name starts with the scenario ID",
+        "Each test checks every 'Ожидаем' item of its scenario literally",
+        "No acceptance test is skipped or marked fixme",
+        "All acceptance tests pass"
+      ],
+      "passes": false
+    },
+    {
       "id": "final-01",
       "category": "quality",
       "description": "Green build.",
       "steps": [
-        "`pnpm check` and `pnpm e2e` pass on a clean checkout",
+        "`pnpm check` and `pnpm e2e` (including e2e/acceptance/) pass on a clean checkout",
         "No TODOs left for features marked as passing"
       ],
       "passes": false
     }
-  ]
+  ],
+  "acceptance": "docs/acceptance-tests.md"
 }

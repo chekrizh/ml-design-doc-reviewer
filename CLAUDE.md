@@ -18,6 +18,8 @@ Apply the same philosophy to your own engineering decisions in this repo: when m
 
 - MVP scope and screen specs: `docs/mvp-spec.md`; mockups in `docs/mockups/`.
 - M1 is frontend-only: React + TypeScript + Vite, Excalidraw (React component), TipTap, Zustand, IndexedDB, Tailwind, Vitest + Playwright, pnpm. Deployed as a static build on Vercel.
+- Feature list for M1: `features.json`. Change only the `passes` field.
+- Acceptance scenarios: `docs/acceptance-tests.md`. Human-owned: never edit, weaken, or skip them; implement each as a Playwright test in `e2e/acceptance/`.
 - Decision log with alternatives: `docs/decisions.md`. Add an entry for every non-trivial decision.
 
 ## Notes
