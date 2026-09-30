@@ -148,7 +148,7 @@
         "An empty title is shown as 'Untitled design'",
         "The title persists after reload"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "canvas-03",

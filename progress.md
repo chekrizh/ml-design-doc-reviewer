@@ -69,3 +69,8 @@ Format:
 ## canvas-01
 - [x] Header shows the design title, the Canvas/Document toggle and export controls (`e2e/canvas.spec.ts`)
 - [x] No avatars, Share button or contributor count
+
+## canvas-02
+- [x] Clicking the title turns it into an input; Enter saves, Escape cancels (`e2e/canvas.spec.ts`)
+- [x] An empty title is shown as 'Untitled design'
+- [x] The title persists after reload
