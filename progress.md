@@ -267,3 +267,7 @@ Format:
 - [x] Share popover with Export PDF and Export Markdown; both keep the empty-sections warning (m11-06, export.spec.ts, AT-01/12/13)
 - [x] '⋯' menu with Load example (confirmation) and Reset layout (canvas mode only)
 - [x] Popovers close on outside click and Escape
+
+## m11-07
+- [x] AI Review opens a popover with one item, 'Full review' (`e2e/canvas.spec.ts` m11-07)
+- [x] 'Full review' is disabled and shows a 'Coming soon' tooltip; wiring to a skill is M2

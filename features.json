@@ -570,7 +570,7 @@
         "AI Review opens a popover with one item, 'Full review'",
         "'Full review' is disabled for now and shows a 'Coming soon' tooltip; wiring it to a skill is M2"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m11-08",
