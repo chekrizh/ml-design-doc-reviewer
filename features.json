@@ -127,7 +127,7 @@
         "Confirm loads the Churn Prediction (Telecom) example, which fills every section, has complete trade-offs in at least 3 sections and diagrams in at least 2",
         "The example lives in one fixture file reused by e2e tests"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "canvas-01",

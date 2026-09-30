@@ -58,3 +58,10 @@ Format:
 - [x] Edit a key property value, reload the page: the value is still there (`e2e/persist.spec.ts`)
 - [x] Draw on a whiteboard, reload: the drawing is still there
 - [x] First visit with empty storage shows the empty design
+
+## persist-02
+- [x] A 'Load example' control exists (header)
+- [x] Clicking it asks for confirmation because it overwrites the current design (`e2e/persist.spec.ts`)
+- [x] Cancel keeps the current design unchanged
+- [x] Confirm loads the Churn Prediction (Telecom) example, which fills every section, has complete trade-offs in at least 3 sections and diagrams in at least 2 (`src/fixtures/example.test.ts`, e2e)
+- [x] The example lives in one fixture file reused by e2e tests (`src/fixtures/example.ts`)
