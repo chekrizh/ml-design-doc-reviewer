@@ -478,7 +478,7 @@
         "An e2e test saves screenshots of the canvas, the Component Editor and the document with the example loaded to `e2e/screenshots/`",
         "Each screenshot is compared by eye with the matching file in docs/mockups/ and differences are noted in open-questions.md"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "acceptance-01",

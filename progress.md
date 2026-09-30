@@ -214,3 +214,7 @@ Format:
 ## ui-01
 - [x] Below 1280px viewport width the app shows an 'Open on desktop' screen instead of the editor (`e2e/ui.spec.ts`)
 - [x] At 1280px and above the app works normally
+
+## ui-02
+- [x] An e2e test saves screenshots of the canvas, the Component Editor and the document with the example loaded to `e2e/screenshots/` (`e2e/ui.spec.ts`)
+- [x] Each screenshot is compared by eye with the matching file in docs/mockups/ and differences are noted in open-questions.md
