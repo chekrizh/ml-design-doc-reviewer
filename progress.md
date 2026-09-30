@@ -161,3 +161,6 @@ Format:
 ## doc-03
 - [x] Each filled section shows a key properties plate, the rationale, the trade-off matrix as a table with the chosen option marked, and the diagram as an image (`e2e/document.spec.ts`)
 - [x] Parts that are empty inside a filled section are omitted
+
+## doc-04
+- [x] An empty section (model-04) shows its heading and a 'Not filled yet' placeholder (`e2e/document.spec.ts`)

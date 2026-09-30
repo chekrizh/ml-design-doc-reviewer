@@ -352,7 +352,7 @@
       "steps": [
         "An empty section (model-04) shows its heading and a 'Not filled yet' placeholder"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "doc-05",
