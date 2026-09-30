@@ -82,7 +82,7 @@
         "A pure function returns true when the Excalidraw scene has at least one non-deleted element",
         "Unit tests cover an empty scene, a scene with only deleted elements, and a scene with elements"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "model-04",

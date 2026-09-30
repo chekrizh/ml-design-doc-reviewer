@@ -40,3 +40,7 @@ Format:
 ## model-02
 - [x] A pure function returns true only when there are >=2 options, >=1 criterion, every cell is non-empty and exactly one option is chosen (`tradeoffsComplete` in `src/model/rules.ts`)
 - [x] Unit tests cover each failing condition separately and the passing case (`src/model/rules.test.ts`)
+
+## model-03
+- [x] A pure function returns true when the Excalidraw scene has at least one non-deleted element (`diagramNonEmpty`, added with model-02)
+- [x] Unit tests cover an empty scene, a scene with only deleted elements, and a scene with elements
