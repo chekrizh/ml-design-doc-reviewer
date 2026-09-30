@@ -4,7 +4,7 @@ import { diagramNonEmpty, sectionEmpty } from '../src/model/rules'
 import { exampleDesign } from '../src/fixtures/example'
 import {
   closeEditor, downloadText, drawRectangle, exportMarkdown, loadExample, openApp, openDetails, pdfText, readZip,
-  SECTION_ORDER, savedDesign, setCardValue, setTitle, toMode,
+  SECTION_ORDER, savedDesign, setCardValue, setTitle, toMode, menuAction,
 } from './helpers'
 
 test('export-02 without diagrams: single <title-slug>.md equal to the generator output', async ({ page }) => {
@@ -44,7 +44,7 @@ test('export-04 Export PDF opens print for the document; print styles hide chrom
   })
   await openApp(page)
   await loadExample(page)
-  await page.getByRole('button', { name: 'Export PDF' }).click()
+  await menuAction(page, 'Share', 'Export PDF')
   await expect.poll(() => page.evaluate(() => (window as unknown as { printed?: number }).printed)).toBe(1)
   await expect(page.getByTestId('document')).toBeVisible()
 
@@ -79,13 +79,13 @@ test('export-05 warning with the number of empty sections before both exports; c
   // PDF: cancel, then continue.
   let msg = ''
   page.once('dialog', (d) => ((msg = d.message()), void d.dismiss()))
-  await page.getByRole('button', { name: 'Export PDF' }).click()
+  await menuAction(page, 'Share', 'Export PDF')
   expect(msg).toContain('8')
   await page.waitForTimeout(500)
   expect(await page.evaluate(() => (window as unknown as { printed?: number }).printed)).toBeUndefined()
   page.once('dialog', (d) => void d.accept())
   await toMode(page, 'Canvas')
-  await page.getByRole('button', { name: 'Export PDF' }).click()
+  await menuAction(page, 'Share', 'Export PDF')
   await expect.poll(() => page.evaluate(() => (window as unknown as { printed?: number }).printed)).toBe(1)
 })
 
@@ -102,7 +102,7 @@ test('export-05 no warning when no section is empty', async ({ page }) => {
   const { warning, download } = await exportMarkdown(page, 'none')
   expect(warning).toBeNull()
   expect(download).not.toBeNull()
-  await page.getByRole('button', { name: 'Export PDF' }).click()
+  await menuAction(page, 'Share', 'Export PDF')
   await expect.poll(() => page.evaluate(() => (window as unknown as { printed?: number }).printed)).toBe(1)
   expect(dialogs).toBe(0)
 })

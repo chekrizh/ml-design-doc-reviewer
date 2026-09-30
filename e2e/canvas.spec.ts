@@ -1,19 +1,62 @@
 import { expect, test } from '@playwright/test'
 import {
   card, cardBox, closeEditor, contentGap, dialog, docSection, dragCard, drawRectangle, indicator, loadExample, openApp,
-  openDetails, reload, resizeCard, SECTION_ORDER, setCardValue, setTitle, toMode, addCriterion, addOption,
+  openDetails, reload, resizeCard, SECTION_ORDER, setCardValue, setTitle, toMode, addCriterion, addOption, menuAction,
 } from './helpers'
 
-test('canvas-01 header has title, toggle and export controls, no social UI', async ({ page }) => {
+test('canvas-01 / m11-06 header: logo, title and save status left, toggle center, AI Review, Share and ⋯ right', async ({ page }) => {
   await openApp(page)
   const header = page.locator('header').first()
-  await expect(header.getByRole('button', { name: 'Edit Design title' })).toBeVisible()
-  await expect(header.getByRole('button', { name: 'Canvas', exact: true })).toBeVisible()
-  await expect(header.getByRole('button', { name: 'Document', exact: true })).toBeVisible()
-  await expect(header.getByRole('button', { name: 'Export Markdown' })).toBeVisible()
-  await expect(header.getByRole('button', { name: 'Export PDF' })).toBeVisible()
-  await expect(header.getByText(/share|contributor/i)).toHaveCount(0)
+  const box = async (l: import('@playwright/test').Locator) => (await l.boundingBox())!
+  const hb = await box(header)
+  const title = header.getByRole('button', { name: 'Edit Design title' })
+  const status = header.getByTestId('header-save-state')
+  const toggle = header.getByRole('group', { name: 'Mode' })
+  await expect(status).toHaveText('Saved')
+  const [tb, sb, gb] = [await box(title), await box(status), await box(toggle)]
+  expect(sb.x).toBeGreaterThan(tb.x + tb.width - 1)
+  expect(sb.x - (tb.x + tb.width)).toBeLessThan(24)
+  expect(Math.abs(gb.x + gb.width / 2 - (hb.x + hb.width / 2))).toBeLessThan(40)
+  const right = ['AI Review', 'Share', 'More']
+  for (const name of right) expect((await box(header.getByRole('button', { name, exact: true }))).x).toBeGreaterThan(gb.x + gb.width)
+  for (const name of ['Export PDF', 'Export Markdown', 'Load example', 'Reset layout'])
+    await expect(header.getByRole('button', { name })).toHaveCount(0)
+  await expect(header.getByText(/contributor/i)).toHaveCount(0)
   await expect(header.locator('img')).toHaveCount(0)
+})
+
+test('m11-06 Share and ⋯ menus: items, close on outside click and Escape, Reset layout only on canvas', async ({ page }) => {
+  await openApp(page)
+  const share = page.getByRole('menu', { name: 'Share' })
+  const more = page.getByRole('menu', { name: 'More' })
+  await page.getByRole('button', { name: 'Share', exact: true }).click()
+  await expect(share.getByRole('menuitem')).toHaveText(['Export PDF', 'Export Markdown'])
+  await page.mouse.click(700, 500)
+  await expect(share).toBeHidden()
+  await page.getByRole('button', { name: 'Share', exact: true }).click()
+  await expect(share).toBeVisible()
+  await page.keyboard.press('Escape')
+  await expect(share).toBeHidden()
+
+  await page.getByRole('button', { name: 'More', exact: true }).click()
+  await expect(more.getByRole('menuitem')).toHaveText(['Load example', 'Reset layout'])
+  await page.keyboard.press('Escape')
+  await expect(more).toBeHidden()
+  await toMode(page, 'Document')
+  await page.getByRole('button', { name: 'More', exact: true }).click()
+  await expect(more.getByRole('menuitem')).toHaveText(['Load example'])
+  await page.keyboard.press('Escape')
+
+  // Export keeps the empty-sections warning; Load example asks first.
+  let message = ''
+  page.once('dialog', (d) => ((message = d.message()), void d.dismiss()))
+  await menuAction(page, 'Share', 'Export Markdown')
+  await expect.poll(() => message).toMatch(/empty/)
+  await expect(share).toBeHidden()
+  page.once('dialog', (d) => ((message = d.message()), void d.dismiss()))
+  await menuAction(page, 'Share', 'Export PDF')
+  await expect.poll(() => message).toMatch(/empty/)
+  await loadExample(page)
 })
 
 test('canvas-02 title: click to edit, Enter saves, Escape cancels, persists', async ({ page }) => {
@@ -180,7 +223,7 @@ test('canvas-10 reset layout restores initial layout, content unchanged', async 
   await dragCard(page, 'monitoring', 'problem-space')
   await resizeCard(page, 'integration', -150, 0)
   expect(await Promise.all(ids.map((sid) => cardBox(page, sid)))).not.toEqual(initial)
-  await page.getByRole('button', { name: 'Reset layout' }).click()
+  await menuAction(page, 'More', 'Reset layout')
   await expect.poll(() => Promise.all(ids.map((sid) => cardBox(page, sid)))).toEqual(initial)
   expect(await Promise.all(ids.map((sid) => card(page, sid).innerText()))).toEqual(content)
 })

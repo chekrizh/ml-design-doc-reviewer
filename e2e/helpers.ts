@@ -47,9 +47,15 @@ export async function setTitle(page: Page, title: string) {
   await page.getByRole('textbox', { name: 'Design title' }).press('Enter')
 }
 
+/** Opens a header menu ('Share' or 'More') and clicks one of its items. */
+export async function menuAction(page: Page, menu: 'Share' | 'More', item: string) {
+  await page.getByRole('button', { name: menu, exact: true }).click()
+  await page.getByRole('menuitem', { name: item }).click()
+}
+
 export async function loadExample(page: Page) {
   page.once('dialog', (d) => d.accept())
-  await page.getByRole('button', { name: 'Load example' }).click()
+  await menuAction(page, 'More', 'Load example')
   await expect(page.getByRole('button', { name: 'Edit Design title' })).toHaveText('Churn Prediction (Telecom)')
 }
 
@@ -143,11 +149,11 @@ export async function exportMarkdown(page: Page, onWarning: 'accept' | 'dismiss'
   if (onWarning === 'dismiss') {
     const downloads: unknown[] = []
     page.on('download', (d) => downloads.push(d))
-    await page.getByRole('button', { name: 'Export Markdown' }).click()
+    await menuAction(page, 'Share', 'Export Markdown')
     await page.waitForTimeout(1000)
     return { warning: warning as string | null, download: null, downloads: downloads.length }
   }
-  const [download] = await Promise.all([page.waitForEvent('download'), page.getByRole('button', { name: 'Export Markdown' }).click()])
+  const [download] = await Promise.all([page.waitForEvent('download'), menuAction(page, 'Share', 'Export Markdown')])
   page.off('dialog', handler)
   return { warning: warning as string | null, download, downloads: 1 }
 }

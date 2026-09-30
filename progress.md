@@ -259,3 +259,11 @@ Format:
 - [x] Side gaps reproduced (windows wider than 1600px: canvas capped at `max-w-[1600px]` under a full-width header) and fixed at the root; engine geometry is identical in Chromium and WebKit (`e2e/layout.spec.ts`, runs in both; note in open-questions.md)
 - [x] WebKit project in playwright.config.ts runs e2e/acceptance/ (plus layout.spec.ts); Chromium runs the whole suite
 - [x] WebKit browser installed (`pnpm exec playwright install webkit`)
+
+## m11-06
+- [x] Left: logo, editable title, small save status next to the title (`e2e/canvas.spec.ts` canvas-01 / m11-06)
+- [x] Center: Canvas/Document toggle
+- [x] Right: AI Review, Share and '⋯' (More) buttons
+- [x] Share popover with Export PDF and Export Markdown; both keep the empty-sections warning (m11-06, export.spec.ts, AT-01/12/13)
+- [x] '⋯' menu with Load example (confirmation) and Reset layout (canvas mode only)
+- [x] Popovers close on outside click and Escape

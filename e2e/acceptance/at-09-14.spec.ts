@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test'
 import {
   addCriterion, addOption, card, cardBox, closeEditor, dialog, docSection, downloadText, dragCard, drawRectangle,
   exportMarkdown, indicator, loadExample, openApp, openDetails, pdfText, readZip, reload, resizeCard, SECTION_ORDER,
-  setCardValue, setTitle, toMode,
+  setCardValue, setTitle, toMode, menuAction,
 } from '../helpers'
 
 const ids = SECTION_ORDER.map(([sid]) => sid)
@@ -54,7 +54,7 @@ test('AT-10 reset layout', async ({ page }) => {
   await dragCard(page, 'baseline', 'validation')
   await resizeCard(page, 'integration', -150, 0)
   expect(await Promise.all(ids.map((sid) => cardBox(page, sid)))).not.toEqual(initial)
-  await page.getByRole('button', { name: 'Reset layout' }).click()
+  await menuAction(page, 'More', 'Reset layout')
   await expect.poll(() => Promise.all(ids.map((sid) => cardBox(page, sid)))).toEqual(initial)
   expect(await Promise.all(ids.map((sid) => card(page, sid).innerText()))).toEqual(content)
 })
@@ -63,7 +63,7 @@ test('AT-11 load example asks first', async ({ page }) => {
   await openApp(page)
   await setTitle(page, 'Mine')
   page.once('dialog', (d) => void d.dismiss())
-  await page.getByRole('button', { name: 'Load example' }).click()
+  await menuAction(page, 'More', 'Load example')
   await expect(page.getByRole('button', { name: 'Edit Design title' })).toHaveText('Mine')
 
   await loadExample(page)

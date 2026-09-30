@@ -560,7 +560,7 @@
         "'⋯' opens a menu with Load example (with confirmation) and Reset layout (canvas mode only)",
         "Popovers close on outside click and Escape"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m11-07",

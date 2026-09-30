@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test'
-import { dialog, docSection, loadExample, openApp, openDetails, setCardValue, toMode } from './helpers'
+import { dialog, docSection, loadExample, openApp, openDetails, setCardValue, menuAction, toMode } from './helpers'
 
 // Regression tests for the code review of the M1 run (R<n> = finding n).
 
@@ -77,7 +77,7 @@ test('R6 Export PDF prints only after the diagram images are in the document', a
   const diagrams = await page.getByTestId('thumbnail').count()
   expect(diagrams).toBeGreaterThan(0)
 
-  await page.getByRole('button', { name: 'Export PDF' }).click()
+  await menuAction(page, 'Share', 'Export PDF')
   const printed = () => page.evaluate(() => (window as unknown as { printedImages: number }).printedImages)
   await expect.poll(printed, { timeout: 15_000 }).toBeGreaterThanOrEqual(0)
   expect(await printed()).toBe(diagrams)
@@ -98,7 +98,7 @@ test('R7/R8 a failed diagram render during Markdown export is reported on every 
         await d.accept()
       }),
     )
-    await page.getByRole('button', { name: 'Export Markdown' }).click()
+    await menuAction(page, 'Share', 'Export Markdown')
     expect(await alert).toMatch(/Export failed/)
   }
 })
