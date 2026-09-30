@@ -7,3 +7,5 @@
 .prose-rt code { font-family: ui-monospace, monospace; background: #f1f5f9; border-radius: 4px; padding: 0 3px; }
 .prose-rt a { color: #6d28d9; text-decoration: underline; }
 .prose-rt h1, .prose-rt h2, .prose-rt h3 { font-weight: 600; margin: 0.6em 0 0.3em; }
+
+@page { margin: 16mm; }

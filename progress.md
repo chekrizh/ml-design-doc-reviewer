@@ -200,3 +200,8 @@ Format:
 - [x] With at least one non-empty diagram, 'Export Markdown' downloads `<title-slug>.zip` (`e2e/export.spec.ts`)
 - [x] The ZIP contains `<title-slug>.md` and `images/*.svg`, one per non-empty diagram
 - [x] Every image link in the Markdown resolves to a file in the ZIP
+
+## export-04
+- [x] 'Export PDF' opens the browser print dialog for the document (`e2e/export.spec.ts`, `window.print` stubbed)
+- [x] Print styles show only the document: no header, toggle or table of contents
+- [x] `page.pdf()` in Playwright produces a PDF that contains every filled section heading

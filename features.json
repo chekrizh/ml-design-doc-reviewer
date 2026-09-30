@@ -447,7 +447,7 @@
         "Print styles show only the document: no header, toggle or table of contents",
         "`page.pdf()` in Playwright produces a PDF that contains every filled section heading"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "export-05",
