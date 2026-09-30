@@ -323,7 +323,7 @@
         "The document heading is the design title, with 'ML System Architecture Spec' as subtitle and a 'Last updated' line",
         "Layout matches docs/mockups/document.png: document column and an 'On this page' table of contents on the right"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "doc-02",

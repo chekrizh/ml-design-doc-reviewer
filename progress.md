@@ -148,3 +148,8 @@ Format:
 - [x] The whiteboard is the @excalidraw/excalidraw React component, not an iframe (`e2e/editor.spec.ts`)
 - [x] Drawing persists after reload
 - [x] The card's Diagram indicator and thumbnail update
+
+## doc-01
+- [x] The toggle switches to Document mode and back without losing state (`e2e/document.spec.ts`)
+- [x] The document heading is the design title, with 'ML System Architecture Spec' as subtitle and a 'Last updated' line
+- [x] Layout matches docs/mockups/document.png: document column and an 'On this page' table of contents on the right
