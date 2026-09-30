@@ -415,7 +415,7 @@
         "Empty sections are excluded",
         "A snapshot test runs on the example fixture"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "export-02",

@@ -186,3 +186,8 @@ Format:
 - [x] An edit in Canvas mode is visible in Document mode right after switching, without reload (`e2e/document.spec.ts`)
 - [x] An edit in Document mode is visible in Canvas mode right after switching, without reload
 - [x] Covered for key properties, rationale, trade-offs and diagram
+
+## export-01
+- [x] A pure function turns a Design into Markdown: title, subtitle, numbered section headings, key properties table, rationale as Markdown, trade-off matrix as a table with the chosen option marked, diagram image links to images/<section-id>.svg (`src/export/markdown.ts`, `src/export/markdown.test.ts`)
+- [x] Empty sections are excluded
+- [x] A snapshot test runs on the example fixture
