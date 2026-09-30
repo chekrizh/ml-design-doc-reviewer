@@ -228,3 +228,7 @@ Format:
 ## final-01
 - [x] `pnpm check` and `pnpm e2e` (including e2e/acceptance/) pass on a clean checkout (fresh `node_modules`, `pnpm install --frozen-lockfile`: 36 unit tests, 58 e2e tests green)
 - [x] No TODOs left for features marked as passing (no TODO/FIXME/skip/fixme/only in `src` or `e2e`)
+
+## Run result: DONE
+- Features passing: 46 / 46
+- Stuck features: none
