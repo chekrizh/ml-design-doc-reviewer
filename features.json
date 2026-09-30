@@ -204,7 +204,7 @@
         "Trade-offs is bright only when the completeness rule (model-02) holds",
         "Diagram is bright only when the diagram is non-empty (model-03)"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "canvas-08",

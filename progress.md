@@ -94,3 +94,9 @@ Format:
 - [x] A card whose diagram is non-empty shows an SVG thumbnail of it (`e2e/canvas.spec.ts`)
 - [x] A card with an empty diagram shows no thumbnail area
 - [x] Editing the diagram updates the thumbnail after the editor closes
+
+## canvas-07
+- [x] Each card footer shows a Details button and two indicators, Trade-offs and Diagram, which are not clickable (`e2e/canvas.spec.ts`)
+- [x] Each indicator has exactly two states: off and bright
+- [x] Trade-offs is bright only when the completeness rule (model-02) holds
+- [x] Diagram is bright only when the diagram is non-empty (model-03)
