@@ -137,3 +137,9 @@ Format:
 - [x] 'Add Option (Row)' and 'Add Criteria (Col)' add a row and a column (`e2e/editor.spec.ts`)
 - [x] Option names, criterion names and cells are editable
 - [x] Rows and columns can be deleted
+
+## editor-06
+- [x] Exactly one option can be marked as chosen; marking another moves the mark (`e2e/editor.spec.ts`)
+- [x] The chosen option is visually highlighted
+- [x] The card's Trade-offs indicator updates live as the matrix changes
+- [x] Choosing an option does not change key properties

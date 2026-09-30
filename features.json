@@ -301,7 +301,7 @@
         "The card's Trade-offs indicator updates live as the matrix changes",
         "Choosing an option does not change key properties"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "editor-07",
