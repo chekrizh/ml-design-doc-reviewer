@@ -18,7 +18,7 @@
         "`pnpm dev` serves the app and the page renders without console errors",
         "`pnpm build` produces a static `dist/`"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "setup-02",

@@ -11,3 +11,8 @@ Format:
 ```
 
 <!-- Entries start below. -->
+
+## setup-01
+- [x] `pnpm install` succeeds on a clean checkout with Node 22 (`pnpm install --frozen-lockfile`; `engines.node >=22`)
+- [x] `pnpm dev` serves the app and the page renders without console errors (`e2e/build.spec.ts`)
+- [x] `pnpm build` produces a static `dist/` (`e2e/build.spec.ts`)
