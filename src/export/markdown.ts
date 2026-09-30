@@ -5,6 +5,7 @@ export const slugify = (title: string) =>
   title
     .toLowerCase()
     .normalize('NFKD')
+    .replace(/\p{M}+/gu, '')
     .replace(/[^\p{L}\p{N}]+/gu, '-')
     .replace(/^-+|-+$/g, '') || 'untitled-design'
 

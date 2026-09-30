@@ -20,6 +20,8 @@ export function diagramToSvg(d: Diagram): Promise<string> {
       return el.outerHTML
     })
     cache.set(d, svg)
+    // A failed render (e.g. the chunk did not load) must not stick: the next call retries.
+    svg.catch(() => cache.get(d) === svg && cache.delete(d))
   }
   return svg
 }
@@ -32,7 +34,10 @@ export function useDiagramImage(d: Diagram): string | null {
   useEffect(() => {
     if (!diagramNonEmpty(d)) return
     let live = true
-    diagramToSvg(d).then((svg) => live && setImg({ d, url: svgDataUrl(svg) }))
+    diagramToSvg(d).then(
+      (svg) => live && setImg({ d, url: svgDataUrl(svg) }),
+      () => {}, // no thumbnail; a later change or remount retries
+    )
     return () => {
       live = false
     }

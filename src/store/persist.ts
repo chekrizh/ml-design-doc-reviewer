@@ -25,19 +25,38 @@ const run = async <T>(mode: IDBTransactionMode, fn: (s: IDBObjectStore) => IDBRe
 export const loadDesign = () => run<Design | undefined>('readonly', (s) => s.get(KEY))
 export const saveDesign = (d: Design) => run('readwrite', (s) => s.put(d, KEY))
 
-/** Loads the saved design into the store, then saves every change (debounced). */
+/**
+ * Loads the saved design into the store, then saves every change (debounced).
+ * Never rejects: if storage is unavailable the app still works and shows "Not saved".
+ */
 export async function startPersistence() {
-  const saved = await loadDesign()
-  if (saved) useDesign.getState().setDesign(saved)
+  const { setDesign, setSaveState } = useDesign.getState()
+  try {
+    const saved = await loadDesign()
+    if (saved) setDesign(saved)
+  } catch (e) {
+    console.warn('Could not load the saved design', e)
+    setSaveState('error')
+  }
   let timer: ReturnType<typeof setTimeout> | undefined
+  const flush = async () => {
+    clearTimeout(timer)
+    timer = undefined
+    const d = useDesign.getState().design
+    try {
+      await saveDesign(d)
+      if (useDesign.getState().design === d) setSaveState('saved')
+    } catch (e) {
+      console.warn('Could not save the design', e)
+      setSaveState('error')
+    }
+  }
   useDesign.subscribe((s, prev) => {
     if (s.design === prev.design) return
-    useDesign.getState().setSaveState('saving')
+    setSaveState('saving')
     clearTimeout(timer)
-    timer = setTimeout(async () => {
-      const d = useDesign.getState().design
-      await saveDesign(d)
-      if (useDesign.getState().design === d) useDesign.getState().setSaveState('saved')
-    }, 200)
+    timer = setTimeout(flush, 200)
   })
+  // Best effort: write a pending change when the tab is closed or reloaded.
+  window.addEventListener('pagehide', () => timer !== undefined && void flush())
 }

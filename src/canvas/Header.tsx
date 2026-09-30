@@ -1,9 +1,13 @@
 import { exampleDesign } from '../fixtures/example'
 import { InlineText } from '../editor/InlineText'
 import { confirmEmptySections, exportMarkdown } from '../export/download'
+import { diagramToSvg } from '../export/svg'
+import { diagramNonEmpty } from '../model/rules'
 import { useDesign } from '../store/store'
 
 export type Mode = 'canvas' | 'document'
+
+const SAVE_LABEL = { saved: 'Saved', saving: 'Saving…', error: 'Not saved' }
 
 const tab = (on: boolean) =>
   `rounded-lg px-4 py-1.5 text-sm font-medium ${on ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`
@@ -19,12 +23,20 @@ export function Header({ mode, setMode }: { mode: Mode; setMode: (m: Mode) => vo
   }
   const exportMd = () => {
     const d = useDesign.getState().design
-    if (confirmEmptySections(d)) void exportMarkdown(d)
+    if (confirmEmptySections(d))
+      exportMarkdown(d).catch(() => window.alert('Export failed: a diagram could not be rendered. Please try again.'))
   }
-  const exportPdf = () => {
-    if (!confirmEmptySections(useDesign.getState().design)) return
+  const exportPdf = async () => {
+    const d = useDesign.getState().design
+    if (!confirmEmptySections(d)) return
+    // Render the diagrams first: the Excalidraw chunk is large and loads lazily.
+    try {
+      await Promise.all(d.sections.filter((s) => diagramNonEmpty(s.diagram)).map((s) => diagramToSvg(s.diagram)))
+    } catch {
+      window.alert('Some diagrams could not be rendered and will be missing from the PDF.')
+    }
     setMode('document')
-    // Let the document and its diagram images render before printing.
+    // Let the document render its (now cached) diagram images before printing.
     setTimeout(() => window.print(), 300)
   }
 
@@ -45,8 +57,8 @@ export function Header({ mode, setMode }: { mode: Mode; setMode: (m: Mode) => vo
         </button>
       </div>
       <div className="flex flex-1 items-center justify-end gap-2">
-        <span data-testid="header-save-state" className="mr-2 text-xs text-slate-400">
-          {saveState === 'saved' ? 'Saved' : 'Saving…'}
+        <span data-testid="header-save-state" className={`mr-2 text-xs ${saveState === 'error' ? 'font-medium text-red-600' : 'text-slate-400'}`}>
+          {SAVE_LABEL[saveState]}
         </span>
         <button type="button" className={action} onClick={loadExample}>
           Load example

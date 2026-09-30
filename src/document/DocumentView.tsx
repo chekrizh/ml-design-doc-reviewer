@@ -13,7 +13,10 @@ function DocSection({ sid, n, name }: { sid: SectionId; n: number; name: string 
   const s = useSection(sid)
   const a = useDesign.getState()
   const img = useDiagramImage(s.diagram)
-  const empty = sectionEmpty(s)
+  // Keep the rationale editor mounted while it has focus, even if the user clears it to retype.
+  const [editingRationale, setEditingRationale] = useState(false)
+  const showRationale = editingRationale || !richTextEmpty(s.rationale)
+  const empty = sectionEmpty(s) && !editingRationale
   const hasValues = s.keyProperties.some((p) => p.value.trim())
 
   return (
@@ -37,8 +40,13 @@ function DocSection({ sid, n, name }: { sid: SectionId; n: number; name: string 
               ))}
             </dl>
           )}
-          {!richTextEmpty(s.rationale) && (
-            <div data-testid="rationale" className="leading-relaxed text-slate-700">
+          {showRationale && (
+            <div
+              data-testid="rationale"
+              className="leading-relaxed text-slate-700"
+              onFocus={() => setEditingRationale(true)}
+              onBlur={(e) => !e.currentTarget.contains(e.relatedTarget) && setEditingRationale(false)}
+            >
               <RichTextEditor bare label={`${name} rationale`} value={s.rationale} onChange={(v) => a.setRationale(sid, v)} />
             </div>
           )}

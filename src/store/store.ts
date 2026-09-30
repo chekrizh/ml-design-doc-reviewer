@@ -12,7 +12,7 @@ import {
   type TradeOffs,
 } from '../model/design'
 
-export type SaveState = 'saved' | 'saving'
+export type SaveState = 'saved' | 'saving' | 'error'
 
 interface State {
   design: Design

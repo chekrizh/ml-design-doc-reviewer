@@ -44,7 +44,7 @@ export function ComponentEditor({ sid, onClose }: { sid: SectionId; onClose: () 
           </div>
           <h2 id="editor-title" className="flex-1 text-2xl font-semibold">{name}</h2>
           <span data-testid="save-state" className="rounded-full border border-slate-200 px-3 py-1 text-sm text-slate-500">
-            {saveState === 'saved' ? '☁ Saved to Canvas' : 'Saving…'}
+            {{ saved: '☁ Saved to Canvas', saving: 'Saving…', error: 'Not saved' }[saveState]}
           </span>
           <button type="button" aria-label="Close" onClick={onClose} autoFocus className="rounded-full p-2 text-2xl leading-none text-slate-500 hover:bg-slate-100">
             ×

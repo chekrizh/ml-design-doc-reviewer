@@ -54,3 +54,7 @@ it('slugify', () => {
   expect(slugify('Churn Prediction (Telecom)')).toBe('churn-prediction-telecom')
   expect(slugify('  ')).toBe('untitled-design')
 })
+
+it('slugify drops accents instead of turning them into hyphens', () => {
+  expect(slugify('Résumé ranking')).toBe('resume-ranking')
+})

@@ -1,6 +1,8 @@
 import { EditorContent, useEditor, useEditorState } from '@tiptap/react'
+import { useEffect } from 'react'
 import StarterKit from '@tiptap/starter-kit'
 import type { RichText } from '../model/design'
+import { richTextEmpty } from '../model/rules'
 
 const btn = (active: boolean) =>
   `rounded px-2 py-1 text-sm ${active ? 'bg-violet-100 text-violet-700' : 'text-slate-500 hover:bg-slate-100'}`
@@ -31,6 +33,13 @@ export function RichTextEditor({
       },
     },
   })
+  // Follow changes made elsewhere (e.g. Load example); own edits come back equal and are skipped.
+  useEffect(() => {
+    if (!editor || editor.isDestroyed) return
+    const current = editor.getJSON() as RichText
+    const same = value ? JSON.stringify(current) === JSON.stringify(value) : richTextEmpty(current)
+    if (!same) editor.commands.setContent(value ?? '', { emitUpdate: false })
+  }, [editor, value])
   const active = useEditorState({
     editor,
     selector: ({ editor: e }) => ({
