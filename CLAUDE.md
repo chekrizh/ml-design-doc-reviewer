@@ -1,0 +1,27 @@
+# CLAUDE.md
+
+## Project
+
+ML System Design Trainer: LeetCode for ML System Design. An interactive visual canvas where an engineer builds an ML system architecture block by block, assisted by an AI helper grounded in real system design documents; the result becomes a structured, exportable document. Full vision: `docs/vision.md`. Product requirements (why, who, what): `docs/prd.md`.
+
+## Main philosophy (verbatim, never change or drop)
+
+> Every decision is the result of weighing alternatives, their advantages and disadvantages.
+> A system is a collection of decisions made in this way, united by a single goal.
+> The goal of the designed system is to solve a business problem within given constraints. Accordingly, the system as a whole and each of its elements are aimed at achieving this goal.
+
+This philosophy is the foundation of the product. Check every feature, UI flow, AI-helper behavior, and document format against it. When the product has to choose how to model a "decision" or a "component", the model must capture the goal, the alternatives considered, and their trade-offs.
+
+Apply the same philosophy to your own engineering decisions in this repo: when making a non-trivial choice, record the goal, the alternatives, and why this one won.
+
+## Scope and stack
+
+- MVP scope and screen specs: `docs/mvp-spec.md`; mockups in `docs/mockups/`.
+- M1 is frontend-only: React + TypeScript + Vite, Excalidraw (React component), TipTap, Zustand, IndexedDB, Tailwind, Vitest + Playwright, pnpm. Deployed as a static build on Vercel.
+- Decision log with alternatives: `docs/decisions.md`. Add an entry for every non-trivial decision.
+
+## Notes
+
+- `data/raw_ByteByteGo_examples/` is not used by the project. Ignore it.
+- `README.md` and `CONTRIBUTING.md` still describe the earlier "ML Design Doc Reviewer" idea and are out of date.
+- Pre-autonomous-run checklist: `docs/autonomous-run-checklist.md`.
