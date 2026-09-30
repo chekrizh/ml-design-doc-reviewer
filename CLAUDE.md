@@ -38,6 +38,14 @@ For each feature:
 - Record non-trivial engineering choices in `docs/decisions.md`.
 - Conflicts between spec, features and acceptance scenarios, or differences from mockups, go to `open-questions.md`. Do not resolve them silently; continue with other features.
 
+## Tools during the run
+
+- **context7**: look up the current docs before using any library API (Excalidraw, TipTap, react-grid-layout, Zustand, Tailwind, Vite, Playwright, JSZip). Do not rely on memory for these APIs.
+- **playwright MCP**: open the running app to see what a failing test or a UI change actually looks like, and to compare screens with `docs/mockups/`.
+- **superpowers**: planning is done (`docs/mvp-spec.md`, `features.json`). Do not use brainstorming, writing-plans or any skill that waits for the human. Use test-driven-development, systematic-debugging and verification-before-completion.
+- **ponytail**: prefer the simplest solution, but inside the decisions in `docs/decisions.md`. Those choices are fixed; to challenge one, write to `open-questions.md` instead of switching.
+- To read `docs/acceptance-tests.md` use the Read tool; shell commands naming that file are denied.
+
 ## Notes
 
 - `data/raw_ByteByteGo_examples/` is not used by the project. Ignore it.
