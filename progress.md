@@ -65,3 +65,7 @@ Format:
 - [x] Cancel keeps the current design unchanged
 - [x] Confirm loads the Churn Prediction (Telecom) example, which fills every section, has complete trade-offs in at least 3 sections and diagrams in at least 2 (`src/fixtures/example.test.ts`, e2e)
 - [x] The example lives in one fixture file reused by e2e tests (`src/fixtures/example.ts`)
+
+## canvas-01
+- [x] Header shows the design title, the Canvas/Document toggle and export controls (`e2e/canvas.spec.ts`)
+- [x] No avatars, Share button or contributor count

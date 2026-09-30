@@ -95,10 +95,19 @@ export async function drawRectangle(page: Page) {
   await page.mouse.up()
 }
 
-/** Grid position and size of a card, in pixels. */
+/** Grid position and size of a card, in pixels, once its CSS transition has settled. */
 export async function cardBox(page: Page, sid: SectionId) {
-  const b = (await page.locator(`[data-grid-item="${sid}"]`).boundingBox())!
-  return { x: Math.round(b.x), y: Math.round(b.y), w: Math.round(b.width), h: Math.round(b.height) }
+  const read = async () => {
+    const b = (await page.locator(`[data-grid-item="${sid}"]`).boundingBox())!
+    return { x: Math.round(b.x), y: Math.round(b.y), w: Math.round(b.width), h: Math.round(b.height) }
+  }
+  let prev = await read()
+  for (;;) {
+    await page.waitForTimeout(100)
+    const next = await read()
+    if (JSON.stringify(next) === JSON.stringify(prev)) return next
+    prev = next
+  }
 }
 
 /** Drags a card by its header onto the position of another card. */

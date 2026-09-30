@@ -137,7 +137,7 @@
         "Header shows the design title, the Canvas/Document toggle and export controls",
         "No avatars, Share button or contributor count"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "canvas-02",
