@@ -181,3 +181,8 @@ Format:
 ## doc-08
 - [x] Cells, option names and the chosen mark are editable in place (`e2e/document.spec.ts`)
 - [x] Changes appear in the Component Editor and update the card indicator
+
+## sync-01
+- [x] An edit in Canvas mode is visible in Document mode right after switching, without reload (`e2e/document.spec.ts`)
+- [x] An edit in Document mode is visible in Canvas mode right after switching, without reload
+- [x] Covered for key properties, rationale, trade-offs and diagram

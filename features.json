@@ -404,7 +404,7 @@
         "An edit in Document mode is visible in Canvas mode right after switching, without reload",
         "Covered for key properties, rationale, trade-offs and diagram"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "export-01",
