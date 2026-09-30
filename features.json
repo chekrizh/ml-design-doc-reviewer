@@ -159,7 +159,7 @@
         "Initial layout matches docs/mockups/canvas.png: three rows of cards, Target Solution & Architecture spanning full width at the bottom",
         "Evaluation (Offline) is used instead of Evaluation Strategy"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "canvas-04",

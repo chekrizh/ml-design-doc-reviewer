@@ -74,3 +74,8 @@ Format:
 - [x] Clicking the title turns it into an input; Enter saves, Escape cancels (`e2e/canvas.spec.ts`)
 - [x] An empty title is shown as 'Untitled design'
 - [x] The title persists after reload
+
+## canvas-03
+- [x] All 9 cards render with icon and uppercase section name (`e2e/canvas.spec.ts`)
+- [x] Initial layout matches docs/mockups/canvas.png: three rows of cards, Target Solution & Architecture spanning full width at the bottom
+- [x] Evaluation (Offline) is used instead of Evaluation Strategy
