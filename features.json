@@ -40,7 +40,7 @@
         "A smoke test opens the app and finds the Canvas/Document toggle",
         "Each e2e test starts from an empty IndexedDB"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "setup-04",

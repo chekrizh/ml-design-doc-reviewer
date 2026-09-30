@@ -21,3 +21,8 @@ Format:
 - [x] `pnpm lint`, `pnpm typecheck` and `pnpm test` each run with one command and exit 0
 - [x] `pnpm test` runs at least one Vitest test (`src/smoke.test.ts`)
 - [x] `pnpm check` runs lint, typecheck, unit tests and build in sequence
+
+## setup-03
+- [x] `pnpm e2e` builds or starts the app and runs Playwright in headless Chromium (`playwright.config.ts` webServer)
+- [x] A smoke test opens the app and finds the Canvas/Document toggle (`e2e/smoke.spec.ts`)
+- [x] Each e2e test starts from an empty IndexedDB (fresh context per test; `e2e/smoke.spec.ts`)
