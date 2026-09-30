@@ -119,3 +119,9 @@ Format:
 - [x] The modal closes with the X button, Escape, and a click outside
 - [x] A 'Saved' indicator reflects autosave state ("Saving…" while writing, "Saved to Canvas" after)
 - [x] The modal has four parts in order: Decisions & Properties, Rationale & Notes, Trade-off Matrix, Whiteboard
+
+## editor-02
+- [x] '+ Add Property' adds an empty key/value row (`e2e/editor.spec.ts`)
+- [x] Keys and values are editable, including template keys
+- [x] A row can be deleted
+- [x] Changes appear on the card immediately

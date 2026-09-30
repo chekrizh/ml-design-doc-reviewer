@@ -259,7 +259,7 @@
         "A row can be deleted",
         "Changes appear on the card immediately"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "editor-03",
