@@ -103,7 +103,7 @@
         "Unit tests cover each action",
         "Canvas and Document components read and write only through the store"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "persist-01",

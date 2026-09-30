@@ -101,7 +101,7 @@ export const INITIAL_LAYOUT: LayoutItem[] = [
   { i: 'evaluation-online', x: 0, y: 16, w: 3, h: 8 },
   { i: 'integration', x: 3, y: 16, w: 6, h: 8 },
   { i: 'monitoring', x: 9, y: 16, w: 3, h: 8 },
-  { i: 'target-solution', x: 0, y: 24, w: 12, h: 10 },
+  { i: 'target-solution', x: 0, y: 24, w: 12, h: 9 },
 ]
 
 export const newId = () => crypto.randomUUID()

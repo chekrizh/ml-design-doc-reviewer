@@ -48,3 +48,8 @@ Format:
 ## model-04
 - [x] A pure function returns true when all key property values are empty, rationale is empty, the trade-off matrix has no options and the diagram is empty (`sectionEmpty`, added with model-02)
 - [x] Unit tests cover each part
+
+## model-05
+- [x] Actions exist for title, key properties, rationale, trade-offs, diagram and layout changes (`src/store/store.ts`)
+- [x] Unit tests cover each action (`src/store/store.test.ts`)
+- [x] Canvas and Document components read and write only through the store (`src/store/architecture.test.ts`; UI in `src/canvas`, `src/document`, `src/editor` uses `useDesign` only)
