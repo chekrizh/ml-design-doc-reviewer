@@ -153,3 +153,7 @@ Format:
 - [x] The toggle switches to Document mode and back without losing state (`e2e/document.spec.ts`)
 - [x] The document heading is the design title, with 'ML System Architecture Spec' as subtitle and a 'Last updated' line
 - [x] Layout matches docs/mockups/document.png: document column and an 'On this page' table of contents on the right
+
+## doc-02
+- [x] Sections appear as numbered headings in canonical order (`e2e/document.spec.ts`)
+- [x] Reordering cards on the canvas does not change the document order

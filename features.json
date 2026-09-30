@@ -333,7 +333,7 @@
         "Sections appear as numbered headings in canonical order",
         "Reordering cards on the canvas does not change the document order"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "doc-03",
