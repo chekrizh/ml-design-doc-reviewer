@@ -164,3 +164,8 @@ Format:
 
 ## doc-04
 - [x] An empty section (model-04) shows its heading and a 'Not filled yet' placeholder (`e2e/document.spec.ts`)
+
+## doc-05
+- [x] 'On this page' lists all 9 sections (`e2e/document.spec.ts`)
+- [x] Clicking an entry scrolls to the section
+- [x] The entry of the section in view is highlighted

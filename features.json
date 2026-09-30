@@ -363,7 +363,7 @@
         "Clicking an entry scrolls to the section",
         "The entry of the section in view is highlighted"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "doc-06",
