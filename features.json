@@ -393,7 +393,7 @@
         "Cells, option names and the chosen mark are editable in place",
         "Changes appear in the Component Editor and update the card indicator"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "sync-01",

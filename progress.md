@@ -177,3 +177,7 @@ Format:
 ## doc-07
 - [x] The rationale is editable in place with the same TipTap editor (`e2e/document.spec.ts`)
 - [x] After editing, the Component Editor shows the same content
+
+## doc-08
+- [x] Cells, option names and the chosen mark are editable in place (`e2e/document.spec.ts`)
+- [x] Changes appear in the Component Editor and update the card indicator
