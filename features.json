@@ -522,7 +522,7 @@
       "steps": [
         "Details is the only control in the card footer and is aligned to the right edge"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m11-04",

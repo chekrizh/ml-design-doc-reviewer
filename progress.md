@@ -244,3 +244,6 @@ Format:
 - [x] Off: grey scales. On: green scales with a check mark
 - [x] Hover or keyboard focus shows the off/on tooltip
 - [x] The icon keeps an accessible name and a data-state of 'on'/'off'
+
+## m11-03
+- [x] Details is the only control in the card footer and is aligned to the right edge (`e2e/canvas.spec.ts` m11-03)

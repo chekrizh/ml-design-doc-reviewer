@@ -78,7 +78,7 @@ export function Card({ sid, onDetails }: { sid: SectionId; onDetails: () => void
           </div>
         )}
       </div>
-      <footer className="flex items-center gap-2 border-t border-slate-100 px-4 py-3">
+      <footer className="flex items-center justify-end gap-2 border-t border-slate-100 px-4 py-3">
         <button type="button" onClick={onDetails} className="rounded-lg bg-slate-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-slate-700">
           Details
         </button>

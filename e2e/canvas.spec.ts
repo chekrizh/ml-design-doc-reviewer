@@ -231,3 +231,17 @@ test('m11-02 trade-offs status icon: top-right, not a button, two states, toolti
   const color = (sid: 'baseline' | 'validation') => indicator(card(page, sid), 'Trade-offs').evaluate((e) => getComputedStyle(e).color)
   expect(await color('baseline')).not.toBe(await color('validation'))
 })
+
+test('m11-03 Details is the only footer control and sits at the right edge', async ({ page }) => {
+  await openApp(page)
+  for (const [sid] of SECTION_ORDER) {
+    const footer = card(page, sid).locator('footer')
+    await expect(footer.locator('button, [role], a, input')).toHaveCount(1)
+    await expect(footer.getByRole('button')).toHaveText('Details')
+    const fb = (await footer.boundingBox())!
+    const bb = (await footer.getByRole('button').boundingBox())!
+    const rightGap = fb.x + fb.width - (bb.x + bb.width)
+    expect(rightGap).toBeLessThanOrEqual(24)
+    expect(bb.x - fb.x).toBeGreaterThan(rightGap)
+  }
+})
