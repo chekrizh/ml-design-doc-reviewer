@@ -247,7 +247,7 @@
         "A 'Saved' indicator reflects autosave state",
         "The modal has four parts in order: Decisions & Properties, Rationale & Notes, Trade-off Matrix, Whiteboard"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "editor-02",

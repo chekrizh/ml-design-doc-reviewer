@@ -24,6 +24,8 @@ export function RichTextEditor({
     onUpdate: ({ editor }) => onChange(editor.getJSON() as RichText),
     editorProps: {
       attributes: {
+        role: 'textbox',
+        'aria-multiline': 'true',
         'aria-label': label,
         class: `prose-rt outline-none ${bare ? '' : 'min-h-24 px-4 py-3'}`,
       },
@@ -52,6 +54,8 @@ export function RichTextEditor({
       <div
         role="toolbar"
         aria-label="Formatting"
+        // Keep focus and selection in the editor while using the toolbar.
+        onMouseDown={(e) => e.preventDefault()}
         className={`flex items-center gap-1 px-2 py-1 print:hidden ${bare ? 'absolute -top-10 left-0 z-10 hidden rounded-lg border border-slate-200 bg-white shadow group-focus-within:flex' : 'border-b border-slate-100'}`}
       >
         <button type="button" aria-label="Bold" className={`${btn(active.bold)} font-bold`} onClick={() => chain().toggleBold().run()}>B</button>
