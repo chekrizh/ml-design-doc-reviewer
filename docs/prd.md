@@ -144,6 +144,8 @@ LeetCode for ML System Design
 
 ### 3.4 Modes & Progression
 
+> Решение (M2): режимов нет, разницы между ними нет, среда одна. См. `docs/decisions.md`, D7. Раздел ниже оставлен как история.
+
 Два режима работы:
 
 | | Training Mode | Real-Work Mode |
