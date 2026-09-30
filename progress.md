@@ -36,3 +36,7 @@ Format:
 - [x] The empty design has exactly 9 sections in canonical order
 - [x] Each section has the template keys from the spec table with empty values; Validation has none
 - [x] Unit tests cover the factory (`src/model/design.test.ts`)
+
+## model-02
+- [x] A pure function returns true only when there are >=2 options, >=1 criterion, every cell is non-empty and exactly one option is chosen (`tradeoffsComplete` in `src/model/rules.ts`)
+- [x] Unit tests cover each failing condition separately and the passing case (`src/model/rules.test.ts`)
