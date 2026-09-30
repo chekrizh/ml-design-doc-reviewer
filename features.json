@@ -225,7 +225,7 @@
         "Cards can be resized from a corner handle within sensible min sizes",
         "The new size persists after reload"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "canvas-10",

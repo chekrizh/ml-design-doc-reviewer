@@ -105,3 +105,7 @@ Format:
 - [x] Cards can be dragged to new positions (`e2e/canvas.spec.ts`)
 - [x] The layout persists after reload
 - [x] Dragging does not change section content
+
+## canvas-09
+- [x] Cards can be resized from a corner handle within sensible min sizes (`e2e/canvas.spec.ts`; min 3 cols x 5 rows)
+- [x] The new size persists after reload
