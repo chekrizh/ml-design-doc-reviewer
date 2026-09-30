@@ -157,3 +157,7 @@ Format:
 ## doc-02
 - [x] Sections appear as numbered headings in canonical order (`e2e/document.spec.ts`)
 - [x] Reordering cards on the canvas does not change the document order
+
+## doc-03
+- [x] Each filled section shows a key properties plate, the rationale, the trade-off matrix as a table with the chosen option marked, and the diagram as an image (`e2e/document.spec.ts`)
+- [x] Parts that are empty inside a filled section are omitted

@@ -343,7 +343,7 @@
         "Each filled section shows a key properties plate, the rationale, the trade-off matrix as a table with the chosen option marked, and the diagram as an image",
         "Parts that are empty inside a filled section are omitted"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "doc-04",
