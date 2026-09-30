@@ -165,7 +165,6 @@ test('sync-01 canvas edits show in document and back, for key properties, ration
   await s.getByRole('textbox', { name: 'Cell 2,1' }).fill('Very high')
   await toMode(page, 'Canvas')
   await expect(card(page, 'monitoring').getByRole('button', { name: 'Edit Data Drift' })).toHaveText('KS test')
-  await expect(indicator(card(page, 'monitoring'), 'Diagram')).toHaveAttribute('data-state', 'on')
   await expect(card(page, 'monitoring').getByTestId('thumbnail').locator('img')).toBeVisible()
   await openDetails(page, 'monitoring')
   await expect(d.getByRole('textbox', { name: 'Rationale' })).toContainText('Watch drift daily and weekly')

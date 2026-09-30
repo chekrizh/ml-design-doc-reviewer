@@ -28,7 +28,6 @@ test('AT-09 everything survives a reload', async ({ page }) => {
 
   await expect(page.getByRole('button', { name: 'Edit Design title' })).toHaveText('Reload Me')
   await expect(card(page, 'problem-space').getByRole('button', { name: 'Edit Domain' })).toHaveText('Payments')
-  await expect(indicator(card(page, 'baseline'), 'Diagram')).toHaveAttribute('data-state', 'on')
   await expect(card(page, 'baseline').getByTestId('thumbnail').getByRole('img')).toBeVisible()
   await expect(indicator(card(page, 'baseline'), 'Trade-offs')).toHaveAttribute('data-state', 'on')
   expect(await Promise.all(ids.map((sid) => cardBox(page, sid)))).toEqual(boxes)
@@ -72,7 +71,7 @@ test('AT-11 load example asks first', async ({ page }) => {
     for (const v of values) expect(v, sid).not.toBe('Not set')
   }
   expect(await page.locator('[data-indicator="Trade-offs"][data-state="on"]').count()).toBeGreaterThanOrEqual(3)
-  expect(await page.locator('[data-indicator="Diagram"][data-state="on"]').count()).toBeGreaterThanOrEqual(2)
+  await expect.poll(() => page.locator('[data-testid="thumbnail"] img').count()).toBeGreaterThanOrEqual(2)
 })
 
 test('AT-12 Markdown export is a file or a ZIP', async ({ page }) => {
@@ -85,7 +84,7 @@ test('AT-12 Markdown export is a file or a ZIP', async ({ page }) => {
 
   // 2. Example with diagrams -> .zip with one .md and images/*.svg.
   await loadExample(page)
-  const withDiagrams = await page.locator('[data-indicator="Diagram"][data-state="on"]').count()
+  const withDiagrams = await page.getByTestId('thumbnail').count()
   const two = await exportMarkdown(page, 'none')
   expect(two.download!.suggestedFilename()).toMatch(/\.zip$/)
   const zip = await readZip(two.download!)

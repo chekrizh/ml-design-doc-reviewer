@@ -114,16 +114,15 @@ test('canvas-06 thumbnail only for non-empty diagram, updates after editing', as
   await expect.poll(() => img.getAttribute('src')).not.toBe(src1)
 })
 
-test('canvas-07 footer: Details plus two non-clickable indicators with two states', async ({ page }) => {
+test('canvas-07 footer: Details plus a non-clickable Trade-offs indicator with two states; no Diagram indicator (m11-01)', async ({ page }) => {
   await openApp(page)
   for (const [sid] of SECTION_ORDER) {
     const c = card(page, sid)
     await expect(c.locator('footer').getByRole('button')).toHaveText(['Details'])
-    for (const name of ['Trade-offs', 'Diagram'] as const) {
-      const ind = indicator(c, name)
-      await expect(ind).toHaveAttribute('data-state', 'off')
-      expect(await ind.evaluate((e) => e.tagName)).toBe('SPAN')
-    }
+    const ind = indicator(c, 'Trade-offs')
+    await expect(ind).toHaveAttribute('data-state', 'off')
+    expect(await ind.evaluate((e) => e.tagName)).toBe('SPAN')
+    await expect(indicator(c, 'Diagram')).toHaveCount(0)
   }
   const off = await indicator(card(page, 'baseline'), 'Trade-offs').evaluate((e) => getComputedStyle(e).color)
   await openDetails(page, 'baseline')
@@ -136,7 +135,8 @@ test('canvas-07 footer: Details plus two non-clickable indicators with two state
   await expect(indicator(card(page, 'baseline'), 'Trade-offs')).toHaveAttribute('data-state', 'on')
   await drawRectangle(page)
   await closeEditor(page)
-  await expect(indicator(card(page, 'baseline'), 'Diagram')).toHaveAttribute('data-state', 'on')
+  await expect(card(page, 'baseline').getByTestId('thumbnail').locator('img')).toBeVisible()
+  await expect(indicator(card(page, 'baseline'), 'Diagram')).toHaveCount(0)
   const on = await indicator(card(page, 'baseline'), 'Trade-offs').evaluate((e) => getComputedStyle(e).color)
   expect(on).not.toBe(off)
 })

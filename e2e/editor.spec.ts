@@ -170,10 +170,9 @@ test('editor-07 Excalidraw component (no iframe) in every section; drawing persi
   await drawRectangle(page)
   await closeEditor(page)
   const c = card(page, 'integration')
-  await expect(indicator(c, 'Diagram')).toHaveAttribute('data-state', 'on')
   await expect(c.getByTestId('thumbnail').locator('img')).toBeVisible()
   await reload(page)
-  await expect(indicator(c, 'Diagram')).toHaveAttribute('data-state', 'on')
+  await expect(c.getByTestId('thumbnail').locator('img')).toBeVisible()
   await openDetails(page, 'integration')
   await expect.poll(() => dialog(page).getByTestId('whiteboard').evaluate(() => {
     // The restored scene is drawn on the static canvas; a non-blank pixel means the rectangle is there.

@@ -113,14 +113,16 @@ test('AT-04 trade-offs indicator follows the strict rule', async ({ page }) => {
   await expect(ind).toHaveAttribute('data-state', 'off')
 })
 
-test('AT-05 diagram: indicator, thumbnail, document', async ({ page }) => {
+test('AT-05 diagram: thumbnail only on its card, no Diagram indicator, document', async ({ page }) => {
   await openApp(page)
   await openDetails(page, 'validation')
   await drawRectangle(page)
   await closeEditor(page)
-  for (const [sid] of SECTION_ORDER)
-    await expect(indicator(card(page, sid), 'Diagram')).toHaveAttribute('data-state', sid === 'validation' ? 'on' : 'off')
   await expect(card(page, 'validation').getByTestId('thumbnail').getByRole('img')).toBeVisible()
+  for (const [sid] of SECTION_ORDER) {
+    if (sid !== 'validation') await expect(card(page, sid).getByTestId('thumbnail')).toHaveCount(0)
+    await expect(indicator(card(page, sid), 'Diagram')).toHaveCount(0)
+  }
   await toMode(page, 'Document')
   const v = docSection(page, 'validation')
   await expect(v.getByRole('img', { name: 'Validation diagram' })).toBeVisible()

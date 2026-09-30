@@ -501,7 +501,7 @@
         "Cards have no Diagram indicator; a non-empty diagram is shown only by its thumbnail",
         "diagramNonEmpty (model-03) is still used for thumbnails, the document and export"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m11-02",

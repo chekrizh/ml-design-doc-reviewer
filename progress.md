@@ -232,3 +232,9 @@ Format:
 ## Run result: DONE
 - Features passing: 46 / 46
 - Stuck features: none
+
+# M1.1
+
+## m11-01
+- [x] Cards have no Diagram indicator; a non-empty diagram is shown only by its thumbnail (`e2e/canvas.spec.ts` canvas-07, `e2e/acceptance/at-01-08.spec.ts` AT-05)
+- [x] diagramNonEmpty (model-03) is still used for thumbnails, the document and export (`src/model/rules.test.ts`, AT-05, AT-12)

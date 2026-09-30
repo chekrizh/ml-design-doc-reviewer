@@ -74,7 +74,7 @@ test('R6 Export PDF prints only after the diagram images are in the document', a
     await route.continue()
   })
   await loadExample(page)
-  const diagrams = await page.locator('[data-indicator="Diagram"][data-state="on"]').count()
+  const diagrams = await page.getByTestId('thumbnail').count()
   expect(diagrams).toBeGreaterThan(0)
 
   await page.getByRole('button', { name: 'Export PDF' }).click()

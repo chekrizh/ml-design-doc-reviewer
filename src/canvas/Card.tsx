@@ -58,7 +58,6 @@ export function Card({ sid, onDetails }: { sid: SectionId; onDetails: () => void
           Details
         </button>
         <Indicator label="Trade-offs" on={tradeoffsComplete(section.tradeoffs)} />
-        <Indicator label="Diagram" on={hasDiagram} />
       </footer>
     </article>
   )

@@ -13,9 +13,8 @@ test('persist-01 drawing survives reload', async ({ page }) => {
   await openDetails(page, 'validation')
   await drawRectangle(page)
   await closeEditor(page)
-  await expect(indicator(card(page, 'validation'), 'Diagram')).toHaveAttribute('data-state', 'on')
+  await expect(card(page, 'validation').getByTestId('thumbnail').locator('img')).toBeVisible()
   await reload(page)
-  await expect(indicator(card(page, 'validation'), 'Diagram')).toHaveAttribute('data-state', 'on')
   await expect(card(page, 'validation').getByTestId('thumbnail').locator('img')).toBeVisible()
 })
 
@@ -27,7 +26,7 @@ test('persist-01 first visit shows the empty design', async ({ page }) => {
     const values = await c.getByRole('button', { name: /^Edit / }).allTextContents()
     expect(values.every((v) => v === 'Not set')).toBe(true)
     await expect(indicator(c, 'Trade-offs')).toHaveAttribute('data-state', 'off')
-    await expect(indicator(c, 'Diagram')).toHaveAttribute('data-state', 'off')
+    await expect(c.getByTestId('thumbnail')).toHaveCount(0)
   }
 })
 
@@ -45,5 +44,5 @@ test('persist-02 load example asks for confirmation; cancel keeps, confirm loads
   await loadExample(page)
   await expect(card(page, 'problem-space').getByRole('button', { name: 'Edit Domain' })).toHaveText('Telecom (Prepaid)')
   await expect(page.locator('[data-indicator="Trade-offs"][data-state="on"]')).toHaveCount(4)
-  await expect(page.locator('[data-indicator="Diagram"][data-state="on"]')).toHaveCount(2)
+  await expect(page.getByTestId('thumbnail')).toHaveCount(2)
 })
