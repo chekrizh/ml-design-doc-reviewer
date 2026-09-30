@@ -1,8 +1,9 @@
 import { expect, test, type Page } from '@playwright/test'
 import {
-  addCriterion, addOption, card, cardBox, closeEditor, contentGap, dialog, docSection, downloadText, drawRectangle,
+  addCriterion, addOption, card, cardBox, closeEditor, dialog, docSection, downloadText, drawRectangle,
   exportMarkdown, indicator, loadExample, openApp, openDetails, reload, resizeCard, SECTION_ORDER, setCardValue,
   toMode,
+  expectRowsFitContent,
 } from '../helpers'
 
 const TIP_OFF = 'Trade-offs not filled yet. Weigh the alternatives and make a considered choice.'
@@ -143,9 +144,7 @@ test('AT-18 header: Share, AI Review, ⋯ menu, save status', async ({ page }) =
 
 test('AT-19 card height follows content', async ({ page }) => {
   await openApp(page)
-  const gapsOk = async () => {
-    for (const [sid] of SECTION_ORDER) await expect.poll(() => contentGap(page, sid), sid).toBeLessThanOrEqual(32)
-  }
+  const gapsOk = () => expectRowsFitContent(page)
   // 1.
   await gapsOk()
   // 2.

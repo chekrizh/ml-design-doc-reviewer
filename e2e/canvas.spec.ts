@@ -1,7 +1,8 @@
 import { expect, test } from '@playwright/test'
 import {
-  card, cardBox, closeEditor, contentGap, dialog, docSection, dragCard, drawRectangle, indicator, loadExample, openApp,
+  card, cardBox, closeEditor, dialog, docSection, dragCard, drawRectangle, indicator, loadExample, openApp,
   openDetails, reload, resizeCard, SECTION_ORDER, setCardValue, setTitle, toMode, addCriterion, addOption, menuAction,
+  expectRowsFitContent,
 } from './helpers'
 
 test('canvas-01 / m11-06 header: logo, title and save status left, toggle center, AI Review, Share and ⋯ right', async ({ page }) => {
@@ -290,9 +291,9 @@ test('m11-03 Details is the only footer control and sits at the right edge', asy
   }
 })
 
-test('m11-04 card height follows content; resize is horizontal; cards below move', async ({ page }) => {
+test('m11-04 card height follows content, rows share the tallest height; resize is horizontal; cards below move', async ({ page }) => {
   await openApp(page)
-  for (const [sid] of SECTION_ORDER) await expect.poll(() => contentGap(page, sid), sid).toBeLessThanOrEqual(32)
+  await expectRowsFitContent(page)
   const ps = await cardBox(page, 'problem-space')
   const v0 = await cardBox(page, 'validation')
   expect(v0.h).toBeLessThan(ps.h)
@@ -307,7 +308,7 @@ test('m11-04 card height follows content; resize is horizontal; cards below move
   const v1 = await cardBox(page, 'validation')
   expect(v1.h).toBeGreaterThan(v0.h)
   expect((await cardBox(page, 'evaluation-online')).y).toBeGreaterThan(below0.y)
-  for (const [sid] of SECTION_ORDER) await expect.poll(() => contentGap(page, sid), sid).toBeLessThanOrEqual(32)
+  await expectRowsFitContent(page)
 
   // Content shrinks: the card follows back.
   await openDetails(page, 'validation')
@@ -323,7 +324,7 @@ test('m11-04 card height follows content; resize is horizontal; cards below move
   const wider = await cardBox(page, 'problem-space')
   expect(wider.w).toBeGreaterThan(ps.w)
   expect(wider.h).toBe(ps.h)
-  await expect.poll(() => contentGap(page, 'problem-space')).toBeLessThanOrEqual(32)
+  await expectRowsFitContent(page)
 })
 
 test('m11-07 AI Review popover: one disabled Full review item with a Coming soon tooltip', async ({ page }) => {

@@ -8,6 +8,7 @@ export function InlineText({
   className = '',
   inputClassName = '',
   label,
+  wrap = false,
 }: {
   value: string
   onSave: (v: string) => void
@@ -15,6 +16,8 @@ export function InlineText({
   className?: string
   inputClassName?: string
   label: string
+  /** Wrap long text onto several lines instead of cutting it with an ellipsis. */
+  wrap?: boolean
 }) {
   const [draft, setDraft] = useState<string | null>(null)
   if (draft === null)
@@ -23,7 +26,7 @@ export function InlineText({
         type="button"
         aria-label={`Edit ${label}`}
         onClick={() => setDraft(value)}
-        className={`min-w-0 cursor-text truncate text-left ${value ? '' : 'text-slate-400'} ${className}`}
+        className={`min-w-0 cursor-text text-left ${wrap ? 'break-words whitespace-normal' : 'truncate'} ${value ? '' : 'text-slate-400'} ${className}`}
       >
         {value || placeholder}
       </button>

@@ -207,3 +207,28 @@ export async function contentGap(page: Page, sid: SectionId) {
     return footer - last
   })
 }
+
+/**
+ * Cards in a row share the height of the tallest one; the tallest by content has at most 32px of
+ * empty space under its content. Rows are taken from actual positions, since resizing can re-wrap them.
+ */
+export async function expectRowsFitContent(page: Page) {
+  await expect
+    .poll(async () => {
+      const boxes = await Promise.all(SECTION_ORDER.map(async ([sid]) => ({ sid, ...(await cardBox(page, sid)) })))
+      const rows = new Map<number, typeof boxes>()
+      for (const b of boxes) {
+        const key = [...rows.keys()].find((y) => Math.abs(y - b.y) <= 2) ?? b.y
+        rows.set(key, [...(rows.get(key) ?? []), b])
+      }
+      for (const row of rows.values()) {
+        const hs = row.map((b) => b.h)
+        if (Math.max(...hs) - Math.min(...hs) > 2) return `unequal heights in row ${row.map((b) => b.sid)}`
+        const gaps = await Promise.all(row.map((b) => contentGap(page, b.sid)))
+        if (Math.min(...gaps) > 32) return `tallest card of row ${row.map((b) => b.sid)} has a ${Math.min(...gaps)}px gap`
+      }
+      return 'ok'
+    })
+    .toBe('ok')
+}
+

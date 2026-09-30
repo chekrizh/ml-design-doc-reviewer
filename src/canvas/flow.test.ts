@@ -17,9 +17,18 @@ describe('flow', () => {
     expect(at('target-solution')).toMatchObject({ x: 0, y: 22, w: 12 })
   })
 
+  it('stretches every card in a row to the tallest card of that row', () => {
+    const tall = INITIAL_LAYOUT.map((l) => ({ ...l, h: l.i === 'problem-space' ? 12 : l.i === 'data-features' ? 7 : 5 }))
+    const out = flow(tall, 12)
+    const h = (i: string) => out.find((l) => l.i === i)!.h
+    expect([h('problem-space'), h('evaluation-offline'), h('baseline')]).toEqual([12, 12, 12])
+    expect([h('validation'), h('data-features')]).toEqual([7, 7])
+    expect([h('evaluation-online'), h('integration'), h('monitoring')]).toEqual([5, 5, 5])
+  })
+
   it('orders by y then x and wraps a card that does not fit', () => {
     const out = flow([item('b', 6, 0, 6, 3), item('a', 0, 0, 7, 4), item('c', 0, 9, 3, 2)], 12)
-    expect(out).toEqual([item('b', 0, 4, 6, 3), item('a', 0, 0, 7, 4), item('c', 6, 4, 3, 2)])
+    expect(out).toEqual([item('b', 0, 4, 6, 3), item('a', 0, 0, 7, 4), item('c', 6, 4, 3, 3)])
   })
 
   it('puts a dragged card into the nearest row, before the card at its x', () => {

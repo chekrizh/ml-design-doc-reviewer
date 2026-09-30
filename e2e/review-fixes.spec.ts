@@ -102,3 +102,21 @@ test('R7/R8 a failed diagram render during Markdown export is reported on every 
     expect(await alert).toMatch(/Export failed/)
   }
 })
+
+test('M1.1-R1 a long document title wraps instead of being cut with an ellipsis', async ({ page }) => {
+  await openApp(page)
+  await toMode(page, 'Document')
+  const title = 'Real-time fraud detection for card payments across all regions and merchant categories'
+  await page.getByRole('button', { name: 'Edit Document title' }).click()
+  await page.getByRole('textbox', { name: 'Document title' }).fill(title)
+  await page.getByRole('textbox', { name: 'Document title' }).press('Enter')
+  const shown = page.getByRole('button', { name: 'Edit Document title' })
+  await expect(shown).toHaveText(title)
+  const { clipped, lines } = await shown.evaluate((e) => ({
+    clipped: e.scrollWidth > e.clientWidth,
+    lines: Math.round(e.getBoundingClientRect().height / parseFloat(getComputedStyle(e).lineHeight)),
+  }))
+  expect(clipped).toBe(false)
+  expect(lines).toBeGreaterThan(1)
+})
+
