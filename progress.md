@@ -292,3 +292,11 @@ Format:
 - [x] Each new scenario AT-15..AT-20 has its own Playwright test in e2e/acceptance/ whose name starts with the scenario ID (`at-15-20.spec.ts`)
 - [x] Updated scenarios' tests match the current text: AT-01 (export through Share), AT-04 (grey vs. green scales with a check mark), AT-05 (thumbnail only, no Diagram indicator), AT-09 (thumbnail; the resized size is the width), AT-11 (thumbnails), AT-14 (no Share / AI Review in the PDF; WebKit note in open-questions.md)
 - [x] All acceptance tests pass in Chromium and WebKit (also 3x repeated: 120/120)
+
+## final-01 (M1.1)
+- [x] `pnpm check` and `pnpm e2e` (Chromium full suite + WebKit acceptance) pass on a clean checkout (`pnpm install --frozen-lockfile`: 42 unit tests, 106 e2e tests green)
+- [x] No TODOs left for features marked as passing (no TODO/FIXME/skip/fixme/only in `src` or `e2e`)
+
+## Run result: DONE
+- Features passing: 57 / 57
+- Stuck features: none
