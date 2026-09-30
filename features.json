@@ -1,12 +1,13 @@
 {
-  "milestone": "M1: Canvas + Document",
+  "milestone": "M1 (done) + M1.1: owner's review changes",
   "spec": "docs/mvp-spec.md",
   "rules": [
     "Work on features in order unless a later one is blocked only by an earlier one you already finished.",
     "Only change the `passes` field. Never delete, reword, reorder, or merge features.",
     "Set `passes` to true only after every step is verified by an automated test (Vitest or Playwright) that is committed and green.",
     "If the spec and a feature disagree, the spec wins; record the conflict in open-questions.md instead of editing the feature.",
-    "docs/acceptance-tests.md is human-owned: never edit it. Implement each scenario as a Playwright test in e2e/acceptance/ that checks every expected outcome; never weaken or skip them."
+    "docs/acceptance-tests.md is human-owned: never edit it. Implement each scenario as a Playwright test in e2e/acceptance/ that checks every expected outcome; never weaken or skip them.",
+    "M1.1 features supersede earlier features where they conflict (each names what it supersedes). Your own earlier tests that assert superseded behaviour must be updated to the new behaviour; acceptance tests are only changed by the human."
   ],
   "features": [
     {
@@ -493,14 +494,138 @@
       "passes": true
     },
     {
+      "id": "m11-01",
+      "category": "canvas",
+      "description": "Remove the Diagram indicator (supersedes the Diagram part of canvas-07).",
+      "steps": [
+        "Cards have no Diagram indicator; a non-empty diagram is shown only by its thumbnail",
+        "diagramNonEmpty (model-03) is still used for thumbnails, the document and export"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m11-02",
+      "category": "canvas",
+      "description": "Trade-offs status icon instead of the Trade-offs badge (supersedes the Trade-offs part of canvas-07).",
+      "steps": [
+        "A scales icon sits in the top-right corner of every card header; it is a status, not a button, and has no click action",
+        "Off: grey scales. On (model-02 rule holds): green scales with a check mark",
+        "Hover or keyboard focus shows a tooltip: off 'Trade-offs not filled yet. Weigh the alternatives and make a considered choice.', on 'Trade-offs filled: alternatives weighed, choice made.'",
+        "The icon keeps an accessible name and a data-state of 'on'/'off' for tests"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m11-03",
+      "category": "canvas",
+      "description": "Details button on the right.",
+      "steps": [
+        "Details is the only control in the card footer and is aligned to the right edge"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m11-04",
+      "category": "canvas",
+      "description": "Card height fits its content (auto layout).",
+      "steps": [
+        "Card height is computed from its content (key properties, +N, thumbnail); the user changes only width and order",
+        "The resize handle changes width only",
+        "When content grows or shrinks, the card height follows and cards below move",
+        "Reset layout restores the mockup order and widths",
+        "Record the approach in docs/decisions.md"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m11-05",
+      "category": "canvas",
+      "description": "Canvas layout in Safari matches Chromium.",
+      "steps": [
+        "Reproduce the side gaps seen in Safari with Playwright WebKit and fix the root cause",
+        "Add a WebKit project to playwright.config.ts that runs e2e/acceptance/; Chromium keeps running the whole suite",
+        "Install the WebKit browser for Playwright if missing (`pnpm exec playwright install webkit`)"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m11-06",
+      "category": "header",
+      "description": "Header as in the mockup, exports under Share (supersedes canvas-01 header controls).",
+      "steps": [
+        "Left: logo, editable design title, small save status next to the title ('Saved' / 'Saving…' / 'Not saved')",
+        "Center: Canvas/Document toggle",
+        "Right: AI Review button, Share button, and a '⋯' menu button",
+        "Share opens a popover with Export PDF and Export Markdown; both keep the empty-sections warning",
+        "'⋯' opens a menu with Load example (with confirmation) and Reset layout (canvas mode only)",
+        "Popovers close on outside click and Escape"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m11-07",
+      "category": "header",
+      "description": "AI Review popover placeholder.",
+      "steps": [
+        "AI Review opens a popover with one item, 'Full review'",
+        "'Full review' is disabled for now and shows a 'Coming soon' tooltip; wiring it to a skill is M2"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m11-08",
+      "category": "document",
+      "description": "Free text in the document goes to Rationale & Notes (supersedes doc-04).",
+      "steps": [
+        "Every section in Document mode has an editable rationale area, including empty sections",
+        "An empty section shows the placeholder 'Not filled yet — start typing…' inside that area instead of a static 'Not filled yet'",
+        "Typing there fills the section's Rationale & Notes, visible in the Component Editor",
+        "Empty placeholders are not printed and not exported"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m11-09",
+      "category": "document",
+      "description": "Editable document title.",
+      "steps": [
+        "Clicking the document heading makes it editable inline; saving changes the design title shown in the header and used for export file names"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m11-10",
+      "category": "canvas",
+      "description": "Section icons.",
+      "steps": [
+        "Target Solution & Architecture: a target (bullseye) icon",
+        "Baseline: an anchor icon",
+        "Evaluation (Online): a flask icon (experiment)",
+        "Problem Space: a flag icon",
+        "Scales are used only by the trade-offs status icon (m11-02), never as a section icon"
+      ],
+      "passes": false
+    },
+    {
+      "id": "acceptance-02",
+      "category": "quality",
+      "description": "Acceptance scenarios AT-15..AT-20 and the updated AT-01, AT-04, AT-05, AT-09, AT-11, AT-14.",
+      "steps": [
+        "Each new scenario has its own Playwright test in e2e/acceptance/ whose name starts with the scenario ID",
+        "Updated scenarios' tests match the current text of docs/acceptance-tests.md",
+        "All acceptance tests pass in Chromium and WebKit"
+      ],
+      "passes": false
+    },
+    {
       "id": "final-01",
       "category": "quality",
       "description": "Green build.",
       "steps": [
-        "`pnpm check` and `pnpm e2e` (including e2e/acceptance/) pass on a clean checkout",
+        "`pnpm check` and `pnpm e2e` (Chromium full suite + WebKit acceptance) pass on a clean checkout",
         "No TODOs left for features marked as passing"
       ],
-      "passes": true
+      "passes": false
     }
   ],
   "acceptance": "docs/acceptance-tests.md"
