@@ -615,7 +615,7 @@
         "Updated scenarios' tests match the current text of docs/acceptance-tests.md",
         "All acceptance tests pass in Chromium and WebKit"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "final-01",

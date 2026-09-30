@@ -78,39 +78,51 @@ test('AT-04 trade-offs indicator follows the strict rule', async ({ page }) => {
   await openApp(page)
   await openDetails(page, 'evaluation-offline')
   const d = dialog(page)
+  // The scales icon in the card's top-right corner: off = grey, on = green with a check mark.
   const ind = indicator(card(page, 'evaluation-offline'), 'Trade-offs')
+  const offColor = await ind.evaluate((e) => getComputedStyle(e).color)
+  const expectOff = async () => {
+    await expect(ind).toHaveAttribute('data-state', 'off')
+    await expect(ind.locator('[data-check]')).toHaveCount(0)
+    await expect(ind).toHaveCSS('color', offColor)
+  }
+  const expectOn = async () => {
+    await expect(ind).toHaveAttribute('data-state', 'on')
+    await expect(ind.locator('[data-check]')).toBeVisible()
+    await expect(ind).not.toHaveCSS('color', offColor)
+  }
   // 1. One option, one criterion, cell filled, option chosen -> off.
   await addCriterion(d, 'Recall')
   await addOption(d, 'PR-AUC', ['High'])
   await d.getByRole('button', { name: 'Choose option 1' }).click()
-  await expect(ind).toHaveAttribute('data-state', 'off')
+  await expectOff()
   // 2. Second option with its cell filled, choice untouched -> on.
   await addOption(d, 'ROC-AUC', ['Medium'])
   await expect(d.getByRole('button', { name: 'Choose option 1' })).toHaveAttribute('aria-pressed', 'true')
-  await expect(ind).toHaveAttribute('data-state', 'on')
+  await expectOn()
   // 3. Clear one cell -> off.
   await d.getByRole('textbox', { name: 'Cell 2,1' }).fill('')
-  await expect(ind).toHaveAttribute('data-state', 'off')
+  await expectOff()
   // 4. Fill it back -> on.
   await d.getByRole('textbox', { name: 'Cell 2,1' }).fill('Medium')
-  await expect(ind).toHaveAttribute('data-state', 'on')
+  await expectOn()
   // 5. Unmark the choice -> off.
   await d.getByRole('button', { name: 'Choose option 1' }).click()
   await expect(d.getByRole('button', { name: 'Choose option 1' })).toHaveAttribute('aria-pressed', 'false')
-  await expect(ind).toHaveAttribute('data-state', 'off')
+  await expectOff()
   // 5b. Deleting the chosen option also turns it off.
   await d.getByRole('button', { name: 'Choose option 2' }).click()
-  await expect(ind).toHaveAttribute('data-state', 'on')
+  await expectOn()
   await d.getByRole('button', { name: 'Delete option 2' }).click()
-  await expect(ind).toHaveAttribute('data-state', 'off')
+  await expectOff()
   // 6. Two options, zero criteria -> off.
   await addOption(d, 'ROC-AUC', ['Medium'])
   await d.getByRole('button', { name: 'Choose option 1' }).click()
-  await expect(ind).toHaveAttribute('data-state', 'on')
+  await expectOn()
   await d.getByRole('button', { name: 'Delete criterion 1' }).click()
   await expect(d.getByRole('textbox', { name: /^Option \d+ name$/ })).toHaveCount(2)
   await expect(d.getByRole('textbox', { name: /^Criterion \d+ name$/ })).toHaveCount(0)
-  await expect(ind).toHaveAttribute('data-state', 'off')
+  await expectOff()
 })
 
 test('AT-05 diagram: thumbnail only on its card, no Diagram indicator, document', async ({ page }) => {

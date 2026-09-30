@@ -287,3 +287,8 @@ Format:
 - [x] Evaluation (Online): flask icon
 - [x] Problem Space: flag icon
 - [x] Scales are used only by the trade-offs status icon, never as a section icon
+
+## acceptance-02
+- [x] Each new scenario AT-15..AT-20 has its own Playwright test in e2e/acceptance/ whose name starts with the scenario ID (`at-15-20.spec.ts`)
+- [x] Updated scenarios' tests match the current text: AT-01 (export through Share), AT-04 (grey vs. green scales with a check mark), AT-05 (thumbnail only, no Diagram indicator), AT-09 (thumbnail; the resized size is the width), AT-11 (thumbnails), AT-14 (no Share / AI Review in the PDF; WebKit note in open-questions.md)
+- [x] All acceptance tests pass in Chromium and WebKit (also 3x repeated: 120/120)
