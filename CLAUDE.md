@@ -37,6 +37,7 @@ For each feature:
 - Commit once per feature, only with `pnpm check` green. Message starts with the feature ID, e.g. `canvas-05: inline edit on card`.
 - Record non-trivial engineering choices in `docs/decisions.md`.
 - Conflicts between spec, features and acceptance scenarios, or differences from mockups, go to `open-questions.md`. Do not resolve them silently; continue with other features.
+- Stuck features and stop conditions: `docs/run-prompt.md`.
 
 ## Tools during the run
 
