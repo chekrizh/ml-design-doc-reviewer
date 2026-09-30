@@ -114,7 +114,7 @@
         "Draw on a whiteboard, reload: the drawing is still there",
         "First visit with empty storage shows the empty design"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "persist-02",

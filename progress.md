@@ -53,3 +53,8 @@ Format:
 - [x] Actions exist for title, key properties, rationale, trade-offs, diagram and layout changes (`src/store/store.ts`)
 - [x] Unit tests cover each action (`src/store/store.test.ts`)
 - [x] Canvas and Document components read and write only through the store (`src/store/architecture.test.ts`; UI in `src/canvas`, `src/document`, `src/editor` uses `useDesign` only)
+
+## persist-01
+- [x] Edit a key property value, reload the page: the value is still there (`e2e/persist.spec.ts`)
+- [x] Draw on a whiteboard, reload: the drawing is still there
+- [x] First visit with empty storage shows the empty design
