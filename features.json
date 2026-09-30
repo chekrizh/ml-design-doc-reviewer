@@ -170,7 +170,7 @@
         "With more than 4, a '+N' counter shows the number of hidden ones",
         "Empty values show a muted placeholder"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "canvas-05",

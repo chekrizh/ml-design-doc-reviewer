@@ -79,3 +79,8 @@ Format:
 - [x] All 9 cards render with icon and uppercase section name (`e2e/canvas.spec.ts`)
 - [x] Initial layout matches docs/mockups/canvas.png: three rows of cards, Target Solution & Architecture spanning full width at the bottom
 - [x] Evaluation (Offline) is used instead of Evaluation Strategy
+
+## canvas-04
+- [x] A card shows at most the first 4 key properties as key/value pairs (`e2e/canvas.spec.ts`)
+- [x] With more than 4, a '+N' counter shows the number of hidden ones
+- [x] Empty values show a muted placeholder
