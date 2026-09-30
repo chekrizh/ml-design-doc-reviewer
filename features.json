@@ -215,7 +215,7 @@
         "The layout persists after reload",
         "Dragging does not change section content"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "canvas-09",

@@ -100,3 +100,8 @@ Format:
 - [x] Each indicator has exactly two states: off and bright
 - [x] Trade-offs is bright only when the completeness rule (model-02) holds
 - [x] Diagram is bright only when the diagram is non-empty (model-03)
+
+## canvas-08
+- [x] Cards can be dragged to new positions (`e2e/canvas.spec.ts`)
+- [x] The layout persists after reload
+- [x] Dragging does not change section content
