@@ -277,3 +277,6 @@ Format:
 - [x] An empty section shows 'Not filled yet — start typing…' inside that area (filled sections with no text show 'Add rationale & notes…')
 - [x] Typing there fills the section's Rationale & Notes, visible in the Component Editor (m11-08)
 - [x] Empty placeholders are not printed and not exported (m11-08, doc-03)
+
+## m11-09
+- [x] Clicking the document heading makes it editable inline; saving changes the design title in the header and the export file name, and persists (`e2e/document.spec.ts` m11-09)

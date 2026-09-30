@@ -81,12 +81,15 @@ function useActiveSection() {
 export function DocumentView() {
   const title = useDesign((s) => s.design.title)
   const updatedAt = useDesign((s) => s.design.updatedAt)
+  const setTitle = useDesign((s) => s.setTitle)
   const [active, setActive] = useActiveSection()
 
   return (
     <main className="mx-auto flex max-w-6xl gap-10 px-6 py-8 print:block print:p-0">
       <article data-testid="document" className="min-w-0 flex-1 rounded-3xl bg-white px-16 py-14 shadow-sm print:rounded-none print:p-0 print:shadow-none">
-        <h1 className="text-5xl font-bold tracking-tight">{title || 'Untitled design'}</h1>
+        <h1 className="flex text-5xl font-bold tracking-tight">
+          <InlineText label="Document title" value={title} placeholder="Untitled design" onSave={setTitle} className="w-full" inputClassName="w-full" />
+        </h1>
         <p className="mt-2 text-xl text-slate-500">ML System Architecture Spec</p>
         <p className="mt-2 mb-12 text-sm text-slate-400">
           Last updated: {new Date(updatedAt).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' })}

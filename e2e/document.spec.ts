@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
 import {
   addCriterion, addOption, card, cardBox, closeEditor, dialog, docSection, dragCard, drawRectangle, indicator,
-  downloadText, exportMarkdown, loadExample, openApp, openDetails, SECTION_ORDER, setCardValue, setTitle, toMode,
+  downloadText, exportMarkdown, loadExample, openApp, openDetails, reload, SECTION_ORDER, setCardValue, setTitle, toMode,
 } from './helpers'
 
 const names = SECTION_ORDER.map(([, n]) => n)
@@ -206,4 +206,27 @@ test('sync-01 canvas edits show in document and back, for key properties, ration
   await openDetails(page, 'monitoring')
   await expect(d.getByRole('textbox', { name: 'Rationale' })).toContainText('Watch drift daily and weekly')
   await expect(d.getByRole('textbox', { name: 'Cell 2,1' })).toHaveValue('Very high')
+})
+
+test('m11-09 the document heading edits the design title (header, export file name, reload)', async ({ page }) => {
+  await openApp(page)
+  await setCardValue(page, 'problem-space', 'Domain', 'Ads')
+  await toMode(page, 'Document')
+  const h1 = page.getByTestId('document').getByRole('heading', { level: 1 })
+  await expect(h1).toHaveText('Untitled design')
+  await h1.getByRole('button', { name: 'Edit Document title' }).click()
+  await h1.getByRole('textbox', { name: 'Document title' }).fill('Ads CTR')
+  await h1.getByRole('textbox', { name: 'Document title' }).press('Enter')
+  await expect(h1).toHaveText('Ads CTR')
+  await expect(page.getByRole('button', { name: 'Edit Design title' })).toHaveText('Ads CTR')
+  // Escape cancels.
+  await h1.getByRole('button', { name: 'Edit Document title' }).click()
+  await h1.getByRole('textbox', { name: 'Document title' }).fill('Nope')
+  await h1.getByRole('textbox', { name: 'Document title' }).press('Escape')
+  await expect(h1).toHaveText('Ads CTR')
+  const { download } = await exportMarkdown(page, 'accept')
+  expect(download!.suggestedFilename()).toBe('ads-ctr.md')
+  await reload(page)
+  await toMode(page, 'Document')
+  await expect(h1).toHaveText('Ads CTR')
 })
