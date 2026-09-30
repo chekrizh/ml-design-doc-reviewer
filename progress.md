@@ -30,3 +30,9 @@ Format:
 ## setup-04
 - [x] `pnpm build && pnpm preview` serves a working app (all e2e run against preview)
 - [x] The app needs no server-side code or environment variables (`e2e/build.spec.ts`)
+
+## model-01
+- [x] Types exist for Design (title, sections, layout, updatedAt) and Section (keyProperties, rationale, tradeoffs, diagram) (`src/model/design.ts`)
+- [x] The empty design has exactly 9 sections in canonical order
+- [x] Each section has the template keys from the spec table with empty values; Validation has none
+- [x] Unit tests cover the factory (`src/model/design.test.ts`)

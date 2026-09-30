@@ -62,7 +62,7 @@
         "Each section has the template keys from the spec table with empty values; Validation has none",
         "Unit tests cover the factory"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "model-02",
