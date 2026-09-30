@@ -280,3 +280,10 @@ Format:
 
 ## m11-09
 - [x] Clicking the document heading makes it editable inline; saving changes the design title in the header and the export file name, and persists (`e2e/document.spec.ts` m11-09)
+
+## m11-10
+- [x] Target Solution & Architecture: target (bullseye) icon (`e2e/canvas.spec.ts` m11-10)
+- [x] Baseline: anchor icon
+- [x] Evaluation (Online): flask icon
+- [x] Problem Space: flag icon
+- [x] Scales are used only by the trade-offs status icon, never as a section icon

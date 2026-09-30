@@ -604,7 +604,7 @@
         "Problem Space: a flag icon",
         "Scales are used only by the trade-offs status icon (m11-02), never as a section icon"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "acceptance-02",

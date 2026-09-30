@@ -344,3 +344,17 @@ test('m11-07 AI Review popover: one disabled Full review item with a Coming soon
   await page.keyboard.press('Escape')
   await expect(menu).toBeHidden()
 })
+
+test('m11-10 section icons: flag, anchor, flask, target; scales only for the trade-offs status', async ({ page }) => {
+  await openApp(page)
+  const icon = (sid: Parameters<typeof card>[1]) => card(page, sid).locator('header > svg')
+  await expect(icon('target-solution')).toHaveAttribute('data-icon', 'target')
+  await expect(icon('baseline')).toHaveAttribute('data-icon', 'anchor')
+  await expect(icon('evaluation-online')).toHaveAttribute('data-icon', 'flask')
+  await expect(icon('problem-space')).toHaveAttribute('data-icon', 'flag')
+  const scales = await indicator(card(page, 'baseline'), 'Trade-offs').locator('svg path').first().getAttribute('d')
+  const paths = await page.locator('article header > svg path').evaluateAll((ps) => ps.map((p) => p.getAttribute('d')))
+  expect(paths).toHaveLength(9)
+  expect(new Set(paths).size).toBe(9)
+  expect(paths).not.toContain(scales)
+})
