@@ -218,3 +218,9 @@ Format:
 ## ui-02
 - [x] An e2e test saves screenshots of the canvas, the Component Editor and the document with the example loaded to `e2e/screenshots/` (`e2e/ui.spec.ts`)
 - [x] Each screenshot is compared by eye with the matching file in docs/mockups/ and differences are noted in open-questions.md
+
+## acceptance-01
+- [x] Each scenario AT-01..AT-14 has its own Playwright test in e2e/acceptance/ whose name starts with the scenario ID (`at-01-08.spec.ts`, `at-09-14.spec.ts`)
+- [x] Each test checks every 'Ожидаем' item of its scenario literally
+- [x] No acceptance test is skipped or marked fixme
+- [x] All acceptance tests pass (also 5x repeated run of the whole suite: 290/290)

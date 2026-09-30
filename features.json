@@ -490,7 +490,7 @@
         "No acceptance test is skipped or marked fixme",
         "All acceptance tests pass"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "final-01",

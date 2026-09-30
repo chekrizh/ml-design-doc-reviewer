@@ -5,7 +5,8 @@ test('editor-01 modal title, close by X/Escape/outside, saved indicator, parts i
   await openApp(page)
   for (const [sid, name] of SECTION_ORDER) {
     await openDetails(page, sid)
-    await expect(dialog(page).getByRole('heading', { level: 2 })).toHaveText(name)
+    await expect(dialog(page)).toHaveAccessibleName(name)
+    await expect(dialog(page).getByRole('heading', { level: 2, name, exact: true })).toBeVisible()
     await page.keyboard.press('Escape')
     await expect(dialog(page)).toBeHidden()
   }
@@ -21,7 +22,7 @@ test('editor-01 modal title, close by X/Escape/outside, saved indicator, parts i
   await dialog(page).getByRole('textbox', { name: 'Property 1 value' }).fill('Rules')
   await expect(saved).toHaveText('Saving…')
   await expect(saved).toContainText('Saved')
-  await expect(dialog(page).getByRole('heading', { level: 3 })).toHaveText([
+  await expect(dialog(page).locator('section:has(> div > h3) > div > h3')).toHaveText([
     'Decisions & Properties',
     'Rationale & Notes',
     'Trade-off Matrix',
