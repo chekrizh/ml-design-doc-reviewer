@@ -373,7 +373,7 @@
         "Clicking a value on the key properties plate makes it editable",
         "After saving, the canvas card shows the new value"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "doc-07",

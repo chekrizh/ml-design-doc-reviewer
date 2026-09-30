@@ -169,3 +169,7 @@ Format:
 - [x] 'On this page' lists all 9 sections (`e2e/document.spec.ts`)
 - [x] Clicking an entry scrolls to the section
 - [x] The entry of the section in view is highlighted
+
+## doc-06
+- [x] Clicking a value on the key properties plate makes it editable (`e2e/document.spec.ts`)
+- [x] After saving, the canvas card shows the new value
