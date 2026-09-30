@@ -21,6 +21,8 @@ Apply the same philosophy to your own engineering decisions in this repo: when m
 - Feature list for M1: `features.json`. Change only the `passes` field.
 - Acceptance scenarios: `docs/acceptance-tests.md`. Human-owned: never edit, weaken, or skip them; implement each as a Playwright test in `e2e/acceptance/`.
 - Decision log with alternatives: `docs/decisions.md`. Add an entry for every non-trivial decision.
+- Dependencies: only those listed in `docs/decisions.md` plus their obvious tooling (types, test runners, Vite/Tailwind plugins). Any other runtime dependency needs a new entry in `docs/decisions.md` with alternatives, including "no dependency".
+- Layout: `src/model` (types and pure rules), `src/store` (Zustand + IndexedDB), `src/canvas`, `src/editor`, `src/document`, `src/export`, `src/fixtures` (example design); `e2e/acceptance` (human scenarios), `e2e/` (agent's own e2e tests). Unit tests sit next to the code as `*.test.ts`.
 
 ## Autonomous run protocol
 
