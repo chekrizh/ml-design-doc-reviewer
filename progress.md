@@ -16,3 +16,8 @@ Format:
 - [x] `pnpm install` succeeds on a clean checkout with Node 22 (`pnpm install --frozen-lockfile`; `engines.node >=22`)
 - [x] `pnpm dev` serves the app and the page renders without console errors (`e2e/build.spec.ts`)
 - [x] `pnpm build` produces a static `dist/` (`e2e/build.spec.ts`)
+
+## setup-02
+- [x] `pnpm lint`, `pnpm typecheck` and `pnpm test` each run with one command and exit 0
+- [x] `pnpm test` runs at least one Vitest test (`src/smoke.test.ts`)
+- [x] `pnpm check` runs lint, typecheck, unit tests and build in sequence

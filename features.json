@@ -29,7 +29,7 @@
         "`pnpm test` runs at least one Vitest test",
         "`pnpm check` runs lint, typecheck, unit tests and build in sequence"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "setup-03",
