@@ -84,3 +84,8 @@ Format:
 - [x] A card shows at most the first 4 key properties as key/value pairs (`e2e/canvas.spec.ts`)
 - [x] With more than 4, a '+N' counter shows the number of hidden ones
 - [x] Empty values show a muted placeholder
+
+## canvas-05
+- [x] Clicking a value on a card turns it into an input (`e2e/canvas.spec.ts`)
+- [x] Enter or blur saves, Escape cancels
+- [x] The new value appears in the Component Editor and the Document

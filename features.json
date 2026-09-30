@@ -181,7 +181,7 @@
         "Enter or blur saves, Escape cancels",
         "The new value appears in the Component Editor and the Document"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "canvas-06",
