@@ -173,3 +173,7 @@ Format:
 ## doc-06
 - [x] Clicking a value on the key properties plate makes it editable (`e2e/document.spec.ts`)
 - [x] After saving, the canvas card shows the new value
+
+## doc-07
+- [x] The rationale is editable in place with the same TipTap editor (`e2e/document.spec.ts`)
+- [x] After editing, the Component Editor shows the same content

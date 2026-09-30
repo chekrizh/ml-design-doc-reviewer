@@ -383,7 +383,7 @@
         "The rationale is editable in place with the same TipTap editor",
         "After editing, the Component Editor shows the same content"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "doc-08",
