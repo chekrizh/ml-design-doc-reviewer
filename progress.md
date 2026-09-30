@@ -125,3 +125,7 @@ Format:
 - [x] Keys and values are editable, including template keys
 - [x] A row can be deleted
 - [x] Changes appear on the card immediately
+
+## editor-03
+- [x] TipTap editor with bold, italic, inline code, bullet list, ordered list and link (`e2e/editor.spec.ts`)
+- [x] Content persists after reload

@@ -269,7 +269,7 @@
         "TipTap editor with bold, italic, inline code, bullet list, ordered list and link",
         "Content persists after reload"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "editor-04",
