@@ -706,7 +706,7 @@
         "`authenticated` can neither select `key_secret_id` nor execute any `svc_*` function (pgTAP)",
         "Only the edge functions read the key"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-auth-01",

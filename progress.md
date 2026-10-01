@@ -327,3 +327,8 @@ Format:
 - [x] Migration creates `review_runs`, `findings` and the view `design_open_findings` (security_invoker) as §3.2–3.5 (`supabase/tests/reviews.test.sql`)
 - [x] `svc_complete_review_run` replaces findings in the run's scope in one transaction (row lock on the run) and keeps the replaced ones with `replaced_by_run_id`; a section run leaves whole-design findings; a canceled run changes nothing (pgTAP)
 - [x] Clients can change only `findings.status`/`status_changed_at` and cancel their own running run; pgTAP proves inserts, other updates and `svc_*` calls are refused
+
+## m2-db-03
+- [x] `user_settings` and the `svc_*` key functions as §3.4 and §4.1; the key lives in Vault (`vault.create_secret` / `update_secret`), `user_settings` holds only the secret id and last 4 (`supabase/tests/settings.test.sql`)
+- [x] `authenticated` can neither select `key_secret_id` nor execute any `svc_*` function nor read Vault (pgTAP)
+- [x] Only the edge functions read the key: `svc_get_openrouter_key` is executable by `service_role` only (pgTAP)

@@ -170,3 +170,70 @@ revoke execute on function public.svc_complete_review_run(uuid, jsonb) from publ
 revoke execute on function public.svc_fail_review_run(uuid, text) from public, anon, authenticated;
 grant execute on function public.svc_complete_review_run(uuid, jsonb) to service_role;
 grant execute on function public.svc_fail_review_run(uuid, text) to service_role;
+
+-- §3.4 user_settings: the key itself lives in Vault (D16) ------------------------
+
+create table public.user_settings (
+  user_id uuid primary key references auth.users on delete cascade,
+  model text,
+  key_secret_id uuid,
+  key_last4 text,
+  key_added_at timestamptz,
+  updated_at timestamptz not null default now()
+);
+
+alter table public.user_settings enable row level security;
+
+revoke all on public.user_settings from anon, authenticated;
+-- key_secret_id is never visible to the client; the key columns are written only by svc_*.
+grant select (user_id, model, key_last4, key_added_at) on public.user_settings to authenticated;
+grant insert (user_id, model), update (user_id, model) on public.user_settings to authenticated;
+
+create policy user_settings_select on public.user_settings for select to authenticated using (user_id = (select auth.uid()));
+create policy user_settings_insert on public.user_settings for insert to authenticated with check (user_id = (select auth.uid()));
+create policy user_settings_update on public.user_settings for update to authenticated
+  using (user_id = (select auth.uid())) with check (user_id = (select auth.uid()));
+
+-- §4.1 key functions (service role only) -------------------------------------------
+
+create function public.svc_set_openrouter_key(p_user uuid, p_key text) returns text
+language plpgsql security definer set search_path = '' as $$
+declare
+  v_secret uuid;
+  v_last4 text := right(p_key, 4);
+begin
+  select key_secret_id into v_secret from public.user_settings where user_id = p_user for update;
+  if v_secret is not null and exists (select 1 from vault.secrets where id = v_secret) then
+    perform vault.update_secret(v_secret, p_key);
+  else
+    v_secret := vault.create_secret(p_key, 'openrouter:' || p_user);
+  end if;
+  insert into public.user_settings (user_id, key_secret_id, key_last4, key_added_at, updated_at)
+  values (p_user, v_secret, v_last4, now(), now())
+  on conflict (user_id) do update
+    set key_secret_id = excluded.key_secret_id, key_last4 = excluded.key_last4,
+        key_added_at = excluded.key_added_at, updated_at = excluded.updated_at;
+  return v_last4;
+end $$;
+
+create function public.svc_get_openrouter_key(p_user uuid) returns text
+language sql stable security definer set search_path = '' as $$
+  select d.decrypted_secret from public.user_settings s
+  join vault.decrypted_secrets d on d.id = s.key_secret_id
+  where s.user_id = p_user
+$$;
+
+create function public.svc_delete_openrouter_key(p_user uuid) returns void
+language plpgsql security definer set search_path = '' as $$
+begin
+  delete from vault.secrets where id = (select key_secret_id from public.user_settings where user_id = p_user);
+  update public.user_settings set key_secret_id = null, key_last4 = null, key_added_at = null, updated_at = now()
+  where user_id = p_user;
+end $$;
+
+revoke execute on function public.svc_set_openrouter_key(uuid, text) from public, anon, authenticated;
+revoke execute on function public.svc_get_openrouter_key(uuid) from public, anon, authenticated;
+revoke execute on function public.svc_delete_openrouter_key(uuid) from public, anon, authenticated;
+grant execute on function public.svc_set_openrouter_key(uuid, text) to service_role;
+grant execute on function public.svc_get_openrouter_key(uuid) to service_role;
+grant execute on function public.svc_delete_openrouter_key(uuid) to service_role;
