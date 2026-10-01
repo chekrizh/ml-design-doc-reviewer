@@ -1,5 +1,5 @@
 {
-  "milestone": "M1 (done) + M1.1: owner's review changes",
+  "milestone": "M2: practical loop (M1 + M1.1 done)",
   "spec": "docs/mvp-spec.md",
   "rules": [
     "Work on features in order unless a later one is blocked only by an earlier one you already finished.",
@@ -7,7 +7,11 @@
     "Set `passes` to true only after every step is verified by an automated test (Vitest or Playwright) that is committed and green.",
     "If the spec and a feature disagree, the spec wins; record the conflict in open-questions.md instead of editing the feature.",
     "docs/acceptance-tests.md is human-owned: never edit it. Implement each scenario as a Playwright test in e2e/acceptance/ that checks every expected outcome; never weaken or skip them.",
-    "M1.1 features supersede earlier features where they conflict (each names what it supersedes). Your own earlier tests that assert superseded behaviour must be updated to the new behaviour; acceptance tests are only changed by the human."
+    "M1.1 features supersede earlier features where they conflict (each names what it supersedes). Your own earlier tests that assert superseded behaviour must be updated to the new behaviour; acceptance tests are only changed by the human.",
+    "M2 features are appended after M1/M1.1 and supersede them where they conflict (each names what it supersedes). Update your own earlier tests to the new behaviour.",
+    "M2 never calls real external services: tests use local Supabase (CLI + Docker), the local-only test sign-in, and mocks for OpenRouter and Google Drive (see 'Тестовое окружение M2' in docs/acceptance-tests.md). A test fails if any request goes to openrouter.ai, googleapis.com, accounts.google.com or *.supabase.co.",
+    "Never run Supabase cloud commands (login, link, db push, functions deploy, secrets). The human deploys.",
+    "Visual reference for M2 screens: docs/mockups/*.html and the PNGs next to them; UI rules in docs/mvp-spec.md (M2) and docs/design-system.md."
   ],
   "features": [
     {
@@ -626,6 +630,432 @@
         "No TODOs left for features marked as passing"
       ],
       "passes": true
+    },
+    {
+      "id": "m2-setup-01",
+      "category": "setup",
+      "description": "Local Supabase in the repo for dev and tests.",
+      "steps": [
+        "`supabase init` config is committed; `supabase start` and `supabase db reset` succeed on a clean checkout",
+        "`pnpm e2e` checks that local Supabase is running and fails with a clear message if not; the database is reset to a known state before each M2 test",
+        "CLAUDE.md lists the commands to start, reset and stop local Supabase"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m2-setup-02",
+      "category": "setup",
+      "description": "Supabase client and environment.",
+      "steps": [
+        "`@supabase/supabase-js` is added with an entry in docs/decisions.md (alternatives include no dependency)",
+        "`.env.example` names the variables: Supabase URL, publishable key, Google client ID; local values point to local Supabase",
+        "With Supabase stopped, the guest app still works: all M1 and M1.1 acceptance tests pass"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m2-setup-03",
+      "category": "setup",
+      "description": "Test doubles for OpenRouter and Google Drive.",
+      "steps": [
+        "OpenRouter mock: key check (only `sk-or-v1-test-valid-0000a3f9` is valid), models list, chat completion with recorded answers R1 and R2, errors 401/402/429, an answer that breaks the findings schema, and a configurable delay",
+        "Drive mock records every request (create vs update) and can refuse access",
+        "Each test selects mock behaviour explicitly; a guard fails the test on any request to a real external host"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m2-setup-04",
+      "category": "setup",
+      "description": "Routes for home and designs.",
+      "steps": [
+        "Home screen and an open design have their own URLs; browser back/forward moves between them",
+        "Reloading a design URL opens the same design (cloud for signed-in, the local one for guests)",
+        "The choice (a router dependency or none) is recorded in docs/decisions.md"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m2-db-01",
+      "category": "backend",
+      "description": "Designs table with RLS.",
+      "steps": [
+        "A migration creates designs: id, owner, title, data (JSONB, the M1 model), origin (blank / task / example), updated_at",
+        "RLS: a user reads, updates and deletes only their own designs; a test with two users proves it",
+        "Inserting or updating stores and returns the same JSON the client sent"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m2-db-02",
+      "category": "backend",
+      "description": "Findings stored per design.",
+      "steps": [
+        "Findings and their statuses persist per design (in the design JSON or a table keyed by design id; the choice is recorded in docs/decisions.md)",
+        "Access follows the design's RLS: another user can neither read nor change them",
+        "Reloading the page shows the same findings and statuses"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m2-db-03",
+      "category": "backend",
+      "description": "User settings and the OpenRouter key in Vault (D16).",
+      "steps": [
+        "The key is stored encrypted in Supabase Vault; the settings row keeps only a reference, the last 4 characters and the chosen model",
+        "The client can save and delete the key but no client-callable query or function returns it; a test proves it",
+        "Only the review and key-check functions read the key"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m2-auth-01",
+      "category": "auth",
+      "description": "Sign in with Google, sign out.",
+      "steps": [
+        "'Sign in with Google' starts Supabase Google OAuth; after sign-in the header shows the Google photo and the account menu",
+        "A test sign-in that skips Google exists only when the app runs against local Supabase; the production build contains no way to reach it (a test checks the built bundle)",
+        "Sign out returns to the guest home screen"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m2-auth-02",
+      "category": "auth",
+      "description": "Guest design moves to the account on sign-in (AT-26).",
+      "steps": [
+        "On sign-in the local design is imported as a new cloud design; existing cloud designs are untouched",
+        "IndexedDB is cleared after a successful import; a failed import keeps the local design",
+        "An empty local design (nothing filled) is not imported"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m2-designs-01",
+      "category": "designs",
+      "description": "Cloud autosave for signed-in users.",
+      "steps": [
+        "Edits autosave to Supabase; the header save status works as in M1 (Saving / Saved / error)",
+        "Reload restores title, values, rationale, matrices, diagrams and layout",
+        "Guests keep the M1 IndexedDB autosave"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m2-designs-02",
+      "category": "designs",
+      "description": "Edits from two places: last write wins with a check (AT-29).",
+      "steps": [
+        "A save whose updated_at is older than the stored one is refused instead of overwriting",
+        "The tab shows a banner that the design changed elsewhere, with a reload action",
+        "After reload the tab shows the stored version"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m2-designs-03",
+      "category": "designs",
+      "description": "Several designs: create, open, delete (AT-27).",
+      "steps": [
+        "New design, Start task and the first edit of an example create a cloud design",
+        "Opening a design from 'Your designs' loads it; Delete asks for confirmation with the M1 dialog and removes it for good",
+        "No folders, search or rename from the list"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m2-lib-01",
+      "category": "library",
+      "description": "Library fixtures from docs/library (replaces the Churn example).",
+      "steps": [
+        "src/fixtures holds Supermegaretail Demand Forecasting (example) and SuperPay Real-Time Fraud Detection (task), each with Source",
+        "A unit test checks every key property, rationale text, trade-off matrix and chosen option against the markdown files",
+        "The task has only Problem Space filled and an empty ML Task value",
+        "Load example loads Supermegaretail (AT-25); your own M1 tests that expect Churn are updated (supersedes the example part of m11 and earlier features)"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m2-lib-02",
+      "category": "library",
+      "description": "Example diagrams for Validation, Data & Features, Integration.",
+      "steps": [
+        "The three sections have Excalidraw diagrams built from the descriptions in the markdown file",
+        "Exactly these 3 cards show a thumbnail after Load example; other sections follow the default diagram rules from M1.1"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m2-home-01",
+      "category": "home",
+      "description": "Home screen layout (AT-22).",
+      "steps": [
+        "'Design a system' and 'Examples' share one row, each a horizontal strip of cards; 'Your designs' fills the rest of the height and scrolls inside",
+        "At 1440×900 the page itself does not scroll",
+        "Matches docs/mockups/home-signed-in.png and home-guest.png"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m2-home-02",
+      "category": "home",
+      "description": "Gallery cards.",
+      "steps": [
+        "Each card: Problem Space preview (Domain, Goal, Constraints, ML Task), title, one sentence, chip Blank / Task / Example, action button",
+        "The task's ML Task reads 'Your first decision'; the example shows its Source",
+        "New design, Start task and Open example open the matching design"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m2-home-03",
+      "category": "home",
+      "description": "'Your designs' list for signed-in users.",
+      "steps": [
+        "Row: 3×3 section map in canvas layout (filled / empty), title, origin chip, ML Task, 'N / 9 sections', trade-offs count, open findings, last edit date, '⋯' with Delete",
+        "Last edited first",
+        "Empty state when there are no designs"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m2-home-04",
+      "category": "home",
+      "description": "Guest: current work and replacing it (AT-23).",
+      "steps": [
+        "'Your designs' is inactive with 'Sign in to keep several designs and run AI review'",
+        "With a local design, 'Current work · in this browser' shows it with Continue",
+        "Opening an example or task over a local design asks 'Replace your current work?' with the M1 dialog; Cancel keeps it"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m2-home-05",
+      "category": "home",
+      "description": "Signed-in example is copied on first edit (AT-28).",
+      "steps": [
+        "Opening an example without editing creates nothing",
+        "The first edit saves a copy with origin Example to 'Your designs'; the library example stays unchanged"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m2-header-01",
+      "category": "ui",
+      "description": "Header and menus for M2 (AT-30, AT-43; supersedes the Share and AI Review parts of m11).",
+      "steps": [
+        "Avatar left of AI Review and Share: guest shows the default avatar (docs/mockups/assets/default-avatar.png) and 'Sign in with Google'; signed-in shows the Google photo",
+        "Account menu: My designs, AI Review settings, Sign out",
+        "Share: Export to Google Docs (with its subtitle), Export PDF, Export Markdown, in this order",
+        "AI Review menu: guest → 'Sign in to run AI review'; no key → 'Add your OpenRouter key' and 'Add key'; with key → 'Review whole design', 'Review one section' with the 9 sections, model, last run time, Settings"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m2-doc-01",
+      "category": "document",
+      "description": "Document layout: outline left, comments right (supersedes the outline position of doc features).",
+      "steps": [
+        "The outline is left of the sheet, styled as in M1; the comments column is right of the sheet, always, with or without a review",
+        "Matches docs/mockups/review-document.png"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m2-ui-01",
+      "category": "ui",
+      "description": "Toast component.",
+      "steps": [
+        "One toast at a time, bottom center, role=status, classes from docs/design-system.md",
+        "Success, error and progress variants; actions and a dismiss button"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m2-review-01",
+      "category": "review",
+      "description": "Finding model and rules (pure, src/model).",
+      "steps": [
+        "Types: severity Critical/Major/Minor, rubric dimension, anchor (key property, rationale, trade-off row, or whole design), title, evidence, why, fix, status open/resolved/dismissed, stale flag",
+        "Rules with unit tests: review indicator per section (not reviewed / red / green), worst severity, counts, replace findings in a run's scope only",
+        "Editing an anchored field marks its findings stale; deleting the field moves them to the whole design, stale"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m2-review-02",
+      "category": "review",
+      "description": "Review request built from the design (D19).",
+      "steps": [
+        "vendor/ml-system-design-review (SKILL.md + references) is the model context, mode 'doc-only, stage: design doc'",
+        "The design goes in as text plus one PNG per non-empty diagram; a test on the example sees exactly 3 PNGs",
+        "The response schema matches the finding model; gradecard and verdict are not requested"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m2-review-03",
+      "category": "review",
+      "description": "Review edge function.",
+      "steps": [
+        "Requires a signed-in user; reads the user's key from Vault and calls OpenRouter with the chosen model",
+        "Validates the answer against the schema and returns findings; maps 401, 402, 429, a model without image input and an off-schema answer to distinct errors",
+        "Per-user rate limit; request headers, bodies and the key are never logged (a test inspects the log output)",
+        "Tests run it with `supabase functions serve` against the OpenRouter mock"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m2-review-04",
+      "category": "review",
+      "description": "Key check and model list.",
+      "steps": [
+        "Saving a key checks it with a cheap OpenRouter request; a rejected key is not stored",
+        "The model list contains only models with image input and structured output, with the recommended one selected by default; no prices"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m2-review-05",
+      "category": "review",
+      "description": "AI Review settings dialog (AT-31).",
+      "steps": [
+        "Opens from the account menu, the Settings link and 'Add key'",
+        "Password field and Save with 'Checking…'; saved key shows only its last 4 characters, 'Works', Replace, Delete; a rejected key shows a red field and a hint",
+        "Matches docs/mockups/review-run-settings.png"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m2-review-06",
+      "category": "review",
+      "description": "Running a review (AT-32, AT-37, AT-39).",
+      "steps": [
+        "Whole design or one section from the AI Review menu; 'Review this section' in the Component Editor",
+        "While running: Review panel with 'Reviewing…', elapsed time and Cancel; indicators in scope pulse; previous findings stay, dimmed",
+        "On success new findings replace those in the run's scope only; on error or Cancel previous findings are unchanged and the panel shows the error with its action",
+        "Editing during a run is allowed; fields changed meanwhile get stale findings"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m2-review-07",
+      "category": "review",
+      "description": "Card signals: review indicator and findings badge.",
+      "steps": [
+        "Review indicator next to Trade-offs, same size: grey not reviewed, red with '!' if open critical/major, green with check otherwise",
+        "Footer badge left of Details '● N findings' with the worst severity dot, only when there are open findings; it opens the Review panel at that section",
+        "Matches docs/mockups/review-canvas.png"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m2-review-08",
+      "category": "review",
+      "description": "Review panel on the canvas (AT-33).",
+      "steps": [
+        "Counts by severity, tabs Open / Resolved / Dismissed, groups in canonical order with 'Whole design' first, severity order inside, minor collapsed as 'N minor — show'",
+        "Expanded finding: 'What the design says', 'Why it matters', Fix behind 'Show fix', Dismiss and Resolve; closed findings show Reopen; stale ones are faded with their label",
+        "Expanding a finding highlights its card and scrolls it into view"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m2-review-09",
+      "category": "review",
+      "description": "Findings in the Component Editor (AT-35).",
+      "steps": [
+        "Findings column with the same tabs for this section only, and the review indicator in the editor header",
+        "Markers: key property right of its value, trade-off row after the option name, Rationale next to its heading",
+        "Marker click expands the finding; finding click highlights and scrolls to the field",
+        "Matches docs/mockups/review-editor.png"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m2-review-10",
+      "category": "review",
+      "description": "Margin comments in the document (AT-36).",
+      "steps": [
+        "Each comment sits at its field's height and moves down on overlap; whole-design comments sit at the document title",
+        "The expanded comment aligns with its field and the field is highlighted",
+        "Tabs Open / Resolved / Dismissed as on the canvas"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m2-review-11",
+      "category": "review",
+      "description": "One status everywhere, persisted (AT-34, AT-42).",
+      "steps": [
+        "Resolve, Dismiss or Reopen in the panel, the editor or the document updates badges, indicators, markers, comments and counts everywhere without reload",
+        "Statuses survive reload"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m2-review-12",
+      "category": "review",
+      "description": "Findings stay out of exports (AT-40).",
+      "steps": [
+        "Markdown, PDF and Google Docs export contain no finding text or review labels"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m2-export-01",
+      "category": "export",
+      "description": "Diagrams as PNG.",
+      "steps": [
+        "Each non-empty diagram rasterizes to PNG (shared by the review request and the Google Docs export)",
+        "A unit test checks the PNG signature and size for the example diagrams"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m2-export-02",
+      "category": "export",
+      "description": "Export to Google Docs (D17, AT-41).",
+      "steps": [
+        "Google Identity Services asks for `drive.file` on first export only; the backend is not involved and stores no Google tokens",
+        "The document HTML has explicit table borders and PNG images as data URIs; upload creates a Google Doc (`application/vnd.google-apps.document`)",
+        "Every export creates a new file; Share shows 'Last exported …' with Open",
+        "Toasts: 'Continue in the Google window…', 'Exporting to Google Docs…', 'Google Doc created' with Open and Copy link; errors with Try again for denied access, blocked popup, Drive failure",
+        "Works for guests and signed-in users"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m2-security-01",
+      "category": "quality",
+      "description": "Secrets and access.",
+      "steps": [
+        "No test, page or response exposes the full OpenRouter key; the built bundle contains no service-role key or Google client secret",
+        "RLS tests pass for designs, findings and settings"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m2-acceptance-01",
+      "category": "quality",
+      "description": "Acceptance scenarios AT-22..AT-43.",
+      "steps": [
+        "Each scenario has its own Playwright test in e2e/acceptance/ named with its ID, checking every expected outcome",
+        "Your tests for AT-11 point 2 and AT-18 points 3–4 follow the 'Что из M1 заменено' section",
+        "All acceptance tests, M1 and M2, pass in Chromium and WebKit"
+      ],
+      "passes": false
+    },
+    {
+      "id": "m2-final-01",
+      "category": "quality",
+      "description": "Green build for M2.",
+      "steps": [
+        "`pnpm check` and `pnpm e2e` pass on a clean checkout with local Supabase running",
+        "The palette checks in docs/design-system.md print nothing",
+        "No TODOs left for features marked as passing"
+      ],
+      "passes": false
     }
   ],
   "acceptance": "docs/acceptance-tests.md"
