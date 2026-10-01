@@ -92,7 +92,7 @@
 **4. Миграции и функции** (команды из корня репозитория, после прогона)
 - [ ] `supabase login`, затем `supabase link --project-ref <ref>`.
 - [ ] `supabase db push` — схема, RLS, Vault.
-- [ ] `supabase secrets set --env-file supabase/.env.production` — если функциям нужны секреты; ключей OpenRouter там нет, они у пользователей в Vault. Проверка: `supabase secrets list`.
+- [ ] `supabase secrets set --env-file supabase/.env.production` с переменными функций из `docs/backend-spec.md` §10: `RECOMMENDED_MODEL` (выбрать актуальную модель OpenRouter с картинками и structured outputs), `APP_ORIGINS` (домен Vercel). `OPENROUTER_BASE_URL` на проде не задавать. Ключей OpenRouter там нет, они у пользователей в Vault. Проверка: `supabase secrets list`.
 - [ ] `supabase functions deploy`.
 
 **5. Vercel**
