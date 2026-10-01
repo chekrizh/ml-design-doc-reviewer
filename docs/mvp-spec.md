@@ -181,6 +181,9 @@ Mockup: `mockups/document.png`
 - **Library** — элементы лежат в `docs/library/`, по файлу на элемент, в разметке по 9 секциям (Key Properties, Rationale, Trade-offs с выбранным вариантом, описание диаграммы). В прогоне M2 агент переводит их в фикстуры в `src/fixtures/`, как `example.ts` в M1. На старте один пример (`retail-demand-forecasting.md`, он же «Load example» и фикстура e2e) и одна задача (`superpay-fraud-detection.md`). В задаче ML Task пустой: выбрать его — первое решение пользователя. Таблиц в Rationale нет (редактор их не поддерживает), вместо них списки. У элемента есть поле Source, Library его показывает (пример взят из репозитория ML-SystemDesign под MIT).
 - **Пример заменяет Churn Prediction.** Acceptance-сценарии M1 (AT-11) проверяют название «Churn Prediction (Telecom)». Сценарии M2 пишет автор и учитывает новое название; пример, как и Churn, заполняет все 9 секций, полные trade-offs в 7 секциях, диаграммы в 3.
 - **Экспорт в Google Docs** — HTML документа загружается в Drive с конвертацией в Google Doc, scope `drive.file`. Диаграммы растеризуются в PNG.
+  - Мокап `mockups/export-gdocs.html`. Share: первым пунктом «Export to Google Docs» (подпись «Creates a new Google Doc in your Drive»), затем Export PDF и Export Markdown.
+  - Каждый экспорт создаёт новый Google Doc, прошлый не перезаписывается: в нём могут быть правки команды. После экспорта в меню Share строка «Last exported …» со ссылкой Open.
+  - Статус — уведомлением внизу по центру: пока открыто окно Google — «Continue in the Google window…»; затем «Exporting to Google Docs…»; готово — «Google Doc created» с Open и Copy link. Ошибки с Try again: доступ не дан (ничего не экспортировано), окно заблокировано браузером, Drive не принял документ (PDF и Markdown работают).
 - **Режимов Training / Real-Work нет:** разницы между ними нет, среда одна.
 
 ### M2 open questions
@@ -190,7 +193,7 @@ Mockup: `mockups/document.png`
 - [x] Library: один пример и одна задача в `docs/library/`.
 - [x] Спайк экспорта в Google Docs (2026-10-02): импорт HTML через Drive API с конвертацией в Google Doc сохраняет PNG как data URI (в том числе ~230 КБ и с `width`), заголовки, таблицы с фоном строк и цветом текста, жирный, курсив, списки. SVG как data URI теряется — диаграммы растеризуем в PNG, как и решено. HTML остаётся, `.docx` не нужен (D17).
 - [x] LLM-провайдер в M2: OpenRouter (D20).
-- [ ] Мокапы новых экранов. Готовы (`docs/mockups/*.html`): главный экран со списком дизайнов и Library, логин в шапке, находки на карточке, в Component Editor и на полях документа, запуск ревью и настройки ключа. Остался экспорт в Google Docs. Перед прогоном снять PNG с HTML-мокапов.
+- [ ] Мокапы новых экранов. Готовы (`docs/mockups/*.html`): главный экран со списком дизайнов и Library, логин в шапке, находки на карточке, в Component Editor и на полях документа, запуск ревью и настройки ключа, экспорт в Google Docs. Перед прогоном снять с них PNG. 
 - [ ] Acceptance-сценарии M2 — после мокапов.
 - [ ] Ручные шаги до прогона (Supabase, Google Cloud OAuth, consent screen, секреты, деплой миграций и функций) — в `docs/autonomous-run-checklist.md`, после мокапов.
 

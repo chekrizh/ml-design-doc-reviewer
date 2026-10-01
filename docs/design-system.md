@@ -99,6 +99,13 @@ dialog:  m-auto w-full max-w-md rounded-2xl bg-white p-6 text-slate-700 shadow-l
 ```
 Готовые функции в M1: `confirmDialog`, `alertDialog`, `promptDialog` из `src/dialogs.ts`. В e2e отвечать через `answerDialog(page, '<кнопка>')` из `e2e/helpers.ts`.
 
+**Уведомление (toast)** — статус фоновой операции, одно за раз, внизу по центру, `role="status"`
+```
+box:     flex items-center gap-3 rounded-xl bg-slate-900 px-4 py-3 text-sm text-white shadow-lg
+действие: text-sm font-semibold text-indigo-300 hover:text-indigo-200
+иконка:  успех — галочка в bg-emerald-600, ошибка — «!» в bg-red-600, процесс — спиннер text-indigo-300
+```
+
 **Фокус** — не стандартная синяя рамка браузера
 ```
 outline-none focus-visible:ring-2 focus-visible:ring-indigo-400
