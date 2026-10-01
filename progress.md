@@ -300,3 +300,10 @@ Format:
 ## Run result: DONE
 - Features passing: 57 / 57
 - Stuck features: none
+
+# M2
+
+## m2-setup-01
+- [x] `supabase init` config is committed; `supabase start` and `supabase db reset` succeed on a clean checkout (seed: test users, sign-ups closed, password sign-in on; `e2e/m2/supabase.spec.ts`)
+- [x] `pnpm e2e` checks that local Supabase is running and fails with "Local Supabase is not running: run `supabase start`" if not (`e2e/global-setup.ts`); every M2 test resets the database via `test_reset()` (`e2e/m2/fixtures.ts`, D28)
+- [x] CLAUDE.md lists the commands to start, reset and stop local Supabase

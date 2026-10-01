@@ -641,7 +641,7 @@
         "`pnpm e2e` checks that local Supabase is running and fails with a clear message if not; the database is reset to a known state before each M2 test",
         "CLAUDE.md lists the commands to start, reset and stop local Supabase"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-setup-02",
