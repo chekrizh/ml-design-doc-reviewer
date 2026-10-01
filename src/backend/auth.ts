@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import type { Session } from '@supabase/supabase-js'
 import { navigate } from '../router'
+import { importGuestDesign } from './designs'
 import { getSupabase } from './supabase'
 
 export type Account = { id: string; email: string; name: string; avatarUrl: string | null }
@@ -18,11 +19,25 @@ const toAccount = (s: Session | null): Account | null => {
 export function startAuth() {
   const sb = getSupabase()
   if (!sb) return useAuth.setState({ ready: true })
-  sb.auth.onAuthStateChange((event, session) => {
-    // Token refreshes keep the same user; only a change of user re-renders.
+  sb.auth.onAuthStateChange((_event, session) => {
     const account = toAccount(session)
-    if (account?.id !== useAuth.getState().account?.id || event === 'INITIAL_SESSION') useAuth.setState({ account, ready: true })
+    // Token refreshes keep the same user; only a change of user re-renders.
+    if (useAuth.getState().ready && account?.id === useAuth.getState().account?.id) return
+    // Outside the callback: supabase-js calls inside it would wait on the auth lock.
+    setTimeout(() => void (account ? enter(account) : useAuth.setState({ account: null, ready: true })))
   })
+}
+
+/** On sign-in (and on load with a session, which retries a failed move) the guest design moves first. */
+async function enter(account: Account) {
+  try {
+    const id = await importGuestDesign()
+    if (id && location.pathname === '/local') navigate(`/d/${id}`, { replace: true })
+  } catch (e) {
+    // The local design stays in IndexedDB and is moved on the next sign-in.
+    console.warn('Could not move the guest design to the account', e)
+  }
+  useAuth.setState({ account, ready: true })
 }
 
 export async function signInWithGoogle() {

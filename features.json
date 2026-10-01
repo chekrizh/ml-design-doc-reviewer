@@ -728,7 +728,7 @@
         "IndexedDB is cleared after a successful import; a failed import keeps the local design",
         "An empty local design (nothing filled) is not imported"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-designs-01",

@@ -2,11 +2,9 @@ import { useEffect, useState } from 'react'
 import { Canvas } from './canvas/Canvas'
 import { Header, type Mode } from './canvas/Header'
 import { DocumentView } from './document/DocumentView'
-import { startPersistence } from './store/persist'
+import { startLocalPersistence, stopLocalPersistence } from './store/persist'
 import { Home } from './home/Home'
 import { navigate, parseRoute, routePath, usePath } from './router'
-
-let started: Promise<void> | undefined
 
 export function App() {
   const path = usePath()
@@ -32,6 +30,8 @@ function Redirect({ to }: { to: string }) {
   return null
 }
 
+let queue = Promise.resolve()
+
 /** The guest's design from IndexedDB (/local). */
 function LocalDesign() {
   const [ready, setReady] = useState(false)
@@ -42,8 +42,15 @@ function LocalDesign() {
   }
 
   useEffect(() => {
-    started ??= startPersistence()
-    started.then(() => setReady(true))
+    let live = true
+    // Serialized: StrictMode mounts twice, and leaving /local must finish its pending save.
+    queue = queue.then(startLocalPersistence).then(() => {
+      if (live) setReady(true)
+    })
+    return () => {
+      live = false
+      queue = queue.then(() => stopLocalPersistence())
+    }
   }, [])
 
   if (!ready) return null

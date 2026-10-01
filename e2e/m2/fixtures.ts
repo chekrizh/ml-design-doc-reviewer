@@ -52,3 +52,28 @@ export async function signedInClient(email: 'test-a@example.test' | 'test-b@exam
   if (error) throw error
   return client
 }
+
+/** Everything the app keeps in IndexedDB, by key ('current' design, 'meta'). */
+export const localStore = (page: import('@playwright/test').Page) =>
+  page.evaluate(
+    () =>
+      new Promise<Record<string, unknown>>((resolve) => {
+        const req = indexedDB.open('ml-design-trainer')
+        req.onsuccess = () => {
+          const s = req.result.transaction('designs').objectStore('designs')
+          const out: Record<string, unknown> = {}
+          const cur = s.openCursor()
+          cur.onsuccess = () => {
+            const c = cur.result
+            if (!c) return resolve(out)
+            out[String(c.key)] = c.value
+            c.continue()
+          }
+        }
+      }),
+  )
+
+export const signInAsTestUser = async (page: import('@playwright/test').Page) => {
+  await page.getByRole('button', { name: 'Sign in as test user' }).click()
+  await page.getByRole('img', { name: 'Google profile photo' }).waitFor()
+}

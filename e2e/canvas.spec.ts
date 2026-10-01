@@ -23,7 +23,9 @@ test('canvas-01 / m11-06 header: logo, title and save status left, toggle center
   for (const name of ['Export PDF', 'Export Markdown', 'Load example', 'Reset layout'])
     await expect(header.getByRole('button', { name })).toHaveCount(0)
   await expect(header.getByText(/contributor/i)).toHaveCount(0)
-  await expect(header.locator('img')).toHaveCount(0)
+  // M2 (m2-header-01) adds the account avatar; no other images (no contributor avatars).
+  await expect(header.locator('img')).toHaveCount(1)
+  await expect(header.getByRole('img', { name: 'Guest' })).toBeVisible()
 })
 
 test('m11-06 Share and ⋯ menus: items, close on outside click and Escape, Reset layout only on canvas', async ({ page }) => {
