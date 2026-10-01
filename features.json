@@ -750,7 +750,7 @@
         "The tab shows a banner that the design changed elsewhere, with a reload action; autosave of that design stops until reload",
         "After reload the tab shows the stored version"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-designs-03",

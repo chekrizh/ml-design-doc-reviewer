@@ -24,7 +24,10 @@ const pick = (prev: LayoutItem[], next: Layout): LayoutItem[] =>
     const { x, y, w, h } = next.find((n) => n.i === p.i) ?? p
     return { i: p.i, x, y, w, h }
   })
-const same = (a: LayoutItem[], b: LayoutItem[]) => JSON.stringify(a) === JSON.stringify(b)
+// What the user decides: card order in rows and widths. Heights (and so y) follow measured content,
+// so they never count as an edit: opening a design must not write it (M2 autosave, version check).
+const shape = (l: LayoutItem[]) => [...l].sort((a, b) => a.y - b.y || a.x - b.x).map((c) => `${c.i}:${c.x}:${c.w}`).join()
+const same = (a: LayoutItem[], b: LayoutItem[]) => shape(a) === shape(b)
 
 export function Canvas() {
   const layout = useDesign((s) => s.design.layout)

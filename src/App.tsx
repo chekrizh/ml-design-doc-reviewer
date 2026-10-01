@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import { Canvas } from './canvas/Canvas'
 import { Header, type Mode } from './canvas/Header'
 import { DocumentView } from './document/DocumentView'
 import { startLocalPersistence, stopLocalPersistence } from './store/persist'
 import { Home } from './home/Home'
 import { useAuth } from './backend/auth'
-import { closeCloudDesign, openCloudDesign } from './backend/cloud'
+import { closeCloudDesign, openCloudDesign, useCloud } from './backend/cloud'
 import { navigate, parseRoute, routePath, usePath } from './router'
 
 export function App() {
@@ -77,10 +77,26 @@ function CloudDesign({ id }: { id: string }) {
 function CloudEditor({ id }: { id: string }) {
   const opened = useDesignSource(() => openCloudDesign(id), closeCloudDesign)
   if (opened === false) return <Redirect to="/" />
-  return opened ? <Editor /> : null
+  return opened ? <Editor banner={<ConflictBanner />} /> : null
 }
 
-function Editor() {
+/** A save found a newer version (D23): autosave has stopped; reloading shows the stored design. */
+function ConflictBanner() {
+  const conflict = useCloud((s) => s.conflict)
+  if (!conflict) return null
+  return (
+    <div role="alert" className="flex items-center justify-center gap-3 border-b border-red-200 bg-red-50 px-6 py-2 text-sm text-red-700 print:hidden">
+      <span>
+        <span className="font-semibold">This design was changed in another tab or device.</span> Your latest edits here are not saved.
+      </span>
+      <button type="button" className="rounded-lg bg-slate-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-slate-700" onClick={() => location.reload()}>
+        Reload
+      </button>
+    </div>
+  )
+}
+
+function Editor({ banner }: { banner?: ReactNode }) {
   const [mode, setModeState] = useState<Mode>('canvas')
   const setMode = (m: Mode) => {
     setModeState(m)
@@ -89,6 +105,7 @@ function Editor() {
   return (
     <>
       <Header mode={mode} setMode={setMode} />
+      {banner}
       {mode === 'canvas' ? <Canvas /> : <DocumentView />}
     </>
   )

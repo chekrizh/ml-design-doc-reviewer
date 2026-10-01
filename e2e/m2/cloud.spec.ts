@@ -19,6 +19,8 @@ test('m2-designs-01 / m2-setup-04: edits autosave to Supabase and reload restore
   expect(saved.title).toBe('Renamed')
   expect(saved.version).toBeGreaterThan(1)
 
+  const patches: string[] = []
+  page.on('request', (r) => r.method() === 'PATCH' && patches.push(r.url()))
   await reload(page)
   await expect(page).toHaveURL(new RegExp(`/d/${id}$`))
   await expect(page.getByRole('button', { name: 'Edit Design title' })).toHaveText('Renamed')
@@ -28,7 +30,9 @@ test('m2-designs-01 / m2-setup-04: edits autosave to Supabase and reload restore
   expect((await cardBox(page, 'problem-space')).w).toBe(before.w)
   await toMode(page, 'Document')
   await expect(docSection(page, 'integration').getByRole('textbox', { name: 'Integration rationale' })).not.toBeEmpty()
-  // Opening a design does not write it.
+  // Opening a design does not write it (measured card heights are not edits).
+  await page.waitForLoadState('networkidle')
+  expect(patches).toEqual([])
   expect(await row()).toEqual(saved)
 })
 

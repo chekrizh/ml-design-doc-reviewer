@@ -351,3 +351,9 @@ Format:
 ## m2-setup-04
 - [x] Routes `/`, `/d/:id`, `/local`, `/library/:itemId` on the History API without a dependency (`src/router.ts`, D27); back/forward works; unknown paths go home (`e2e/m2/routes.spec.ts`, `src/router.test.ts`); `vercel.json` rewrites deep links to the SPA
 - [x] Reloading a design URL opens the same design: the cloud one for its signed-in owner (`e2e/m2/cloud.spec.ts`), the local one for guests (`e2e/m2/routes.spec.ts`); others are sent home
+
+## m2-designs-02
+- [x] Saves use `update … where version = :seen` (D23); zero updated rows is a conflict (`src/backend/cloud.ts`, pgTAP in designs.test.sql)
+- [x] The tab shows a banner that the design changed elsewhere, with Reload; autosave of that design stops until reload (`e2e/m2/conflict.spec.ts`)
+- [x] After reload the tab shows the stored version, and autosave works again
+- [x] Opening a design writes nothing: measured card heights are not edits (D30), so a second tab does not bump the version
