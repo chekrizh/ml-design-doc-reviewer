@@ -22,9 +22,9 @@ test('ui-01 at 1280px the app works normally', async ({ page }) => {
 test('ui-02 screenshots of canvas, component editor and document with the example', async ({ page }) => {
   await page.goto('/local')
   await loadExample(page)
-  await expect(card(page, 'target-solution').getByTestId('thumbnail').locator('img')).toBeVisible()
+  await expect(card(page, 'integration').getByTestId('thumbnail').locator('img')).toBeVisible()
   await page.screenshot({ path: 'e2e/screenshots/canvas.png', fullPage: true })
-  await openDetails(page, 'target-solution')
+  await openDetails(page, 'integration')
   await page.waitForTimeout(1000)
   await page.screenshot({ path: 'e2e/screenshots/component-editor.png' })
   await page.keyboard.press('Escape')

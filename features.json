@@ -773,7 +773,7 @@
         "The task has only Problem Space filled and an empty ML Task value",
         "Load example loads Supermegaretail (AT-25); your own M1 tests that expect Churn are updated (supersedes the example part of m11 and earlier features)"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-lib-02",

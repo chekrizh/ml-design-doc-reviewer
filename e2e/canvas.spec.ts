@@ -121,7 +121,7 @@ test('canvas-12 Clear design asks first, then starts an empty design', async ({ 
   await loadExample(page)
   await menuAction(page, 'More', 'Clear design')
   expect(await answerDialog(page, 'Cancel')).toMatch(/Clear the design/)
-  await expect(page.getByRole('button', { name: 'Edit Design title' })).toHaveText('Churn Prediction (Telecom)')
+  await expect(page.getByRole('button', { name: 'Edit Design title' })).toHaveText('Supermegaretail Demand Forecasting')
   await menuAction(page, 'More', 'Clear design')
   await answerDialog(page, 'Clear design')
   await expect(card(page, 'problem-space').getByRole('button', { name: 'Edit Domain' })).toHaveText('Not set')

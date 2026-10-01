@@ -357,3 +357,9 @@ Format:
 - [x] The tab shows a banner that the design changed elsewhere, with Reload; autosave of that design stops until reload (`e2e/m2/conflict.spec.ts`)
 - [x] After reload the tab shows the stored version, and autosave works again
 - [x] Opening a design writes nothing: measured card heights are not edits (D30), so a second tab does not bump the version
+
+## m2-lib-01
+- [x] `src/fixtures` holds Supermegaretail Demand Forecasting (example) and SuperPay Real-Time Fraud Detection (task), each with Source, parsed from `docs/library/*.md` (D31: `library-parse.ts`, `library.ts`)
+- [x] A unit test checks every key property, rationale text, trade-off matrix and chosen option against the markdown files line by line (`src/fixtures/library.test.ts`)
+- [x] The task has only Problem Space filled and an empty ML Task value
+- [x] Load example loads Supermegaretail (`exampleDesign`); my M1 tests that expected Churn are updated (helpers, canvas-12, persist-02, doc-03, doc-08, export-03, ui-02, AT-11 point 2 per 'Что из M1 заменено', markdown snapshot)

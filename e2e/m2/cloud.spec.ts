@@ -26,7 +26,7 @@ test('m2-designs-01 / m2-setup-04: edits autosave to Supabase and reload restore
   await expect(page.getByRole('button', { name: 'Edit Design title' })).toHaveText('Renamed')
   await expect(card(page, 'baseline').getByRole('button', { name: 'Edit Approach' })).toHaveText('Seasonal naive')
   await expect(page.locator('[data-indicator="Trade-offs"][data-state="on"]')).toHaveCount(saved.data.sections.filter((s: { tradeoffs: { chosenId: string | null } }) => s.tradeoffs.chosenId).length)
-  await expect(page.getByTestId('thumbnail').locator('img')).toHaveCount(2)
+  await expect(page.getByTestId('thumbnail').locator('img')).toHaveCount(3)
   expect((await cardBox(page, 'problem-space')).w).toBe(before.w)
   await toMode(page, 'Document')
   await expect(docSection(page, 'integration').getByRole('textbox', { name: 'Integration rationale' })).not.toBeEmpty()

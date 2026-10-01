@@ -1,9 +1,9 @@
-import { exampleDesign } from '../../src/fixtures/example'
+import { exampleDesign } from '../helpers'
 import { expect, signedInClient, test } from './fixtures'
 
 test('m2-db-01: insert and update through REST store and return the same JSON the client sent', async () => {
   const db = await signedInClient()
-  const data = JSON.parse(JSON.stringify(exampleDesign()))
+  const data = JSON.parse(JSON.stringify(await exampleDesign()))
   const summary = { filledSections: ['problem-space'], tradeoffs: 7, mlTask: 'Regression' }
   const ins = await db.from('designs').insert({ origin: 'example', source_id: 'retail-demand-forecasting', title: data.title, data, summary }).select('id, data, summary, version').single()
   expect(ins.error).toBeNull()
