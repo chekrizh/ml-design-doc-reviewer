@@ -14,7 +14,7 @@ export const SECTION_ORDER: [SectionId, string][] = [
 ]
 
 export async function openApp(page: Page) {
-  await page.goto('/')
+  await page.goto('/local')
   await expect(page.getByRole('button', { name: 'Canvas', exact: true })).toBeVisible()
   // Cards measure their content and the rows reflow for a moment after load.
   await settledBox(page.locator('.react-grid-layout'))
