@@ -56,6 +56,7 @@ For each feature:
 - Start: `supabase start` (Docker must run). Edge functions in `supabase/functions/` are served by `supabase start`; a function added after start needs `supabase stop && supabase start` (or `supabase functions serve` for hot reload).
 - Reset to migrations + seed (test users `test-a@example.test`, `test-b@example.test`, password `test-password`): `supabase db reset`.
 - Stop: `supabase stop`.
+- Database tests (pgTAP, RLS and grants): `pnpm test:db` (= `supabase test db`).
 - `pnpm e2e` fails with "Local Supabase is not running" when the stack is down; each M2 test clears app data through `test_reset()` (seed.sql, local only). Guest-only run with Supabase stopped: `E2E_WITHOUT_SUPABASE=1 pnpm e2e --project chromium --project webkit`.
 
 ## Notes

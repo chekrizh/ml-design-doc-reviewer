@@ -684,7 +684,7 @@
         "RLS and grants as §4; pgTAP tests prove a user cannot read, update or delete another user's designs",
         "Inserting or updating stores and returns the same JSON the client sent"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-db-02",

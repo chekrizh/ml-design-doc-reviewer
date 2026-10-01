@@ -317,3 +317,8 @@ Format:
 - [x] OpenRouter mock (`e2e/mocks/openrouter/server.ts`, started by global setup on 127.0.0.1:4010, reachable from edge functions via `host.docker.internal`): /key accepts only `sk-or-v1-test-valid-0000a3f9`, /models, /chat/completions with R1, R2, 401, 402, 429, bad_output, no_images and a delay; records the last request without Authorization (`e2e/m2/mocks.spec.ts`)
 - [x] Google stubs via page.route (`e2e/mocks/google/google.ts`): GIS script with grant / deny / popup-blocked / popup-closed, Drive upload that records create vs update and can fail (500, or 401 once)
 - [x] The M2 Playwright fixture fails the test on any request to a non-local host that is not stubbed (`e2e/m2/fixtures.ts`)
+
+## m2-db-01
+- [x] Migration creates `designs` as §3.1, with the version trigger: only `data`/`title` changes bump `version` and `updated_at` (`supabase/tests/designs.test.sql`)
+- [x] RLS and grants as §4 (anon nothing; authenticated only own rows; `version`, `user_id` not updatable by the client); pgTAP proves a user cannot read, update or delete another user's designs (`pnpm test:db`)
+- [x] Insert and update store and return the same JSON the client sent (pgTAP and `e2e/m2/db.spec.ts` through supabase-js)

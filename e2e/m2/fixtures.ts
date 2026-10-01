@@ -43,3 +43,12 @@ export const test = base.extend<{ cleanDb: void; externalRequests: string[] }>({
 })
 
 export { expect } from '@playwright/test'
+
+/** A supabase-js client signed in as a seed test user, as the app would be (RLS applies). */
+export async function signedInClient(email: 'test-a@example.test' | 'test-b@example.test' = 'test-a@example.test') {
+  const { createClient } = await import('@supabase/supabase-js')
+  const client = createClient(SUPABASE_URL, process.env.SUPABASE_PUBLISHABLE_KEY!, { auth: { persistSession: false } })
+  const { error } = await client.auth.signInWithPassword({ email, password: 'test-password' })
+  if (error) throw error
+  return client
+}
