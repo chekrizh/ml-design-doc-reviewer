@@ -53,7 +53,56 @@
 - [x] Отдельная ветка или worktree, в идеале контейнер.
 - [x] Настроены разрешения (auto mode или allowlist), чтобы агент не простаивал в ожидании подтверждений.
 - [x] Явные запреты: `git push --force`, изменения вне репозитория, публикация чего-либо наружу.
-- [x] Установлены и работают всё нужное для запуска: Node/Python, браузер для Playwright, Docker (если нужен).
+- [x] Установлены и работают всё нужное для запуска: Node/Python, браузер для Playwright, Docker (если нужен). Для M2 Docker и Supabase CLI нужны — см. 7a.
+
+## 7a. Ручные шаги M2
+
+Прогон M2 работает только локально: Supabase в Docker, тестовый вход, моки OpenRouter и Drive (см. «Тестовое окружение M2» в `docs/acceptance-tests.md`). Поэтому до прогона нужна только часть A. Часть B — до деплоя и ручной приёмки, её можно делать параллельно с прогоном.
+
+### A. До прогона (обязательно)
+
+- [ ] **Docker.** Проверено 2026-10-02: на машине его нет. Поставить Docker Desktop или OrbStack (легче на Mac): `brew install --cask orbstack`, запустить. Проверка: `docker info` без ошибок.
+- [ ] **Supabase CLI.** `brew install supabase/tap/supabase`. Проверка: `supabase --version`.
+- [ ] **Первый запуск локального Supabase** (скачивает образы, несколько минут, лучше до прогона): в пустой папке `supabase init && supabase start`, дождаться вывода URL, затем `supabase stop` и удалить папку. Агент сделает `supabase init` в репозитории сам.
+- [ ] **Права агента в worktree:** разрешить `docker`, `supabase` (start, stop, status, db reset, migration new, functions serve, gen types). Запретить `supabase link`, `supabase db push`, `supabase functions deploy`, `supabase secrets set`: всё, что трогает облачный проект, делает человек.
+- [ ] **Ветка и run prompt для M2:** `features.json` и `docs/run-prompt.md` сейчас про M1. Новые фичи M2 и инструкция прогона — отдельный шаг перед запуском.
+
+### B. Перед деплоем и ручной приёмкой
+
+**1. Supabase-проект**
+- [ ] Создать проект на supabase.com (Free), регион ближе к пользователям. Записать project ref, URL проекта и publishable (anon) key: Project Settings → API.
+
+**2. Google Cloud: один OAuth-клиент для входа и для Drive**
+- [ ] Создать проект в Google Cloud Console.
+- [ ] APIs & Services → Library → включить **Google Drive API**.
+- [ ] Google Auth Platform → Branding: название «ML System Design Trainer», почта поддержки, домен Vercel в Authorized domains.
+- [ ] Audience: External, режим **Testing**, добавить себя и тестеров в Test users (до 100). Публикация — позже: `openid`, `email`, `profile` и `drive.file` не требуют проверки приложения Google.
+- [ ] Data Access: добавить scopes `openid`, `.../auth/userinfo.email`, `.../auth/userinfo.profile`, `.../auth/drive.file`.
+- [ ] Clients → Create → **Web application**:
+  - Authorized JavaScript origins: `https://<домен>.vercel.app` и `http://localhost:5173`. Origins нужны и для входа, и для окна доступа к Drive (Google Identity Services в браузере).
+  - Authorized redirect URIs: `https://<project-ref>.supabase.co/auth/v1/callback` (точный адрес — Supabase → Authentication → Sign In / Providers → Google) и `http://127.0.0.1:54321/auth/v1/callback` для локального входа через Google.
+  - Сохранить Client ID и Client Secret.
+
+**3. Supabase: вход через Google и URL-ы**
+- [ ] Authentication → Sign In / Providers → Google: включить, вставить Client ID и Client Secret.
+- [ ] Authentication → URL Configuration: Site URL = `https://<домен>.vercel.app`; в Redirect URLs добавить его и `http://localhost:5173/**`.
+- [ ] Email-вход выключить (вход только через Google, D15).
+
+**4. Миграции и функции** (команды из корня репозитория, после прогона)
+- [ ] `supabase login`, затем `supabase link --project-ref <ref>`.
+- [ ] `supabase db push` — схема, RLS, Vault.
+- [ ] `supabase secrets set --env-file supabase/.env.production` — если функциям нужны секреты; ключей OpenRouter там нет, они у пользователей в Vault. Проверка: `supabase secrets list`.
+- [ ] `supabase functions deploy`.
+
+**5. Vercel**
+- [ ] Environment Variables (Production и Preview): URL Supabase, publishable key, Google Client ID. Имена — как в `.env.example`, который напишет агент. Секретов в Vercel нет: Client Secret живёт только в Supabase.
+- [ ] Redeploy.
+
+**6. Ручная проверка после деплоя** (то, что моки не покрывают)
+- [ ] Вход через Google на проде, выход.
+- [ ] Сохранить свой ключ OpenRouter с лимитом расходов на стороне OpenRouter, полное ревью примера. Находки на месте, полный ключ нигде не виден.
+- [ ] Экспорт в Google Docs: окно доступа к Drive, документ открывается, три диаграммы видны.
+- [ ] Перед публичным запуском: вычистить localhost из origins и redirect URIs, перевести Audience в Production.
 
 ## 8. Бюджет и стоп-условия
 
