@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs'
 import { expect, test } from '@playwright/test'
 import { answerDialog, dialog, docSection, loadExample, openApp, openDetails, setCardValue, menuAction, toMode } from './helpers'
 
@@ -87,8 +88,11 @@ test('R6 Export PDF prints only after the diagram images are in the document', a
 // dynamic import that failed to load stays failed until reload, so here each attempt
 // must at least report the failure instead of doing nothing.
 test('R7/R8 a failed diagram render during Markdown export is reported on every attempt', async ({ page }) => {
+  // Block every lazy chunk (Excalidraw) from the start: the default diagrams of a new design would load it on open.
+  // Only the scripts index.html loads up front get through.
+  const entry = new Set(readFileSync('dist/index.html', 'utf8').match(/assets\/[^"]+\.js/g))
+  await page.route('**/assets/*.js', (route) => (entry.has(new URL(route.request().url()).pathname.slice(1)) ? route.continue() : route.abort()))
   await openApp(page)
-  await page.route('**/*.js', (route) => route.abort())
   await loadExample(page)
 
   for (let attempt = 0; attempt < 2; attempt++) {

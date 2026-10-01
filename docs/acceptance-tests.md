@@ -74,15 +74,16 @@
 
 **Дано:** пустой дизайн.
 **Ожидаем:**
-- 9 карточек в таком порядке: Problem Space, Evaluation (Offline), Baseline, Validation, Data & Features, Evaluation (Online), Integration, Monitoring, Target Solution & Architecture.
+- 9 карточек. На канвасе по умолчанию они стоят тремя рядами (слева направо, сверху вниз): Problem Space, Evaluation (Offline), Baseline; Validation, Data & Features, Target Solution & Architecture; Evaluation (Online), Monitoring, Integration.
 - Текста «Evaluation Strategy» нет нигде.
 - Ключи каждой секции совпадают с таблицей шаблонных ключей в `docs/mvp-spec.md`; у Validation ключей нет.
 
 ### AT-07. Канонический порядок документа
 
+
 **Дано:** загружен пример.
 **Действие:** перетащить карточку Monitoring на место Problem Space, переключиться в Document.
-**Ожидаем:** разделы документа и пункты оглавления идут в каноническом порядке (как в AT-06), Problem Space — первым.
+**Ожидаем:** разделы документа и пункты оглавления идут в каноническом порядке: Problem Space, Evaluation (Offline), Baseline, Validation, Data & Features, Evaluation (Online), Integration, Monitoring, Target Solution & Architecture. Problem Space — первым.
 
 ### AT-08. Выбор в матрице не трогает Key Properties
 
@@ -171,12 +172,19 @@
 **Дано:** пустой дизайн.
 **Ожидаем:**
 1. Карточки одного ряда одинаковой высоты (±2px) — по самой высокой из них. У самой высокой по содержимому карточки каждого ряда расстояние от нижнего края последнего элемента содержимого до верхней границы нижней части с кнопкой Details — не больше 32px.
-2. Карточка Validation (без ключей и диаграммы) ниже карточки Problem Space (4 ключа).
-3. После рисования прямоугольника в Validation (Details → вайтборд → закрыть) карточка Validation становится выше, чем была, и условие п. 1 по-прежнему выполняется для всех рядов.
-4. Перетаскивание ручки ресайза у Problem Space меняет ширину карточки, а высота остаётся определённой содержимым (условие п. 1 выполняется).
+2. После изменения содержимого (нарисовать прямоугольник в Evaluation (Offline): Details → вайтборд → закрыть) условие п. 1 по-прежнему выполняется для всех рядов.
+3. После изменения ширины Problem Space ручкой ресайза условие п. 1 по-прежнему выполняется для всех рядов.
 
 ### AT-20. Раскладка на всю ширину (Safari)
 
 **Дано:** пустой дизайн, окно 1440×900, тест выполняется и в Chromium, и в WebKit.
 **Ожидаем:** левый край Problem Space совпадает с левым краем области карточек, правый край Baseline — с правым краем области карточек (±2px); между карточками первого ряда нет промежутков шире, чем между карточками второго ряда (±2px).
 
+### AT-21.  Раскладка по умолчанию
+    
+**Дано:** пустой дизайн, окно 1440×900.
+**Действие и ожидаем:**
+1. Три ряда по три карточки: Problem Space, Evaluation (Offline), Baseline; Validation, Data & Features, Target Solution & Architecture; Evaluation (Online), Monitoring, Integration. В каждом ряду ширины 4 / 3 / 5 колонок из 12, ряд от левого края до правого (±2px).
+2. У Validation, Target Solution & Architecture и Integration на карточке схема по умолчанию со словом «Diagram»; в режиме Document эти разделы помечены «Not filled yet».
+3. Изменить ширину Problem Space и перетащить Monitoring на место Problem Space; Reset layout → раскладка как в п. 1.
+4. Изменить ширину Problem Space, Load example → раскладка как в п. 1. Изменить ширину Problem Space, Clear design (подтвердить) → пустой дизайн с раскладкой как в п. 1.   

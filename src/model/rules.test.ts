@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { emptyDesign, type Section, type TradeOffs } from './design'
-import { diagramNonEmpty, sectionEmpty, tradeoffsComplete } from './rules'
+import { diagramDrawn, diagramNonEmpty, sectionEmpty, tradeoffsComplete } from './rules'
 
 const complete = (): TradeOffs => ({
   options: [
@@ -50,6 +50,17 @@ describe('diagramNonEmpty', () => {
   })
   it('is true with a live element', () => {
     expect(diagramNonEmpty({ elements: [{ isDeleted: true }, { isDeleted: false }], files: {} })).toBe(true)
+  })
+})
+
+describe('emptyDesign', () => {
+  it('gives the diagram sections a default diagram that is drawn but still empty', () => {
+    const d = emptyDesign()
+    expect(d.sections.filter((s) => diagramDrawn(s.diagram)).map((s) => s.id)).toEqual(['validation', 'integration', 'target-solution'])
+    expect(d.sections.every(sectionEmpty)).toBe(true)
+    const def = d.sections.find((s) => s.id === 'validation')!.diagram
+    expect(diagramNonEmpty({ ...def, elements: [{ ...def.elements[0], text: 'Train → Val' }] })).toBe(true)
+    expect(diagramNonEmpty({ ...def, elements: [...def.elements, { isDeleted: false }] })).toBe(true)
   })
 })
 

@@ -148,9 +148,15 @@ test('AT-06 sections and template keys', async ({ page }) => {
     SECTION_ORDER.map(async ([sid]) => ({ name: await card(page, sid).getByRole('heading').innerText(), ...(await cardBox(page, sid)) })),
   )
   const visual = [...boxes].sort((a, b) => a.y - b.y || a.x - b.x).map((b) => b.name)
-  expect(visual.map((n) => n.toLowerCase())).toEqual(names.map((n) => n.toLowerCase()))
+  // Default canvas layout (D12): three rows of three; the document keeps the canonical order (AT-07).
+  const canvasOrder = [
+    'Problem Space', 'Evaluation (Offline)', 'Baseline',
+    'Validation', 'Data & Features', 'Target Solution & Architecture',
+    'Evaluation (Online)', 'Monitoring', 'Integration',
+  ]
+  expect(visual.map((n) => n.toLowerCase())).toEqual(canvasOrder.map((n) => n.toLowerCase()))
   await expect(page.locator('article[aria-label]')).toHaveCount(9)
-  expect(await page.locator('article[aria-label]').evaluateAll((els) => els.map((e) => e.getAttribute('aria-label')))).toEqual(names)
+  expect(await page.locator('article[aria-label]').evaluateAll((els) => els.map((e) => e.getAttribute('aria-label')))).toEqual(canvasOrder)
 
   const expected: Record<string, string[]> = {
     'problem-space': ['Domain', 'Business Goal', 'ML Task', 'Constraints'],

@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef } from 'react'
 import { sectionName, type SectionId } from '../model/design'
-import { diagramNonEmpty, tradeoffsComplete } from '../model/rules'
+import { diagramDrawn, diagramNonEmpty, tradeoffsComplete } from '../model/rules'
 import { InlineText } from '../editor/InlineText'
 import { useDiagramImage } from '../export/svg'
 import { useDesign, useSection } from '../store/store'
@@ -77,7 +77,7 @@ export function Card({ sid, onDetails, onHeight }: { sid: SectionId; onDetails: 
   const thumb = useDiagramImage(section.diagram)
   const shown = section.keyProperties.slice(0, MAX_PROPS)
   const hidden = section.keyProperties.length - shown.length
-  const hasDiagram = diagramNonEmpty(section.diagram)
+  const hasDiagram = diagramDrawn(section.diagram)
 
   return (
     <article ref={article} data-testid={`card-${sid}`} aria-label={sectionName(sid)} className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white shadow-sm">
@@ -100,7 +100,8 @@ export function Card({ sid, onDetails, onHeight }: { sid: SectionId; onDetails: 
           {hidden > 0 && <dd className="col-span-2 text-xs font-medium text-slate-400">+{hidden}</dd>}
         </dl>
         {hasDiagram && (
-          <div data-testid="thumbnail" className="flex h-36 max-w-[60%] min-w-0 flex-1 items-center justify-center rounded-xl border border-slate-100 bg-slate-50 p-2">
+          // Clicking the picture opens the whiteboard; the Details button stays the accessible way in.
+          <div data-testid={diagramNonEmpty(section.diagram) ? 'thumbnail' : 'default-diagram'} onClick={onDetails} className="flex h-36 max-w-[60%] min-w-0 flex-1 cursor-pointer items-center justify-center rounded-xl border border-slate-100 bg-slate-50 p-2">
             {thumb && <img src={thumb} alt={`${sectionName(sid)} diagram`} className="max-h-full max-w-full object-contain" />}
           </div>
         )}

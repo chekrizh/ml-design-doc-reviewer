@@ -137,7 +137,7 @@ test('AT-18 header: Share, AI Review, ⋯ menu, save status', async ({ page }) =
   // 5. "⋯" has Load example and Reset layout; Load example loads after confirmation.
   await header.getByRole('button', { name: 'More', exact: true }).click()
   await expect(header.getByRole('button', { name: 'More', exact: true })).toHaveText('⋯')
-  await expect(page.getByRole('menu', { name: 'More' }).getByRole('menuitem')).toHaveText(['Load example', 'Reset layout'])
+  await expect(page.getByRole('menu', { name: 'More' }).getByRole('menuitem')).toHaveText(['Load example', 'Reset layout', 'Clear design'])
   await page.keyboard.press('Escape')
   await loadExample(page)
 })
@@ -147,22 +147,16 @@ test('AT-19 card height follows content', async ({ page }) => {
   const gapsOk = () => expectRowsFitContent(page)
   // 1.
   await gapsOk()
-  // 2.
-  const v0 = await cardBox(page, 'validation')
-  expect(v0.h).toBeLessThan((await cardBox(page, 'problem-space')).h)
-  // 3.
-  await openDetails(page, 'validation')
+  // 2. Content changes.
+  await openDetails(page, 'evaluation-offline')
   await drawRectangle(page)
   await closeEditor(page)
-  await expect(card(page, 'validation').getByTestId('thumbnail').getByRole('img')).toBeVisible()
-  await expect.poll(async () => (await cardBox(page, 'validation')).h).toBeGreaterThan(v0.h)
+  await expect(card(page, 'evaluation-offline').getByTestId('thumbnail').getByRole('img')).toBeVisible()
   await gapsOk()
-  // 4.
+  // 3. Width changes.
   const ps = await cardBox(page, 'problem-space')
   await resizeCard(page, 'problem-space', 150, 120)
-  const resized = await cardBox(page, 'problem-space')
-  expect(resized.w).not.toBe(ps.w)
-  expect(resized.h).toBe(ps.h)
+  expect((await cardBox(page, 'problem-space')).w).not.toBe(ps.w)
   await gapsOk()
 })
 

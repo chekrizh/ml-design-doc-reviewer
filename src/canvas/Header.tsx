@@ -1,4 +1,5 @@
 import { exampleDesign } from '../fixtures/example'
+import { emptyDesign } from '../model/design'
 import { InlineText } from '../editor/InlineText'
 import { confirmEmptySections, exportMarkdown } from '../export/download'
 import { diagramToSvg } from '../export/svg'
@@ -23,6 +24,10 @@ export function Header({ mode, setMode }: { mode: Mode; setMode: (m: Mode) => vo
   const loadExample = async () => {
     if (await confirmDialog('Load the example design? It replaces your current design.', 'Load example'))
       a.setDesign(exampleDesign())
+  }
+  const clearDesign = async () => {
+    if (await confirmDialog('Clear the design? Everything on the canvas and in the document is removed.', 'Clear design'))
+      a.setDesign(emptyDesign())
   }
   const exportMd = async () => {
     const d = useDesign.getState().design
@@ -81,6 +86,7 @@ export function Header({ mode, setMode }: { mode: Mode; setMode: (m: Mode) => vo
         <Menu label="More" button="⋯" className={`${action} px-2.5 leading-none`}>
           <MenuItem onClick={loadExample}>Load example</MenuItem>
           {mode === 'canvas' && <MenuItem onClick={a.resetLayout}>Reset layout</MenuItem>}
+          <MenuItem onClick={clearDesign}>Clear design</MenuItem>
         </Menu>
       </div>
     </header>

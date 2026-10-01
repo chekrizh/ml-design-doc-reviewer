@@ -45,7 +45,7 @@ export function Canvas() {
           gridConfig={{ cols: 12, rowHeight: ROW, margin: [GAP, GAP], containerPadding: [0, 0] }}
           compactor={flowCompactor}
           dragConfig={{ handle: '.card-drag' }}
-          resizeConfig={{ handles: ['e'] }}
+          resizeConfig={{ handles: ['w', 'e'] }}
           onLayoutChange={(next) => {
             const prev = useDesign.getState().design.layout
             const items = pick(prev, next)

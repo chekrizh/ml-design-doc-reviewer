@@ -40,12 +40,12 @@ test('m11-06 Share and ⋯ menus: items, close on outside click and Escape, Rese
   await expect(share).toBeHidden()
 
   await page.getByRole('button', { name: 'More', exact: true }).click()
-  await expect(more.getByRole('menuitem')).toHaveText(['Load example', 'Reset layout'])
+  await expect(more.getByRole('menuitem')).toHaveText(['Load example', 'Reset layout', 'Clear design'])
   await page.keyboard.press('Escape')
   await expect(more).toBeHidden()
   await toMode(page, 'Document')
   await page.getByRole('button', { name: 'More', exact: true }).click()
-  await expect(more.getByRole('menuitem')).toHaveText(['Load example'])
+  await expect(more.getByRole('menuitem')).toHaveText(['Load example', 'Clear design'])
   await page.keyboard.press('Escape')
 
   // Export keeps the empty-sections warning; Load example asks first.
@@ -73,7 +73,7 @@ test('canvas-02 title: click to edit, Enter saves, Escape cancels, persists', as
   await expect(title).toHaveText('Untitled design')
 })
 
-test('canvas-03 nine cards with icon and uppercase name in mockup layout', async ({ page }) => {
+test('canvas-03 nine cards with icon and uppercase name in the default 3x3 layout (D12)', async ({ page }) => {
   await openApp(page)
   for (const [sid, name] of SECTION_ORDER) {
     const c = card(page, sid)
@@ -85,18 +85,47 @@ test('canvas-03 nine cards with icon and uppercase name in mockup layout', async
   const b = Object.fromEntries(await Promise.all(SECTION_ORDER.map(async ([sid]) => [sid, await cardBox(page, sid)])))
   const rows = [
     ['problem-space', 'evaluation-offline', 'baseline'],
-    ['validation', 'data-features'],
-    ['evaluation-online', 'integration', 'monitoring'],
+    ['validation', 'data-features', 'target-solution'],
+    ['evaluation-online', 'monitoring', 'integration'],
   ]
   for (const row of rows) {
     for (const sid of row) expect(b[sid].y).toBe(b[row[0]].y)
     for (let i = 1; i < row.length; i++) expect(b[row[i]].x).toBeGreaterThan(b[row[i - 1]].x)
   }
-  expect(b['validation'].y).toBeGreaterThan(b['problem-space'].y)
-  expect(b['evaluation-online'].y).toBeGreaterThan(b['validation'].y)
-  expect(b['target-solution'].y).toBeGreaterThan(b['evaluation-online'].y)
-  const gridWidth = b['baseline'].x + b['baseline'].w - b['problem-space'].x
-  expect(Math.abs(b['target-solution'].w - gridWidth)).toBeLessThanOrEqual(2)
+  for (let i = 1; i < rows.length; i++) expect(b[rows[i][0]].y).toBeGreaterThan(b[rows[i - 1][0]].y)
+  // Diagram sections start with a default diagram: the word "Diagram" on the whiteboard.
+  for (const sid of ['validation', 'integration', 'target-solution'] as const)
+    await expect(card(page, sid).getByTestId('default-diagram').getByRole('img')).toBeVisible()
+  await expect(page.getByTestId('default-diagram')).toHaveCount(3)
+  // Columns line up: every row is 4 / 3 / 5 of 12.
+  for (const row of rows) for (let k = 0; k < 3; k++) expect(Math.abs(b[row[k]].w - b[rows[0][k]].w)).toBeLessThanOrEqual(2)
+})
+
+test('canvas-11 default diagram: the thumbnail opens Details; deleting it leaves the card without a diagram', async ({ page }) => {
+  await openApp(page)
+  await card(page, 'integration').getByTestId('default-diagram').click()
+  await expect(dialog(page)).toHaveAccessibleName('Integration')
+  await dialog(page).getByTestId('whiteboard').locator('canvas.interactive').click()
+  await page.keyboard.press('ControlOrMeta+A')
+  await page.keyboard.press('Delete')
+  await closeEditor(page)
+  await expect(card(page, 'integration').getByTestId('default-diagram')).toHaveCount(0)
+  await reload(page)
+  await expect(card(page, 'integration').getByTestId('default-diagram')).toHaveCount(0)
+})
+
+test('canvas-12 Clear design asks first, then starts an empty design', async ({ page }) => {
+  await openApp(page)
+  await loadExample(page)
+  await menuAction(page, 'More', 'Clear design')
+  expect(await answerDialog(page, 'Cancel')).toMatch(/Clear the design/)
+  await expect(page.getByRole('button', { name: 'Edit Design title' })).toHaveText('Churn Prediction (Telecom)')
+  await menuAction(page, 'More', 'Clear design')
+  await answerDialog(page, 'Clear design')
+  await expect(card(page, 'problem-space').getByRole('button', { name: 'Edit Domain' })).toHaveText('Not set')
+  await expect(page.getByTestId('default-diagram')).toHaveCount(3)
+  await reload(page)
+  await expect(card(page, 'problem-space').getByRole('button', { name: 'Edit Domain' })).toHaveText('Not set')
 })
 
 test('canvas-04 first 4 key properties, +N counter, muted placeholder', async ({ page }) => {
@@ -292,30 +321,32 @@ test('m11-04 card height follows content, rows share the tallest height; resize 
   await openApp(page)
   await expectRowsFitContent(page)
   const ps = await cardBox(page, 'problem-space')
-  const v0 = await cardBox(page, 'validation')
-  expect(v0.h).toBeLessThan(ps.h)
-  await expect(page.locator('.react-resizable-handle')).toHaveCount(9)
+  // Key-values only (4 keys) vs a diagram placeholder: the rows differ by content.
+  expect(ps.h).toBeLessThan((await cardBox(page, 'validation')).h)
+  const v0 = await cardBox(page, 'baseline')
+  // Two horizontal handles per card (left one lets a card at the row's right edge grow), no vertical ones.
+  await expect(page.locator('.react-resizable-handle')).toHaveCount(18)
   await expect(page.locator('.react-resizable-handle-e')).toHaveCount(9)
-  const below0 = await cardBox(page, 'evaluation-online')
+  await expect(page.locator('.react-resizable-handle-w')).toHaveCount(9)
+  const below0 = await cardBox(page, 'validation')
 
-  await openDetails(page, 'validation')
+  await openDetails(page, 'baseline')
   await drawRectangle(page)
   await closeEditor(page)
-  await expect(card(page, 'validation').getByTestId('thumbnail').locator('img')).toBeVisible()
-  const v1 = await cardBox(page, 'validation')
-  expect(v1.h).toBeGreaterThan(v0.h)
-  expect((await cardBox(page, 'evaluation-online')).y).toBeGreaterThan(below0.y)
+  await expect(card(page, 'baseline').getByTestId('thumbnail').locator('img')).toBeVisible()
+  await expect.poll(async () => (await cardBox(page, 'baseline')).h).toBeGreaterThan(v0.h)
+  await expect.poll(async () => (await cardBox(page, 'validation')).y).toBeGreaterThan(below0.y)
   await expectRowsFitContent(page)
 
   // Content shrinks: the card follows back.
-  await openDetails(page, 'validation')
+  await openDetails(page, 'baseline')
   await dialog(page).getByTestId('whiteboard').locator('canvas.interactive').click()
   await page.keyboard.press('ControlOrMeta+A')
   await page.keyboard.press('Delete')
   await closeEditor(page)
-  await expect(card(page, 'validation').getByTestId('thumbnail')).toHaveCount(0)
-  await expect.poll(() => cardBox(page, 'validation')).toEqual(v0)
-  expect(await cardBox(page, 'evaluation-online')).toEqual(below0)
+  await expect(card(page, 'baseline').getByTestId('thumbnail')).toHaveCount(0)
+  await expect.poll(() => cardBox(page, 'baseline')).toEqual(v0)
+  await expect.poll(() => cardBox(page, 'validation')).toEqual(below0)
 
   await resizeCard(page, 'problem-space', 150, 200)
   const wider = await cardBox(page, 'problem-space')

@@ -11,7 +11,7 @@ test('m11-05 cards span the full width of the card area, rows without extra gaps
   const b = Object.fromEntries(await Promise.all(SECTION_ORDER.map(async ([sid]) => [sid, await cardBox(page, sid)])))
   expect(Math.abs(b['problem-space'].x - area.left)).toBeLessThanOrEqual(2)
   expect(Math.abs(b['baseline'].x + b['baseline'].w - area.right)).toBeLessThanOrEqual(2)
-  expect(Math.abs(b['target-solution'].w - (area.right - area.left))).toBeLessThanOrEqual(2)
+  expect(Math.abs(b['target-solution'].x + b['target-solution'].w - area.right)).toBeLessThanOrEqual(2)
   const gaps = (ids: string[]) => ids.slice(1).map((id, k) => b[id].x - (b[ids[k]].x + b[ids[k]].w))
   const row1 = gaps(['problem-space', 'evaluation-offline', 'baseline'])
   const row2 = gaps(['validation', 'data-features'])

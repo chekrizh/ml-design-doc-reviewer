@@ -5,16 +5,16 @@ import { flow } from './flow'
 const item = (i: string, x: number, y: number, w: number, h: number, moved = false) => ({ i, x, y, w, h, moved })
 
 describe('flow', () => {
-  it('keeps the mockup rows and puts each row under the tallest card above it', () => {
+  it('keeps the default 3x3 rows and puts each row under the tallest card above it', () => {
     const tall = INITIAL_LAYOUT.map((l) => ({ ...l, h: l.i === 'problem-space' ? 12 : 5 }))
     const out = flow(tall, 12)
     const at = (i: string) => out.find((l) => l.i === i)!
-    expect(at('problem-space')).toMatchObject({ x: 0, y: 0 })
-    expect(at('baseline')).toMatchObject({ x: 9, y: 0 })
+    expect(at('problem-space')).toMatchObject({ x: 0, y: 0, w: 4 })
+    expect(at('baseline')).toMatchObject({ x: 7, y: 0, w: 5 })
     expect(at('validation')).toMatchObject({ x: 0, y: 12 })
-    expect(at('data-features')).toMatchObject({ x: 6, y: 12 })
+    expect(at('target-solution')).toMatchObject({ x: 7, y: 12 })
     expect(at('evaluation-online')).toMatchObject({ x: 0, y: 17 })
-    expect(at('target-solution')).toMatchObject({ x: 0, y: 22, w: 12 })
+    expect(at('integration')).toMatchObject({ x: 7, y: 17 })
   })
 
   it('stretches every card in a row to the tallest card of that row', () => {
@@ -22,8 +22,8 @@ describe('flow', () => {
     const out = flow(tall, 12)
     const h = (i: string) => out.find((l) => l.i === i)!.h
     expect([h('problem-space'), h('evaluation-offline'), h('baseline')]).toEqual([12, 12, 12])
-    expect([h('validation'), h('data-features')]).toEqual([7, 7])
-    expect([h('evaluation-online'), h('integration'), h('monitoring')]).toEqual([5, 5, 5])
+    expect([h('validation'), h('data-features'), h('target-solution')]).toEqual([7, 7, 7])
+    expect([h('evaluation-online'), h('monitoring'), h('integration')]).toEqual([5, 5, 5])
   })
 
   it('orders by y then x and wraps a card that does not fit', () => {

@@ -77,32 +77,77 @@ export interface Design {
   updatedAt: number
 }
 
-export const SECTIONS: { id: SectionId; name: string; keys: string[] }[] = [
+/** `diagram`: the section is usually explained with a diagram, so a new design gives it a default one. */
+export const SECTIONS: { id: SectionId; name: string; keys: string[]; diagram?: true }[] = [
   { id: 'problem-space', name: 'Problem Space', keys: ['Domain', 'Business Goal', 'ML Task', 'Constraints'] },
   { id: 'evaluation-offline', name: 'Evaluation (Offline)', keys: ['Offline Metric', 'Loss', 'Target Value'] },
   { id: 'baseline', name: 'Baseline', keys: ['Approach', 'Baseline Metric'] },
-  { id: 'validation', name: 'Validation', keys: [] },
+  { id: 'validation', name: 'Validation', keys: [], diagram: true },
   { id: 'data-features', name: 'Data & Features', keys: ['Sources', 'Key Features'] },
   { id: 'evaluation-online', name: 'Evaluation (Online)', keys: ['Evaluation Type', 'Key Metric'] },
-  { id: 'integration', name: 'Integration', keys: ['Inference Pattern', 'Output', 'Latency Budget'] },
+  { id: 'integration', name: 'Integration', keys: ['Inference Pattern', 'Output', 'Latency Budget'], diagram: true },
   { id: 'monitoring', name: 'Monitoring', keys: ['Data Drift', 'Model Quality', 'Alerting'] },
-  { id: 'target-solution', name: 'Target Solution & Architecture', keys: ['Model Type'] },
+  { id: 'target-solution', name: 'Target Solution & Architecture', keys: ['Model Type'], diagram: true },
 ]
 
 export const sectionName = (id: SectionId) => SECTIONS.find((s) => s.id === id)!.name
 
-/** Mockup order and widths on a 12-column grid: three rows of cards, Target Solution full width at the bottom.
- * Heights (h) follow card content on the canvas; the values here are only a first guess. */
+/** Default diagram of the diagram sections: just the word "Diagram" on the whiteboard, an ordinary text element. */
+export const defaultDiagram = (): Diagram => ({
+  elements: [
+    {
+      id: newId(),
+      type: 'text',
+      x: 0,
+      y: 0,
+      width: 80,
+      height: 25,
+      angle: 0,
+      strokeColor: '#868e96',
+      backgroundColor: 'transparent',
+      fillStyle: 'solid',
+      strokeWidth: 2,
+      strokeStyle: 'solid',
+      roughness: 1,
+      opacity: 100,
+      groupIds: [],
+      frameId: null,
+      index: null,
+      roundness: null,
+      seed: 1,
+      version: 1,
+      versionNonce: 1,
+      isDeleted: false,
+      boundElements: null,
+      updated: 1,
+      link: null,
+      locked: false,
+      text: 'Diagram',
+      originalText: 'Diagram',
+      fontSize: 20,
+      fontFamily: 5,
+      textAlign: 'left',
+      verticalAlign: 'top',
+      containerId: null,
+      autoResize: true,
+      lineHeight: 1.25,
+    },
+  ],
+  files: {},
+})
+
+/** Default layout (D12): three rows of three cards, widths 4 / 3 / 5 of 12 columns in every row, so the columns line up.
+ * Diagram sections sit in the wide columns. Heights (h) follow card content; the values here are only a first guess. */
 export const INITIAL_LAYOUT: LayoutItem[] = [
-  { i: 'problem-space', x: 0, y: 0, w: 6, h: 10 },
-  { i: 'evaluation-offline', x: 6, y: 0, w: 3, h: 10 },
-  { i: 'baseline', x: 9, y: 0, w: 3, h: 10 },
-  { i: 'validation', x: 0, y: 10, w: 6, h: 10 },
-  { i: 'data-features', x: 6, y: 10, w: 6, h: 10 },
-  { i: 'evaluation-online', x: 0, y: 20, w: 3, h: 10 },
-  { i: 'integration', x: 3, y: 20, w: 6, h: 10 },
-  { i: 'monitoring', x: 9, y: 20, w: 3, h: 10 },
-  { i: 'target-solution', x: 0, y: 30, w: 12, h: 10 },
+  { i: 'problem-space', x: 0, y: 0, w: 4, h: 10 },
+  { i: 'evaluation-offline', x: 4, y: 0, w: 3, h: 10 },
+  { i: 'baseline', x: 7, y: 0, w: 5, h: 10 },
+  { i: 'validation', x: 0, y: 10, w: 4, h: 10 },
+  { i: 'data-features', x: 4, y: 10, w: 3, h: 10 },
+  { i: 'target-solution', x: 7, y: 10, w: 5, h: 10 },
+  { i: 'evaluation-online', x: 0, y: 20, w: 4, h: 10 },
+  { i: 'monitoring', x: 4, y: 20, w: 3, h: 10 },
+  { i: 'integration', x: 7, y: 20, w: 5, h: 10 },
 ]
 
 export const newId = () => crypto.randomUUID()
@@ -114,7 +159,7 @@ export const emptyDesign = (): Design => ({
     keyProperties: s.keys.map((key) => ({ id: newId(), key, value: '' })),
     rationale: null,
     tradeoffs: { options: [], criteria: [], chosenId: null },
-    diagram: { elements: [], files: {} },
+    diagram: s.diagram ? defaultDiagram() : { elements: [], files: {} },
   })),
   layout: INITIAL_LAYOUT.map((l) => ({ ...l })),
   updatedAt: Date.now(),

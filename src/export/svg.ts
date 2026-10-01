@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { Diagram } from '../model/design'
-import { diagramNonEmpty } from '../model/rules'
+import { diagramDrawn } from '../model/rules'
 
 const cache = new WeakMap<Diagram, Promise<string>>()
 
@@ -32,7 +32,7 @@ export const svgDataUrl = (svg: string) => `data:image/svg+xml;charset=utf-8,${e
 export function useDiagramImage(d: Diagram): string | null {
   const [img, setImg] = useState<{ d: Diagram; url: string } | null>(null)
   useEffect(() => {
-    if (!diagramNonEmpty(d)) return
+    if (!diagramDrawn(d)) return
     let live = true
     diagramToSvg(d).then(
       (svg) => live && setImg({ d, url: svgDataUrl(svg) }),
@@ -43,5 +43,5 @@ export function useDiagramImage(d: Diagram): string | null {
     }
   }, [d])
   // Keep showing the previous image until the new one is ready, so the thumbnail does not flicker.
-  return diagramNonEmpty(d) ? (img?.url ?? null) : null
+  return diagramDrawn(d) ? (img?.url ?? null) : null
 }

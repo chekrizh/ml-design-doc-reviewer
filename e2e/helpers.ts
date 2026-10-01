@@ -16,6 +16,8 @@ export const SECTION_ORDER: [SectionId, string][] = [
 export async function openApp(page: Page) {
   await page.goto('/')
   await expect(page.getByRole('button', { name: 'Canvas', exact: true })).toBeVisible()
+  // Cards measure their content and the rows reflow for a moment after load.
+  await settledBox(page.locator('.react-grid-layout'))
 }
 
 export const card = (page: Page, sid: SectionId) => page.getByTestId(`card-${sid}`)
@@ -128,22 +130,40 @@ export async function cardBox(page: Page, sid: SectionId) {
 }
 
 /** Drags a card by its header onto the position of another card. */
+/** Bounding box once the element stops moving: after a drop the rows reflow and re-measure for a moment. */
+async function settledBox(l: Locator) {
+  let prev = JSON.stringify(await l.boundingBox())
+  for (let i = 0; i < 40; i++) {
+    await l.page().waitForTimeout(50)
+    const now = JSON.stringify(await l.boundingBox())
+    if (now === prev) break
+    prev = now
+  }
+  return (await l.boundingBox())!
+}
+
 export async function dragCard(page: Page, from: SectionId, to: SectionId) {
-  const src = (await card(page, from).locator('header').boundingBox())!
-  const dst = (await card(page, to).locator('header').boundingBox())!
+  const src = await settledBox(card(page, from).locator('header'))
+  const dst = await settledBox(card(page, to).locator('header'))
   await page.mouse.move(src.x + 40, src.y + src.height / 2)
   await page.mouse.down()
   await page.mouse.move(dst.x + 40, dst.y + dst.height / 2, { steps: 20 })
   await page.mouse.up()
 }
 
+/** Drags a card's width handle by dx. A card at the row's right edge can grow only with its left handle
+ * (react-grid-layout caps x + w at the grid), so widening such a card drags the left handle leftwards, as a user would. */
 export async function resizeCard(page: Page, sid: SectionId, dx: number, dy: number) {
-  const handle = page.locator(`[data-grid-item="${sid}"] .react-resizable-handle`)
-  await handle.scrollIntoViewIfNeeded()
-  const b = (await handle.boundingBox())!
+  const item = page.locator(`[data-grid-item="${sid}"]`)
+  await item.scrollIntoViewIfNeeded()
+  const box = await settledBox(item)
+  const area = (await page.locator('.react-grid-layout').boundingBox())!
+  const atEdge = dx > 0 && Math.abs(box.x + box.width - (area.x + area.width)) <= 2
+  const b = (await item.locator(atEdge ? '.react-resizable-handle-w' : '.react-resizable-handle-e').boundingBox())!
+  const move = atEdge ? -dx : dx
   await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2)
   await page.mouse.down()
-  await page.mouse.move(b.x + b.width / 2 + dx, b.y + b.height / 2 + dy, { steps: 10 })
+  await page.mouse.move(b.x + b.width / 2 + move, b.y + b.height / 2 + dy, { steps: 10 })
   await page.mouse.up()
 }
 
@@ -213,7 +233,7 @@ export async function contentGap(page: Page, sid: SectionId) {
   return card(page, sid).evaluate((a) => {
     const footer = a.querySelector('footer')!.getBoundingClientRect().top
     const body = a.querySelector('header')!.nextElementSibling!
-    const bottoms = [...body.querySelectorAll('dt, dd, [data-testid="thumbnail"]')].map((e) => e.getBoundingClientRect().bottom)
+    const bottoms = [...body.querySelectorAll('dt, dd, [data-testid="thumbnail"], [data-testid="default-diagram"]')].map((e) => e.getBoundingClientRect().bottom)
     const last = bottoms.length ? Math.max(...bottoms) : body.getBoundingClientRect().top
     return footer - last
   })

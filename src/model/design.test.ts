@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { diagramNonEmpty } from './rules'
 import { emptyDesign, SECTIONS } from './design'
 
 describe('emptyDesign', () => {
@@ -36,7 +37,7 @@ describe('emptyDesign', () => {
     for (const s of d.sections) {
       expect(s.rationale).toBeNull()
       expect(s.tradeoffs).toEqual({ options: [], criteria: [], chosenId: null })
-      expect(s.diagram.elements).toEqual([])
+      expect(diagramNonEmpty(s.diagram)).toBe(false) // diagram sections hold only the default "Diagram" word
     }
     expect(d.layout.map((l) => l.i).sort()).toEqual(d.sections.map((s) => s.id).sort())
   })

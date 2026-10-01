@@ -7,7 +7,14 @@ export const tradeoffsComplete = (t: TradeOffs): boolean =>
   t.options.every((o) => t.criteria.every((c) => (o.cells[c.id] ?? '').trim() !== '')) &&
   t.options.some((o) => o.id === t.chosenId)
 
-export const diagramNonEmpty = (d: Diagram): boolean => d.elements.some((e) => !e.isDeleted)
+/** Anything on the whiteboard, the default "Diagram" word included: the card shows it and is diagram-wide. */
+export const diagramDrawn = (d: Diagram): boolean => d.elements.some((e) => !e.isDeleted)
+
+/** Real content for the document, export and empty-section rules: an untouched default diagram (just "Diagram") is empty. */
+export const diagramNonEmpty = (d: Diagram): boolean => {
+  const live = d.elements.filter((e) => !e.isDeleted)
+  return live.length > 0 && !(live.length === 1 && live[0].type === 'text' && live[0].text === 'Diagram')
+}
 
 export const richTextEmpty = (r: RichText | null): boolean => {
   if (!r) return true
