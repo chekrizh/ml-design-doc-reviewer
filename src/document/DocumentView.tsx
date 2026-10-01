@@ -111,7 +111,7 @@ export function DocumentView() {
                   document.getElementById(docAnchor(s.id))?.scrollIntoView()
                   setActive(s.id)
                 }}
-                className={`block rounded-lg px-3 py-2 text-sm ${active === s.id ? 'bg-violet-100 font-medium text-violet-700' : 'text-slate-500 hover:text-slate-800'}`}
+                className={`block rounded-lg px-3 py-2 text-sm ${active === s.id ? 'bg-indigo-100 font-medium text-indigo-700' : 'text-slate-500 hover:text-slate-800'}`}
               >
                 {s.name}
               </a>

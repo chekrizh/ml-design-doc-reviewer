@@ -25,7 +25,7 @@ function TradeoffsStatus({ sid, on }: { sid: SectionId; on: boolean }) {
       data-indicator="Trade-offs"
       data-state={on ? 'on' : 'off'}
       onMouseDown={(e) => e.stopPropagation()}
-      className={`group relative ml-auto rounded-md p-1 outline-none focus-visible:ring-2 focus-visible:ring-violet-400 ${on ? 'text-emerald-600' : 'text-slate-300'}`}
+      className={`group relative ml-auto rounded-md p-1 outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 ${on ? 'text-emerald-600' : 'text-slate-300'}`}
     >
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5" aria-hidden>
         <path d="M12 3v18M7 21h10M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2M2 16l3-8 3 8c-.9.7-1.9 1-3 1s-2.1-.3-3-1zM16 16l3-8 3 8c-.9.7-1.9 1-3 1s-2.1-.3-3-1z" />

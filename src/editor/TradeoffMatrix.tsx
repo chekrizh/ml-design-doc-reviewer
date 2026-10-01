@@ -1,7 +1,7 @@
 import type { SectionId } from '../model/design'
 import { useDesign, useSection } from '../store/store'
 
-const cellInput = 'w-full min-w-20 rounded bg-transparent px-2 py-1 outline-none focus:bg-white focus:ring-1 focus:ring-violet-300'
+const cellInput = 'w-full min-w-20 rounded bg-transparent px-2 py-1 outline-none focus:bg-white focus:ring-1 focus:ring-indigo-300'
 
 /** Editable trade-off matrix: rows are options, columns are criteria, one option can be chosen. */
 export function TradeoffMatrix({ sid, editable = true }: { sid: SectionId; editable?: boolean }) {
@@ -45,7 +45,7 @@ export function TradeoffMatrix({ sid, editable = true }: { sid: SectionId; edita
               {options.map((o, i) => {
                 const chosen = o.id === chosenId
                 return (
-                  <tr key={o.id} data-chosen={chosen} className={`border-t border-slate-100 ${chosen ? 'bg-violet-50' : ''}`}>
+                  <tr key={o.id} data-chosen={chosen} className={`border-t border-slate-100 ${chosen ? 'bg-indigo-50' : ''}`}>
                     <td className="px-1 py-1">
                       <div className="flex items-center gap-1">
                         <button
@@ -54,11 +54,11 @@ export function TradeoffMatrix({ sid, editable = true }: { sid: SectionId; edita
                           aria-pressed={chosen}
                           title={chosen ? 'Chosen option' : 'Mark as chosen'}
                           onClick={() => a.chooseOption(sid, chosen ? null : o.id)}
-                          className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border text-xs ${chosen ? 'border-violet-600 bg-violet-600 text-white' : 'border-slate-300 text-transparent hover:border-violet-400'}`}
+                          className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border text-xs ${chosen ? 'border-indigo-600 bg-indigo-600 text-white' : 'border-slate-300 text-transparent hover:border-indigo-400'}`}
                         >
                           ✓
                         </button>
-                        <input aria-label={`Option ${i + 1} name`} placeholder="Option" value={o.name} onChange={(e) => a.renameOption(sid, o.id, e.target.value)} className={`${cellInput} ${chosen ? 'font-semibold text-violet-700' : ''}`} />
+                        <input aria-label={`Option ${i + 1} name`} placeholder="Option" value={o.name} onChange={(e) => a.renameOption(sid, o.id, e.target.value)} className={`${cellInput} ${chosen ? 'font-semibold text-indigo-700' : ''}`} />
                         {chosen && <span className="sr-only">(chosen)</span>}
                       </div>
                     </td>

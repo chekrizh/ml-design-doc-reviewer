@@ -50,7 +50,7 @@ export function InlineText({
           setDraft(null)
         }
       }}
-      className={`min-w-0 rounded border border-violet-300 bg-white px-1 outline-none ${inputClassName}`}
+      className={`min-w-0 rounded border border-indigo-300 bg-white px-1 outline-none ${inputClassName}`}
     />
   )
 }

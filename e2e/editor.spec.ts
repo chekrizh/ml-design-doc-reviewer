@@ -145,7 +145,7 @@ test('editor-06 exactly one chosen option, highlighted, indicator live, key prop
   await expect(ind).toHaveAttribute('data-state', 'on')
   const rows = d.locator('tbody tr')
   await expect(rows.nth(0)).toHaveAttribute('data-chosen', 'true')
-  await expect(rows.nth(0)).toHaveClass(/bg-violet-50/)
+  await expect(rows.nth(0)).toHaveClass(/bg-indigo-50/)
   await d.getByRole('button', { name: 'Choose option 2' }).click()
   await expect(d.getByRole('button', { name: /^Choose option/, pressed: true })).toHaveCount(1)
   await expect(rows.nth(1)).toHaveAttribute('data-chosen', 'true')

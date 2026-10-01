@@ -7,7 +7,7 @@ import { TradeoffMatrix } from './TradeoffMatrix'
 
 const Whiteboard = lazy(() => import('./Whiteboard'))
 
-const field = 'w-full rounded-full border border-slate-200 bg-white px-4 py-2 text-sm outline-none focus:border-violet-400'
+const field = 'w-full rounded-full border border-slate-200 bg-white px-4 py-2 text-sm outline-none focus:border-indigo-400'
 
 function Part({ title, children, action }: { title: string; children: React.ReactNode; action?: React.ReactNode }) {
   return (
@@ -39,7 +39,7 @@ export function ComponentEditor({ sid, onClose }: { sid: SectionId; onClose: () 
     >
       <div role="dialog" aria-modal="true" aria-labelledby="editor-title" className="w-full max-w-5xl rounded-3xl bg-white shadow-2xl">
         <header className="flex items-center gap-4 border-b border-slate-100 px-8 py-5">
-          <div className="flex h-11 w-11 items-center justify-center rounded-full bg-violet-100 text-violet-700">
+          <div className="flex h-11 w-11 items-center justify-center rounded-full bg-indigo-100 text-indigo-700">
             <SectionIcon id={sid} />
           </div>
           <h2 id="editor-title" className="flex-1 text-2xl font-semibold">{name}</h2>
@@ -54,7 +54,7 @@ export function ComponentEditor({ sid, onClose }: { sid: SectionId; onClose: () 
           <Part
             title="Decisions & Properties"
             action={
-              <button type="button" onClick={() => a.addKeyProperty(sid)} className="text-sm font-semibold text-violet-700">
+              <button type="button" onClick={() => a.addKeyProperty(sid)} className="text-sm font-semibold text-indigo-700">
                 + Add Property
               </button>
             }

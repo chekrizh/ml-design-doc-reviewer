@@ -5,7 +5,7 @@ import type { RichText } from '../model/design'
 import { richTextEmpty } from '../model/rules'
 
 const btn = (active: boolean) =>
-  `rounded px-2 py-1 text-sm ${active ? 'bg-violet-100 text-violet-700' : 'text-slate-500 hover:bg-slate-100'}`
+  `rounded px-2 py-1 text-sm ${active ? 'bg-indigo-100 text-indigo-700' : 'text-slate-500 hover:bg-slate-100'}`
 
 /** TipTap editor for Rationale & Notes, shared by the Component Editor and the Document. */
 export function RichTextEditor({
