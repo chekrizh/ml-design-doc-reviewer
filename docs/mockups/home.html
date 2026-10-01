@@ -1,0 +1,235 @@
+<title>Trainer Home Mockup</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  /* App is light-only (docs/design-system.md), so the mockup commits to one theme. */
+  :root { color-scheme: light; }
+  html, body { height: 100%; }
+  body { background: #f8fafc; color: #334155; }
+</style>
+
+<!-- One screen, no page scroll: header, one row of galleries, the list takes the rest and scrolls inside. -->
+<div class="flex h-full flex-col">
+
+<!-- Mockup-only control: switches between the two states of the screen. Not part of the app. -->
+<div class="border-b border-dashed border-slate-300 bg-white px-4 py-2 text-xs text-slate-500">
+  <div class="mx-auto flex max-w-6xl flex-wrap items-center gap-2">
+    <span class="uppercase tracking-wide">Mockup state</span>
+    <button id="st-guest" class="rounded-lg px-2 py-1 font-medium">Guest</button>
+    <button id="st-user" class="rounded-lg px-2 py-1 font-medium">Signed in</button>
+    <span class="ml-auto text-slate-400">Items in “Your designs” are illustrative. As a guest, try “Open example”.</span>
+  </div>
+</div>
+
+<header class="shrink-0 border-b border-slate-200 bg-white px-4">
+  <div class="mx-auto flex h-14 max-w-6xl items-center gap-3">
+    <div class="grid h-8 w-8 place-items-center rounded-lg bg-slate-900 text-white">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1.5" y="1.5" width="5" height="5" rx="1"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/><path d="M4 6.5v5.5h5.5"/></svg>
+    </div>
+    <span class="font-semibold text-slate-900">ML System Design Trainer</span>
+    <div class="ml-auto flex items-center gap-2">
+      <button data-guest class="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-900 hover:bg-slate-50">
+        <span class="grid h-4 w-4 place-items-center rounded-full border border-slate-300 text-[10px] font-bold text-slate-500">G</span>
+        Sign in with Google
+      </button>
+      <button data-user class="grid h-8 w-8 place-items-center rounded-full bg-indigo-100 text-sm font-semibold text-indigo-700" aria-label="Account menu">A</button>
+    </div>
+  </div>
+</header>
+
+<main class="mx-auto flex min-h-0 w-full max-w-6xl flex-1 flex-col gap-6 px-4 py-5">
+
+  <!-- 1 + 2: one row. Each gallery is a single strip that scrolls sideways as the catalog grows. -->
+  <div class="grid shrink-0 gap-6 lg:grid-cols-[2fr_1fr]">
+    <section class="flex min-w-0 flex-col gap-3">
+      <div>
+        <h2 class="font-semibold text-slate-900">Design a system</h2>
+        <p class="text-sm text-slate-500">Start empty or take a task with the problem already set.</p>
+      </div>
+      <div id="start-grid" class="flex snap-x gap-4 overflow-x-auto pb-1"></div>
+    </section>
+    <section class="flex min-w-0 flex-col gap-3">
+      <div>
+        <h2 class="font-semibold text-slate-900">Examples</h2>
+        <p class="text-sm text-slate-500">Complete designs to read and change.</p>
+      </div>
+      <div id="example-grid" class="flex snap-x gap-4 overflow-x-auto pb-1"></div>
+    </section>
+  </div>
+
+  <!-- 3. Your designs: takes the remaining height, scrolls inside -->
+  <section class="flex min-h-0 flex-1 flex-col gap-3">
+    <div>
+      <h2 class="font-semibold text-slate-900">Your designs</h2>
+      <p data-user class="text-sm text-slate-500">Saved to your account. Last edited first.</p>
+    </div>
+
+    <!-- Guest: current work (if any) + inactive block -->
+    <div data-guest class="flex min-h-0 flex-col gap-3">
+      <div id="current-work"></div>
+      <div class="flex flex-wrap items-center gap-4 rounded-2xl border border-dashed border-slate-300 bg-slate-100/60 px-4 py-3">
+        <p class="min-w-0 flex-1 text-sm text-slate-500"><span class="font-medium text-slate-700">Sign in to keep several designs and run AI review.</span> Your current work moves to your account.</p>
+        <button class="rounded-lg bg-slate-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-slate-700">Sign in with Google</button>
+      </div>
+    </div>
+
+    <!-- Signed in: list -->
+    <div data-user id="design-list" class="min-h-0 overflow-y-auto rounded-2xl border border-slate-200 bg-white shadow-sm"></div>
+  </section>
+</main>
+</div>
+
+<!-- Guest opens an example over current work: the M1 confirm dialog (design-system "Диалог") -->
+<dialog id="replace-dialog" role="alertdialog" class="m-auto w-full max-w-md rounded-2xl bg-white p-6 text-slate-700 shadow-lg backdrop:bg-slate-900/30">
+  <p class="mb-2 font-semibold text-slate-900">Replace your current work?</p>
+  <p class="text-sm">“Untitled design” in this browser will be replaced by the example. Sign in to keep both.</p>
+  <form method="dialog" class="mt-6 flex justify-end gap-2">
+    <button class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-900 hover:bg-slate-50">Cancel</button>
+    <button class="rounded-lg bg-slate-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-slate-700">Open example</button>
+  </form>
+</dialog>
+
+<script>
+  // Default canvas layout (D12): rows of 3, widths 4 / 3 / 5 out of 12.
+  const LAYOUT = [
+    ['problem', 4], ['evalOff', 3], ['baseline', 5],
+    ['validation', 4], ['data', 3], ['target', 5],
+    ['evalOn', 4], ['monitoring', 3], ['integration', 5],
+  ];
+  const ALL = LAYOUT.map(s => s[0]);
+  let guest = false;
+
+  // List glyph: the design's section map in the canvas layout, filled vs empty.
+  function sectionMap(d) {
+    const cells = LAYOUT.map(([id, w]) => {
+      const base = d.filled.includes(id) ? 'border border-slate-200 bg-slate-200' : 'border border-dashed border-slate-300';
+      return `<div class="${base} rounded-[3px]" style="grid-column: span ${w}"></div>`;
+    }).join('');
+    return `<div class="grid h-9 w-12 shrink-0 grid-cols-12 grid-rows-3 gap-[2px]">${cells}</div>`;
+  }
+
+  const KIND = {
+    blank: 'bg-slate-100 text-slate-600',
+    task: 'bg-indigo-50 text-indigo-700',
+    example: 'bg-emerald-50 text-emerald-700',
+  };
+  const chip = (kind, label) => `<span class="rounded-lg px-2 py-0.5 text-xs font-medium ${KIND[kind]}">${label}</span>`;
+
+  // Gallery preview: the Problem Space card in miniature. [key, value, accent]; no value = empty.
+  function problemPreview(props) {
+    const rows = props.map(([k, v, accent]) =>
+      `<div class="flex gap-2"><dt class="w-16 shrink-0 text-slate-400">${k}</dt>
+        <dd class="min-w-0 truncate ${v ? (accent ? 'font-medium text-indigo-600' : 'text-slate-700') : 'text-slate-300'}">${v || '—'}</dd></div>`).join('');
+    return `<div class="rounded-xl border border-slate-100 bg-slate-50 px-3 py-2.5">
+      <div class="mb-1.5 text-[10px] font-semibold uppercase tracking-wide text-slate-500">Problem Space</div>
+      <dl class="flex flex-col gap-0.5 text-xs">${rows}</dl>
+    </div>`;
+  }
+
+  function galleryCard({ props, kind, label, title, text, source, cta, action }) {
+    return `<article class="flex w-72 shrink-0 snap-start flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-3 shadow-sm">
+      ${problemPreview(props)}
+      <div class="flex flex-1 flex-col gap-1 px-1">
+        <h3 class="truncate font-semibold text-slate-900">${title}</h3>
+        <p class="text-sm text-slate-500">${text}</p>
+      </div>
+      <div class="flex items-center gap-2 px-1">
+        ${chip(kind, label)}${source ? `<span class="truncate text-xs text-slate-400">${source}</span>` : ''}
+        <button ${action ? `data-action="${action}"` : ''} class="ml-auto shrink-0 rounded-lg bg-slate-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-slate-700">${cta}</button>
+      </div>
+    </article>`;
+  }
+
+  document.getElementById('start-grid').innerHTML = [
+    galleryCard({
+      props: [['Domain'], ['Goal'], ['Constraints'], ['ML Task']],
+      kind: 'blank', label: 'Blank', title: 'Your own problem',
+      text: 'Describe the problem, then make every decision yourself.',
+      cta: 'New design',
+    }),
+    galleryCard({
+      props: [['Domain', 'High-volume payment risk management'],
+        ['Goal', 'Net loss from ≈0.4% to ≤0.25% of GMV in 12 months'],
+        ['Constraints', '≤200 ms, 1000 TPS peak, pilot in 6 months, GDPR'],
+        ['ML Task', 'Your first decision', true]],
+      kind: 'task', label: 'Task', title: 'SuperPay Real-Time Fraud Detection',
+      text: 'Replace a rule engine with fraud scoring in under 200 ms.',
+      cta: 'Start task',
+    }),
+  ].join('');
+
+  document.getElementById('example-grid').innerHTML = galleryCard({
+    props: [['Domain', 'Retail, grocery chain'],
+      ['Goal', 'Narrow the delivered vs sold gap without out-of-stock'],
+      ['Constraints', 'Perishables; delivery every 2 days; data delay ≤ 48 h'],
+      ['ML Task', 'Demand forecast per SKU × store × day']],
+    kind: 'example', label: 'Example', source: 'ML System Design · MIT',
+    title: 'Supermegaretail Demand Forecasting',
+    text: 'A complete design with 7 trade-off matrices and 3 diagrams.',
+    cta: 'Open example', action: 'open-example',
+  });
+
+  // Illustrative designs of a signed-in user.
+  const MINE = [
+    { title: 'SuperPay Real-Time Fraud Detection', kind: 'task', from: 'Task',
+      mlTask: 'Binary classification, real-time scoring',
+      filled: ['problem', 'evalOff', 'baseline', 'data', 'target'], tradeoffs: 3, findings: 2, edited: '2 hours ago' },
+    { title: 'Supermegaretail Demand Forecasting', kind: 'example', from: 'Example',
+      mlTask: 'Demand forecast per SKU × store × day',
+      filled: ALL, tradeoffs: 7, findings: 0, edited: 'Yesterday' },
+    { title: 'Ride ETA Prediction', kind: 'blank', from: 'Blank',
+      mlTask: null,
+      filled: ['problem', 'baseline'], tradeoffs: 0, findings: 0, edited: '12 Sep' },
+  ];
+
+  function designRow(d, local) {
+    const findings = d.findings
+      ? `<span class="flex items-center gap-1 text-red-600"><span class="h-1.5 w-1.5 rounded-full bg-red-500"></span>${d.findings} open findings</span>`
+      : '';
+    return `<div class="flex items-center gap-4 px-4 py-3 hover:bg-slate-50">
+      ${sectionMap(d)}
+      <div class="min-w-0 flex-1">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="truncate font-medium text-slate-900">${d.title}</span>
+          ${local ? '' : chip(d.kind, d.from)}
+        </div>
+        <div class="flex flex-wrap gap-x-4 gap-y-0.5 text-xs text-slate-500">
+          <span class="${d.mlTask ? '' : 'text-slate-400'}">${d.mlTask || 'ML Task not chosen'}</span>
+          <span class="tabular-nums">${d.filled.length} / 9 sections</span>
+          ${d.tradeoffs ? `<span class="tabular-nums">${d.tradeoffs} trade-offs</span>` : ''}
+          ${findings}
+        </div>
+      </div>
+      <span class="hidden shrink-0 text-xs text-slate-400 sm:block">${d.edited}</span>
+      ${local
+        ? '<button class="shrink-0 rounded-lg bg-slate-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-slate-700">Continue</button>'
+        : '<button class="shrink-0 rounded-lg px-2 py-1 text-slate-400 hover:bg-slate-100 hover:text-slate-700" aria-label="More actions">⋯</button>'}
+    </div>`;
+  }
+
+  document.getElementById('design-list').innerHTML =
+    MINE.map(d => designRow(d, false)).join('<div class="border-t border-slate-100"></div>');
+
+  // Shown only when the browser holds a design.
+  document.getElementById('current-work').innerHTML =
+    `<div class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+      <div class="px-4 pt-3 text-xs uppercase tracking-wide text-slate-400">Current work · in this browser</div>
+      ${designRow({ title: 'Untitled design', filled: ['problem', 'evalOff', 'baseline'], tradeoffs: 1, edited: 'Today' }, true)}
+    </div>`;
+
+  document.querySelector('[data-action="open-example"]').onclick = () => {
+    if (guest) document.getElementById('replace-dialog').showModal();
+  };
+
+  // Mockup state switch
+  function setState(user) {
+    guest = !user;
+    document.querySelectorAll('[data-guest]').forEach(e => e.hidden = user);
+    document.querySelectorAll('[data-user]').forEach(e => e.hidden = !user);
+    const on = 'bg-indigo-50 text-indigo-700', off = 'text-slate-500 hover:bg-slate-100';
+    document.getElementById('st-guest').className = 'rounded-lg px-2 py-1 font-medium ' + (user ? off : on);
+    document.getElementById('st-user').className = 'rounded-lg px-2 py-1 font-medium ' + (user ? on : off);
+  }
+  document.getElementById('st-guest').onclick = () => setState(false);
+  document.getElementById('st-user').onclick = () => setState(true);
+  setState(true);
+</script>

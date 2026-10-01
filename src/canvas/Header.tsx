@@ -51,7 +51,13 @@ export function Header({ mode, setMode }: { mode: Mode; setMode: (m: Mode) => vo
   return (
     <header className="sticky top-0 z-40 flex items-center gap-4 border-b border-slate-200 bg-white/90 px-6 py-3 backdrop-blur print:hidden">
       <div className="flex min-w-0 flex-1 items-center gap-3">
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-900 text-sm font-bold text-white">ML</div>
+        <div role="img" aria-label="ML System Design Trainer" className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-900 text-white">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+            <rect x="1.5" y="1.5" width="5" height="5" rx="1" />
+            <rect x="9.5" y="9.5" width="5" height="5" rx="1" />
+            <path d="M4 6.5v5.5h5.5" />
+          </svg>
+        </div>
         <h1 className="flex min-w-0 text-lg font-semibold">
           <InlineText label="Design title" value={title} placeholder="Untitled design" onSave={a.setTitle} inputClassName="w-80" />
         </h1>
