@@ -3,7 +3,7 @@ import { designToMarkdown } from '../src/export/markdown'
 import { diagramNonEmpty, sectionEmpty } from '../src/model/rules'
 import { exampleDesign } from '../src/fixtures/example'
 import {
-  closeEditor, downloadText, drawRectangle, exportMarkdown, loadExample, openApp, openDetails, pdfText, readZip,
+  answerDialog, closeEditor, downloadText, drawRectangle, exportMarkdown, loadExample, openApp, openDetails, pdfText, readZip,
   SECTION_ORDER, savedDesign, setCardValue, setTitle, toMode, menuAction,
 } from './helpers'
 
@@ -77,15 +77,13 @@ test('export-05 warning with the number of empty sections before both exports; c
   expect(accepted.warning).toContain('8')
   expect(accepted.download).not.toBeNull()
   // PDF: cancel, then continue.
-  let msg = ''
-  page.once('dialog', (d) => ((msg = d.message()), void d.dismiss()))
   await menuAction(page, 'Share', 'Export PDF')
-  expect(msg).toContain('8')
+  expect(await answerDialog(page, 'Cancel')).toContain('8')
   await page.waitForTimeout(500)
   expect(await page.evaluate(() => (window as unknown as { printed?: number }).printed)).toBeUndefined()
-  page.once('dialog', (d) => void d.accept())
   await toMode(page, 'Canvas')
   await menuAction(page, 'Share', 'Export PDF')
+  await answerDialog(page, 'Export anyway')
   await expect.poll(() => page.evaluate(() => (window as unknown as { printed?: number }).printed)).toBe(1)
 })
 
@@ -97,14 +95,12 @@ test('export-05 no warning when no section is empty', async ({ page }) => {
   })
   await openApp(page)
   await loadExample(page)
-  let dialogs = 0
-  page.on('dialog', (d) => (dialogs++, void d.dismiss()))
   const { warning, download } = await exportMarkdown(page, 'none')
   expect(warning).toBeNull()
   expect(download).not.toBeNull()
   await menuAction(page, 'Share', 'Export PDF')
   await expect.poll(() => page.evaluate(() => (window as unknown as { printed?: number }).printed)).toBe(1)
-  expect(dialogs).toBe(0)
+  await expect(page.getByRole('alertdialog')).toHaveCount(0)
 })
 
 test('export-03 drawing a diagram switches Markdown export from .md to .zip', async ({ page }) => {

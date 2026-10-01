@@ -81,8 +81,9 @@ test('editor-03 rationale rich text: formatting tools and persistence', async ({
   await page.keyboard.press('Enter')
   await page.keyboard.type('docs')
   for (let i = 0; i < 4; i++) await page.keyboard.press('Shift+ArrowLeft')
-  page.once('dialog', (dlg) => dlg.accept('https://example.com'))
   await d.getByRole('button', { name: 'Link', exact: true }).click()
+  await page.getByRole('alertdialog').getByRole('textbox', { name: 'Link URL' }).fill('https://example.com')
+  await page.getByRole('alertdialog').getByRole('button', { name: 'OK' }).click()
 
   const check = async () => {
     const ed = dialog(page).getByRole('textbox', { name: 'Rationale' })

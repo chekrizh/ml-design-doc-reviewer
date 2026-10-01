@@ -2,6 +2,7 @@ import { exampleDesign } from '../fixtures/example'
 import { InlineText } from '../editor/InlineText'
 import { confirmEmptySections, exportMarkdown } from '../export/download'
 import { diagramToSvg } from '../export/svg'
+import { alertDialog, confirmDialog } from '../dialogs'
 import { diagramNonEmpty } from '../model/rules'
 import { useDesign } from '../store/store'
 import { Menu, MenuItem } from './Menu'
@@ -19,22 +20,23 @@ export function Header({ mode, setMode }: { mode: Mode; setMode: (m: Mode) => vo
   const saveState = useDesign((s) => s.saveState)
   const a = useDesign.getState()
 
-  const loadExample = () => {
-    if (window.confirm('Load the example design? It replaces your current design.')) a.setDesign(exampleDesign())
+  const loadExample = async () => {
+    if (await confirmDialog('Load the example design? It replaces your current design.', 'Load example'))
+      a.setDesign(exampleDesign())
   }
-  const exportMd = () => {
+  const exportMd = async () => {
     const d = useDesign.getState().design
-    if (confirmEmptySections(d))
-      exportMarkdown(d).catch(() => window.alert('Export failed: a diagram could not be rendered. Please try again.'))
+    if (await confirmEmptySections(d))
+      exportMarkdown(d).catch(() => alertDialog('Export failed: a diagram could not be rendered. Please try again.'))
   }
   const exportPdf = async () => {
     const d = useDesign.getState().design
-    if (!confirmEmptySections(d)) return
+    if (!(await confirmEmptySections(d))) return
     // Render the diagrams first: the Excalidraw chunk is large and loads lazily.
     try {
       await Promise.all(d.sections.filter((s) => diagramNonEmpty(s.diagram)).map((s) => diagramToSvg(s.diagram)))
     } catch {
-      window.alert('Some diagrams could not be rendered and will be missing from the PDF.')
+      await alertDialog('Some diagrams could not be rendered and will be missing from the PDF.')
     }
     setMode('document')
     // Let the document render its (now cached) diagram images before printing.

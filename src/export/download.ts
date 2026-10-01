@@ -3,6 +3,7 @@ import type { Design } from '../model/design'
 import { diagramNonEmpty, sectionEmpty } from '../model/rules'
 import { designToMarkdown, imagePath, slugify } from './markdown'
 import { diagramToSvg } from './svg'
+import { confirmDialog } from '../dialogs'
 
 const save = (blob: Blob, name: string) => {
   const a = document.createElement('a')
@@ -13,11 +14,12 @@ const save = (blob: Blob, name: string) => {
 }
 
 /** Warns about empty sections; returns false if the user cancels. */
-export function confirmEmptySections(d: Design): boolean {
+export async function confirmEmptySections(d: Design): Promise<boolean> {
   const empty = d.sections.filter(sectionEmpty).length
   if (!empty) return true
-  return window.confirm(
+  return confirmDialog(
     `${empty} of ${d.sections.length} sections are empty and will not be exported. Continue?`,
+    'Export anyway',
   )
 }
 

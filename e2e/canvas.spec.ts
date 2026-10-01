@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 import {
-  card, cardBox, closeEditor, dialog, docSection, dragCard, drawRectangle, indicator, loadExample, openApp,
+  answerDialog, card, cardBox, closeEditor, dialog, docSection, dragCard, drawRectangle, indicator, loadExample, openApp,
   openDetails, reload, resizeCard, SECTION_ORDER, setCardValue, setTitle, toMode, addCriterion, addOption, menuAction,
   expectRowsFitContent,
 } from './helpers'
@@ -49,14 +49,11 @@ test('m11-06 Share and ⋯ menus: items, close on outside click and Escape, Rese
   await page.keyboard.press('Escape')
 
   // Export keeps the empty-sections warning; Load example asks first.
-  let message = ''
-  page.once('dialog', (d) => ((message = d.message()), void d.dismiss()))
   await menuAction(page, 'Share', 'Export Markdown')
-  await expect.poll(() => message).toMatch(/empty/)
+  expect(await answerDialog(page, 'Cancel')).toMatch(/empty/)
   await expect(share).toBeHidden()
-  page.once('dialog', (d) => ((message = d.message()), void d.dismiss()))
   await menuAction(page, 'Share', 'Export PDF')
-  await expect.poll(() => message).toMatch(/empty/)
+  expect(await answerDialog(page, 'Cancel')).toMatch(/empty/)
   await loadExample(page)
 })
 

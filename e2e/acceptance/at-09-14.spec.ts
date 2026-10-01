@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 import {
-  addCriterion, addOption, card, cardBox, closeEditor, dialog, docSection, downloadText, dragCard, drawRectangle,
+  answerDialog, addCriterion, addOption, card, cardBox, closeEditor, dialog, docSection, downloadText, dragCard, drawRectangle,
   exportMarkdown, indicator, loadExample, openApp, openDetails, pdfText, readZip, reload, resizeCard, SECTION_ORDER,
   setCardValue, setTitle, toMode, menuAction,
 } from '../helpers'
@@ -62,8 +62,8 @@ test('AT-10 reset layout', async ({ page }) => {
 test('AT-11 load example asks first', async ({ page }) => {
   await openApp(page)
   await setTitle(page, 'Mine')
-  page.once('dialog', (d) => void d.dismiss())
   await menuAction(page, 'More', 'Load example')
+  await answerDialog(page, 'Cancel')
   await expect(page.getByRole('button', { name: 'Edit Design title' })).toHaveText('Mine')
 
   await loadExample(page)

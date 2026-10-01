@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test'
-import { dialog, docSection, loadExample, openApp, openDetails, setCardValue, menuAction, toMode } from './helpers'
+import { answerDialog, dialog, docSection, loadExample, openApp, openDetails, setCardValue, menuAction, toMode } from './helpers'
 
 // Regression tests for the code review of the M1 run (R<n> = finding n).
 
@@ -92,14 +92,8 @@ test('R7/R8 a failed diagram render during Markdown export is reported on every 
   await loadExample(page)
 
   for (let attempt = 0; attempt < 2; attempt++) {
-    const alert = new Promise<string>((resolve) =>
-      page.once('dialog', async (d) => {
-        resolve(d.message())
-        await d.accept()
-      }),
-    )
     await menuAction(page, 'Share', 'Export Markdown')
-    expect(await alert).toMatch(/Export failed/)
+    expect(await answerDialog(page, 'OK')).toMatch(/Export failed/)
   }
 })
 

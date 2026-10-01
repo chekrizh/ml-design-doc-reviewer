@@ -1,6 +1,7 @@
 import { EditorContent, useEditor, useEditorState } from '@tiptap/react'
 import { useEffect } from 'react'
 import StarterKit from '@tiptap/starter-kit'
+import { promptDialog } from '../dialogs'
 import type { RichText } from '../model/design'
 import { richTextEmpty } from '../model/rules'
 
@@ -56,9 +57,9 @@ export function RichTextEditor({
     }),
   })
   const chain = () => editor.chain().focus()
-  const setLink = () => {
+  const setLink = async () => {
     if (active.link) return chain().unsetLink().run()
-    const href = window.prompt('Link URL')
+    const href = await promptDialog('Link URL')
     if (href) chain().extendMarkRange('link').setLink({ href }).run()
   }
 

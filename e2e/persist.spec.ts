@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test'
-import { card, closeEditor, drawRectangle, indicator, loadExample, openApp, openDetails, reload, setCardValue, setTitle, menuAction, SECTION_ORDER } from './helpers'
+import { answerDialog, card, closeEditor, drawRectangle, indicator, loadExample, openApp, openDetails, reload, setCardValue, setTitle, menuAction, SECTION_ORDER } from './helpers'
 
 test('persist-01 key property value survives reload', async ({ page }) => {
   await openApp(page)
@@ -33,12 +33,8 @@ test('persist-01 first visit shows the empty design', async ({ page }) => {
 test('persist-02 load example asks for confirmation; cancel keeps, confirm loads', async ({ page }) => {
   await openApp(page)
   await setTitle(page, 'Mine')
-  let message = ''
-  page.once('dialog', (d) => {
-    message = d.message()
-    void d.dismiss()
-  })
   await menuAction(page, 'More', 'Load example')
+  const message = await answerDialog(page, 'Cancel')
   expect(message).toContain('replaces your current design')
   await expect(page.getByRole('button', { name: 'Edit Design title' })).toHaveText('Mine')
   await loadExample(page)

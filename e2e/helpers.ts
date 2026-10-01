@@ -53,9 +53,18 @@ export async function menuAction(page: Page, menu: 'Share' | 'More', item: strin
   await page.getByRole('menuitem', { name: item }).click()
 }
 
+/** Waits for the in-app alert/confirm dialog, clicks one of its buttons, returns its message. */
+export async function answerDialog(page: Page, button: string) {
+  const d = page.getByRole('alertdialog')
+  const message = await d.locator('p').innerText()
+  await d.getByRole('button', { name: button, exact: true }).click()
+  await expect(d).toBeHidden()
+  return message
+}
+
 export async function loadExample(page: Page) {
-  page.once('dialog', (d) => d.accept())
   await menuAction(page, 'More', 'Load example')
+  await answerDialog(page, 'Load example')
   await expect(page.getByRole('button', { name: 'Edit Design title' })).toHaveText('Churn Prediction (Telecom)')
 }
 
@@ -141,21 +150,23 @@ export async function resizeCard(page: Page, sid: SectionId, dx: number, dy: num
 /** Clicks Export Markdown, handles the empty-sections warning, returns the download. */
 export async function exportMarkdown(page: Page, onWarning: 'accept' | 'dismiss' | 'none' = 'accept') {
   let warning: string | null = null
-  const handler = (d: import('@playwright/test').Dialog) => {
-    warning = d.message()
-    void (onWarning === 'dismiss' ? d.dismiss() : d.accept())
-  }
-  page.once('dialog', handler)
   if (onWarning === 'dismiss') {
     const downloads: unknown[] = []
     page.on('download', (d) => downloads.push(d))
     await menuAction(page, 'Share', 'Export Markdown')
+    warning = await answerDialog(page, 'Cancel')
     await page.waitForTimeout(1000)
-    return { warning: warning as string | null, download: null, downloads: downloads.length }
+    return { warning, download: null, downloads: downloads.length }
   }
-  const [download] = await Promise.all([page.waitForEvent('download'), menuAction(page, 'Share', 'Export Markdown')])
-  page.off('dialog', handler)
-  return { warning: warning as string | null, download, downloads: 1 }
+  const downloaded = page.waitForEvent('download')
+  await menuAction(page, 'Share', 'Export Markdown')
+  // The warning shows only when some sections are empty; answer it if it comes before the download.
+  const first = await Promise.race([
+    downloaded.then(() => 'download'),
+    page.getByRole('alertdialog').waitFor().then(() => 'dialog'),
+  ])
+  if (first === 'dialog') warning = await answerDialog(page, 'Export anyway')
+  return { warning, download: await downloaded, downloads: 1 }
 }
 
 export async function downloadText(download: import('@playwright/test').Download) {
