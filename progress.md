@@ -322,3 +322,8 @@ Format:
 - [x] Migration creates `designs` as §3.1, with the version trigger: only `data`/`title` changes bump `version` and `updated_at` (`supabase/tests/designs.test.sql`)
 - [x] RLS and grants as §4 (anon nothing; authenticated only own rows; `version`, `user_id` not updatable by the client); pgTAP proves a user cannot read, update or delete another user's designs (`pnpm test:db`)
 - [x] Insert and update store and return the same JSON the client sent (pgTAP and `e2e/m2/db.spec.ts` through supabase-js)
+
+## m2-db-02
+- [x] Migration creates `review_runs`, `findings` and the view `design_open_findings` (security_invoker) as §3.2–3.5 (`supabase/tests/reviews.test.sql`)
+- [x] `svc_complete_review_run` replaces findings in the run's scope in one transaction (row lock on the run) and keeps the replaced ones with `replaced_by_run_id`; a section run leaves whole-design findings; a canceled run changes nothing (pgTAP)
+- [x] Clients can change only `findings.status`/`status_changed_at` and cancel their own running run; pgTAP proves inserts, other updates and `svc_*` calls are refused

@@ -695,7 +695,7 @@
         "`svc_complete_review_run` replaces findings in the run's scope atomically and keeps the replaced ones; it does nothing for a canceled run (pgTAP)",
         "Clients can change only `findings.status`/`status_changed_at` and cancel their own running run; pgTAP proves inserts and other updates are refused"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-db-03",
