@@ -36,7 +36,7 @@ At the start of every session and after every context compaction:
 
 For each feature:
 
-- Work on branch `m1/autonomous`. Never touch `main`, never push.
+- Work on the milestone branch (`m2/autonomous` for M2; run instructions in `docs/run-prompt.md`). Never touch `main`, never push.
 - When every step of the feature is verified by a committed, green test, set its `passes` to true and append a section to `progress.md` listing each step as `- [x]`.
 - Commit once per feature, only with `pnpm check` green. Message starts with the feature ID, e.g. `canvas-05: inline edit on card`.
 - Record non-trivial engineering choices in `docs/decisions.md`.

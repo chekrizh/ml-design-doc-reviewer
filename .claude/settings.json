@@ -23,6 +23,8 @@
       "Bash(docker info*)",
       "Bash(docker ps*)",
       "Bash(docker logs *)",
+      "WebFetch(domain:openrouter.ai)",
+      "WebFetch(domain:developers.google.com)",
       "mcp__plugin_context7_context7",
       "mcp__plugin_playwright_playwright"
     ],
