@@ -652,7 +652,7 @@
         "`.env.example` names the variables: Supabase URL, publishable key, Google client ID; local values point to local Supabase",
         "With Supabase stopped, the guest app still works: all M1 and M1.1 acceptance tests pass"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-setup-03",

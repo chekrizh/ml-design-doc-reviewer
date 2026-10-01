@@ -307,3 +307,8 @@ Format:
 - [x] `supabase init` config is committed; `supabase start` and `supabase db reset` succeed on a clean checkout (seed: test users, sign-ups closed, password sign-in on; `e2e/m2/supabase.spec.ts`)
 - [x] `pnpm e2e` checks that local Supabase is running and fails with "Local Supabase is not running: run `supabase start`" if not (`e2e/global-setup.ts`); every M2 test resets the database via `test_reset()` (`e2e/m2/fixtures.ts`, D28)
 - [x] CLAUDE.md lists the commands to start, reset and stop local Supabase
+
+## m2-setup-02
+- [x] `@supabase/supabase-js` added with D29 in docs/decisions.md (alternatives include no dependency); lazy client in `src/backend/supabase.ts` (`supabase.test.ts`)
+- [x] `.env.example` names `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`, `VITE_GOOGLE_CLIENT_ID`, `VITE_TEST_SIGNIN`; local values point to local Supabase (e2e build gets the same via playwright.config.ts)
+- [x] With Supabase stopped, all M1 and M1.1 acceptance tests pass in Chromium and WebKit (`E2E_WITHOUT_SUPABASE=1 pnpm exec playwright test e2e/acceptance --project=chromium --project=webkit`: 42/42)

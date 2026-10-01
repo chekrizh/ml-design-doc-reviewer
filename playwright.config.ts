@@ -29,5 +29,12 @@ export default defineConfig({
     url: 'http://localhost:4173',
     reuseExistingServer: false,
     timeout: 120_000,
+    // Local Supabase and its CLI-default publishable key (not a secret); the test sign-in is on.
+    env: {
+      VITE_SUPABASE_URL: 'http://127.0.0.1:54321',
+      VITE_SUPABASE_PUBLISHABLE_KEY: 'sb_publishable_ACJWlzQHlZjBrEguHvfOxg_3BJgxAaH',
+      VITE_GOOGLE_CLIENT_ID: 'test-client-id.apps.googleusercontent.com',
+      VITE_TEST_SIGNIN: 'true',
+    },
   },
 })
