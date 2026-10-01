@@ -1,0 +1,15 @@
+{
+  "comment": "R2: review of the Evaluation (Online) section only (docs/acceptance-tests.md, M2 test environment).",
+  "findings": [
+    {
+      "severity": "major",
+      "dimension": "Metrics, loss & measurement",
+      "section": "evaluation-online",
+      "anchor": "label:Key Metric",
+      "title": "Primary metric is a revenue proxy",
+      "evidence": "The key metric follows revenue, not the cost of waste and lost sales.",
+      "why": "Revenue moves with prices and promotions, which hides the effect of the forecast.",
+      "fix": "Measure waste plus lost sales in money per store-day."
+    }
+  ]
+}

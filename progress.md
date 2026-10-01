@@ -312,3 +312,8 @@ Format:
 - [x] `@supabase/supabase-js` added with D29 in docs/decisions.md (alternatives include no dependency); lazy client in `src/backend/supabase.ts` (`supabase.test.ts`)
 - [x] `.env.example` names `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`, `VITE_GOOGLE_CLIENT_ID`, `VITE_TEST_SIGNIN`; local values point to local Supabase (e2e build gets the same via playwright.config.ts)
 - [x] With Supabase stopped, all M1 and M1.1 acceptance tests pass in Chromium and WebKit (`E2E_WITHOUT_SUPABASE=1 pnpm exec playwright test e2e/acceptance --project=chromium --project=webkit`: 42/42)
+
+## m2-setup-03
+- [x] OpenRouter mock (`e2e/mocks/openrouter/server.ts`, started by global setup on 127.0.0.1:4010, reachable from edge functions via `host.docker.internal`): /key accepts only `sk-or-v1-test-valid-0000a3f9`, /models, /chat/completions with R1, R2, 401, 402, 429, bad_output, no_images and a delay; records the last request without Authorization (`e2e/m2/mocks.spec.ts`)
+- [x] Google stubs via page.route (`e2e/mocks/google/google.ts`): GIS script with grant / deny / popup-blocked / popup-closed, Drive upload that records create vs update and can fail (500, or 401 once)
+- [x] The M2 Playwright fixture fails the test on any request to a non-local host that is not stubbed (`e2e/m2/fixtures.ts`)

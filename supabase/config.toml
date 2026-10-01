@@ -396,7 +396,7 @@ deno_version = 2
 # Production values are set by the human with `supabase secrets set` (docs/backend-spec.md §10).
 [edge_runtime.secrets]
 OPENROUTER_BASE_URL = "http://host.docker.internal:4010/api/v1"
-RECOMMENDED_MODEL = "mock/vision-recommended"
+RECOMMENDED_MODEL = "google/gemini-2.5-flash"
 APP_ORIGINS = "http://localhost:4173,http://localhost:5173,http://127.0.0.1:4173,http://127.0.0.1:5173"
 
 [analytics]

@@ -1,0 +1,55 @@
+{
+  "comment": "R1: full review of the example (docs/acceptance-tests.md, M2 test environment). anchor 'label:<field label>' is replaced by the mock with the [kp:<id>] / [opt:<id>] tag it finds in the design text.",
+  "findings": [
+    {
+      "severity": "critical",
+      "dimension": "Metrics, loss & measurement",
+      "section": "evaluation-online",
+      "anchor": "label:Key Metric",
+      "title": "Average check does not measure the stated goal",
+      "evidence": "The key metric of the A/B test is the average check, while the goal is to cut waste and lost sales.",
+      "why": "A forecast can raise the average check while waste grows, so the test can approve a model that misses the goal.",
+      "fix": "Make the primary metric waste plus lost sales in money per store-day."
+    },
+    {
+      "severity": "major",
+      "dimension": "Metrics, loss & measurement",
+      "section": "evaluation-online",
+      "anchor": "label:Split by distribution center",
+      "title": "Split by distribution center leaves too few units to detect +0.3%",
+      "evidence": "The chosen split assigns whole distribution centers to groups, but the design has only a handful of them.",
+      "why": "With few units the minimum detectable effect is far above +0.3%, so the test cannot confirm the expected gain.",
+      "fix": "Estimate the minimum detectable effect for the number of distribution centers, or split by matched store subsets."
+    },
+    {
+      "severity": "minor",
+      "dimension": "Metrics, loss & measurement",
+      "section": "evaluation-online",
+      "anchor": "rationale",
+      "title": "Control metrics have no thresholds",
+      "evidence": "Control metrics are listed without the values that would stop the test.",
+      "why": "Without thresholds a harmful rollout is noticed late.",
+      "fix": "Set a stop threshold for each control metric."
+    },
+    {
+      "severity": "major",
+      "dimension": "Cost of mistakes & risk",
+      "section": null,
+      "anchor": null,
+      "title": "Out-of-stock is called costlier than overstock, but neither cost is estimated",
+      "evidence": "The design says out-of-stock hurts more than overstock without numbers.",
+      "why": "The loss and the decision threshold depend on the ratio of the two costs.",
+      "fix": "Estimate the cost of one unit of out-of-stock and of overstock per category."
+    },
+    {
+      "severity": "minor",
+      "dimension": "Problem framing, goals & antigoals",
+      "section": "problem-space",
+      "anchor": "rationale",
+      "title": "Antigoals are not stated",
+      "evidence": "The problem statement lists goals but nothing the system must not do.",
+      "why": "Without antigoals the scope grows and trade-offs are argued case by case.",
+      "fix": "List two or three antigoals, for example no price optimization in this project."
+    }
+  ]
+}

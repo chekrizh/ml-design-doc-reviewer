@@ -663,7 +663,7 @@
         "Google stubs via page.route: GIS script with grant / deny / popup-blocked outcomes, Drive upload that records requests (create vs update) and can fail",
         "A Playwright fixture fails the test on any request to a non-local host that is not stubbed"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-setup-04",
