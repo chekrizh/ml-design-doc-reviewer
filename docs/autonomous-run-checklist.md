@@ -61,10 +61,11 @@
 
 ### A. До прогона (обязательно)
 
-- [ ] **Docker.** Проверено 2026-10-02: на машине его нет. Поставить Docker Desktop или OrbStack (легче на Mac): `brew install --cask orbstack`, запустить. Проверка: `docker info` без ошибок.
-- [ ] **Supabase CLI.** `brew install supabase/tap/supabase`. Проверка: `supabase --version`.
+- [x] **Docker.** 29.4.0, `docker info` работает (2026-10-02).
+- [x] **Supabase CLI.** 2.119.0. CLI не залогинен в облако — так и оставить до конца прогона: без `supabase login` облачные команды не сработают, даже если обойдут запреты (например, через `pnpm exec`).
 - [ ] **Первый запуск локального Supabase** (скачивает образы, несколько минут, лучше до прогона): в пустой папке `supabase init && supabase start`, дождаться вывода URL, затем `supabase stop` и удалить папку. Агент сделает `supabase init` в репозитории сам.
-- [ ] **Права агента в worktree:** разрешить `docker`, `supabase` (start, stop, status, db reset, migration new, functions serve, gen types). Запретить `supabase link`, `supabase db push`, `supabase functions deploy`, `supabase secrets set`: всё, что трогает облачный проект, делает человек.
+- [x] **Права агента** в `.claude/settings.json` (коммитится, действует и в worktree): разрешены локальные `supabase` (init, start, stop, status, db reset, db lint, migration new/list, functions new/serve, gen types, test db) и чтение `docker info/ps/logs`; запрещены `supabase login/link/projects/secrets/db push/functions deploy` и флаги `--linked`, `--project-ref`, `--db-url`. Проверено: запрет срабатывает.
+- [x] **Защита сценариев:** правило было `Edit(docs/acceptance-tests.md)` — путь от текущей директории, при `cd` в подпапку защита пропадала. Исправлено на `Edit(/docs/acceptance-tests.md)` (от корня проекта), проверено: правка блокируется.
 - [ ] **Ветка и run prompt для M2:** `features.json` и `docs/run-prompt.md` сейчас про M1. Новые фичи M2 и инструкция прогона — отдельный шаг перед запуском.
 
 ### B. Перед деплоем и ручной приёмкой
