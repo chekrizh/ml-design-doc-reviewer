@@ -347,3 +347,7 @@ Format:
 - [x] Edits on `/d/:id` autosave to Supabase (800 ms debounce, `update … where version = :seen`); the header save status works as in M1: Saving / Saved / Not saved (`e2e/m2/cloud.spec.ts`)
 - [x] Reload restores title, values, rationale, matrices, diagrams and layout; opening a design does not write it
 - [x] Guests keep the M1 IndexedDB autosave on `/local` (M1 persist tests); local and cloud autosave share `autosave()` in `src/store/persist.ts`
+
+## m2-setup-04
+- [x] Routes `/`, `/d/:id`, `/local`, `/library/:itemId` on the History API without a dependency (`src/router.ts`, D27); back/forward works; unknown paths go home (`e2e/m2/routes.spec.ts`, `src/router.test.ts`); `vercel.json` rewrites deep links to the SPA
+- [x] Reloading a design URL opens the same design: the cloud one for its signed-in owner (`e2e/m2/cloud.spec.ts`), the local one for guests (`e2e/m2/routes.spec.ts`); others are sent home

@@ -673,7 +673,7 @@
         "Routes `/`, `/d/:id`, `/local`, `/library/:itemId` on the History API without a dependency (D27); back/forward works",
         "Reloading a design URL opens the same design (cloud for signed-in, the local one for guests)"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-db-01",
