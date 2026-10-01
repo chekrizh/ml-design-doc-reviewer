@@ -783,7 +783,7 @@
         "The three sections have Excalidraw diagrams built from the descriptions in the markdown file",
         "Exactly these 3 cards show a thumbnail after Load example; other sections follow the default diagram rules from M1.1"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-home-01",

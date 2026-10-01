@@ -363,3 +363,7 @@ Format:
 - [x] A unit test checks every key property, rationale text, trade-off matrix and chosen option against the markdown files line by line (`src/fixtures/library.test.ts`)
 - [x] The task has only Problem Space filled and an empty ML Task value
 - [x] Load example loads Supermegaretail (`exampleDesign`); my M1 tests that expected Churn are updated (helpers, canvas-12, persist-02, doc-03, doc-08, export-03, ui-02, AT-11 point 2 per 'Что из M1 заменено', markdown snapshot)
+
+## m2-lib-02
+- [x] Validation, Data & Features and Integration have Excalidraw diagrams built from the descriptions in the markdown (`src/fixtures/diagram.ts`: rows of [boxes] joined by arrows, row labels, wrapped labels); a unit test checks every box, arrow and fold label against the file (`library.test.ts`)
+- [x] Exactly these 3 cards show a thumbnail after Load example; Target Solution keeps the default diagram per M1.1 (`e2e/m2/library.spec.ts`, persist-02)

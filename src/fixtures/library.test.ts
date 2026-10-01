@@ -84,3 +84,36 @@ it('the Source line is a link plus a note', () => {
   expect(ex.source.note).toContain('MIT License')
   expect(LIBRARY.find((i) => i.id === TASK_ID)).toMatchObject({ kind: 'task', source: { label: 'written by the author.', url: null } })
 })
+
+describe('example diagrams (m2-lib-02)', () => {
+  const d = exampleDesign()
+  const diagramMd = (name: string) => {
+    const t = sectionMd(EXAMPLE_ID, name)!
+    return t.slice(t.indexOf('### Diagram'))
+  }
+
+  it.each([
+    ['validation', 'Validation'],
+    ['data-features', 'Data & Features'],
+    ['integration', 'Integration'],
+  ] as const)('%s: every [box] of the description is a box, joined by arrows, row by row', (sid, name) => {
+    const els = d.sections.find((s) => s.id === sid)!.diagram.elements as { id: string; type: string; text?: string; containerId?: string | null }[]
+    const rows = diagramMd(name).split('\n').filter((l) => l.startsWith('- ') && l.includes('['))
+    const wanted = rows.map((l) => [...l.matchAll(/\[([^\]]+)\]/g)].map((m) => m[1]))
+    const boxText = (r: number) =>
+      els.filter((e) => e.type === 'text' && e.containerId?.startsWith(`${sid}-r${r}-b`)).map((e) => e.text!.replace(/\n/g, ' '))
+    expect(wanted.map((_, r) => boxText(r))).toEqual(wanted)
+    expect(els.filter((e) => e.type === 'rectangle')).toHaveLength(wanted.flat().length)
+    expect(els.filter((e) => e.type === 'arrow')).toHaveLength(wanted.reduce((n, r) => n + r.length - 1, 0))
+    expect(diagramNonEmpty({ elements: els, files: {} })).toBe(true)
+  })
+
+  it('the validation rows carry their fold labels', () => {
+    const els = d.sections.find((s) => s.id === 'validation')!.diagram.elements as { type: string; text?: string; containerId?: string | null }[]
+    expect(els.filter((e) => e.type === 'text' && !e.containerId).map((e) => e.text)).toEqual(['Fold 1', 'Fold 2', 'Fold 5'])
+  })
+
+  it('only these three sections have a non-empty diagram', () => {
+    expect(d.sections.filter((s) => diagramNonEmpty(s.diagram)).map((s) => s.id)).toEqual(['validation', 'data-features', 'integration'])
+  })
+})
