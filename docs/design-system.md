@@ -72,6 +72,20 @@ good:   font-mono text-emerald-600
 bad:    font-mono text-red-600
 ```
 
+**Severity находки** — точка 8 px
+```
+critical: rounded-full bg-red-600
+major:    rounded-full border-2 border-red-500
+minor:    rounded-full bg-slate-400
+```
+
+**Индикатор ревью** — как индикатор trade-offs, иконка лупы
+```
+не проверено:              text-slate-300
+открыты critical/major:    text-red-600 + бейдж «!» bg-red-600
+проверено (или только minor): text-emerald-600 + галочка
+```
+
 **Активный пункт (оглавление, переключатель, тулбар редактора)**
 ```
 active:   bg-indigo-50 font-medium text-indigo-700

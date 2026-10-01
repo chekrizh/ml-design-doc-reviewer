@@ -1,0 +1,254 @@
+<meta charset="utf-8">
+<title>Editor Review Mockup</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  /* App is light-only (docs/design-system.md), so the mockup commits to one theme. */
+  :root { color-scheme: light; }
+  [hidden] { display: none !important; }
+  html, body { height: 100%; }
+  body { background: #e2e8f0; color: #334155; }
+  .clamp2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+</style>
+
+<!-- Component Editor (M1 modal), widened by a Findings column on the right. Canvas is behind the backdrop. -->
+<div class="flex h-full items-center justify-center bg-slate-900/30 p-6">
+  <div class="flex h-full max-h-[880px] w-full max-w-[1280px] flex-col overflow-hidden rounded-2xl bg-white shadow-lg">
+
+    <header class="flex shrink-0 items-center gap-4 border-b border-slate-100 px-8 py-5">
+      <div class="grid h-11 w-11 place-items-center rounded-full bg-indigo-100 text-indigo-600">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.7 3h10.6a2 2 0 0 0 1.7-3l-5-9V3"/></svg>
+      </div>
+      <h1 class="text-2xl font-semibold text-slate-900">Evaluation (Online)</h1>
+      <span id="head-indicator" class="flex"></span>
+      <span class="ml-auto rounded-full border border-slate-200 px-3 py-1 text-sm text-slate-500">Saved to Canvas</span>
+      <button class="rounded-lg p-1 text-slate-500 hover:bg-slate-100" aria-label="Close">✕</button>
+    </header>
+
+    <div class="flex min-h-0 flex-1">
+      <!-- Editor body: unchanged M1 content, plus finding markers on fields -->
+      <div id="editor" class="min-w-0 flex-1 overflow-y-auto px-8 py-6">
+        <section class="flex flex-col gap-3 border-b border-slate-100 pb-6">
+          <div class="flex items-center">
+            <h2 class="text-lg font-semibold text-slate-900">Decisions &amp; Properties</h2>
+            <button class="ml-auto text-sm font-semibold text-indigo-600">+ Add Property</button>
+          </div>
+          <div id="props" class="flex flex-col gap-3"></div>
+        </section>
+
+        <section id="field-Rationale" class="flex flex-col gap-3 border-b border-slate-100 py-6">
+          <div class="flex items-center gap-2">
+            <h2 class="text-lg font-semibold text-slate-900">Rationale &amp; Notes</h2>
+            <span data-marker-for="Rationale"></span>
+          </div>
+          <div data-field-box="Rationale" class="rounded-2xl border border-slate-200">
+            <div class="flex gap-4 border-b border-slate-100 px-4 py-2 text-sm text-slate-500"><b>B</b><i>I</i><span>&lt;&gt;</span><span>•≡</span><span>1.</span></div>
+            <p class="px-4 py-3 text-[15px] leading-relaxed text-slate-700">Offline gains translate into an expected 0.3–0.7% revenue increase in the pilot group, based on earlier A/B tests. The split unit is the distribution center: each center serves a cluster of stores, so splitting by store would mix groups within one replenishment chain. Two weeks are enough statistically, but replenishment runs weekly, so the test lasts a full month. Control metrics: checks per day, model update frequency, offline metrics. Auxiliary: daily revenue and profit.</p>
+          </div>
+        </section>
+
+        <section class="flex flex-col gap-3 border-b border-slate-100 py-6">
+          <div class="flex items-end">
+            <div>
+              <h2 class="text-lg font-semibold text-slate-900">Trade-off Matrix</h2>
+              <p class="text-sm text-slate-500">Compare technical approaches against key criteria.</p>
+            </div>
+            <div class="ml-auto flex gap-2">
+              <button class="rounded-full border border-slate-200 px-3 py-1 text-sm font-medium text-slate-900">Add Option (Row)</button>
+              <button class="rounded-full border border-slate-200 px-3 py-1 text-sm font-medium text-slate-900">Add Criteria (Col)</button>
+            </div>
+          </div>
+          <div class="overflow-hidden rounded-2xl border border-slate-200">
+            <table class="w-full text-sm">
+              <thead class="bg-slate-50 text-left text-slate-500"><tr>
+                <th class="px-4 py-2.5 font-medium">Option</th><th class="px-4 py-2.5 font-medium">Groups independent</th><th class="px-4 py-2.5 font-medium">Enough units for power</th>
+              </tr></thead>
+              <tbody id="rows"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="flex flex-col gap-3 py-6">
+          <h2 class="text-lg font-semibold text-slate-900">Whiteboard</h2>
+          <div class="grid h-40 place-items-center rounded-2xl border border-slate-200 text-sm text-slate-400">Excalidraw, empty</div>
+        </section>
+      </div>
+
+      <!-- Findings for this section only; same finding card as the canvas Review panel -->
+      <aside class="flex w-[380px] shrink-0 flex-col border-l border-slate-100 bg-white">
+        <div class="flex flex-col gap-2 border-b border-slate-100 px-5 py-4">
+          <div class="flex items-center gap-2">
+            <h2 class="font-semibold text-slate-900">Findings</h2>
+            <span class="text-xs text-slate-400">Full design review · 2 min ago</span>
+          </div>
+          <div id="summary" class="flex flex-wrap gap-x-4 text-xs text-slate-600"></div>
+          <div id="tabs" class="flex gap-1 text-sm"></div>
+        </div>
+        <div id="findings" class="min-h-0 flex-1 overflow-y-auto px-3 py-3"></div>
+      </aside>
+    </div>
+  </div>
+</div>
+
+<script>
+  const PROPS = [
+    ['Evaluation Type', 'A/B test split by distribution center'],
+    ['Key Metric', 'Average check, proxy for revenue'],
+    ['Hypothesis', 'Revenue +0.3% or more'],
+    ['Design', "Welch's t-test, α 5%, β 10%, 1 month"],
+  ];
+  const ROWS = [
+    ['Split by store', 'No, stores share a distribution center', 'Yes', false],
+    ['Split by distribution center', 'Yes', 'Enough with matched store subsets', true],
+  ];
+
+  // Same data as review-canvas.html, section Evaluation (Online).
+  const F = [
+    { id: 'o1', field: 'Key Metric', sev: 'critical', dim: 'Metrics, loss & measurement',
+      title: 'Average check does not measure the stated goal',
+      evidence: 'The goal is fewer leftovers and fewer out-of-stocks. The A/B key metric is average check, a revenue proxy.',
+      why: 'A forecast that overstocks can raise average check while waste grows, so the test can pass while the business goal gets worse. The rollout decision depends on this metric.',
+      fix: 'Make the primary metric waste plus lost sales in money per store-day. Keep average check as a secondary metric.' },
+    { id: 'o2', field: 'Split by distribution center', sev: 'major', dim: 'Metrics, loss & measurement',
+      title: 'Split by distribution center leaves too few units to detect +0.3%',
+      evidence: "47 distribution centers, Welch's t-test, α 5%, β 10%, one month, hypothesis +0.3%. The row says “enough with matched store subsets” without numbers.",
+      why: 'About 23 centers per arm with large between-center variance. A 0.3% effect is unlikely to be detectable in a month, so the test will probably be inconclusive.',
+      fix: 'Add a power calculation from historical center-level variance. Consider CUPED or a switchback over store clusters, and set the duration from the minimum detectable effect.' },
+    { id: 'o3', field: 'Rationale', sev: 'minor', dim: 'Metrics, loss & measurement',
+      title: 'Control metrics have no thresholds',
+      evidence: 'Rationale lists checks per day, model update frequency and offline metrics as control metrics, without limits.',
+      why: 'Without a threshold nobody knows when to stop the test early.',
+      fix: 'Give each control metric a limit that stops the test, for example checks per day down more than 2%.' },
+  ];
+  F.forEach(f => f.status = 'open');
+  F.push({ id: 'o4', field: 'Hypothesis', sev: 'minor', dim: 'Metrics, loss & measurement', status: 'resolved',
+    title: 'Hypothesis gives no upper bound for the expected effect' });
+  let tab = 'open';
+
+  const SEV_RANK = { critical: 0, major: 1, minor: 2 };
+  const SEV_DOT = {
+    critical: 'h-2 w-2 rounded-full bg-red-600',
+    major: 'h-2 w-2 rounded-full border-2 border-red-500',
+    minor: 'h-2 w-2 rounded-full bg-slate-400',
+  };
+  const dot = sev => `<span class="inline-block shrink-0 ${SEV_DOT[sev]}"></span>`;
+  let active = 'o1', fixShown = new Set();
+
+  const openFor = field => F.find(f => f.field === field && f.status === 'open');
+  // Marker next to a field: clickable dot, same severity code as everywhere else.
+  function marker(field) {
+    const f = openFor(field);
+    if (!f) return '<span class="w-6"></span>';
+    return `<button data-open="${f.id}" title="${f.title}" class="grid h-6 w-6 shrink-0 place-items-center rounded-full ${active === f.id ? 'bg-indigo-50' : 'hover:bg-slate-100'}">${dot(f.sev)}</button>`;
+  }
+  const isActive = field => { const f = openFor(field); return f && f.id === active; };
+  const fieldBorder = field => {
+    const f = openFor(field);
+    if (!f) return 'border-slate-200';
+    if (f.id === active) return 'border-indigo-300 ring-2 ring-indigo-100';
+    return f.sev === 'minor' ? 'border-slate-300' : 'border-red-300';
+  };
+
+  function renderEditor() {
+    document.getElementById('props').innerHTML = PROPS.map(([k, v]) => `
+      <div id="field-${k}" class="flex items-center gap-3">
+        <div class="w-[38%] rounded-full border border-slate-200 px-4 py-2 text-sm text-slate-900">${k}</div>
+        <span class="text-slate-400">:</span>
+        <div class="min-w-0 flex-1 truncate rounded-full border px-4 py-2 text-sm text-slate-900 ${fieldBorder(k)}">${v}</div>
+        ${marker(k)}
+        <span class="text-slate-300">🗑</span>
+      </div>`).join('');
+
+    document.getElementById('rows').innerHTML = ROWS.map(([opt, a, b, chosen]) => {
+      const f = openFor(opt);
+      const bg = isActive(opt) ? 'bg-indigo-50 outline outline-2 -outline-offset-2 outline-indigo-300' : chosen ? 'bg-indigo-50' : '';
+      return `<tr id="field-${opt}" class="border-t border-slate-100 ${bg}">
+        <td class="px-4 py-3"><span class="flex items-center gap-2 ${chosen ? 'font-medium text-indigo-600' : 'text-slate-900'}">${chosen ? '✓' : ''} ${opt} ${f ? marker(opt) : ''}</span></td>
+        <td class="px-4 py-3 text-slate-700">${a}</td><td class="px-4 py-3 text-slate-700">${b}</td></tr>`;
+    }).join('');
+
+    document.querySelector('[data-marker-for="Rationale"]').innerHTML = marker('Rationale');
+    const box = document.querySelector('[data-field-box="Rationale"]');
+    box.className = 'rounded-2xl border ' + fieldBorder('Rationale');
+
+    const open = F.filter(f => f.status === 'open');
+    const serious = open.some(f => f.sev !== 'minor');
+    document.getElementById('head-indicator').innerHTML = `<span class="relative flex rounded-md p-1 ${serious ? 'text-red-600' : 'text-emerald-600'}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+      ${serious
+        ? '<svg viewBox="0 0 24 24" class="absolute -right-0.5 -bottom-0.5 h-3 w-3 rounded-full bg-red-600 text-white"><path d="M12 6.5v6.5M12 17.5v.01" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>'
+        : '<svg viewBox="0 0 24 24" class="absolute -right-0.5 -bottom-0.5 h-3 w-3 rounded-full bg-emerald-600 text-white"><path d="M6 12l4 4 8-8" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>'}
+    </span>`;
+  }
+
+  function findingCard(f) {
+    const isOpen = active === f.id;
+    let body = '';
+    if (isOpen) {
+      body = `<div class="mt-3 flex flex-col gap-3 text-sm">
+        <div><div class="mb-0.5 text-xs uppercase tracking-wide text-slate-400">What the design says</div><p>${f.evidence}</p></div>
+        <div><div class="mb-0.5 text-xs uppercase tracking-wide text-slate-400">Why it matters</div><p>${f.why}</p></div>
+        ${fixShown.has(f.id)
+          ? `<div class="rounded-xl bg-indigo-50 px-3 py-2"><div class="mb-0.5 text-xs uppercase tracking-wide text-indigo-600">Fix</div><p class="text-slate-700">${f.fix}</p></div>`
+          : `<button data-fix="${f.id}" class="self-start text-sm font-semibold text-indigo-600 hover:text-indigo-700">Show fix</button>`}
+        <div class="flex justify-end gap-2 border-t border-slate-100 pt-3">
+          <button data-status="${f.id}:dismissed" class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-900 hover:bg-slate-50">Dismiss</button>
+          <button data-status="${f.id}:resolved" class="rounded-lg bg-slate-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-slate-700">Resolve</button>
+        </div>
+      </div>`;
+    }
+    return `<div class="rounded-xl border ${isOpen ? 'border-slate-200 bg-white shadow-sm' : 'border-transparent hover:bg-slate-50'} px-3 py-2.5">
+      <button data-open="${f.id}" class="flex w-full items-start gap-2.5 text-left">
+        <span class="mt-1.5">${dot(f.sev)}</span>
+        <span class="min-w-0 flex-1">
+          <span class="${isOpen ? '' : 'clamp2'} block text-sm font-medium text-slate-900">${f.title}</span>
+          <span class="mt-0.5 block text-xs text-slate-500"><span class="capitalize">${f.sev}</span> · ${f.field}</span>
+        </span>
+      </button>${body}
+    </div>`;
+  }
+
+  function renderPanel() {
+    const open = F.filter(f => f.status === 'open');
+    document.getElementById('summary').innerHTML =
+      ['critical', 'major', 'minor'].map(sv => `<span class="flex items-center gap-1.5">${dot(sv)}<span class="tabular-nums font-medium text-slate-900">${open.filter(f => f.sev === sv).length}</span> ${sv}</span>`).join('');
+    document.getElementById('tabs').innerHTML = [['open', 'Open'], ['resolved', 'Resolved'], ['dismissed', 'Dismissed']].map(([k, label]) =>
+      `<button data-tab="${k}" class="rounded-lg px-2.5 py-1 ${tab === k ? 'bg-indigo-50 font-medium text-indigo-700' : 'text-slate-500 hover:bg-slate-100'}">${label} <span class="tabular-nums">${F.filter(f => f.status === k).length}</span></button>`).join('');
+    const list = F.filter(f => f.status === tab).sort((a, b) => SEV_RANK[a.sev] - SEV_RANK[b.sev]);
+    document.getElementById('findings').innerHTML = list.length
+      ? `<div class="flex flex-col gap-1">${list.map(f => tab === 'open' ? findingCard(f) : closedCard(f)).join('')}</div>`
+      : `<p class="px-3 py-8 text-center text-sm text-slate-400">${tab === 'open' ? 'No open findings in this section.' : 'Nothing here.'}</p>`;
+  }
+
+  // Resolved or dismissed: title only, with Reopen.
+  function closedCard(f) {
+    return `<div class="px-3 py-2.5">
+      <div class="flex items-start gap-2.5">
+        <span class="mt-1.5">${dot(f.sev)}</span>
+        <span class="min-w-0 flex-1">
+          <span class="block text-sm font-medium text-slate-500">${f.title}</span>
+          <span class="mt-0.5 block text-xs text-slate-400"><span class="capitalize">${f.sev}</span> · ${f.field}</span>
+          <button data-status="${f.id}:open" class="mt-1.5 text-xs font-semibold text-indigo-600 hover:text-indigo-700">Reopen</button>
+        </span>
+      </div>
+    </div>`;
+  }
+
+  function render() {
+    renderEditor(); renderPanel();
+    document.querySelectorAll('[data-open]').forEach(el => el.onclick = () => {
+      active = active === el.dataset.open ? null : el.dataset.open;
+      render();
+      const f = F.find(x => x.id === active);
+      if (f) document.getElementById('field-' + f.field)?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    });
+    document.querySelectorAll('[data-tab]').forEach(el => el.onclick = () => { tab = el.dataset.tab; render(); });
+    document.querySelectorAll('[data-fix]').forEach(el => el.onclick = () => { fixShown.add(el.dataset.fix); render(); });
+    document.querySelectorAll('[data-status]').forEach(el => el.onclick = () => {
+      const [id, st] = el.dataset.status.split(':');
+      F.find(x => x.id === id).status = st;
+      if (active === id) active = null;
+      render();
+    });
+  }
+  render();
+</script>

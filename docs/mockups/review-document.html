@@ -1,0 +1,306 @@
+<meta charset="utf-8">
+<title>Document Review Mockup</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  /* App is light-only (docs/design-system.md), so the mockup commits to one theme. */
+  :root { color-scheme: light; }
+  [hidden] { display: none !important; }
+  html, body { height: 100%; }
+  body { background: #f8fafc; color: #334155; }
+  .clamp2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .comment { transition: top .2s ease; }
+  @media (prefers-reduced-motion: reduce) { .comment { transition: none; } }
+  .hl { background: #eef2ff; box-shadow: 0 0 0 2px #a5b4fc; border-radius: 8px; }
+</style>
+
+<!-- Document mode: outline on the left, sheet in the middle, comments in the margin on the right (Google Docs layout). -->
+<div class="flex h-full flex-col">
+<header class="flex shrink-0 items-center gap-4 border-b border-slate-200 bg-white px-6 py-3">
+  <div class="flex min-w-0 flex-1 items-center gap-3">
+    <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-900 text-white">
+      <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1.5" y="1.5" width="5" height="5" rx="1"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/><path d="M4 6.5v5.5h5.5"/></svg>
+    </div>
+    <h1 class="truncate text-lg font-semibold text-slate-900">Supermegaretail Demand Forecasting</h1>
+    <span class="shrink-0 text-xs text-slate-400">Saved</span>
+  </div>
+  <div class="flex rounded-lg bg-slate-100 p-1 text-sm">
+    <span class="rounded-md px-3 py-1 text-slate-500">Canvas</span>
+    <span class="rounded-md bg-white px-3 py-1 font-medium text-slate-900 shadow-sm">Document</span>
+  </div>
+  <div class="flex flex-1 items-center justify-end gap-2">
+    <span class="mr-2 grid h-8 w-8 place-items-center rounded-full bg-indigo-100 text-sm font-semibold text-indigo-700" title="Google profile photo">A</span>
+    <button class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-900 hover:bg-slate-50">AI Review</button>
+    <button class="rounded-lg bg-slate-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-slate-700">Share</button>
+  </div>
+</header>
+
+<div id="scroller" class="min-h-0 flex-1 overflow-y-auto">
+  <div class="mx-auto flex max-w-[1400px] gap-6 px-6 py-8">
+    <!-- Outline as in M1 (DocumentView.tsx), moved to the left -->
+    <nav aria-label="On this page" class="sticky top-0 hidden w-64 shrink-0 self-start lg:block">
+      <h2 class="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-400">On this page</h2>
+      <ul id="toc" class="space-y-1"></ul>
+    </nav>
+
+    <article id="sheet" class="min-w-0 flex-1 rounded-2xl bg-white px-16 py-14 shadow-sm"></article>
+
+    <!-- Margin: comments positioned next to their fields -->
+    <aside class="w-80 shrink-0">
+      <div class="sticky top-0 z-10 -mx-1 mb-2 flex flex-col gap-2 bg-slate-50 px-1 pb-2">
+        <div id="summary" class="flex flex-wrap gap-x-3 text-xs text-slate-600"></div>
+        <div id="tabs" class="flex gap-1 text-sm"></div>
+      </div>
+      <div id="margin" class="relative"></div>
+    </aside>
+  </div>
+</div>
+</div>
+
+<script>
+  const DOC = [{"name": "Problem Space", "props": [["Domain", "Retail, grocery chain"], ["Business Goal", "Narrow the delivered vs sold gap without out-of-stock"], ["ML Task", "Demand forecast per SKU × store × day"], ["Constraints", "Perishables; delivery every 2 days; data delay ≤ 48 h"], ["Horizon", "4 weeks (1 year for suppliers)"], ["Current Loss", "≈ $800M per year"]], "rationale": "Supermegaretail runs thousands of stores and must buy goods before it sells them. Leftovers mean waste of perishables; selling out means lost revenue, customers going to competitors, and unknown real demand.\n\n- Suppliers sign one-year deals that can be adjusted 90 days ahead.\n- 47 distribution centers send a truck to each store about every two days; stores keep stock in the loading bay for 2–3 days.\n- The distribution center plans deliveries, a store manager can override them.\n- Owners: logistics, procurement, and store operations.\n\nOut-of-stock costs more than overstock, so errors are asymmetric. Overstock loss is easy to count, out-of-stock loss needs A/B tests or expert estimates.", "trade": [], "chosen": null, "diagram": "None."}, {"name": "Evaluation (Offline)", "props": [["Offline Metric", "Quantile loss at 1.5, 25, 50, 75, 95, 99"], ["Loss", "Quantile loss, same as metric"], ["Target Value", "Beat baseline on every quantile, 95% CI"], ["Weighting", "Plain and weighted by SKU price"]], "rationale": "Sales are count data: low, integer, often zero, with asymmetric distributions. A point forecast is not enough, the business keeps stock to a service level, so it needs quantiles of the predictive distribution. Quantile loss lets the loss equal the metric: six models, one per quantile. Tweedie loss is the second line of experiments. Metrics are reported with 95% confidence intervals from bootstrap or cross-validation.", "trade": [["Option", "Works on count data with zeros", "Serves a stock service level", "Can equal the loss"], ["MAE / wMAPE", "Biased on skewed low counts", "No, optimizes the median", "Yes"], ["MAPE / sMAPE", "No, undefined or fixed at zero actuals", "No", "No"], ["MSE", "No, dominated by large errors", "No", "Yes"], ["Quantile loss", "Yes", "Yes, a quantile per service level", "Yes"]], "chosen": "Quantile loss", "diagram": "None."}, {"name": "Baseline", "props": [["Approach", "Per-SKU sales quantiles over a yearly window"], ["Baseline Metric", "Same quantile losses as offline evaluation"], ["Next Steps", "Quantile linear regression, then SARIMA / Prophet"]], "rationale": "The simplest bar is the same day last week per SKU and store: a week back rather than a day back because data can be late and sales have a strong weekly cycle. The advanced constant baseline computes the same six quantiles from a yearly window, so it is directly comparable with the target models. A quantile linear regression on lags and rolling aggregates, and time-series models (SARIMA, Prophet), are the next steps. Beating these baselines shows whether modeling and features move in the right direction.", "trade": [["Option", "Effort", "Comparable with quantile metrics", "Also a fallback"], ["Same day last week", "Minimal", "No, a point forecast", "Yes, last-resort fallback"], ["Yearly-window quantiles", "Low", "Yes", "No"], ["Quantile linear regression", "Medium, needs features", "Yes", "No"], ["SARIMA / Prophet", "Medium, tuning or none with Prophet", "Partly", "Yes, secondary fallback"]], "chosen": "Yearly-window quantiles", "diagram": "None."}, {"name": "Validation", "props": [["Scheme", "Rolling CV: 5 outer folds, 3 inner folds"], ["Windows", "2 years train, 28 days test, 3-day gap, 7-day step"], ["Golden Set", "Holdout refreshed every 3 months"]], "rationale": "New data and labels arrive daily with up to 48 hours delay, recent data matters most, the assortment changes by 15% a month, and there are weekly and annual cycles. The split must mirror inference: train on the last two years, predict the next four weeks, with a 3-day gap for the data delay. The outer loop estimates quality, the inner loop tunes hyperparameters and selects features. The split moves weekly with new data; a golden set tracks long-term progress.", "trade": [["Option", "Respects time order", "Handles 48 h data delay", "Gives variance of the estimate"], ["Random K-fold", "No, leaks the future", "No", "Yes"], ["Single time holdout", "Yes", "Yes, with a gap", "No"], ["Rolling CV with a gap", "Yes", "Yes", "Yes"]], "chosen": "Rolling CV with a gap", "diagram": "A horizontal timeline of the outer loop, three stacked rows, each shifted left by 7 days:\n\n- Fold 1: [Train 2 years] → [Gap 3 days] → [Test 28 days]\n- Fold 2: [Train 2 years] → [Gap 3 days] → [Test 28 days]\n- Fold 5: [Train 2 years] → [Gap 3 days] → [Test 28 days]"}, {"name": "Data & Features", "props": [["Sources", "Transactions, stock, promo calendar, metadata"], ["Key Features", "Sales lags and rolling stats, prices, promo, penetration"], ["Object", "(date, store, SKU) → units sold"], ["External Data", "Competitor prices, weather, traffic"]], "rationale": "Transactions are the primary source of truth, stock history shows how much could be sold, the promo calendar drives spikes. Purchased weather and traffic data and manually gathered competitor prices (about 25% of SKUs, with gaps) come from outside. History covers more than three years; labels come from transactions, so no extra labeling is needed.\n\nFeatures are kept only if they pass four criteria: prediction quality, interpretability, computation time, and stability of their sources. A feature that improves quality but takes two days to compute is rejected. Each feature is a hypothesis, importance is checked with SHAP and shuffle importance, and feature tests run before and after training.", "trade": [], "chosen": null, "diagram": "A horizontal ETL pipeline:\n\n- [Daily transaction aggregates] → [Rewrite last 2–3 days] → [Join stock, promo, metadata, external data] → [Feature store (store × SKU × day)]"}, {"name": "Evaluation (Online)", "props": [["Evaluation Type", "A/B test split by distribution center"], ["Key Metric", "Average check, proxy for revenue"], ["Hypothesis", "Revenue +0.3% or more"], ["Design", "Welch's t-test, α 5%, β 10%, 1 month"]], "rationale": "Offline gains translate into an expected 0.3–0.7% revenue increase in the pilot group, based on earlier A/B tests. The split unit is the distribution center: each center serves a cluster of stores, so splitting by store would mix groups within one replenishment chain. Two weeks are enough statistically, but replenishment runs weekly, so the test lasts a full month. Control metrics: checks per day, model update frequency, offline metrics. Auxiliary: daily revenue and profit.", "trade": [["Option", "Groups independent", "Enough units for power"], ["Split by store", "No, stores share a distribution center", "Yes"], ["Split by distribution center", "Yes", "Enough with matched store subsets"]], "chosen": "Split by distribution center", "diagram": "None."}, {"name": "Integration", "props": [["Inference Pattern", "Scheduled batch jobs, on-demand via API"], ["Output", "Demand per SKU × entity × period, JSON"], ["Latency Budget", "Not critical, batch throughput matters"], ["Fallback", "3 tiers down to last week's sales"]], "rationale": "Forecasts run daily, weekly, and monthly on large volumes: batch containers on AWS Batch read from S3 and write back to S3, a small API serves on-demand requests. When drift or data problems appear, the system switches automatically: a model on the most important features, then SARIMA or Prophet, then last week's sales adjusted for holidays. The wrapper and the model are released separately; a new model runs in shadow mode first. Users are internal, so blue-green deployment is not needed; overrides and feedback stay with business users.", "trade": [["Option", "Risk for users", "Effort"], ["Blue-green deployment", "Low", "High"], ["Standard rollout + shadow mode for models", "Low, users are internal", "Low"]], "chosen": "Standard rollout + shadow mode for models", "diagram": "A horizontal batch flow with a fallback chain below it:\n\n- [S3 input data] → [AWS Batch forecast job] → [S3 forecasts] → [Demand API]\n- [Main model] → [Model on top features] → [SARIMA / Prophet] → [Last week's sales]"}, {"name": "Monitoring", "props": [["Data Drift", "Wasserstein distance, mean drift score"], ["Model Quality", "Quantile losses daily, labels in 15 min"], ["Alerting", "z-score on missing data, prediction drift"], ["Tooling", "Evidently AI, ClickHouse, Prometheus, Grafana"]], "rationale": "This is one of the first ML projects at Supermegaretail, so there is no ML monitoring yet. Labels arrive 15 minutes after a sale, so model quality is monitored directly: the six quantile losses, RMSE, and MAE, with thresholds set after the first three months. Data quality alerts fire at 3 z-scores for important features and 4 for the rest; schema, ranges, and correlations are checked too. Prediction drift is an early alarm (PSI > 0.2 and Wasserstein > 0.1 are both tested). Business metrics stay on rotating A/B groups.", "trade": [["Option", "Time to start", "Covers quality, data and target drift", "Control"], ["Evidently AI (open source)", "Days", "Yes", "Medium"], ["Own monitoring platform", "Months", "Whatever we build", "Full"]], "chosen": "Evidently AI (open source)", "diagram": "None."}, {"name": "Target Solution & Architecture", "props": [["Model Type", "Gradient boosting, one model per quantile"], ["Scope", "One model for all categories"], ["Training Stack", "Python, Spark, MLflow, Docker, SageMaker"]], "rationale": "Six gradient-boosting models, one per quantile, trained with quantile loss on the feature store. Replacing per-category models with one unified model improved offline metrics across most folds; small categories gained most, large ones did not lose, and the result held across seasons and regions. One model is also much easier to maintain. Learning curves pick the number of trees, lags, and window sizes; MLflow tracks experiments, CI/CD retrains on new data.", "trade": [["Option", "Small categories", "Large categories", "Maintenance"], ["One model per category", "Weak, too little data", "Good", "Many models"], ["One unified model", "Better offline metrics", "No significant change", "One model"]], "chosen": "One unified model", "diagram": "None."}];
+
+  // Same findings as review-canvas.html / review-editor.html.
+  const F = [
+    { id: 'o1', section: 'Evaluation (Online)', field: 'Key Metric', sev: 'critical', dim: 'Metrics, loss & measurement',
+      title: 'Average check does not measure the stated goal',
+      evidence: 'The goal is fewer leftovers and fewer out-of-stocks. The A/B key metric is average check, a revenue proxy.',
+      why: 'A forecast that overstocks can raise average check while waste grows, so the test can pass while the business goal gets worse. The rollout decision depends on this metric.',
+      fix: 'Make the primary metric waste plus lost sales in money per store-day. Keep average check as a secondary metric.' },
+    { id: 'o2', section: 'Evaluation (Online)', field: 'Split by distribution center', sev: 'major', dim: 'Metrics, loss & measurement',
+      title: 'Split by distribution center leaves too few units to detect +0.3%',
+      evidence: "47 distribution centers, Welch's t-test, α 5%, β 10%, one month, hypothesis +0.3%. The row says “enough with matched store subsets” without numbers.",
+      why: 'About 23 centers per arm with large between-center variance. A 0.3% effect is unlikely to be detectable in a month, so the test will probably be inconclusive.',
+      fix: 'Add a power calculation from historical center-level variance. Consider CUPED or a switchback over store clusters, and set the duration from the minimum detectable effect.' },
+    { id: 'o3', section: 'Evaluation (Online)', field: 'Rationale', sev: 'minor', dim: 'Metrics, loss & measurement',
+      title: 'Control metrics have no thresholds',
+      evidence: 'Rationale lists checks per day, model update frequency and offline metrics as control metrics, without limits.',
+      why: 'Without a threshold nobody knows when to stop the test early.',
+      fix: 'Give each control metric a limit that stops the test, for example checks per day down more than 2%.' },
+    { id: 'w1', section: 'design', sev: 'major', dim: 'Cost of mistakes & risk',
+      title: 'Out-of-stock is called costlier than overstock, but neither cost is estimated',
+      evidence: 'Problem Space Rationale says out-of-stock costs more and needs A/B tests or expert estimates. No number or ratio is given.',
+      why: 'The quantile you serve depends on that ratio. Without it, choosing between the 75th and 95th quantile is a guess.',
+      fix: 'Estimate the cost of one unit of overstock and one unit of out-of-stock for 2–3 categories (perishable, long shelf life) and derive the target quantile from their ratio.' },
+    { id: 'w2', section: 'design', sev: 'minor', dim: 'Training pipeline & reproducibility',
+      title: 'Retraining cadence and model versioning are not described',
+      evidence: 'Target Solution lists MLflow and SageMaker, but not how often models retrain or how a version is tied to its data snapshot.',
+      why: 'With one model per quantile, a mismatched set of versions in production is easy to miss.',
+      fix: 'State the retraining schedule, and that all quantile models are trained, versioned and released together from one data snapshot.' },
+    { id: 'w3', section: 'design', sev: 'minor', dim: 'Error analysis', stale: true, moved: 'Evaluation (Offline) › Segments',
+      title: 'No plan to inspect the worst SKU × store cohorts',
+      evidence: 'Segments named only “top categories”.',
+      why: 'Average quantile loss hides the stores where the forecast fails.',
+      fix: 'Add a cohort report for the worst 5% SKU × store pairs by loss.' },
+    { id: 'e1', section: 'Evaluation (Offline)', field: 'Weighting', sev: 'major', dim: 'Metrics, loss & measurement',
+      title: 'Two weightings with no rule for which one decides',
+      evidence: 'Weighting: plain and weighted by SKU price.',
+      why: 'The two can rank models differently, and expensive SKUs dominate the weighted one. Without a primary metric, “beat baseline on every quantile” is ambiguous.',
+      fix: 'Pick the price-weighted loss as primary, since it tracks money, and keep the plain one as a guardrail. Or state the rule for when they disagree.' },
+    { id: 'd1', section: 'Data & Features', field: 'Key Features', sev: 'major', dim: 'Data, labels & features',
+      title: 'Promo calendar may not be final at forecast time',
+      evidence: 'Promo is a key feature. The promo calendar is listed as a source without the date it becomes final.',
+      why: 'If promos are confirmed after the forecast is made, training on the final calendar leaks future information and inflates offline quality.',
+      fix: 'State how far ahead promos are fixed and join the calendar as of the forecast date.' },
+    { id: 'i1', section: 'Integration', field: 'Rationale', sev: 'major', dim: 'Serving, integration & release',
+      title: 'Store manager overrides are not logged or fed back',
+      evidence: 'Rationale: the distribution center plans deliveries, a store manager can override them.',
+      why: 'Overrides are the clearest signal of where the forecast is wrong, and they change the sales the model later learns from.',
+      fix: 'Log every override with a reason, monitor the override rate per store, and flag overridden periods in training data.' },
+    { id: 'i2', section: 'Integration', field: 'Fallback', sev: 'minor', dim: 'Serving, integration & release', stale: true,
+      title: 'Fallback tiers are not named',
+      evidence: 'Fallback: 3 tiers down to last week\'s sales. Only the last tier is described.',
+      why: 'On-call cannot tell which tier is serving or why.',
+      fix: 'List the three tiers and the condition that switches to each.' },
+    { id: 'p1', section: 'Problem Space', field: 'Rationale', sev: 'minor', dim: 'Problem framing, goals & antigoals',
+      title: 'Antigoals are not stated',
+      evidence: 'Nothing says what the system will not do, for example pricing decisions or supplier contract planning.',
+      why: 'Without antigoals, scope drifts into the 1-year supplier horizon, which has different data and owners.',
+      fix: 'Add 2–3 antigoals to Rationale, for example: no pricing decisions; supplier horizon is out of the pilot.' },
+    { id: 'm1', section: 'Monitoring', field: 'Alerting', sev: 'minor', dim: 'Monitoring, ownership & maintenance',
+      title: 'Alerts have no owner',
+      evidence: 'Alerting lists z-score triggers but no owner or response.',
+      why: 'An alert nobody owns gets muted within weeks.',
+      fix: 'Name the on-call team and link a runbook for each alert.' },
+    { id: 't1', section: 'Target Solution & Architecture', field: 'One model per category', sev: 'minor', dim: 'Prior work, build/buy & baselines',
+      title: 'Per-category models rejected without numbers',
+      evidence: 'The trade-off row for per-category models has no metric values.',
+      why: 'The choice may be right, but the doc does not show why.',
+      fix: 'Add the quantile loss of per-category models on the three largest categories to that row.' },
+    { id: 'b1', section: 'Baseline', field: 'Approach', sev: 'minor', dim: 'Prior work, build/buy & baselines', status: 'resolved',
+      title: 'Baseline window length not justified' },
+    { id: 'o4', section: 'Evaluation (Online)', field: 'Hypothesis', sev: 'minor', dim: 'Metrics, loss & measurement', status: 'resolved',
+      title: 'Hypothesis gives no upper bound for the expected effect' },
+    { id: 'v1', section: 'Validation', field: 'Golden Set', sev: 'minor', dim: 'Validation & leakage', status: 'dismissed',
+      title: 'Golden set refresh may overlap with training windows' },
+  ];
+  F.forEach(f => f.status ??= 'open');
+
+  const SEV_RANK = { critical: 0, major: 1, minor: 2 };
+  const SEV_DOT = {
+    critical: 'h-2 w-2 rounded-full bg-red-600',
+    major: 'h-2 w-2 rounded-full border-2 border-red-500',
+    minor: 'h-2 w-2 rounded-full bg-slate-400',
+  };
+  const dot = sev => `<span class="inline-block shrink-0 ${SEV_DOT[sev]}"></span>`;
+  const key = (section, field) => `${section}|${field}`;
+  const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+  const inline = s => esc(s).replace(/\*\*(.+?)\*\*/g, '<b class="font-semibold text-slate-900">$1</b>');
+  let tab = 'open', active = 'o1', fixShown = new Set();
+
+  // Rationale markdown: paragraphs and "- " lists only.
+  function md(text) {
+    return text.split(/\n\n+/).map(block => {
+      const lines = block.split('\n');
+      if (lines.every(l => l.startsWith('- ')))
+        return `<ul class="list-disc pl-5">${lines.map(l => `<li>${inline(l.slice(2))}</li>`).join('')}</ul>`;
+      return `<p>${inline(block)}</p>`;
+    }).join('');
+  }
+
+  let current = 0;
+  function renderToc() {
+    document.getElementById('toc').innerHTML = DOC.map((s, i) =>
+      `<li><a href="#s${i}" class="block rounded-lg px-3 py-2 text-sm ${i === current ? 'bg-indigo-100 font-medium text-indigo-700' : 'text-slate-500 hover:text-slate-800'}">${s.name}</a></li>`).join('');
+  }
+  // Scroll spy: the last section whose top passed the middle of the view.
+  document.getElementById('scroller').addEventListener('scroll', () => {
+    let i = 0;
+    DOC.forEach((_, k) => { if (document.getElementById('s' + k).getBoundingClientRect().top < innerHeight / 2) i = k; });
+    if (i !== current) { current = i; renderToc(); }
+  });
+
+  function renderSheet() {
+    renderToc();
+
+    const anchor = (section, field, inner, cls = '') =>
+      `<div data-anchor="${key(section, field)}" class="${cls}">${inner}</div>`;
+
+    document.getElementById('sheet').innerHTML = `
+      <div data-anchor="${key('design', '')}">
+        <h1 class="text-5xl font-bold tracking-tight text-slate-900 [text-wrap:balance]">Supermegaretail Demand Forecasting</h1>
+        <p class="mt-2 text-xl text-slate-500">ML System Architecture Spec</p>
+        <p class="mt-2 text-sm text-slate-400">Last updated: Oct 1, 2026, 11:36 PM</p>
+      </div>
+      ${DOC.map((s, i) => `
+        <section id="s${i}" class="mt-12">
+          <h2 class="border-b border-slate-100 pb-3 text-2xl font-semibold text-slate-900">${i + 1}. ${s.name}</h2>
+          <div class="mt-5 flex flex-wrap gap-x-8 gap-y-3 rounded-xl border border-slate-100 bg-slate-50 px-5 py-4">
+            ${s.props.map(([k, v]) => anchor(s.name, k, `
+              <div class="text-xs font-medium uppercase tracking-wide text-slate-400">${k}</div>
+              <div class="text-slate-900">${esc(v)}</div>`, '-mx-1.5 px-1.5 py-0.5')).join('')}
+          </div>
+          ${anchor(s.name, 'Rationale', `<div class="flex flex-col gap-3 leading-7 text-slate-700">${md(s.rationale)}</div>`, 'mt-5 -mx-2 px-2 py-1')}
+          ${s.trade.length ? `
+            <div class="mt-6 text-sm font-semibold text-slate-900">Trade-off Matrix</div>
+            <div class="mt-2 overflow-x-auto rounded-xl border border-slate-200">
+              <table class="w-full text-sm">
+                <thead class="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500"><tr>${s.trade[0].map(h => `<th class="px-4 py-2.5 font-medium">${esc(h)}</th>`).join('')}</tr></thead>
+                <tbody>${s.trade.slice(1).map(r => {
+                  const chosen = r[0] === s.chosen;
+                  return `<tr data-anchor="${key(s.name, r[0])}" class="border-t border-slate-100 ${chosen ? 'bg-indigo-50' : ''}">${r.map((c, j) =>
+                    `<td class="px-4 py-2.5 ${j === 0 && chosen ? 'font-medium text-indigo-600' : 'text-slate-700'}">${j === 0 && chosen ? '✓ ' : ''}${esc(c)}</td>`).join('')}</tr>`;
+                }).join('')}</tbody>
+              </table>
+            </div>` : ''}
+          ${s.diagram !== 'None.' ? `<div class="mt-6 grid h-40 place-items-center rounded-xl border border-slate-100 bg-slate-50 text-sm text-slate-400">Diagram</div>` : ''}
+        </section>`).join('')}`;
+  }
+
+  function anchorEl(f) {
+    return document.querySelector(`[data-anchor="${CSS.escape(key(f.section, f.section === 'design' ? '' : f.field))}"]`);
+  }
+
+  function comment(f) {
+    const isOpen = active === f.id;
+    const where = f.section === 'design' ? `Whole design · ${f.dim}` : `${f.section} › ${f.field}`;
+    const stale = f.stale ? `<span class="rounded-md bg-slate-100 px-1.5 py-0.5 text-[11px] font-medium text-slate-500">${f.moved ? 'Field removed' : 'Field changed since review'}</span>` : '';
+    let body = '';
+    if (f.status !== 'open') {
+      body = `<button data-status="${f.id}:open" class="mt-2 text-xs font-semibold text-indigo-600 hover:text-indigo-700">Reopen</button>`;
+    } else if (isOpen) {
+      body = `<div class="mt-3 flex flex-col gap-3 text-sm">
+        <div><div class="mb-0.5 text-xs uppercase tracking-wide text-slate-400">What the design says</div><p>${f.evidence}</p></div>
+        <div><div class="mb-0.5 text-xs uppercase tracking-wide text-slate-400">Why it matters</div><p>${f.why}</p></div>
+        ${fixShown.has(f.id)
+          ? `<div class="rounded-xl bg-indigo-50 px-3 py-2"><div class="mb-0.5 text-xs uppercase tracking-wide text-indigo-600">Fix</div><p class="text-slate-700">${f.fix}</p></div>`
+          : `<button data-fix="${f.id}" class="self-start text-sm font-semibold text-indigo-600 hover:text-indigo-700">Show fix</button>`}
+        <div class="flex justify-end gap-2 border-t border-slate-100 pt-3">
+          <button data-status="${f.id}:dismissed" class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-900 hover:bg-slate-50">Dismiss</button>
+          <button data-status="${f.id}:resolved" class="rounded-lg bg-slate-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-slate-700">Resolve</button>
+        </div>
+      </div>`;
+    } else {
+      body = `<p class="clamp2 mt-1.5 text-sm text-slate-500">${f.evidence}</p>`;
+    }
+    return `<div data-comment="${f.id}" class="comment absolute inset-x-0 rounded-xl border bg-white px-3 py-2.5 ${isOpen ? 'z-10 border-slate-200 shadow-lg' : 'border-slate-200 shadow-sm'} ${f.stale ? 'opacity-70' : ''}">
+      <button data-open="${f.id}" class="flex w-full items-start gap-2.5 text-left">
+        <span class="mt-1.5">${dot(f.sev)}</span>
+        <span class="min-w-0 flex-1">
+          <span class="block text-sm font-medium ${f.status === 'open' ? 'text-slate-900' : 'text-slate-500'}">${f.title}</span>
+          <span class="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-slate-500"><span class="capitalize">${f.sev}</span><span>·</span><span>${where}</span>${stale}</span>
+        </span>
+      </button>${body}
+    </div>`;
+  }
+
+  // Google Docs layout: each comment at its field's height, pushed down on overlap;
+  // the active one sits exactly at its field and the ones above move up to make room.
+  function layout() {
+    const margin = document.getElementById('margin');
+    const base = margin.getBoundingClientRect().top;
+    const items = [...margin.querySelectorAll('[data-comment]')].map(el => {
+      const f = F.find(x => x.id === el.dataset.comment);
+      return { el, f, anchor: anchorEl(f).getBoundingClientRect().top - base, h: el.offsetHeight };
+    }).sort((a, b) => a.anchor - b.anchor || SEV_RANK[a.f.sev] - SEV_RANK[b.f.sev]);
+    let y = 0;
+    items.forEach(it => { it.y = Math.max(it.anchor, y); y = it.y + it.h + 8; });
+    const ai = items.findIndex(it => it.f.id === active);
+    if (ai >= 0) {
+      items[ai].y = items[ai].anchor;
+      for (let i = ai - 1; i >= 0; i--) items[i].y = Math.min(items[i].y, items[i + 1].y - items[i].h - 8);
+      for (let i = ai + 1; i < items.length; i++) items[i].y = Math.max(items[i].anchor, items[i - 1].y + items[i - 1].h + 8);
+    }
+    items.forEach(it => it.el.style.top = it.y + 'px');
+    margin.style.height = (items.length ? Math.max(...items.map(it => it.y + it.h)) : 0) + 'px';
+
+    document.querySelectorAll('.hl').forEach(el => el.classList.remove('hl'));
+    const a = F.find(x => x.id === active);
+    if (a && a.status === 'open' && a.section !== 'design') anchorEl(a).classList.add('hl');
+  }
+
+  function renderMargin() {
+    const open = F.filter(f => f.status === 'open');
+    document.getElementById('summary').innerHTML =
+      ['critical', 'major', 'minor'].map(s => `<span class="flex items-center gap-1.5">${dot(s)}<span class="tabular-nums font-medium text-slate-900">${open.filter(f => f.sev === s).length}</span> ${s}</span>`).join('');
+    document.getElementById('tabs').innerHTML = [['open', 'Open'], ['resolved', 'Resolved'], ['dismissed', 'Dismissed']].map(([k, label]) =>
+      `<button data-tab="${k}" class="rounded-lg px-2.5 py-1 ${tab === k ? 'bg-indigo-50 font-medium text-indigo-700' : 'text-slate-500 hover:bg-slate-100'}">${label} <span class="tabular-nums">${F.filter(f => f.status === k).length}</span></button>`).join('');
+    document.getElementById('margin').innerHTML = F.filter(f => f.status === tab).map(comment).join('');
+    layout();
+
+    const on = (sel, fn) => document.querySelectorAll(sel).forEach(el => el.onclick = () => fn(el));
+    on('[data-tab]', el => { tab = el.dataset.tab; renderMargin(); });
+    on('[data-open]', el => { active = active === el.dataset.open ? null : el.dataset.open; renderMargin(); });
+    on('[data-fix]', el => { fixShown.add(el.dataset.fix); renderMargin(); });
+    on('[data-status]', el => {
+      const [id, st] = el.dataset.status.split(':');
+      F.find(x => x.id === id).status = st;
+      if (active === id) active = null;
+      renderSheet(); renderMargin();
+    });
+  }
+
+  renderSheet();
+  renderMargin();
+  // Heights change when styles load, fonts swap or a comment expands: lay out again each time.
+  let queued = false;
+  const relayout = () => { if (!queued) { queued = true; requestAnimationFrame(() => { queued = false; layout(); }); } };
+  new ResizeObserver(relayout).observe(document.getElementById('sheet'));
+  new MutationObserver(() => document.querySelectorAll('[data-comment]').forEach(el => ro.observe(el))).observe(document.getElementById('margin'), { childList: true });
+  const ro = new ResizeObserver(relayout);
+  document.querySelectorAll('[data-comment]').forEach(el => ro.observe(el));
+  // Start scrolled to the active comment, as if the user clicked it.
+  addEventListener('load', () => setTimeout(() => {
+    const first = F.find(f => f.id === active);
+    if (first) anchorEl(first).scrollIntoView({ block: 'center' });
+  }, 300));
+</script>

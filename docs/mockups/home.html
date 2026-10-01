@@ -1,8 +1,10 @@
+<meta charset="utf-8">
 <title>Trainer Home Mockup</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
   /* App is light-only (docs/design-system.md), so the mockup commits to one theme. */
   :root { color-scheme: light; }
+  [hidden] { display: none !important; }
   html, body { height: 100%; }
   body { background: #f8fafc; color: #334155; }
 </style>
@@ -27,11 +29,12 @@
     </div>
     <span class="font-semibold text-slate-900">ML System Design Trainer</span>
     <div class="ml-auto flex items-center gap-2">
+      <span data-guest class="mr-1"><img src="assets/default-avatar.png" alt="Guest" class="h-8 w-8 rounded-full object-cover ring-1 ring-slate-200"></span>
       <button data-guest class="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-900 hover:bg-slate-50">
         <span class="grid h-4 w-4 place-items-center rounded-full border border-slate-300 text-[10px] font-bold text-slate-500">G</span>
         Sign in with Google
       </button>
-      <button data-user class="grid h-8 w-8 place-items-center rounded-full bg-indigo-100 text-sm font-semibold text-indigo-700" aria-label="Account menu">A</button>
+      <button data-user class="rounded-full" aria-label="Account menu"><span class="grid h-8 w-8 place-items-center rounded-full bg-indigo-100 text-sm font-semibold text-indigo-700" title="Google profile photo">A</span></button>
     </div>
   </div>
 </header>
@@ -129,11 +132,12 @@
     return `<article class="flex w-72 shrink-0 snap-start flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-3 shadow-sm">
       ${problemPreview(props)}
       <div class="flex flex-1 flex-col gap-1 px-1">
-        <h3 class="truncate font-semibold text-slate-900">${title}</h3>
+        <h3 class="font-semibold leading-snug text-slate-900 [text-wrap:balance]">${title}</h3>
         <p class="text-sm text-slate-500">${text}</p>
+        ${source ? `<p class="text-xs text-slate-400">${source}</p>` : ''}
       </div>
       <div class="flex items-center gap-2 px-1">
-        ${chip(kind, label)}${source ? `<span class="truncate text-xs text-slate-400">${source}</span>` : ''}
+        ${chip(kind, label)}
         <button ${action ? `data-action="${action}"` : ''} class="ml-auto shrink-0 rounded-lg bg-slate-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-slate-700">${cta}</button>
       </div>
     </article>`;

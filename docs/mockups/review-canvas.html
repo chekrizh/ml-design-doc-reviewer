@@ -1,0 +1,333 @@
+<meta charset="utf-8">
+<title>Canvas Review Mockup</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  /* App is light-only (docs/design-system.md), so the mockup commits to one theme. */
+  :root { color-scheme: light; }
+  [hidden] { display: none !important; }
+  html, body { height: 100%; }
+  body { background: #f8fafc; color: #334155; }
+  /* Narrow card: diagram moves under Key Properties instead of squeezing them. */
+  .card-body-wrap { container-type: inline-size; }
+  @container (max-width: 420px) { .card-body { flex-direction: column; align-items: stretch; } .card-body .thumb { max-width: 100%; height: 7rem; } }
+  .clamp2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+</style>
+
+<!-- Canvas on the left, Review panel on the right; both scroll on their own. -->
+<div class="flex h-full flex-col">
+
+<header class="flex shrink-0 items-center gap-4 border-b border-slate-200 bg-white px-6 py-3">
+  <div class="flex min-w-0 flex-1 items-center gap-3">
+    <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-900 text-white">
+      <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1.5" y="1.5" width="5" height="5" rx="1"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/><path d="M4 6.5v5.5h5.5"/></svg>
+    </div>
+    <h1 class="truncate text-lg font-semibold text-slate-900">Supermegaretail Demand Forecasting</h1>
+    <span class="shrink-0 text-xs text-slate-400">Saved</span>
+  </div>
+  <div class="flex rounded-lg border border-slate-200 bg-white p-0.5 text-sm">
+    <span class="rounded-md bg-indigo-50 px-3 py-1 font-medium text-indigo-700">Canvas</span>
+    <span class="rounded-md px-3 py-1 text-slate-500">Document</span>
+  </div>
+  <div class="flex flex-1 items-center justify-end gap-2">
+    <span class="mr-2 grid h-8 w-8 place-items-center rounded-full bg-indigo-100 text-sm font-semibold text-indigo-700" title="Google profile photo">A</span>
+    <button id="toggle-panel" class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-900 hover:bg-slate-50">AI Review</button>
+    <button class="rounded-lg bg-slate-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-slate-700">Share</button>
+  </div>
+</header>
+
+<div class="flex min-h-0 flex-1">
+  <main class="min-w-0 flex-1 overflow-auto p-6">
+    <div id="grid" class="grid min-w-[760px] grid-cols-12 gap-4"></div>
+  </main>
+
+  <aside id="panel" class="flex w-[420px] shrink-0 flex-col border-l border-slate-200 bg-white">
+    <div class="flex flex-col gap-3 border-b border-slate-100 px-5 py-4">
+      <div class="flex items-center gap-2">
+        <h2 class="font-semibold text-slate-900">Review</h2>
+        <span class="text-xs text-slate-400">Full design · 2 min ago</span>
+        <button class="ml-auto rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-slate-900 hover:bg-slate-50">Run again</button>
+        <button id="close-panel" class="rounded-lg px-1.5 py-1 text-slate-400 hover:bg-slate-100 hover:text-slate-700" aria-label="Close review">✕</button>
+      </div>
+      <div id="summary" class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-600"></div>
+      <div id="tabs" class="flex gap-1 text-sm"></div>
+    </div>
+    <div id="findings" class="min-h-0 flex-1 overflow-y-auto px-3 py-3"></div>
+  </aside>
+</div>
+</div>
+
+<script>
+  // Default layout (D12), with the example's key properties (first three).
+  const SECTIONS = [
+    ['problem', 'Problem Space', 4, false, [['Domain', 'Retail, grocery chain'], ['Business Goal', 'Narrow the delivered vs sold gap without out-of-stock'], ['ML Task', 'Demand forecast per SKU × store × day']]],
+    ['evalOff', 'Evaluation (Offline)', 3, true, [['Offline Metric', 'Quantile loss at 1.5 … 99'], ['Target Value', 'Beat baseline on every quantile'], ['Weighting', 'Plain and weighted by SKU price']]],
+    ['baseline', 'Baseline', 5, true, [['Approach', 'Per-SKU sales quantiles over a yearly window'], ['Baseline Metric', 'Same quantile losses as offline evaluation'], ['Next Steps', 'Quantile linear regression, then SARIMA / Prophet']]],
+    ['validation', 'Validation', 4, true, [['Scheme', 'Rolling CV: 5 outer folds, 3 inner folds'], ['Windows', '2 years train, 28 days test, 3-day gap'], ['Golden Set', 'Holdout refreshed every 3 months']]],
+    ['data', 'Data & Features', 3, false, [['Sources', 'Transactions, stock, promo calendar'], ['Key Features', 'Sales lags, prices, promo'], ['Object', '(date, store, SKU) → units']]],
+    ['target', 'Target Solution & Architecture', 5, true, [['Model Type', 'Gradient boosting, one model per quantile'], ['Scope', 'One model for all categories'], ['Training Stack', 'Python, Spark, MLflow, Docker, SageMaker']]],
+    ['evalOn', 'Evaluation (Online)', 4, true, [['Evaluation Type', 'A/B test split by distribution center'], ['Key Metric', 'Average check, proxy for revenue'], ['Design', "Welch's t-test, α 5%, β 10%, 1 month"]]],
+    ['monitoring', 'Monitoring', 3, true, [['Data Drift', 'Wasserstein distance'], ['Model Quality', 'Quantile losses daily'], ['Alerting', 'z-score on missing data']]],
+    ['integration', 'Integration', 5, true, [['Inference Pattern', 'Scheduled batch jobs, on-demand via API'], ['Output', 'Demand per SKU × entity × period, JSON'], ['Fallback', '3 tiers down to last week\'s sales']]],
+  ];
+  const NAME = Object.fromEntries(SECTIONS.map(s => [s[0], s[1]]));
+  const ORDER = ['problem', 'evalOff', 'baseline', 'validation', 'data', 'evalOn', 'integration', 'monitoring', 'target'];
+
+  // Findings: our schema over the skill's "<dimension> - <evidence>. <why>. Fix: <action>."
+  // section 'design' = whole design. status: open | resolved | dismissed; stale is a flag on open.
+  const F = [
+    { id: 'o1', section: 'evalOn', field: 'Key Metric', sev: 'critical', dim: 'Metrics, loss & measurement',
+      title: 'Average check does not measure the stated goal',
+      evidence: 'The goal is fewer leftovers and fewer out-of-stocks. The A/B key metric is average check, a revenue proxy.',
+      why: 'A forecast that overstocks can raise average check while waste grows, so the test can pass while the business goal gets worse. The rollout decision depends on this metric.',
+      fix: 'Make the primary metric waste plus lost sales in money per store-day. Keep average check as a secondary metric.' },
+    { id: 'o2', section: 'evalOn', field: 'Trade-offs › Split by distribution center', sev: 'major', dim: 'Metrics, loss & measurement',
+      title: 'Split by distribution center leaves too few units to detect +0.3%',
+      evidence: "47 distribution centers, Welch's t-test, α 5%, β 10%, one month, hypothesis +0.3%.",
+      why: 'About 23 centers per arm with large between-center variance. A 0.3% effect is unlikely to be detectable in a month, so the test will probably be inconclusive.',
+      fix: 'Add a power calculation from historical center-level variance. Consider CUPED or a switchback over store clusters, and set the duration from the minimum detectable effect.' },
+    { id: 'o3', section: 'evalOn', field: 'Rationale', sev: 'minor', dim: 'Metrics, loss & measurement',
+      title: 'Control metrics have no thresholds',
+      evidence: 'Rationale lists checks per day, model update frequency and offline metrics as control metrics, without limits.',
+      why: 'Without a threshold nobody knows when to stop the test early.',
+      fix: 'Give each control metric a limit that stops the test, for example checks per day down more than 2%.' },
+    { id: 'w1', section: 'design', sev: 'major', dim: 'Cost of mistakes & risk',
+      title: 'Out-of-stock is called costlier than overstock, but neither cost is estimated',
+      evidence: 'Problem Space Rationale says out-of-stock costs more and needs A/B tests or expert estimates. No number or ratio is given.',
+      why: 'The quantile you serve depends on that ratio. Without it, choosing between the 75th and 95th quantile is a guess.',
+      fix: 'Estimate the cost of one unit of overstock and one unit of out-of-stock for 2–3 categories (perishable, long shelf life) and derive the target quantile from their ratio.' },
+    { id: 'e1', section: 'evalOff', field: 'Weighting', sev: 'major', dim: 'Metrics, loss & measurement',
+      title: 'Two weightings with no rule for which one decides',
+      evidence: 'Weighting: plain and weighted by SKU price.',
+      why: 'The two can rank models differently, and expensive SKUs dominate the weighted one. Without a primary metric, “beat baseline on every quantile” is ambiguous.',
+      fix: 'Pick the price-weighted loss as primary, since it tracks money, and keep the plain one as a guardrail. Or state the rule for when they disagree.' },
+    { id: 'd1', section: 'data', field: 'Key Features', sev: 'major', dim: 'Data, labels & features',
+      title: 'Promo calendar may not be final at forecast time',
+      evidence: 'Promo is a key feature. The promo calendar is listed as a source without the date it becomes final.',
+      why: 'If promos are confirmed after the forecast is made, training on the final calendar leaks future information and inflates offline quality.',
+      fix: 'State how far ahead promos are fixed and join the calendar as of the forecast date.' },
+    { id: 'i1', section: 'integration', field: 'Rationale', sev: 'major', dim: 'Serving, integration & release',
+      title: 'Store manager overrides are not logged or fed back',
+      evidence: 'Rationale: the distribution center plans deliveries, a store manager can override them.',
+      why: 'Overrides are the clearest signal of where the forecast is wrong, and they change the sales the model later learns from.',
+      fix: 'Log every override with a reason, monitor the override rate per store, and flag overridden periods in training data.' },
+    { id: 'i2', section: 'integration', field: 'Fallback', sev: 'minor', dim: 'Serving, integration & release', stale: true,
+      title: 'Fallback tiers are not named',
+      evidence: 'Fallback: 3 tiers down to last week\'s sales. Only the last tier is described.',
+      why: 'On-call cannot tell which tier is serving or why.',
+      fix: 'List the three tiers and the condition that switches to each.' },
+    { id: 'w2', section: 'design', sev: 'minor', dim: 'Training pipeline & reproducibility',
+      title: 'Retraining cadence and model versioning are not described',
+      evidence: 'Target Solution lists MLflow and SageMaker, but not how often models retrain or how a version is tied to its data snapshot.',
+      why: 'With one model per quantile, a mismatched set of versions in production is easy to miss.',
+      fix: 'State the retraining schedule, and that all quantile models are trained, versioned and released together from one data snapshot.' },
+    { id: 'w3', section: 'design', sev: 'minor', dim: 'Error analysis', stale: true, moved: 'Evaluation (Offline) › Segments',
+      title: 'No plan to inspect the worst SKU × store cohorts',
+      evidence: 'Segments named only “top categories”.',
+      why: 'Average quantile loss hides the stores where the forecast fails.',
+      fix: 'Add a cohort report for the worst 5% SKU × store pairs by loss.' },
+    { id: 'p1', section: 'problem', field: 'Rationale', sev: 'minor', dim: 'Problem framing, goals & antigoals',
+      title: 'Antigoals are not stated',
+      evidence: 'Nothing says what the system will not do, for example pricing decisions or supplier contract planning.',
+      why: 'Without antigoals, scope drifts into the 1-year supplier horizon, which has different data and owners.',
+      fix: 'Add 2–3 antigoals to Rationale, for example: no pricing decisions; supplier horizon is out of the pilot.' },
+    { id: 'm1', section: 'monitoring', field: 'Alerting', sev: 'minor', dim: 'Monitoring, ownership & maintenance',
+      title: 'Alerts have no owner',
+      evidence: 'Alerting lists z-score triggers but no owner or response.',
+      why: 'An alert nobody owns gets muted within weeks.',
+      fix: 'Name the on-call team and link a runbook for each alert.' },
+    { id: 't1', section: 'target', field: 'Trade-offs › One model per category', sev: 'minor', dim: 'Prior work, build/buy & baselines',
+      title: 'Per-category models rejected without numbers',
+      evidence: 'The trade-off row for per-category models has no metric values.',
+      why: 'The choice may be right, but the doc does not show why.',
+      fix: 'Add the quantile loss of per-category models on the three largest categories to that row.' },
+    { id: 'b1', section: 'baseline', field: 'Approach', sev: 'minor', dim: 'Prior work, build/buy & baselines', status: 'resolved',
+      title: 'Baseline window length not justified', evidence: '', why: '', fix: '' },
+    { id: 'v1', section: 'validation', field: 'Golden Set', sev: 'minor', dim: 'Validation & leakage', status: 'dismissed',
+      title: 'Golden set refresh may overlap with training windows', evidence: '', why: '', fix: '' },
+  ];
+  F.forEach(f => f.status ??= 'open');
+  const REVIEWED = ORDER; // full review covered every section
+
+  const SEV_RANK = { critical: 0, major: 1, minor: 2 };
+  const SEV_DOT = {
+    critical: 'h-2 w-2 rounded-full bg-red-600',
+    major: 'h-2 w-2 rounded-full border-2 border-red-500',
+    minor: 'h-2 w-2 rounded-full bg-slate-400',
+  };
+  const dot = sev => `<span class="inline-block shrink-0 ${SEV_DOT[sev]}"></span>`;
+  const openIn = sid => F.filter(f => f.section === sid && f.status === 'open');
+  const worst = list => list.slice().sort((a, b) => SEV_RANK[a.sev] - SEV_RANK[b.sev])[0];
+
+  let tab = 'open', expanded = 'o1', fixShown = new Set(), minorShown = new Set(), highlight = 'evalOn';
+
+  // Header indicator: off (not reviewed) / red (open critical or major) / green with check (else).
+  function reviewStatus(sid) {
+    if (!REVIEWED.includes(sid)) return { cls: 'text-slate-300', check: false, tip: 'Not reviewed yet.' };
+    const open = openIn(sid);
+    const serious = open.filter(f => f.sev !== 'minor');
+    if (serious.length) return { cls: 'text-red-600', check: 'alert',
+      tip: `${open.length} open findings, ${serious.filter(f => f.sev === 'critical').length} critical.` };
+    return { cls: 'text-emerald-600', check: true,
+      tip: open.length ? `Reviewed. ${open.length} minor suggestion${open.length > 1 ? 's' : ''}.` : 'Reviewed. No open findings.' };
+  }
+
+  const ICON = {
+    tradeoffs: '<path d="M12 3v18M7 21h10M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2M2 16l3-8 3 8c-.9.7-1.9 1-3 1s-2.1-.3-3-1zM16 16l3-8 3 8c-.9.7-1.9 1-3 1s-2.1-.3-3-1z"/>',
+    review: '<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/>',
+  };
+  const ALERT = '<svg viewBox="0 0 24 24" class="absolute -right-0.5 -bottom-0.5 h-3 w-3 rounded-full bg-red-600 text-white"><path d="M12 6.5v6.5M12 17.5v.01" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>';
+  const CHECK = '<svg viewBox="0 0 24 24" class="absolute -right-0.5 -bottom-0.5 h-3 w-3 rounded-full bg-emerald-600 text-white"><path d="M6 12l4 4 8-8" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  function indicator(icon, cls, check, tip) {
+    return `<span class="group relative rounded-md p-1 ${cls}" tabindex="0">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">${ICON[icon]}</svg>
+      ${check === 'alert' ? ALERT : check ? CHECK : ''}
+      <span class="pointer-events-none absolute top-full right-0 z-20 mt-2 hidden w-56 rounded-lg bg-slate-900 px-3 py-2 text-xs font-normal normal-case tracking-normal text-white shadow-lg group-hover:block group-focus-visible:block">${tip}</span>
+    </span>`;
+  }
+
+  // Stand-ins for the Excalidraw thumbnails of the three sections that have a diagram in the example.
+  const box = (x, y, w, t, dark) => `<rect x="${x}" y="${y}" width="${w}" height="22" rx="4" fill="${dark ? '#0f172a' : '#fff'}" stroke="#cbd5e1"/><text x="${x + w / 2}" y="${y + 14.5}" font-size="8" text-anchor="middle" fill="${dark ? '#fff' : '#475569'}" font-family="system-ui">${t}</text>`;
+  const arrow = (x1, y1, x2, y2) => `<path d="M${x1} ${y1}L${x2} ${y2}" stroke="#94a3b8" stroke-width="1.2" marker-end="url(#a)"/>`;
+  const svg = (w, h, inner) => `<svg viewBox="0 0 ${w} ${h}" class="h-full w-full"><defs><marker id="a" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L6 3L0 6z" fill="#94a3b8"/></marker></defs>${inner}</svg>`;
+  const DIAGRAMS = {
+    validation: svg(200, 110, [0, 1, 2].map(i => {
+      const y = 14 + i * 30, off = i * 18;
+      return `<rect x="${8 + off}" y="${y}" width="110" height="16" rx="3" fill="#e0e7ff"/><text x="${63 + off}" y="${y + 11}" font-size="7.5" text-anchor="middle" fill="#4338ca" font-family="system-ui">train 2y</text>
+        <rect x="${122 + off}" y="${y}" width="6" height="16" fill="#f1f5f9"/>
+        <rect x="${131 + off}" y="${y}" width="30" height="16" rx="3" fill="#c7d2fe"/><text x="${146 + off}" y="${y + 11}" font-size="7.5" text-anchor="middle" fill="#3730a3" font-family="system-ui">28d</text>`;
+    }).join('')),
+    data: svg(140, 120, box(10, 8, 120, 'Transactions, stock, promo') + arrow(70, 30, 70, 46) + box(25, 48, 90, 'ETL · Spark') + arrow(70, 70, 70, 86) + box(25, 88, 90, 'Feature store', true)),
+    integration: svg(260, 110, box(6, 20, 62, 'Scheduler') + arrow(68, 31, 92, 31) + box(94, 20, 70, 'Model', true) + arrow(164, 31, 188, 31) + box(190, 20, 64, 'Forecast API')
+      + `<path d="M129 42v18" stroke="#94a3b8" stroke-dasharray="3 2" stroke-width="1.2"/>` + box(60, 62, 62, 'Tier 2') + box(130, 62, 62, 'Tier 3') + `<text x="129" y="102" font-size="7.5" text-anchor="middle" fill="#94a3b8" font-family="system-ui">fallback: last week's sales</text>`),
+  };
+
+  function renderCards() {
+    document.getElementById('grid').innerHTML = SECTIONS.map(([sid, name, w, tradeoffs, props]) => {
+      const rs = reviewStatus(sid);
+      const open = openIn(sid);
+      const badge = open.length
+        ? `<button data-badge="${sid}" class="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2 py-1 text-xs font-medium text-slate-700 hover:bg-slate-50">${dot(worst(open).sev)}${open.length} finding${open.length > 1 ? 's' : ''}</button>`
+        : '';
+      const ring = highlight === sid ? 'ring-2 ring-indigo-300' : '';
+      return `<article data-card="${sid}" style="grid-column: span ${w}" class="flex flex-col rounded-2xl border border-slate-200 bg-white shadow-sm ${ring}">
+        <header class="flex items-center gap-2 border-b border-slate-100 px-4 py-3">
+          <h3 class="min-w-0 flex-1 text-sm font-semibold uppercase leading-tight tracking-wide text-slate-900 [text-wrap:balance]">${name}</h3>
+          ${indicator('tradeoffs', tradeoffs ? 'text-emerald-600' : 'text-slate-300', tradeoffs, tradeoffs ? 'Trade-offs filled: alternatives weighed, choice made.' : 'Trade-offs not filled yet.')}
+          ${indicator('review', rs.cls, rs.check, rs.tip)}
+        </header>
+        <div class="card-body-wrap flex-1"><div class="card-body flex items-start gap-4 px-4 pt-3 pb-3">
+          <dl class="grid min-w-0 flex-1 auto-rows-min grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 text-sm">
+            ${props.map(([k, v]) => `<dt class="truncate text-slate-500">${k}</dt><dd class="min-w-0 truncate font-medium text-slate-900">${v}</dd>`).join('')}
+          </dl>
+          ${DIAGRAMS[sid] ? `<div class="thumb flex h-36 min-w-0 max-w-[60%] flex-1 items-center justify-center rounded-xl border border-slate-100 bg-slate-50 p-2">${DIAGRAMS[sid]}</div>` : ''}
+        </div></div>
+        <footer class="flex items-center gap-2 border-t border-slate-100 px-4 py-3">
+          ${badge}
+          <button class="ml-auto rounded-lg bg-slate-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-slate-700">Details</button>
+        </footer>
+      </article>`;
+    }).join('');
+    document.querySelectorAll('[data-badge]').forEach(b => b.onclick = () => focusSection(b.dataset.badge));
+  }
+
+  function findingCard(f) {
+    const isOpen = expanded === f.id;
+    const where = f.section === 'design'
+      ? (f.moved ? `Field removed: ${f.moved}` : f.dim)
+      : `${f.field} · ${f.dim}`;
+    const stale = f.stale
+      ? `<span class="rounded-md bg-slate-100 px-1.5 py-0.5 text-[11px] font-medium text-slate-500">${f.moved ? 'Moved here' : 'Field changed since review'}</span>` : '';
+    let body = '';
+    if (isOpen && f.status === 'open') {
+      const showFix = fixShown.has(f.id);
+      body = `<div class="mt-3 flex flex-col gap-3 text-sm">
+        <div><div class="mb-0.5 text-xs uppercase tracking-wide text-slate-400">What the design says</div><p>${f.evidence}</p></div>
+        <div><div class="mb-0.5 text-xs uppercase tracking-wide text-slate-400">Why it matters</div><p>${f.why}</p></div>
+        ${showFix
+          ? `<div class="rounded-xl bg-indigo-50 px-3 py-2"><div class="mb-0.5 text-xs uppercase tracking-wide text-indigo-600">Fix</div><p class="text-slate-700">${f.fix}</p></div>`
+          : `<button data-fix="${f.id}" class="self-start text-sm font-semibold text-indigo-600 hover:text-indigo-700">Show fix</button>`}
+        <div class="flex items-center gap-2 border-t border-slate-100 pt-3">
+          <button data-status="${f.id}:dismissed" class="ml-auto rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-900 hover:bg-slate-50">Dismiss</button>
+          <button data-status="${f.id}:resolved" class="rounded-lg bg-slate-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-slate-700">Resolve</button>
+        </div>
+      </div>`;
+    }
+    const restore = f.status !== 'open'
+      ? `<button data-status="${f.id}:open" class="mt-2 text-xs font-semibold text-indigo-600 hover:text-indigo-700">Reopen</button>` : '';
+    return `<div class="rounded-xl border ${isOpen ? 'border-slate-200 bg-white shadow-sm' : 'border-transparent hover:bg-slate-50'} ${f.stale ? 'opacity-70' : ''} px-3 py-2.5">
+      <button data-expand="${f.id}" class="flex w-full items-start gap-2.5 text-left">
+        <span class="mt-1.5">${dot(f.sev)}</span>
+        <span class="min-w-0 flex-1">
+          <span class="${isOpen ? '' : 'clamp2'} block text-sm font-medium text-slate-900">${f.title}</span>
+          <span class="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-slate-500"><span class="capitalize">${f.sev}</span><span>·</span><span>${where}</span>${stale}</span>
+        </span>
+      </button>
+      ${body}${restore}
+    </div>`;
+  }
+
+  function renderPanel() {
+    const open = F.filter(f => f.status === 'open');
+    const count = s => open.filter(f => f.sev === s).length;
+    document.getElementById('summary').innerHTML =
+      ['critical', 'major', 'minor'].map(s => `<span class="flex items-center gap-1.5">${dot(s)}<span class="tabular-nums font-medium text-slate-900">${count(s)}</span> ${s}</span>`).join('');
+
+    const tabs = [['open', 'Open'], ['resolved', 'Resolved'], ['dismissed', 'Dismissed']];
+    document.getElementById('tabs').innerHTML = tabs.map(([k, label]) => {
+      const n = F.filter(f => f.status === k).length;
+      return `<button data-tab="${k}" class="rounded-lg px-2.5 py-1 ${tab === k ? 'bg-indigo-50 font-medium text-indigo-700' : 'text-slate-500 hover:bg-slate-100'}">${label} <span class="tabular-nums">${n}</span></button>`;
+    }).join('');
+
+    const groups = ['design', ...ORDER].map(sid => {
+      const list = F.filter(f => f.section === sid && f.status === tab)
+        .sort((a, b) => SEV_RANK[a.sev] - SEV_RANK[b.sev]);
+      if (!list.length) return '';
+      const main = tab === 'open' ? list.filter(f => f.sev !== 'minor') : list;
+      const minors = tab === 'open' ? list.filter(f => f.sev === 'minor') : [];
+      const showMinor = minorShown.has(sid) || !main.length;
+      return `<section id="group-${sid}" class="mb-4">
+        <h3 class="sticky top-0 z-10 bg-white px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-slate-500">${sid === 'design' ? 'Whole design' : NAME[sid]}</h3>
+        <div class="flex flex-col gap-1">
+          ${main.map(findingCard).join('')}
+          ${minors.length && showMinor ? minors.map(findingCard).join('') : ''}
+          ${minors.length && !showMinor ? `<button data-minor="${sid}" class="flex items-center gap-2.5 rounded-xl px-3 py-2 text-left text-sm text-slate-500 hover:bg-slate-50">${dot('minor')}${minors.length} minor — show</button>` : ''}
+        </div>
+      </section>`;
+    }).join('');
+    document.getElementById('findings').innerHTML = groups ||
+      `<p class="px-3 py-8 text-center text-sm text-slate-400">Nothing here.</p>`;
+
+    const on = (sel, fn) => document.querySelectorAll(sel).forEach(el => el.onclick = () => fn(el));
+    on('[data-tab]', el => { tab = el.dataset.tab; renderPanel(); });
+    on('[data-expand]', el => {
+      const f = F.find(x => x.id === el.dataset.expand);
+      expanded = expanded === f.id ? null : f.id;
+      highlight = f.section === 'design' ? null : f.section;
+      render();
+      if (highlight) document.querySelector(`[data-card="${highlight}"]`).scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    });
+    on('[data-fix]', el => { fixShown.add(el.dataset.fix); renderPanel(); });
+    on('[data-minor]', el => { minorShown.add(el.dataset.minor); renderPanel(); });
+    on('[data-status]', el => {
+      const [id, status] = el.dataset.status.split(':');
+      F.find(x => x.id === id).status = status;
+      render();
+    });
+  }
+
+  function focusSection(sid) {
+    document.getElementById('panel').hidden = false;
+    tab = 'open';
+    highlight = sid;
+    const first = worst(openIn(sid));
+    expanded = first ? first.id : null;
+    if (first && first.sev === 'minor') minorShown.add(sid);
+    render();
+    document.getElementById('group-' + sid)?.scrollIntoView({ block: 'start', behavior: 'smooth' });
+  }
+
+  function render() { renderCards(); renderPanel(); }
+  document.getElementById('close-panel').onclick = () => { document.getElementById('panel').hidden = true; highlight = null; renderCards(); };
+  document.getElementById('toggle-panel').onclick = () => { const p = document.getElementById('panel'); p.hidden = !p.hidden; };
+  render();
+</script>
