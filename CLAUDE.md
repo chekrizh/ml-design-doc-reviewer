@@ -19,11 +19,12 @@ Apply the same philosophy to your own engineering decisions in this repo: when m
 - MVP scope and screen specs: `docs/mvp-spec.md`; mockups in `docs/mockups/`.
 - UI colors, type and component classes: `docs/design-system.md`. Use only its palette.
 - M1 is frontend-only: React + TypeScript + Vite, Excalidraw (React component), TipTap, Zustand, IndexedDB, Tailwind, Vitest + Playwright, pnpm. Deployed as a static build on Vercel.
-- Feature list for M1: `features.json`. Change only the `passes` field.
+- M2 adds Supabase (Auth, Postgres + RLS, Vault, Edge Functions) and OpenRouter. Backend contract: `docs/backend-spec.md`. Tests use only local Supabase and mocks; never run Supabase cloud commands.
+- Feature list: `features.json` (M1, M1.1, M2). Change only the `passes` field.
 - Acceptance scenarios: `docs/acceptance-tests.md`. Human-owned: never edit, weaken, or skip them; implement each as a Playwright test in `e2e/acceptance/`.
 - Decision log with alternatives: `docs/decisions.md`. Add an entry for every non-trivial decision.
 - Dependencies: only those listed in `docs/decisions.md` plus their obvious tooling (types, test runners, Vite/Tailwind plugins). Any other runtime dependency needs a new entry in `docs/decisions.md` with alternatives, including "no dependency".
-- Layout: `src/model` (types and pure rules), `src/store` (Zustand + IndexedDB), `src/canvas`, `src/editor`, `src/document`, `src/export`, `src/fixtures` (example design); `e2e/acceptance` (human scenarios), `e2e/` (agent's own e2e tests). Unit tests sit next to the code as `*.test.ts`.
+- Layout: `src/model` (types and pure rules), `src/store` (Zustand + IndexedDB), `src/canvas`, `src/editor`, `src/document`, `src/export`, `src/fixtures` (Library items), `src/backend` (Supabase client, auth, repositories), `src/review` (review UI state); `supabase/` (migrations, seed, pgTAP tests, edge functions; shared review code in `supabase/functions/_shared/review/`); `e2e/mocks` (OpenRouter mock, Google stubs); `e2e/acceptance` (human scenarios), `e2e/` (agent's own e2e tests). Unit tests sit next to the code as `*.test.ts`.
 
 ## Autonomous run protocol
 

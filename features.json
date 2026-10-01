@@ -11,7 +11,8 @@
     "M2 features are appended after M1/M1.1 and supersede them where they conflict (each names what it supersedes). Update your own earlier tests to the new behaviour.",
     "M2 never calls real external services: tests use local Supabase (CLI + Docker), the local-only test sign-in, and mocks for OpenRouter and Google Drive (see 'Тестовое окружение M2' in docs/acceptance-tests.md). A test fails if any request goes to openrouter.ai, googleapis.com, accounts.google.com or *.supabase.co.",
     "Never run Supabase cloud commands (login, link, db push, functions deploy, secrets). The human deploys.",
-    "Visual reference for M2 screens: docs/mockups/*.html and the PNGs next to them; UI rules in docs/mvp-spec.md (M2) and docs/design-system.md."
+    "Visual reference for M2 screens: docs/mockups/*.html and the PNGs next to them; UI rules in docs/mvp-spec.md (M2) and docs/design-system.md.",
+    "Backend contract: docs/backend-spec.md (schema, RLS, edge functions, errors, test infrastructure). Deviations go to open-questions.md, not into the code silently."
   ],
   "features": [
     {
@@ -658,9 +659,9 @@
       "category": "setup",
       "description": "Test doubles for OpenRouter and Google Drive.",
       "steps": [
-        "OpenRouter mock: key check (only `sk-or-v1-test-valid-0000a3f9` is valid), models list, chat completion with recorded answers R1 and R2, errors 401/402/429, an answer that breaks the findings schema, and a configurable delay",
-        "Drive mock records every request (create vs update) and can refuse access",
-        "Each test selects mock behaviour explicitly; a guard fails the test on any request to a real external host"
+        "OpenRouter mock per docs/backend-spec.md §9: /key (only `sk-or-v1-test-valid-0000a3f9` is valid), /models, /chat/completions with scenarios R1, R2, 401, 402, 429, bad_output, no_images and a delay; it records the last request without the Authorization header",
+        "Google stubs via page.route: GIS script with grant / deny / popup-blocked outcomes, Drive upload that records requests (create vs update) and can fail",
+        "A Playwright fixture fails the test on any request to a non-local host that is not stubbed"
       ],
       "passes": false
     },
@@ -669,9 +670,8 @@
       "category": "setup",
       "description": "Routes for home and designs.",
       "steps": [
-        "Home screen and an open design have their own URLs; browser back/forward moves between them",
-        "Reloading a design URL opens the same design (cloud for signed-in, the local one for guests)",
-        "The choice (a router dependency or none) is recorded in docs/decisions.md"
+        "Routes `/`, `/d/:id`, `/local`, `/library/:itemId` on the History API without a dependency (D27); back/forward works",
+        "Reloading a design URL opens the same design (cloud for signed-in, the local one for guests)"
       ],
       "passes": false
     },
@@ -680,8 +680,8 @@
       "category": "backend",
       "description": "Designs table with RLS.",
       "steps": [
-        "A migration creates designs: id, owner, title, data (JSONB, the M1 model), origin (blank / task / example), updated_at",
-        "RLS: a user reads, updates and deletes only their own designs; a test with two users proves it",
+        "Migration creates `designs` exactly as docs/backend-spec.md §3.1, including the version trigger (only `data`/`title` changes bump `version`)",
+        "RLS and grants as §4; pgTAP tests prove a user cannot read, update or delete another user's designs",
         "Inserting or updating stores and returns the same JSON the client sent"
       ],
       "passes": false
@@ -689,11 +689,11 @@
     {
       "id": "m2-db-02",
       "category": "backend",
-      "description": "Findings stored per design.",
+      "description": "Review runs and findings with history (D21).",
       "steps": [
-        "Findings and their statuses persist per design (in the design JSON or a table keyed by design id; the choice is recorded in docs/decisions.md)",
-        "Access follows the design's RLS: another user can neither read nor change them",
-        "Reloading the page shows the same findings and statuses"
+        "Migration creates `review_runs`, `findings` and the view `design_open_findings` as §3.2–3.5",
+        "`svc_complete_review_run` replaces findings in the run's scope atomically and keeps the replaced ones; it does nothing for a canceled run (pgTAP)",
+        "Clients can change only `findings.status`/`status_changed_at` and cancel their own running run; pgTAP proves inserts and other updates are refused"
       ],
       "passes": false
     },
@@ -702,9 +702,9 @@
       "category": "backend",
       "description": "User settings and the OpenRouter key in Vault (D16).",
       "steps": [
-        "The key is stored encrypted in Supabase Vault; the settings row keeps only a reference, the last 4 characters and the chosen model",
-        "The client can save and delete the key but no client-callable query or function returns it; a test proves it",
-        "Only the review and key-check functions read the key"
+        "`user_settings` and the `svc_*` key functions as §3.4 and §4.1; the key lives in Vault",
+        "`authenticated` can neither select `key_secret_id` nor execute any `svc_*` function (pgTAP)",
+        "Only the edge functions read the key"
       ],
       "passes": false
     },
@@ -746,8 +746,8 @@
       "category": "designs",
       "description": "Edits from two places: last write wins with a check (AT-29).",
       "steps": [
-        "A save whose updated_at is older than the stored one is refused instead of overwriting",
-        "The tab shows a banner that the design changed elsewhere, with a reload action",
+        "Saves use `update … where version = :seen` (D23); zero updated rows is a conflict",
+        "The tab shows a banner that the design changed elsewhere, with a reload action; autosave of that design stops until reload",
         "After reload the tab shows the stored version"
       ],
       "passes": false
@@ -876,9 +876,9 @@
       "category": "review",
       "description": "Finding model and rules (pure, src/model).",
       "steps": [
-        "Types: severity Critical/Major/Minor, rubric dimension, anchor (key property, rationale, trade-off row, or whole design), title, evidence, why, fix, status open/resolved/dismissed, stale flag",
-        "Rules with unit tests: review indicator per section (not reviewed / red / green), worst severity, counts, replace findings in a run's scope only",
-        "Editing an anchored field marks its findings stale; deleting the field moves them to the whole design, stale"
+        "Types and pure rules in `supabase/functions/_shared/review/` and `src/model` as §3.3, §5.5, §5.6, with unit tests",
+        "Review indicator per section (not reviewed / red / green), worst severity, counts",
+        "Stale is derived (D25): field text differs from `anchor_value` → 'Field changed since review'; field not found → whole design, 'Field removed'"
       ],
       "passes": false
     },
@@ -887,9 +887,9 @@
       "category": "review",
       "description": "Review request built from the design (D19).",
       "steps": [
-        "vendor/ml-system-design-review (SKILL.md + references) is the model context, mode 'doc-only, stage: design doc'",
-        "The design goes in as text plus one PNG per non-empty diagram; a test on the example sees exactly 3 PNGs",
-        "The response schema matches the finding model; gradecard and verdict are not requested"
+        "`pnpm gen:skill` builds `skill.generated.ts` from vendor; a unit test fails if it is out of date",
+        "Serializer output for the example matches a committed snapshot (§6.7); anchor resolution follows the §6.8 table",
+        "Request built for the example has the instruction, the skill with cache_control, the design text and exactly 3 PNG images after it (§6.4 step 6)"
       ],
       "passes": false
     },
@@ -898,10 +898,10 @@
       "category": "review",
       "description": "Review edge function.",
       "steps": [
-        "Requires a signed-in user; reads the user's key from Vault and calls OpenRouter with the chosen model",
-        "Validates the answer against the schema and returns findings; maps 401, 402, 429, a model without image input and an off-schema answer to distinct errors",
-        "Per-user rate limit; request headers, bodies and the key are never logged (a test inspects the log output)",
-        "Tests run it with `supabase functions serve` against the OpenRouter mock"
+        "`review` follows §6.4 step by step: auth, ownership, key, limits (in progress, 20 per hour), run row, OpenRouter call with a 120 s timeout",
+        "Every row of the §6.4 error table returns its code and status; after a failure the run is `failed` with that code",
+        "A canceled run's results are discarded (`svc_complete_review_run` returns `canceled`)",
+        "Logs contain no headers, bodies or keys (a test inspects the log output)"
       ],
       "passes": false
     },
@@ -910,8 +910,8 @@
       "category": "review",
       "description": "Key check and model list.",
       "steps": [
-        "Saving a key checks it with a cheap OpenRouter request; a rejected key is not stored",
-        "The model list contains only models with image input and structured output, with the recommended one selected by default; no prices"
+        "`openrouter-key` and `openrouter-models` follow §6.2 and §6.3; a rejected key is not stored",
+        "The model list has only image-capable models with structured outputs, recommended first and default; no prices"
       ],
       "passes": false
     },
