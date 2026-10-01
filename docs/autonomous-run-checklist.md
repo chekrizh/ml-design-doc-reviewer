@@ -67,7 +67,7 @@
   1. Прочитать итог в `progress.md` и всё в `open-questions.md`.
   2. `pnpm check` и `pnpm e2e` в worktree: убедиться самому, что всё зелёное.
   3. Пройти сценарий руками: пустой дизайн → свой system design на канвасе → документ → экспорт PDF и MD. Затем Load example.
-  4. Сравнить экраны с `docs/mockups/`.
+  4. Сравнить экраны с `docs/mockups/`. Команды из раздела «Проверка» в `docs/design-system.md` дают пустой вывод.
   5. Проверить, что `docs/acceptance-tests.md` не изменён: `git diff docs/mvp-planning -- docs/acceptance-tests.md` пуст.
   6. Ревью ветки: `/code-review` на корректность и `ponytail-review` на лишний код.
   7. Решить: мёрж в `main`, доработка или повторный прогон.
