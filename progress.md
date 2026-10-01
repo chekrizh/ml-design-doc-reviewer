@@ -342,3 +342,8 @@ Format:
 - [x] On sign-in (and on load with a session, which retries a failed move) the local design is imported as a new cloud design with `client_id = meta.id` (`on conflict do nothing`, so a repeat never duplicates); existing cloud designs are untouched (`e2e/m2/auth-import.spec.ts`)
 - [x] IndexedDB is cleared after a successful import; a failed import keeps the local design
 - [x] An empty local design (no title, no filled section) is not imported (`designHasContent`, `src/model/summary.test.ts`)
+
+## m2-designs-01
+- [x] Edits on `/d/:id` autosave to Supabase (800 ms debounce, `update … where version = :seen`); the header save status works as in M1: Saving / Saved / Not saved (`e2e/m2/cloud.spec.ts`)
+- [x] Reload restores title, values, rationale, matrices, diagrams and layout; opening a design does not write it
+- [x] Guests keep the M1 IndexedDB autosave on `/local` (M1 persist tests); local and cloud autosave share `autosave()` in `src/store/persist.ts`

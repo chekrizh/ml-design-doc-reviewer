@@ -739,7 +739,7 @@
         "Reload restores title, values, rationale, matrices, diagrams and layout",
         "Guests keep the M1 IndexedDB autosave"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-designs-02",

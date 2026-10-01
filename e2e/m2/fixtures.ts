@@ -77,3 +77,24 @@ export const signInAsTestUser = async (page: import('@playwright/test').Page) =>
   await page.getByRole('button', { name: 'Sign in as test user' }).click()
   await page.getByRole('img', { name: 'Google profile photo' }).waitFor()
 }
+
+/** Inserts a cloud design for a test user through REST, as the app would; returns its id. */
+export async function createCloudDesign(title: string, opts: { origin?: 'blank' | 'task' | 'example'; email?: 'test-a@example.test' | 'test-b@example.test' } = {}) {
+  const { emptyDesign } = await import('../../src/model/design')
+  const db = await signedInClient(opts.email)
+  const { data, error } = await db
+    .from('designs')
+    .insert({ origin: opts.origin ?? 'blank', title, data: { ...emptyDesign(), title }, summary: { filledSections: [], tradeoffs: 0, mlTask: null } })
+    .select('id')
+    .single()
+  if (error) throw error
+  return data.id as string
+}
+
+/** Signs in on the home screen, then opens /d/:id. */
+export async function openCloud(page: import('@playwright/test').Page, id: string) {
+  await page.goto('/')
+  await signInAsTestUser(page)
+  await page.goto(`/d/${id}`)
+  await page.getByRole('button', { name: 'Canvas', exact: true }).waitFor()
+}
