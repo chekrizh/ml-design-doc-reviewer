@@ -5,7 +5,7 @@ You are building M2 of the ML System Design Trainer autonomously. Nobody will an
 Launch (by the human, in a worktree on `m2/autonomous`):
 
 ```
-/ralph-loop "Read docs/run-prompt.md and follow it exactly." --completion-promise "M2 STOP" --max-iterations 80
+/ralph-loop:ralph-loop "Read docs/run-prompt.md and follow it exactly." --completion-promise "M2 STOP" --max-iterations 80
 ```
 
 ## Every iteration
