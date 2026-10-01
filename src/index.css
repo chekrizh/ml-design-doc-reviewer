@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+/* Rich text (rationale) typography, shared by the editor and the document. */
+.prose-rt p { margin: 0.4em 0; }
+.prose-rt ul { list-style: disc; padding-left: 1.5em; }
+.prose-rt ol { list-style: decimal; padding-left: 1.5em; }
+.prose-rt code { font-family: ui-monospace, monospace; background: var(--color-slate-100); border-radius: 4px; padding: 0 3px; }
+.prose-rt a { color: var(--color-indigo-700); text-decoration: underline; }
+.prose-rt h1, .prose-rt h2, .prose-rt h3 { font-weight: 600; margin: 0.6em 0 0.3em; }
+
+@page { margin: 16mm; }
+
+/* Lift the hovered/focused card so its trade-offs tooltip paints over the neighbours. */
+.react-grid-item:hover, .react-grid-item:focus-within { z-index: 10; }

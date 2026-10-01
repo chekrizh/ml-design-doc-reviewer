@@ -52,6 +52,5 @@ For each feature:
 
 ## Notes
 
-- `data/raw_ByteByteGo_examples/` is not used by the project. Ignore it.
 - `README.md` and `CONTRIBUTING.md` still describe the earlier "ML Design Doc Reviewer" idea and are out of date.
 - Pre-autonomous-run checklist: `docs/autonomous-run-checklist.md`.

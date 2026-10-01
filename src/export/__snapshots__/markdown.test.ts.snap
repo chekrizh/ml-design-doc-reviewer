@@ -1,0 +1,134 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`designToMarkdown > renders the example fixture 1`] = `
+"# Churn Prediction (Telecom)
+
+_ML System Architecture Spec_
+
+## 1. Problem Space
+
+| Property | Value |
+| --- | --- |
+| Domain | Telecom (Prepaid) |
+| Business Goal | Reduce churn by 5% |
+| ML Task | Binary classification |
+| Constraints | Fixed discount budget |
+| Horizon | 30 days |
+
+Prepaid subscribers can leave at any time without notice. Retention offers cost money, so the model must rank who to target within a fixed budget.
+
+## 2. Evaluation (Offline)
+
+| Property | Value |
+| --- | --- |
+| Offline Metric | Precision@Top-10% |
+| Loss | LogLoss |
+| Target Value | > 0.35 |
+
+The retention team can only call the top decile, so precision in that slice matters more than global AUC.
+
+**Trade-off Matrix**
+
+| Option | Matches business action | Stable on imbalance |
+| --- | --- | --- |
+| ✅ Precision@Top-10% (chosen) | Yes | Yes |
+| ROC AUC | No, global ranking | Yes |
+| Accuracy | No | No, 95% trivial |
+
+## 3. Baseline
+
+| Property | Value |
+| --- | --- |
+| Approach | Rule-based |
+| Baseline Metric | 12.4% Prec@Top-10% |
+
+Rules on tenure and recent top-ups are what the retention team uses today, so they are the bar to beat.
+
+**Trade-off Matrix**
+
+| Option | Cost | Time to ship |
+| --- | --- | --- |
+| ✅ Rules (chosen) | Low | 1 week |
+| Logistic Regression | Low | 3 weeks |
+
+## 4. Validation
+
+| Property | Value |
+| --- | --- |
+| Strategy | OOT Split |
+
+Train on 12 months, validate on the following month to mimic production drift.
+
+![Validation diagram](images/validation.svg)
+
+## 5. Data & Features
+
+| Property | Value |
+| --- | --- |
+| Sources | CRM, Clicks |
+| Key Features | Usage, Demographics, Network |
+| Volume | 50M/mo |
+
+Usage aggregates over 7/30/90 days carry most of the signal.
+
+- Usage features
+- Demographics
+- Network quality
+
+## 6. Evaluation (Online)
+
+| Property | Value |
+| --- | --- |
+| Evaluation Type | A/B test, 10% |
+| Key Metric | -2% churn |
+
+A 10% holdout gives enough power to detect a 2% churn change in four weeks.
+
+## 7. Integration
+
+| Property | Value |
+| --- | --- |
+| Inference Pattern | Batch Inference |
+| Output | Redis Cache |
+| Latency Budget | Nightly, < 2h |
+
+Offers are sent once a day, so nightly batch scoring is enough.
+
+**Trade-off Matrix**
+
+| Option | Cost | Freshness |
+| --- | --- | --- |
+| ✅ Batch (chosen) | Low | Daily |
+| Streaming | High | Minutes |
+
+## 8. Monitoring
+
+| Property | Value |
+| --- | --- |
+| Data Drift | PSI < 0.2 |
+| Model Quality | Weekly Prec@Top-10% |
+| Alerting | Slack on breach |
+
+Labels arrive with a 30-day delay, so input drift is the early signal.
+
+## 9. Target Solution & Architecture
+
+| Property | Value |
+| --- | --- |
+| Model Type | Gradient Boosted Machine |
+| Algorithm | XGBoost Classifier |
+| Environment | Python / Kubernetes |
+
+Gradient boosting handles tabular, mixed-type features well and is cheap to serve in batch.
+
+**Trade-off Matrix**
+
+| Option | Accuracy | Explainability | Training cost |
+| --- | --- | --- | --- |
+| ✅ XGBoost (chosen) | High | SHAP | Low |
+| Neural net | High | Weak | High |
+| Logistic Regression | Medium | Native | Low |
+
+![Target Solution & Architecture diagram](images/target-solution.svg)
+"
+`;

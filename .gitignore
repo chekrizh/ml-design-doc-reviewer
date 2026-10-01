@@ -15,4 +15,13 @@ __pycache__/
 
 # Claude Code personal settings
 .claude/settings.local.json
+
+# Node / build
+node_modules/
+dist/
+*.tsbuildinfo
+test-results/
+playwright-report/
+.claude/ralph-loop.local.md
 .playwright-mcp/
+e2e/screenshots/*.png

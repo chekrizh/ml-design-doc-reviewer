@@ -11,3 +11,292 @@ Format:
 ```
 
 <!-- Entries start below. -->
+
+## setup-01
+- [x] `pnpm install` succeeds on a clean checkout with Node 22 (`pnpm install --frozen-lockfile`; `engines.node >=22`)
+- [x] `pnpm dev` serves the app and the page renders without console errors (`e2e/build.spec.ts`)
+- [x] `pnpm build` produces a static `dist/` (`e2e/build.spec.ts`)
+
+## setup-02
+- [x] `pnpm lint`, `pnpm typecheck` and `pnpm test` each run with one command and exit 0
+- [x] `pnpm test` runs at least one Vitest test (`src/smoke.test.ts`)
+- [x] `pnpm check` runs lint, typecheck, unit tests and build in sequence
+
+## setup-03
+- [x] `pnpm e2e` builds or starts the app and runs Playwright in headless Chromium (`playwright.config.ts` webServer)
+- [x] A smoke test opens the app and finds the Canvas/Document toggle (`e2e/smoke.spec.ts`)
+- [x] Each e2e test starts from an empty IndexedDB (fresh context per test; `e2e/smoke.spec.ts`)
+
+## setup-04
+- [x] `pnpm build && pnpm preview` serves a working app (all e2e run against preview)
+- [x] The app needs no server-side code or environment variables (`e2e/build.spec.ts`)
+
+## model-01
+- [x] Types exist for Design (title, sections, layout, updatedAt) and Section (keyProperties, rationale, tradeoffs, diagram) (`src/model/design.ts`)
+- [x] The empty design has exactly 9 sections in canonical order
+- [x] Each section has the template keys from the spec table with empty values; Validation has none
+- [x] Unit tests cover the factory (`src/model/design.test.ts`)
+
+## model-02
+- [x] A pure function returns true only when there are >=2 options, >=1 criterion, every cell is non-empty and exactly one option is chosen (`tradeoffsComplete` in `src/model/rules.ts`)
+- [x] Unit tests cover each failing condition separately and the passing case (`src/model/rules.test.ts`)
+
+## model-03
+- [x] A pure function returns true when the Excalidraw scene has at least one non-deleted element (`diagramNonEmpty`, added with model-02)
+- [x] Unit tests cover an empty scene, a scene with only deleted elements, and a scene with elements
+
+## model-04
+- [x] A pure function returns true when all key property values are empty, rationale is empty, the trade-off matrix has no options and the diagram is empty (`sectionEmpty`, added with model-02)
+- [x] Unit tests cover each part
+
+## model-05
+- [x] Actions exist for title, key properties, rationale, trade-offs, diagram and layout changes (`src/store/store.ts`)
+- [x] Unit tests cover each action (`src/store/store.test.ts`)
+- [x] Canvas and Document components read and write only through the store (`src/store/architecture.test.ts`; UI in `src/canvas`, `src/document`, `src/editor` uses `useDesign` only)
+
+## persist-01
+- [x] Edit a key property value, reload the page: the value is still there (`e2e/persist.spec.ts`)
+- [x] Draw on a whiteboard, reload: the drawing is still there
+- [x] First visit with empty storage shows the empty design
+
+## persist-02
+- [x] A 'Load example' control exists (header)
+- [x] Clicking it asks for confirmation because it overwrites the current design (`e2e/persist.spec.ts`)
+- [x] Cancel keeps the current design unchanged
+- [x] Confirm loads the Churn Prediction (Telecom) example, which fills every section, has complete trade-offs in at least 3 sections and diagrams in at least 2 (`src/fixtures/example.test.ts`, e2e)
+- [x] The example lives in one fixture file reused by e2e tests (`src/fixtures/example.ts`)
+
+## canvas-01
+- [x] Header shows the design title, the Canvas/Document toggle and export controls (`e2e/canvas.spec.ts`)
+- [x] No avatars, Share button or contributor count
+
+## canvas-02
+- [x] Clicking the title turns it into an input; Enter saves, Escape cancels (`e2e/canvas.spec.ts`)
+- [x] An empty title is shown as 'Untitled design'
+- [x] The title persists after reload
+
+## canvas-03
+- [x] All 9 cards render with icon and uppercase section name (`e2e/canvas.spec.ts`)
+- [x] Initial layout matches docs/mockups/canvas.png: three rows of cards, Target Solution & Architecture spanning full width at the bottom
+- [x] Evaluation (Offline) is used instead of Evaluation Strategy
+
+## canvas-04
+- [x] A card shows at most the first 4 key properties as key/value pairs (`e2e/canvas.spec.ts`)
+- [x] With more than 4, a '+N' counter shows the number of hidden ones
+- [x] Empty values show a muted placeholder
+
+## canvas-05
+- [x] Clicking a value on a card turns it into an input (`e2e/canvas.spec.ts`)
+- [x] Enter or blur saves, Escape cancels
+- [x] The new value appears in the Component Editor and the Document
+
+## canvas-06
+- [x] A card whose diagram is non-empty shows an SVG thumbnail of it (`e2e/canvas.spec.ts`)
+- [x] A card with an empty diagram shows no thumbnail area
+- [x] Editing the diagram updates the thumbnail after the editor closes
+
+## canvas-07
+- [x] Each card footer shows a Details button and two indicators, Trade-offs and Diagram, which are not clickable (`e2e/canvas.spec.ts`)
+- [x] Each indicator has exactly two states: off and bright
+- [x] Trade-offs is bright only when the completeness rule (model-02) holds
+- [x] Diagram is bright only when the diagram is non-empty (model-03)
+
+## canvas-08
+- [x] Cards can be dragged to new positions (`e2e/canvas.spec.ts`)
+- [x] The layout persists after reload
+- [x] Dragging does not change section content
+
+## canvas-09
+- [x] Cards can be resized from a corner handle within sensible min sizes (`e2e/canvas.spec.ts`; min 3 cols x 5 rows)
+- [x] The new size persists after reload
+
+## canvas-10
+- [x] A 'Reset layout' control restores the initial mockup layout (`e2e/canvas.spec.ts`)
+- [x] Section content is unchanged after reset
+
+## editor-01
+- [x] Details on a card opens a modal titled with the section name (`e2e/editor.spec.ts`)
+- [x] The modal closes with the X button, Escape, and a click outside
+- [x] A 'Saved' indicator reflects autosave state ("Saving…" while writing, "Saved to Canvas" after)
+- [x] The modal has four parts in order: Decisions & Properties, Rationale & Notes, Trade-off Matrix, Whiteboard
+
+## editor-02
+- [x] '+ Add Property' adds an empty key/value row (`e2e/editor.spec.ts`)
+- [x] Keys and values are editable, including template keys
+- [x] A row can be deleted
+- [x] Changes appear on the card immediately
+
+## editor-03
+- [x] TipTap editor with bold, italic, inline code, bullet list, ordered list and link (`e2e/editor.spec.ts`)
+- [x] Content persists after reload
+
+## editor-04
+- [x] The toolbar has an image button that is disabled and shows a 'Coming soon' tooltip (`e2e/editor.spec.ts`)
+
+## editor-05
+- [x] 'Add Option (Row)' and 'Add Criteria (Col)' add a row and a column (`e2e/editor.spec.ts`)
+- [x] Option names, criterion names and cells are editable
+- [x] Rows and columns can be deleted
+
+## editor-06
+- [x] Exactly one option can be marked as chosen; marking another moves the mark (`e2e/editor.spec.ts`)
+- [x] The chosen option is visually highlighted
+- [x] The card's Trade-offs indicator updates live as the matrix changes
+- [x] Choosing an option does not change key properties
+
+## editor-07
+- [x] The whiteboard is the @excalidraw/excalidraw React component, not an iframe (`e2e/editor.spec.ts`)
+- [x] Drawing persists after reload
+- [x] The card's Diagram indicator and thumbnail update
+
+## doc-01
+- [x] The toggle switches to Document mode and back without losing state (`e2e/document.spec.ts`)
+- [x] The document heading is the design title, with 'ML System Architecture Spec' as subtitle and a 'Last updated' line
+- [x] Layout matches docs/mockups/document.png: document column and an 'On this page' table of contents on the right
+
+## doc-02
+- [x] Sections appear as numbered headings in canonical order (`e2e/document.spec.ts`)
+- [x] Reordering cards on the canvas does not change the document order
+
+## doc-03
+- [x] Each filled section shows a key properties plate, the rationale, the trade-off matrix as a table with the chosen option marked, and the diagram as an image (`e2e/document.spec.ts`)
+- [x] Parts that are empty inside a filled section are omitted
+
+## doc-04
+- [x] An empty section (model-04) shows its heading and a 'Not filled yet' placeholder (`e2e/document.spec.ts`)
+
+## doc-05
+- [x] 'On this page' lists all 9 sections (`e2e/document.spec.ts`)
+- [x] Clicking an entry scrolls to the section
+- [x] The entry of the section in view is highlighted
+
+## doc-06
+- [x] Clicking a value on the key properties plate makes it editable (`e2e/document.spec.ts`)
+- [x] After saving, the canvas card shows the new value
+
+## doc-07
+- [x] The rationale is editable in place with the same TipTap editor (`e2e/document.spec.ts`)
+- [x] After editing, the Component Editor shows the same content
+
+## doc-08
+- [x] Cells, option names and the chosen mark are editable in place (`e2e/document.spec.ts`)
+- [x] Changes appear in the Component Editor and update the card indicator
+
+## sync-01
+- [x] An edit in Canvas mode is visible in Document mode right after switching, without reload (`e2e/document.spec.ts`)
+- [x] An edit in Document mode is visible in Canvas mode right after switching, without reload
+- [x] Covered for key properties, rationale, trade-offs and diagram
+
+## export-01
+- [x] A pure function turns a Design into Markdown: title, subtitle, numbered section headings, key properties table, rationale as Markdown, trade-off matrix as a table with the chosen option marked, diagram image links to images/<section-id>.svg (`src/export/markdown.ts`, `src/export/markdown.test.ts`)
+- [x] Empty sections are excluded
+- [x] A snapshot test runs on the example fixture
+
+## export-02
+- [x] With no non-empty diagrams, 'Export Markdown' downloads a single `<title-slug>.md` (`e2e/export.spec.ts`)
+- [x] The file content equals the generator output
+
+## export-03
+- [x] With at least one non-empty diagram, 'Export Markdown' downloads `<title-slug>.zip` (`e2e/export.spec.ts`)
+- [x] The ZIP contains `<title-slug>.md` and `images/*.svg`, one per non-empty diagram
+- [x] Every image link in the Markdown resolves to a file in the ZIP
+
+## export-04
+- [x] 'Export PDF' opens the browser print dialog for the document (`e2e/export.spec.ts`, `window.print` stubbed)
+- [x] Print styles show only the document: no header, toggle or table of contents
+- [x] `page.pdf()` in Playwright produces a PDF that contains every filled section heading
+
+## export-05
+- [x] If any section is empty, both exports first show a warning with the number of empty sections (`e2e/export.spec.ts`)
+- [x] The user can continue or cancel
+- [x] With no empty sections there is no warning
+
+## ui-01
+- [x] Below 1280px viewport width the app shows an 'Open on desktop' screen instead of the editor (`e2e/ui.spec.ts`)
+- [x] At 1280px and above the app works normally
+
+## ui-02
+- [x] An e2e test saves screenshots of the canvas, the Component Editor and the document with the example loaded to `e2e/screenshots/` (`e2e/ui.spec.ts`)
+- [x] Each screenshot is compared by eye with the matching file in docs/mockups/ and differences are noted in open-questions.md
+
+## acceptance-01
+- [x] Each scenario AT-01..AT-14 has its own Playwright test in e2e/acceptance/ whose name starts with the scenario ID (`at-01-08.spec.ts`, `at-09-14.spec.ts`)
+- [x] Each test checks every 'Ожидаем' item of its scenario literally
+- [x] No acceptance test is skipped or marked fixme
+- [x] All acceptance tests pass (also 5x repeated run of the whole suite: 290/290)
+
+## final-01
+- [x] `pnpm check` and `pnpm e2e` (including e2e/acceptance/) pass on a clean checkout (fresh `node_modules`, `pnpm install --frozen-lockfile`: 36 unit tests, 58 e2e tests green)
+- [x] No TODOs left for features marked as passing (no TODO/FIXME/skip/fixme/only in `src` or `e2e`)
+
+## Run result: DONE
+- Features passing: 46 / 46
+- Stuck features: none
+
+# M1.1
+
+## m11-01
+- [x] Cards have no Diagram indicator; a non-empty diagram is shown only by its thumbnail (`e2e/canvas.spec.ts` canvas-07, `e2e/acceptance/at-01-08.spec.ts` AT-05)
+- [x] diagramNonEmpty (model-03) is still used for thumbnails, the document and export (`src/model/rules.test.ts`, AT-05, AT-12)
+
+## m11-02
+- [x] A scales icon sits in the top-right corner of every card header; it is a status, not a button, and has no click action (`e2e/canvas.spec.ts` m11-02)
+- [x] Off: grey scales. On: green scales with a check mark
+- [x] Hover or keyboard focus shows the off/on tooltip
+- [x] The icon keeps an accessible name and a data-state of 'on'/'off'
+
+## m11-03
+- [x] Details is the only control in the card footer and is aligned to the right edge (`e2e/canvas.spec.ts` m11-03)
+
+## m11-04
+- [x] Card height is computed from its content (key properties, +N, thumbnail); the user changes only width and order (`e2e/canvas.spec.ts` m11-04, `src/canvas/flow.test.ts`)
+- [x] The resize handle changes width only (canvas-09, m11-04)
+- [x] When content grows or shrinks, the card height follows and cards below move (m11-04)
+- [x] Reset layout restores the mockup order and widths (canvas-10, AT-10)
+- [x] Approach recorded in docs/decisions.md (D9)
+
+## m11-05
+- [x] Side gaps reproduced (windows wider than 1600px: canvas capped at `max-w-[1600px]` under a full-width header) and fixed at the root; engine geometry is identical in Chromium and WebKit (`e2e/layout.spec.ts`, runs in both; note in open-questions.md)
+- [x] WebKit project in playwright.config.ts runs e2e/acceptance/ (plus layout.spec.ts); Chromium runs the whole suite
+- [x] WebKit browser installed (`pnpm exec playwright install webkit`)
+
+## m11-06
+- [x] Left: logo, editable title, small save status next to the title (`e2e/canvas.spec.ts` canvas-01 / m11-06)
+- [x] Center: Canvas/Document toggle
+- [x] Right: AI Review, Share and '⋯' (More) buttons
+- [x] Share popover with Export PDF and Export Markdown; both keep the empty-sections warning (m11-06, export.spec.ts, AT-01/12/13)
+- [x] '⋯' menu with Load example (confirmation) and Reset layout (canvas mode only)
+- [x] Popovers close on outside click and Escape
+
+## m11-07
+- [x] AI Review opens a popover with one item, 'Full review' (`e2e/canvas.spec.ts` m11-07)
+- [x] 'Full review' is disabled and shows a 'Coming soon' tooltip; wiring to a skill is M2
+
+## m11-08
+- [x] Every section in Document mode has an editable rationale area, including empty sections (`e2e/document.spec.ts` doc-04 / m11-08)
+- [x] An empty section shows 'Not filled yet — start typing…' inside that area (filled sections with no text show 'Add rationale & notes…')
+- [x] Typing there fills the section's Rationale & Notes, visible in the Component Editor (m11-08)
+- [x] Empty placeholders are not printed and not exported (m11-08, doc-03)
+
+## m11-09
+- [x] Clicking the document heading makes it editable inline; saving changes the design title in the header and the export file name, and persists (`e2e/document.spec.ts` m11-09)
+
+## m11-10
+- [x] Target Solution & Architecture: target (bullseye) icon (`e2e/canvas.spec.ts` m11-10)
+- [x] Baseline: anchor icon
+- [x] Evaluation (Online): flask icon
+- [x] Problem Space: flag icon
+- [x] Scales are used only by the trade-offs status icon, never as a section icon
+
+## acceptance-02
+- [x] Each new scenario AT-15..AT-20 has its own Playwright test in e2e/acceptance/ whose name starts with the scenario ID (`at-15-20.spec.ts`)
+- [x] Updated scenarios' tests match the current text: AT-01 (export through Share), AT-04 (grey vs. green scales with a check mark), AT-05 (thumbnail only, no Diagram indicator), AT-09 (thumbnail; the resized size is the width), AT-11 (thumbnails), AT-14 (no Share / AI Review in the PDF; WebKit note in open-questions.md)
+- [x] All acceptance tests pass in Chromium and WebKit (also 3x repeated: 120/120)
+
+## final-01 (M1.1)
+- [x] `pnpm check` and `pnpm e2e` (Chromium full suite + WebKit acceptance) pass on a clean checkout (`pnpm install --frozen-lockfile`: 42 unit tests, 106 e2e tests green)
+- [x] No TODOs left for features marked as passing (no TODO/FIXME/skip/fixme/only in `src` or `e2e`)
+
+## Run result: DONE
+- Features passing: 57 / 57
+- Stuck features: none

@@ -1,12 +1,13 @@
 {
-  "milestone": "M1: Canvas + Document",
+  "milestone": "M1 (done) + M1.1: owner's review changes",
   "spec": "docs/mvp-spec.md",
   "rules": [
     "Work on features in order unless a later one is blocked only by an earlier one you already finished.",
     "Only change the `passes` field. Never delete, reword, reorder, or merge features.",
     "Set `passes` to true only after every step is verified by an automated test (Vitest or Playwright) that is committed and green.",
     "If the spec and a feature disagree, the spec wins; record the conflict in open-questions.md instead of editing the feature.",
-    "docs/acceptance-tests.md is human-owned: never edit it. Implement each scenario as a Playwright test in e2e/acceptance/ that checks every expected outcome; never weaken or skip them."
+    "docs/acceptance-tests.md is human-owned: never edit it. Implement each scenario as a Playwright test in e2e/acceptance/ that checks every expected outcome; never weaken or skip them.",
+    "M1.1 features supersede earlier features where they conflict (each names what it supersedes). Your own earlier tests that assert superseded behaviour must be updated to the new behaviour; acceptance tests are only changed by the human."
   ],
   "features": [
     {
@@ -18,7 +19,7 @@
         "`pnpm dev` serves the app and the page renders without console errors",
         "`pnpm build` produces a static `dist/`"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "setup-02",
@@ -29,7 +30,7 @@
         "`pnpm test` runs at least one Vitest test",
         "`pnpm check` runs lint, typecheck, unit tests and build in sequence"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "setup-03",
@@ -40,7 +41,7 @@
         "A smoke test opens the app and finds the Canvas/Document toggle",
         "Each e2e test starts from an empty IndexedDB"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "setup-04",
@@ -50,7 +51,7 @@
         "`pnpm build && pnpm preview` serves a working app",
         "The app needs no server-side code or environment variables"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "model-01",
@@ -62,7 +63,7 @@
         "Each section has the template keys from the spec table with empty values; Validation has none",
         "Unit tests cover the factory"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "model-02",
@@ -72,7 +73,7 @@
         "A pure function returns true only when there are >=2 options, >=1 criterion, every cell is non-empty and exactly one option is chosen",
         "Unit tests cover each failing condition separately and the passing case"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "model-03",
@@ -82,7 +83,7 @@
         "A pure function returns true when the Excalidraw scene has at least one non-deleted element",
         "Unit tests cover an empty scene, a scene with only deleted elements, and a scene with elements"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "model-04",
@@ -92,7 +93,7 @@
         "A pure function returns true when all key property values are empty, rationale is empty, the trade-off matrix has no options and the diagram is empty",
         "Unit tests cover each part"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "model-05",
@@ -103,7 +104,7 @@
         "Unit tests cover each action",
         "Canvas and Document components read and write only through the store"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "persist-01",
@@ -114,7 +115,7 @@
         "Draw on a whiteboard, reload: the drawing is still there",
         "First visit with empty storage shows the empty design"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "persist-02",
@@ -127,7 +128,7 @@
         "Confirm loads the Churn Prediction (Telecom) example, which fills every section, has complete trade-offs in at least 3 sections and diagrams in at least 2",
         "The example lives in one fixture file reused by e2e tests"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "canvas-01",
@@ -137,7 +138,7 @@
         "Header shows the design title, the Canvas/Document toggle and export controls",
         "No avatars, Share button or contributor count"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "canvas-02",
@@ -148,7 +149,7 @@
         "An empty title is shown as 'Untitled design'",
         "The title persists after reload"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "canvas-03",
@@ -159,7 +160,7 @@
         "Initial layout matches docs/mockups/canvas.png: three rows of cards, Target Solution & Architecture spanning full width at the bottom",
         "Evaluation (Offline) is used instead of Evaluation Strategy"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "canvas-04",
@@ -170,7 +171,7 @@
         "With more than 4, a '+N' counter shows the number of hidden ones",
         "Empty values show a muted placeholder"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "canvas-05",
@@ -181,7 +182,7 @@
         "Enter or blur saves, Escape cancels",
         "The new value appears in the Component Editor and the Document"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "canvas-06",
@@ -192,7 +193,7 @@
         "A card with an empty diagram shows no thumbnail area",
         "Editing the diagram updates the thumbnail after the editor closes"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "canvas-07",
@@ -204,7 +205,7 @@
         "Trade-offs is bright only when the completeness rule (model-02) holds",
         "Diagram is bright only when the diagram is non-empty (model-03)"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "canvas-08",
@@ -215,7 +216,7 @@
         "The layout persists after reload",
         "Dragging does not change section content"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "canvas-09",
@@ -225,7 +226,7 @@
         "Cards can be resized from a corner handle within sensible min sizes",
         "The new size persists after reload"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "canvas-10",
@@ -235,7 +236,7 @@
         "A 'Reset layout' control restores the initial mockup layout",
         "Section content is unchanged after reset"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "editor-01",
@@ -247,7 +248,7 @@
         "A 'Saved' indicator reflects autosave state",
         "The modal has four parts in order: Decisions & Properties, Rationale & Notes, Trade-off Matrix, Whiteboard"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "editor-02",
@@ -259,7 +260,7 @@
         "A row can be deleted",
         "Changes appear on the card immediately"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "editor-03",
@@ -269,7 +270,7 @@
         "TipTap editor with bold, italic, inline code, bullet list, ordered list and link",
         "Content persists after reload"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "editor-04",
@@ -278,7 +279,7 @@
       "steps": [
         "The toolbar has an image button that is disabled and shows a 'Coming soon' tooltip"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "editor-05",
@@ -289,7 +290,7 @@
         "Option names, criterion names and cells are editable",
         "Rows and columns can be deleted"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "editor-06",
@@ -301,7 +302,7 @@
         "The card's Trade-offs indicator updates live as the matrix changes",
         "Choosing an option does not change key properties"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "editor-07",
@@ -312,7 +313,7 @@
         "Drawing persists after reload",
         "The card's Diagram indicator and thumbnail update"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "doc-01",
@@ -323,7 +324,7 @@
         "The document heading is the design title, with 'ML System Architecture Spec' as subtitle and a 'Last updated' line",
         "Layout matches docs/mockups/document.png: document column and an 'On this page' table of contents on the right"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "doc-02",
@@ -333,7 +334,7 @@
         "Sections appear as numbered headings in canonical order",
         "Reordering cards on the canvas does not change the document order"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "doc-03",
@@ -343,7 +344,7 @@
         "Each filled section shows a key properties plate, the rationale, the trade-off matrix as a table with the chosen option marked, and the diagram as an image",
         "Parts that are empty inside a filled section are omitted"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "doc-04",
@@ -352,7 +353,7 @@
       "steps": [
         "An empty section (model-04) shows its heading and a 'Not filled yet' placeholder"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "doc-05",
@@ -363,7 +364,7 @@
         "Clicking an entry scrolls to the section",
         "The entry of the section in view is highlighted"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "doc-06",
@@ -373,7 +374,7 @@
         "Clicking a value on the key properties plate makes it editable",
         "After saving, the canvas card shows the new value"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "doc-07",
@@ -383,7 +384,7 @@
         "The rationale is editable in place with the same TipTap editor",
         "After editing, the Component Editor shows the same content"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "doc-08",
@@ -393,7 +394,7 @@
         "Cells, option names and the chosen mark are editable in place",
         "Changes appear in the Component Editor and update the card indicator"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "sync-01",
@@ -404,7 +405,7 @@
         "An edit in Document mode is visible in Canvas mode right after switching, without reload",
         "Covered for key properties, rationale, trade-offs and diagram"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "export-01",
@@ -415,7 +416,7 @@
         "Empty sections are excluded",
         "A snapshot test runs on the example fixture"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "export-02",
@@ -425,7 +426,7 @@
         "With no non-empty diagrams, 'Export Markdown' downloads a single `<title-slug>.md`",
         "The file content equals the generator output"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "export-03",
@@ -436,7 +437,7 @@
         "The ZIP contains `<title-slug>.md` and `images/*.svg`, one per non-empty diagram",
         "Every image link in the Markdown resolves to a file in the ZIP"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "export-04",
@@ -447,7 +448,7 @@
         "Print styles show only the document: no header, toggle or table of contents",
         "`page.pdf()` in Playwright produces a PDF that contains every filled section heading"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "export-05",
@@ -458,7 +459,7 @@
         "The user can continue or cancel",
         "With no empty sections there is no warning"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "ui-01",
@@ -468,7 +469,7 @@
         "Below 1280px viewport width the app shows an 'Open on desktop' screen instead of the editor",
         "At 1280px and above the app works normally"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "ui-02",
@@ -478,7 +479,7 @@
         "An e2e test saves screenshots of the canvas, the Component Editor and the document with the example loaded to `e2e/screenshots/`",
         "Each screenshot is compared by eye with the matching file in docs/mockups/ and differences are noted in open-questions.md"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "acceptance-01",
@@ -490,17 +491,141 @@
         "No acceptance test is skipped or marked fixme",
         "All acceptance tests pass"
       ],
-      "passes": false
+      "passes": true
+    },
+    {
+      "id": "m11-01",
+      "category": "canvas",
+      "description": "Remove the Diagram indicator (supersedes the Diagram part of canvas-07).",
+      "steps": [
+        "Cards have no Diagram indicator; a non-empty diagram is shown only by its thumbnail",
+        "diagramNonEmpty (model-03) is still used for thumbnails, the document and export"
+      ],
+      "passes": true
+    },
+    {
+      "id": "m11-02",
+      "category": "canvas",
+      "description": "Trade-offs status icon instead of the Trade-offs badge (supersedes the Trade-offs part of canvas-07).",
+      "steps": [
+        "A scales icon sits in the top-right corner of every card header; it is a status, not a button, and has no click action",
+        "Off: grey scales. On (model-02 rule holds): green scales with a check mark",
+        "Hover or keyboard focus shows a tooltip: off 'Trade-offs not filled yet. Weigh the alternatives and make a considered choice.', on 'Trade-offs filled: alternatives weighed, choice made.'",
+        "The icon keeps an accessible name and a data-state of 'on'/'off' for tests"
+      ],
+      "passes": true
+    },
+    {
+      "id": "m11-03",
+      "category": "canvas",
+      "description": "Details button on the right.",
+      "steps": [
+        "Details is the only control in the card footer and is aligned to the right edge"
+      ],
+      "passes": true
+    },
+    {
+      "id": "m11-04",
+      "category": "canvas",
+      "description": "Card height fits its content (auto layout).",
+      "steps": [
+        "Card height is computed from its content (key properties, +N, thumbnail); the user changes only width and order",
+        "The resize handle changes width only",
+        "When content grows or shrinks, the card height follows and cards below move",
+        "Reset layout restores the mockup order and widths",
+        "Record the approach in docs/decisions.md"
+      ],
+      "passes": true
+    },
+    {
+      "id": "m11-05",
+      "category": "canvas",
+      "description": "Canvas layout in Safari matches Chromium.",
+      "steps": [
+        "Reproduce the side gaps seen in Safari with Playwright WebKit and fix the root cause",
+        "Add a WebKit project to playwright.config.ts that runs e2e/acceptance/; Chromium keeps running the whole suite",
+        "Install the WebKit browser for Playwright if missing (`pnpm exec playwright install webkit`)"
+      ],
+      "passes": true
+    },
+    {
+      "id": "m11-06",
+      "category": "header",
+      "description": "Header as in the mockup, exports under Share (supersedes canvas-01 header controls).",
+      "steps": [
+        "Left: logo, editable design title, small save status next to the title ('Saved' / 'Saving…' / 'Not saved')",
+        "Center: Canvas/Document toggle",
+        "Right: AI Review button, Share button, and a '⋯' menu button",
+        "Share opens a popover with Export PDF and Export Markdown; both keep the empty-sections warning",
+        "'⋯' opens a menu with Load example (with confirmation) and Reset layout (canvas mode only)",
+        "Popovers close on outside click and Escape"
+      ],
+      "passes": true
+    },
+    {
+      "id": "m11-07",
+      "category": "header",
+      "description": "AI Review popover placeholder.",
+      "steps": [
+        "AI Review opens a popover with one item, 'Full review'",
+        "'Full review' is disabled for now and shows a 'Coming soon' tooltip; wiring it to a skill is M2"
+      ],
+      "passes": true
+    },
+    {
+      "id": "m11-08",
+      "category": "document",
+      "description": "Free text in the document goes to Rationale & Notes (supersedes doc-04).",
+      "steps": [
+        "Every section in Document mode has an editable rationale area, including empty sections",
+        "An empty section shows the placeholder 'Not filled yet — start typing…' inside that area instead of a static 'Not filled yet'",
+        "Typing there fills the section's Rationale & Notes, visible in the Component Editor",
+        "Empty placeholders are not printed and not exported"
+      ],
+      "passes": true
+    },
+    {
+      "id": "m11-09",
+      "category": "document",
+      "description": "Editable document title.",
+      "steps": [
+        "Clicking the document heading makes it editable inline; saving changes the design title shown in the header and used for export file names"
+      ],
+      "passes": true
+    },
+    {
+      "id": "m11-10",
+      "category": "canvas",
+      "description": "Section icons.",
+      "steps": [
+        "Target Solution & Architecture: a target (bullseye) icon",
+        "Baseline: an anchor icon",
+        "Evaluation (Online): a flask icon (experiment)",
+        "Problem Space: a flag icon",
+        "Scales are used only by the trade-offs status icon (m11-02), never as a section icon"
+      ],
+      "passes": true
+    },
+    {
+      "id": "acceptance-02",
+      "category": "quality",
+      "description": "Acceptance scenarios AT-15..AT-20 and the updated AT-01, AT-04, AT-05, AT-09, AT-11, AT-14.",
+      "steps": [
+        "Each new scenario has its own Playwright test in e2e/acceptance/ whose name starts with the scenario ID",
+        "Updated scenarios' tests match the current text of docs/acceptance-tests.md",
+        "All acceptance tests pass in Chromium and WebKit"
+      ],
+      "passes": true
     },
     {
       "id": "final-01",
       "category": "quality",
       "description": "Green build.",
       "steps": [
-        "`pnpm check` and `pnpm e2e` (including e2e/acceptance/) pass on a clean checkout",
+        "`pnpm check` and `pnpm e2e` (Chromium full suite + WebKit acceptance) pass on a clean checkout",
         "No TODOs left for features marked as passing"
       ],
-      "passes": false
+      "passes": true
     }
   ],
   "acceptance": "docs/acceptance-tests.md"
