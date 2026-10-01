@@ -13,7 +13,7 @@ Launch (by the human, in a worktree on `m2/autonomous`):
 1. Read `CLAUDE.md`, `progress.md` (the `# M2` part), `git log -10`.
 2. **Environment check**, in this order:
    - `docker info` succeeds;
-   - `supabase status` shows the local stack; if not, `supabase start`;
+   - if `supabase/config.toml` exists (it appears with `m2-setup-01`): `supabase status` shows the local stack; if not, `supabase start`. Before `m2-setup-01` there is nothing to start; skip this step;
    - `pnpm check` is green; if not, fix it before anything else.
 
    If Docker or local Supabase does not come up after two attempts (stop, start again), this is an environment failure, not a stuck feature: stop with **BLOCKED: environment** (see Stop conditions). Never mark features stuck because of the environment.

@@ -67,7 +67,7 @@
 - [x] **Права агента** в `.claude/settings.json` (коммитится, действует и в worktree): разрешены локальные `supabase` (init, start, stop, status, db reset, db lint, migration new/list, functions new/serve, gen types, test db) и чтение `docker info/ps/logs`; запрещены `supabase login/link/projects/secrets/db push/functions deploy` и флаги `--linked`, `--project-ref`, `--db-url`. Проверено: запрет срабатывает.
 - [x] **Защита сценариев:** правило было `Edit(docs/acceptance-tests.md)` — путь от текущей директории, при `cd` в подпапку защита пропадала. Исправлено на `Edit(/docs/acceptance-tests.md)` (от корня проекта), проверено: правка блокируется.
 - [x] **Фичи и run prompt M2:** 39 фич M2 в `features.json`, контракт бэкенда в `docs/backend-spec.md`, инструкция прогона в `docs/run-prompt.md` (там же команда запуска).
-- [ ] **Запуск:** worktree на новой ветке `m2/autonomous` от `docs/mvp-planning`, в нём `supabase start`, затем команда из `docs/run-prompt.md`.
+- [ ] **Запуск:** worktree на новой ветке `m2/autonomous` от `docs/mvp-planning`, `pnpm install`, затем команда из `docs/run-prompt.md`. `supabase start` не нужен: конфигурацию Supabase создаёт первая фича, дальше стек поднимает агент.
 
 ### B. Перед деплоем и ручной приёмкой
 
