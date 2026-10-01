@@ -332,3 +332,8 @@ Format:
 - [x] `user_settings` and the `svc_*` key functions as §3.4 and §4.1; the key lives in Vault (`vault.create_secret` / `update_secret`), `user_settings` holds only the secret id and last 4 (`supabase/tests/settings.test.sql`)
 - [x] `authenticated` can neither select `key_secret_id` nor execute any `svc_*` function nor read Vault (pgTAP)
 - [x] Only the edge functions read the key: `svc_get_openrouter_key` is executable by `service_role` only (pgTAP)
+
+## m2-auth-01
+- [x] 'Sign in with Google' starts Supabase Google OAuth (PKCE, redirect back to the current URL); after sign-in the header shows the Google photo and the account menu (`e2e/m2/auth.spec.ts`)
+- [x] The test sign-in ('Sign in as test user', seed users) exists only with `VITE_TEST_SIGNIN=true`; the gate and the button live in one module (`src/backend/TestSignIn.tsx`) so a production build drops them; a test builds without the flag and checks the bundle has no button text, password or test emails
+- [x] Sign out returns to the guest home screen

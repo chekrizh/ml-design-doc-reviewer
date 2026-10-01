@@ -7,6 +7,7 @@ import { alertDialog, confirmDialog } from '../dialogs'
 import { diagramNonEmpty } from '../model/rules'
 import { useDesign } from '../store/store'
 import { navigate } from '../router'
+import { Account } from './Account'
 import { Menu, MenuItem } from './Menu'
 
 export type Mode = 'canvas' | 'document'
@@ -15,7 +16,7 @@ const SAVE_LABEL = { saved: 'Saved', saving: 'Saving…', error: 'Not saved' }
 
 const tab = (on: boolean) =>
   `rounded-lg px-4 py-1.5 text-sm font-medium ${on ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`
-const action = 'rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium hover:bg-slate-50'
+const action = 'shrink-0 whitespace-nowrap rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium hover:bg-slate-50'
 
 export function Header({ mode, setMode }: { mode: Mode; setMode: (m: Mode) => void }) {
   const title = useDesign((s) => s.design.title)
@@ -83,6 +84,7 @@ export function Header({ mode, setMode }: { mode: Mode; setMode: (m: Mode) => vo
         </button>
       </div>
       <div className="flex flex-1 items-center justify-end gap-2">
+        <Account />
         <Menu label="AI Review" button="AI Review" className={action}>
           {/* Wiring it to the review skill is M2. */}
           <span className="group relative block">
@@ -94,7 +96,7 @@ export function Header({ mode, setMode }: { mode: Mode; setMode: (m: Mode) => vo
             </span>
           </span>
         </Menu>
-        <Menu label="Share" button={<><ShareIcon /> Share</>} className="flex items-center gap-2 rounded-lg bg-slate-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-slate-700">
+        <Menu label="Share" button={<><ShareIcon /> Share</>} className="flex shrink-0 items-center gap-2 whitespace-nowrap rounded-lg bg-slate-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-slate-700">
           <MenuItem onClick={() => void exportPdf()}>Export PDF</MenuItem>
           <MenuItem onClick={exportMd}>Export Markdown</MenuItem>
         </Menu>

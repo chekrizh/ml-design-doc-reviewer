@@ -717,7 +717,7 @@
         "A test sign-in that skips Google exists only when the app runs against local Supabase; the production build contains no way to reach it (a test checks the built bundle)",
         "Sign out returns to the guest home screen"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-auth-02",

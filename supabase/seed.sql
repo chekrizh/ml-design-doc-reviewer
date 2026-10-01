@@ -1,6 +1,7 @@
 -- Local only: seed.sql never runs in production (docs/backend-spec.md §7, §9).
 
 -- Test users for the local-only password sign-in. Password: test-password.
+-- avatar_url stands in for the Google photo (a data URI: tests make no external requests).
 insert into auth.users (
   instance_id, id, aud, role, email, encrypted_password, email_confirmed_at,
   raw_app_meta_data, raw_user_meta_data, created_at, updated_at,
@@ -9,12 +10,12 @@ insert into auth.users (
 select
   '00000000-0000-0000-0000-000000000000', u.id, 'authenticated', 'authenticated', u.email,
   extensions.crypt('test-password', extensions.gen_salt('bf')), now(),
-  '{"provider":"email","providers":["email"]}', jsonb_build_object('full_name', u.name), now(), now(),
+  '{"provider":"email","providers":["email"]}', jsonb_build_object('full_name', u.name, 'avatar_url', u.avatar), now(), now(),
   '', '', '', ''
 from (values
-  ('00000000-0000-4000-a000-00000000000a'::uuid, 'test-a@example.test', 'Test A'),
-  ('00000000-0000-4000-a000-00000000000b'::uuid, 'test-b@example.test', 'Test B')
-) as u(id, email, name);
+  ('00000000-0000-4000-a000-00000000000a'::uuid, 'test-a@example.test', 'Test A', 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 fill=%22%234f46e5%22/%3E%3C/svg%3E'),
+  ('00000000-0000-4000-a000-00000000000b'::uuid, 'test-b@example.test', 'Test B', 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 fill=%22%23059669%22/%3E%3C/svg%3E')
+) as u(id, email, name, avatar);
 
 insert into auth.identities (id, user_id, provider_id, identity_data, provider, last_sign_in_at, created_at, updated_at)
 select gen_random_uuid(), id, id::text, jsonb_build_object('sub', id::text, 'email', email), 'email', now(), now(), now()
