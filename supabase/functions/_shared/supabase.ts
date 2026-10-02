@@ -28,7 +28,9 @@ async function call(who: Who, path: string, init: RequestInit & { prefer?: strin
   if (init.prefer) headers.Prefer = init.prefer
   const res = await fetch(`${URL_()}${path}`, { ...init, headers })
   if (!res.ok) throw new Error(`supabase ${res.status}`)
-  return res.status === 204 ? null : res.json()
+  // return=minimal answers 201/204 with an empty body.
+  const text = await res.text()
+  return text ? JSON.parse(text) : null
 }
 
 export const select = (who: Who, table: string, query: string) => call(who, `/rest/v1/${table}?${query}`)

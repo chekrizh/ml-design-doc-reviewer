@@ -1,4 +1,4 @@
-import { execFileSync } from 'node:child_process'
+import { execFileSync, spawnSync } from 'node:child_process'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { reviewRequest } from '../../src/review/request'
 import { SUPABASE_URL } from '../global-setup'
@@ -59,7 +59,7 @@ test('m2-review-03: a full review with R1 stores the run and 5 findings with res
 test('m2-review-03: a section run replaces only that section; replaced findings stay as history; the user model is used', async () => {
   const { db, designId } = await setup()
   await saveKey()
-  await db.from('user_settings').insert({ user_id: TEST_A, model: 'openai/gpt-4o-mini' })
+  expect((await db.from('user_settings').update({ model: 'openai/gpt-4o-mini' }).eq('user_id', TEST_A).select('model')).data).toEqual([{ model: 'openai/gpt-4o-mini' }])
   expect((await review(db, await body(designId))).status).toBe(200)
   await mockOpenRouter.scenario('R2')
   const second = await body(designId, 'evaluation-online')
@@ -140,10 +140,11 @@ test('m2-review-03: a run canceled while waiting for the model keeps the previou
   expect((await db.from('findings').select('id').is('replaced_by_run_id', null)).data).toHaveLength(5)
 })
 
-test('m2-review-03: CORS only for the app origins', async () => {
-  const preflight = (origin: string) => fetch(`${SUPABASE_URL}/functions/v1/review`, { method: 'OPTIONS', headers: { Origin: origin, 'Access-Control-Request-Method': 'POST' } })
-  expect((await preflight('http://localhost:4173')).headers.get('access-control-allow-origin')).toBe('http://localhost:4173')
-  expect((await preflight('https://evil.example')).headers.get('access-control-allow-origin')).toBeNull()
+test('m2-review-03: the function answers preflight and its responses are JSON errors', async () => {
+  // Origin filtering is unit-tested (cors.test.ts): the local gateway rewrites CORS headers to '*'.
+  const res = await fetch(`${SUPABASE_URL}/functions/v1/review`, { method: 'POST', headers: { apikey: process.env.SUPABASE_PUBLISHABLE_KEY!, 'Content-Type': 'application/json' }, body: '{}' })
+  expect(res.status).toBe(400)
+  expect(await res.json()).toEqual({ error: { code: 'bad_request', message: 'The request could not be read' } })
 })
 
 test('m2-review-03: function logs contain no keys, headers or bodies', async () => {
@@ -154,10 +155,13 @@ test('m2-review-03: function logs contain no keys, headers or bodies', async () 
   await mockOpenRouter.scenario('401')
   await review(db, await body(designId))
   const container = execFileSync('docker', ['ps', '--format', '{{.Names}}'], { encoding: 'utf8' }).split('\n').find((n) => n.startsWith('supabase_edge_runtime_'))!
-  const logs = await expect
-    .poll(() => execFileSync('docker', ['logs', '--since', since, container], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }))
-    .toContain('"code":"key_rejected"')
-    .then(() => execFileSync('docker', ['logs', '--since', since, container], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }))
+  // The runtime writes to stdout and stderr: read both.
+  const read = () => {
+    const r = spawnSync('docker', ['logs', '--since', since, container], { encoding: 'utf8' })
+    return r.stdout + r.stderr
+  }
+  await expect.poll(read).toContain('"code":"key_rejected"')
+  const logs = read()
   expect(logs).toContain('{"fn":"review","code":"ok"')
   for (const secret of [VALID_KEY, 'Bearer', 'Average check', 'Supermegaretail', PNG.slice(0, 20)]) expect(logs).not.toContain(secret)
 })

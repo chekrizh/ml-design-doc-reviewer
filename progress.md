@@ -415,6 +415,8 @@ Format:
 - [x] Serializer output for the example matches a committed snapshot (§6.7, `review/__snapshots__/example-design.txt`); anchor resolution follows the §6.8 table; a section run keeps only its section, at most 40 findings (`review/review.test.ts`)
 - [x] Request built for the example has the instruction, the skill with cache_control, the design text and exactly 3 PNG images after it (§6.4 step 6; `src/review/request.ts`, `review/prompt.ts`); model answers are validated against the strict schema (§6.5); provider errors map to §6.4 codes (`review/errors.ts`)
 
-## m2-review-03 (in progress, passes: false)
-- Function `supabase/functions/review/index.ts` and shared server helpers written; tests in `e2e/m2/review-fn.spec.ts` (3 of 8 failing at handoff).
-- Open: the run insert answers 400 inside the function (the service insert itself works from outside: check the `insert()` call and the body sent); the local Kong gateway answers CORS preflight with `*`, so the CORS test must check the POST response header instead.
+## m2-review-03
+- [x] `review` follows §6.4 step by step: auth, ownership (RLS), key, limits (one running run, stale runs time out, 20 per hour, payload size), run row with snapshot, OpenRouter call with a 120 s timeout (`supabase/functions/review/index.ts`, `e2e/m2/review-fn.spec.ts`)
+- [x] Every row of the §6.4 error table returns its code and status (mock scenarios 401, 402, 429, no_images, 408, 500, bad_output); after a failure the run is `failed` with that code
+- [x] A canceled run's results are discarded (`svc_complete_review_run` returns `canceled` → 409), previous findings stay
+- [x] Logs contain no headers, bodies or keys: unit test of `logLine` and an e2e test that reads the edge runtime's docker logs after a review; CORS origin filtering is unit-tested (`cors.test.ts`) because the local gateway rewrites CORS headers; Supabase is reached with fetch (D32)

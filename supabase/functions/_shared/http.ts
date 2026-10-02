@@ -1,19 +1,9 @@
 // CORS, JSON responses and errors for the edge functions (docs/backend-spec.md §6.1).
 import { ERRORS, type ErrorCode } from './review/errors.ts'
+import { corsHeaders } from './review/cors.ts'
 import { logLine } from './review/log.ts'
 
-const origins = () => (Deno.env.get('APP_ORIGINS') ?? '').split(',').map((o) => o.trim()).filter(Boolean)
-
-function cors(req: Request): Record<string, string> {
-  const origin = req.headers.get('Origin') ?? ''
-  if (!origins().includes(origin)) return { Vary: 'Origin' }
-  return {
-    'Access-Control-Allow-Origin': origin,
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-    Vary: 'Origin',
-  }
-}
+const cors = (req: Request) => corsHeaders(req.headers.get('Origin'), Deno.env.get('APP_ORIGINS'))
 
 export const json = (req: Request, status: number, body: unknown) =>
   new Response(JSON.stringify(body), { status, headers: { ...cors(req), 'Content-Type': 'application/json' } })

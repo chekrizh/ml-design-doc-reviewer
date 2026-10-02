@@ -903,7 +903,7 @@
         "A canceled run's results are discarded (`svc_complete_review_run` returns `canceled`)",
         "Logs contain no headers, bodies or keys (a test inspects the log output)"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-review-04",
