@@ -495,3 +495,8 @@ Format:
 - [x] `pnpm check` and `pnpm e2e` pass on a clean checkout (`git clone` + `pnpm install --frozen-lockfile`) with local Supabase running: 111 unit tests, 230 e2e tests (M1 + M2, Chromium; acceptance also WebKit); `pnpm test:db`: 71 pgTAP tests
 - [x] The palette checks in docs/design-system.md print nothing
 - [x] No TODO/FIXME or skip/fixme/only left in src, e2e, supabase or scripts
+
+## Run result: DONE
+- Features passing: 96 / 96 (M2: 39 / 39)
+- Stuck features: none
+- Open questions added: 2 (AT-31 key format check vs the rejection message; AT-15 trade-offs position next to the review indicator)
