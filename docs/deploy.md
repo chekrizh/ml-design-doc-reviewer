@@ -29,6 +29,7 @@
 ## 2. Vercel
 
 - [ ] Add New → Project → импорт репозитория. Framework Vite, build `pnpm build`, output `dist`. Production Branch оставить `main`: пока `main` не трогаем, в production ничего важного не выходит.
+- Собираются только ветки `staging` и `main`: `ignoreCommand` в `vercel.json`. Ветки других участников не деплоятся и не получают переменные staging.
 - [ ] Settings → Environment Variables, окружение **Preview** (можно ограничить веткой `staging`):
 
 | Переменная | Значение |
