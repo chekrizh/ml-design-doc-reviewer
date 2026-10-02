@@ -29,6 +29,8 @@ interface ReviewState {
   expanded: string | null
   /** The card highlighted from the panel. */
   highlight: SectionId | null
+  /** The field highlighted from a finding: '<section>:<field key>'. */
+  fieldFocus: string | null
 }
 
 export const useReview = create<ReviewState>(() => ({
@@ -44,6 +46,7 @@ export const useReview = create<ReviewState>(() => ({
   tab: 'open',
   expanded: null,
   highlight: null,
+  fieldFocus: null,
 }))
 
 export const openSettings = () => useReview.setState({ settingsOpen: true })

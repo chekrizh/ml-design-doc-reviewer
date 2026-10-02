@@ -26,7 +26,7 @@ export function findingWhere(f: F, withSection = false): string {
  * One finding: title, severity, field and dimension; expanded, the evidence, why it matters,
  * the fix behind 'Show fix', and Dismiss / Resolve (Reopen when closed). Stale ones are faded with their label.
  */
-export function FindingCard({ f, onExpand, withSection }: { f: F; onExpand?: (f: F) => void; withSection?: boolean }) {
+export function FindingCard({ f, onExpand, withSection, comment }: { f: F; onExpand?: (f: F) => void; withSection?: boolean; comment?: boolean }) {
   const design = useDesign((s) => s.design)
   const expanded = useReview((s) => s.expanded === f.id)
   const [fix, setFix] = useState(false)
@@ -37,7 +37,11 @@ export function FindingCard({ f, onExpand, withSection }: { f: F; onExpand?: (f:
     if (!expanded) onExpand?.(f)
   }
   return (
-    <div data-testid="finding" data-finding={f.id} className={`rounded-xl border px-3 py-2.5 ${expanded ? 'border-slate-200 bg-white shadow-sm' : 'border-transparent hover:bg-slate-50'} ${stale ? 'opacity-70' : ''}`}>
+    <div
+      data-testid={comment ? 'comment' : 'finding'}
+      data-finding={f.id}
+      className={`rounded-xl border px-3 py-2.5 ${comment ? `border-slate-200 bg-white ${expanded ? 'shadow-lg' : 'shadow-sm'}` : expanded ? 'border-slate-200 bg-white shadow-sm' : 'border-transparent hover:bg-slate-50'} ${stale ? 'opacity-70' : ''}`}
+    >
       <button type="button" aria-expanded={expanded} onClick={toggle} className="flex w-full items-start gap-2.5 text-left">
         <span className="mt-1.5">
           <SeverityDot severity={f.severity} />
@@ -52,6 +56,7 @@ export function FindingCard({ f, onExpand, withSection }: { f: F; onExpand?: (f:
           </span>
         </span>
       </button>
+      {comment && !expanded && f.status === 'open' && <p className="mt-1.5 line-clamp-2 text-sm text-slate-500">{f.evidence}</p>}
       {expanded && (
         <div className="mt-3 flex flex-col gap-3 text-sm">
           <div>

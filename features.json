@@ -936,7 +936,7 @@
         "On success new findings replace those in the run's scope only; on error or Cancel previous findings are unchanged and the panel shows the error with its action",
         "Editing during a run is allowed; fields changed meanwhile get stale findings"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-review-07",
@@ -970,7 +970,7 @@
         "Marker click expands the finding; finding click highlights and scrolls to the field",
         "Matches docs/mockups/review-editor.png"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-review-10",
@@ -981,7 +981,7 @@
         "The expanded comment aligns with its field and the field is highlighted",
         "Tabs Open / Resolved / Dismissed as on the canvas"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-review-11",

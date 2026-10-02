@@ -25,7 +25,7 @@ function DocSection({ sid, n, name }: { sid: SectionId; n: number; name: string 
         {hasValues && (
           <dl data-testid="key-properties" className="flex flex-wrap gap-x-8 gap-y-3 rounded-2xl border border-slate-100 bg-slate-50 px-5 py-4 break-inside-avoid">
             {s.keyProperties.map((p) => (
-              <div key={p.id} className="min-w-0">
+              <div key={p.id} data-field={`${sid}:kp:${p.id}`} className="min-w-0 rounded-lg">
                 <dt className="text-xs font-medium tracking-wide text-slate-400 uppercase">{p.key}</dt>
                 <dd className="flex">
                   <InlineText label={p.key || 'value'} value={p.value} placeholder="—" onSave={(value) => a.updateKeyProperty(sid, p.id, { value })} />
@@ -35,7 +35,7 @@ function DocSection({ sid, n, name }: { sid: SectionId; n: number; name: string 
           </dl>
         )}
         {/* Free text of the section, also for empty sections: it is the section's Rationale & Notes. */}
-        <div data-testid="rationale" className="leading-relaxed text-slate-700">
+        <div data-testid="rationale" data-field={`${sid}:rationale`} className="rounded-lg leading-relaxed text-slate-700">
           <RichTextEditor
             bare
             label={`${name} rationale`}
@@ -109,7 +109,7 @@ export function DocumentView({ comments }: { comments?: ReactNode }) {
         </ul>
       </nav>
       <article data-testid="document" className="min-w-0 rounded-3xl bg-white px-16 py-14 shadow-sm print:rounded-none print:p-0 print:shadow-none">
-        <h1 className="flex text-5xl font-bold tracking-tight">
+        <h1 data-field="design" className="flex text-5xl font-bold tracking-tight">
           <InlineText label="Document title" value={title} placeholder="Untitled design" onSave={setTitle} className="w-full" inputClassName="w-full" wrap />
         </h1>
         <p className="mt-2 text-xl text-slate-500">ML System Architecture Spec</p>

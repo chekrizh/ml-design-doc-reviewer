@@ -6,6 +6,7 @@ import { startLocalPersistence, stopLocalPersistence } from './store/persist'
 import { Home } from './home/Home'
 import { Toaster } from './ui/toast'
 import { SettingsDialog } from './review/SettingsDialog'
+import { DocComments } from './review/DocComments'
 import { lastRunAt, openDesignReview, startReview, useReview } from './review/store'
 import { useAuth } from './backend/auth'
 import { closeCloudDesign, editorKey, openCloudDesign, openLibraryDesign, useCloud } from './backend/cloud'
@@ -117,7 +118,7 @@ function Editor({ banner }: { banner?: ReactNode }) {
     <>
       <Header mode={mode} setMode={setMode} onReview={(scope) => void startReview(scope)} lastRunAt={lastRun} />
       {banner}
-      {mode === 'canvas' ? <Canvas /> : <DocumentView />}
+      {mode === 'canvas' ? <Canvas /> : <DocumentView comments={<DocComments />} />}
     </>
   )
 }

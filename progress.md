@@ -440,3 +440,20 @@ Format:
 - [x] Expanded finding: 'What the design says', 'Why it matters', Fix behind 'Show fix', Dismiss and Resolve; closed findings show Reopen; stale ones are faded with their label (`src/review/Finding.tsx`)
 - [x] Expanding a finding highlights its card and scrolls it into view
 - [x] Excalidraw fonts are served by the app (D33): the network guard caught the CDN request during PNG export
+
+## m2-review-06
+- [x] Whole design or one section from the AI Review menu; 'Review this section' in the Component Editor (`e2e/m2/review-run.spec.ts`, `review-editor.spec.ts`)
+- [x] While running: Review panel with 'Reviewing…', elapsed time and Cancel; indicators in scope pulse; previous findings stay, dimmed (`src/review/store.ts` `startReview`, `ReviewPanel.tsx`)
+- [x] On success new findings replace those in the run's scope only; on error or Cancel previous findings are unchanged and the panel shows the error with its action (Replace key, Run again, Choose model)
+- [x] Editing during a run is allowed; fields changed meanwhile get stale findings (derived, D25; stale test in review-run.spec.ts); an unsaved Library item is saved before its review
+
+## m2-review-09
+- [x] Findings column with the same tabs for this section only, and the review indicator in the editor header (signed-in only; `src/review/EditorFindings.tsx`)
+- [x] Markers: key property right of its value, trade-off row after the option name, Rationale next to its heading
+- [x] Marker click expands the finding; finding click highlights and scrolls to the field
+- [x] Matches docs/mockups/review-editor.png (MCP screenshot; the highlight covers the whole key property row, the mockup outlines only the value)
+
+## m2-review-10
+- [x] Each comment sits at its field's height and moves down on overlap; whole-design comments sit at the document title (`src/review/DocComments.tsx`, `e2e/m2/review-document.spec.ts`)
+- [x] The expanded comment aligns with its field (±4px) and the field is highlighted
+- [x] Tabs Open / Resolved / Dismissed as on the canvas
