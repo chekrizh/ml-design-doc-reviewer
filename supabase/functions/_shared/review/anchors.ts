@@ -33,3 +33,52 @@ export function fieldText(design: ReviewDesign, section: SectionId | null, kind:
   if (kind === 'key_property') return s.keyProperties.find((p) => p.id === anchorId)?.value ?? null
   return optionText(s, anchorId ?? '')
 }
+
+/** A finding ready for `svc_complete_review_run` (the server adds run, design and user). */
+export interface ResolvedFinding {
+  severity: import('./types.ts').Severity
+  dimension: string
+  section: SectionId | null
+  anchor_kind: AnchorKind
+  anchor_id: string | null
+  anchor_label: string
+  anchor_value: string
+  title: string
+  evidence: string
+  why: string
+  fix: string
+}
+
+type ModelFinding = import('./schema.ts').ModelFinding
+
+/** The model's `anchor` label → a field of the snapshot it reviewed (§6.8 table). */
+export function resolveAnchor(f: ModelFinding, snapshot: ReviewDesign): ResolvedFinding {
+  const base = { severity: f.severity, dimension: f.dimension, title: f.title.slice(0, 120), evidence: f.evidence, why: f.why, fix: f.fix }
+  const s = f.section ? snapshot.sections.find((x) => x.id === f.section) : undefined
+  if (!s) return { ...base, section: null, anchor_kind: 'design', anchor_id: null, anchor_label: 'Design', anchor_value: '' }
+  const [kind, id] = (f.anchor ?? '').split(/:(.*)/s)
+  if (kind === 'kp') {
+    const p = s.keyProperties.find((x) => x.id === id)
+    if (p) return { ...base, section: s.id, anchor_kind: 'key_property', anchor_id: p.id, anchor_label: p.key, anchor_value: p.value }
+  }
+  if (kind === 'opt') {
+    const o = s.tradeoffs.options.find((x) => x.id === id)
+    if (o) return { ...base, section: s.id, anchor_kind: 'tradeoff_option', anchor_id: o.id, anchor_label: o.name, anchor_value: optionText(s, o.id)! }
+  }
+  // 'rationale', null, or a label the model got wrong (but the section right).
+  return { ...base, section: s.id, anchor_kind: 'rationale', anchor_id: null, anchor_label: 'Rationale', anchor_value: plainText(s.rationale) }
+}
+
+const MAX_FINDINGS = 40
+const RANK = { critical: 0, major: 1, minor: 2 } as const
+
+/**
+ * The findings a run keeps (§6.4 step 8): anchors resolved; a section run keeps only that section's;
+ * at most 40, the most severe first (ties keep the model's order).
+ */
+export function resolveFindings(fs: ModelFinding[], snapshot: ReviewDesign, scope: 'design' | SectionId): ResolvedFinding[] {
+  const resolved = fs.map((f) => resolveAnchor(f, snapshot)).filter((f) => scope === 'design' || f.section === scope)
+  if (resolved.length <= MAX_FINDINGS) return resolved
+  const keep = new Set(resolved.map((f, i) => [f, i] as const).sort((a, b) => RANK[a[0].severity] - RANK[b[0].severity] || a[1] - b[1]).slice(0, MAX_FINDINGS).map(([f]) => f))
+  return resolved.filter((f) => keep.has(f))
+}

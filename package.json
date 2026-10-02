@@ -15,7 +15,8 @@
     "test": "vitest run",
     "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm build",
     "e2e": "playwright test",
-    "test:db": "supabase test db"
+    "test:db": "supabase test db",
+    "gen:skill": "node scripts/gen-skill.ts"
   },
   "dependencies": {
     "@excalidraw/excalidraw": "^0.18.1",

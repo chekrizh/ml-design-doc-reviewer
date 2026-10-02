@@ -891,7 +891,7 @@
         "Serializer output for the example matches a committed snapshot (§6.7); anchor resolution follows the §6.8 table",
         "Request built for the example has the instruction, the skill with cache_control, the design text and exactly 3 PNG images after it (§6.4 step 6)"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-review-03",

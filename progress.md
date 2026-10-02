@@ -409,3 +409,8 @@ Format:
 - [x] Types and pure rules in `supabase/functions/_shared/review/` (`types.ts`, `anchors.ts`: field texts §5.6) and `src/model/review.ts`, imported by the app through the `@review` alias (D24), with unit tests (`anchors.test.ts`, `src/model/review.test.ts`)
 - [x] Review indicator per section (not reviewed / red / green), worst severity, counts by severity, groups with 'Whole design' first
 - [x] Stale is derived (D25): field text differs from `anchor_value` → 'Field changed since review'; field not found → whole design, 'Field removed'
+
+## m2-review-02
+- [x] `pnpm gen:skill` (`scripts/gen-skill.ts`) builds `supabase/functions/_shared/skill.generated.ts` from vendor (SKILL.md + references, rubric dimensions); a unit test fails if it is out of date (`skill.test.ts`)
+- [x] Serializer output for the example matches a committed snapshot (§6.7, `review/__snapshots__/example-design.txt`); anchor resolution follows the §6.8 table; a section run keeps only its section, at most 40 findings (`review/review.test.ts`)
+- [x] Request built for the example has the instruction, the skill with cache_control, the design text and exactly 3 PNG images after it (§6.4 step 6; `src/review/request.ts`, `review/prompt.ts`); model answers are validated against the strict schema (§6.5); provider errors map to §6.4 codes (`review/errors.ts`)
