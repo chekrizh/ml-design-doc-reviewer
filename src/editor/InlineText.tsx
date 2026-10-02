@@ -9,6 +9,7 @@ export function InlineText({
   inputClassName = '',
   label,
   wrap = false,
+  maxLength,
 }: {
   value: string
   onSave: (v: string) => void
@@ -18,6 +19,7 @@ export function InlineText({
   label: string
   /** Wrap long text onto several lines instead of cutting it with an ellipsis. */
   wrap?: boolean
+  maxLength?: number
 }) {
   const [draft, setDraft] = useState<string | null>(null)
   if (draft === null)
@@ -40,6 +42,7 @@ export function InlineText({
       autoFocus
       aria-label={label}
       value={draft}
+      maxLength={maxLength}
       placeholder={placeholder}
       onChange={(e) => setDraft(e.target.value)}
       onBlur={save}

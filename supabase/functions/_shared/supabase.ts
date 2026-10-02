@@ -38,3 +38,9 @@ export const insert = (who: Who, table: string, row: object) => call(who, `/rest
 export const update = (who: Who, table: string, query: string, patch: object) =>
   call(who, `/rest/v1/${table}?${query}`, { method: 'PATCH', body: JSON.stringify(patch), prefer: 'return=minimal' })
 export const rpc = (fn: string, args: object) => call('service', `/rest/v1/rpc/${fn}`, { method: 'POST', body: JSON.stringify(args) })
+
+/** Deletes an auth user with the secret key; their rows go by on delete cascade. */
+export async function deleteAuthUser(id: string) {
+  const res = await fetch(`${URL_()}/auth/v1/admin/users/${id}`, { method: 'DELETE', headers: { apikey: secret(), Authorization: `Bearer ${secret()}` } })
+  if (!res.ok) throw new Error(`auth admin ${res.status}`)
+}

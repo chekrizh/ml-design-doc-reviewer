@@ -1,6 +1,7 @@
 import { test as base } from '@playwright/test'
 import { SUPABASE_URL } from '../global-setup'
 import { mockOpenRouter } from '../mocks/openrouter/server'
+import { collectCspViolations } from '../csp'
 
 /** Service-role call to local Supabase REST (the key comes from global-setup). */
 export async function serviceRpc(fn: string, body: object = {}) {
@@ -16,7 +17,7 @@ export async function serviceRpc(fn: string, body: object = {}) {
 
 const LOCAL_HOSTS = new Set(['localhost', '127.0.0.1'])
 
-export const test = base.extend<{ cleanDb: void; externalRequests: string[] }>({
+export const test = base.extend<{ cleanDb: void; externalRequests: string[]; csp: string[] }>({
   /** Every M2 test starts from a known state: seed users only, no app data, no Vault keys, mock answers R1. */
   // eslint-disable-next-line no-empty-pattern -- Playwright requires the fixtures object pattern
   cleanDb: [async ({}, use) => {
@@ -39,6 +40,13 @@ export const test = base.extend<{ cleanDb: void; externalRequests: string[] }>({
     })
     await use(seen)
     if (seen.length) throw new Error(`Request to a real external host: ${seen.join(', ')}`)
+  }, { auto: true }],
+
+  /** Fails the test on any Content-Security-Policy violation (D37). */
+  csp: [async ({ context }, use) => {
+    const seen = await collectCspViolations(context)
+    await use(seen)
+    if (seen.length) throw new Error(`CSP violations: ${[...new Set(seen)].join('; ')}`)
   }, { auto: true }],
 })
 

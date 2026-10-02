@@ -180,10 +180,15 @@ test('m2-setup-03: Drive stub records create vs update and can fail', async ({ p
   expect(requests).toHaveLength(2)
 })
 
-test('m2-setup-03: a request to a real external host is caught', async ({ page, externalRequests }) => {
+test('m2-setup-03: a request to a real external host is caught', async ({ page, externalRequests, csp }) => {
   await page.goto('/')
+  // A host the CSP allows (Drive) reaches the network layer, where the guard catches it.
+  await page.evaluate(() => fetch('https://www.googleapis.com/drive/v3/about').catch(() => null))
+  expect(externalRequests).toEqual(['https://www.googleapis.com/drive/v3/about'])
+  // A host the CSP does not allow never leaves the browser (D37).
   await page.evaluate(() => fetch('https://openrouter.ai/api/v1/models').catch(() => null))
-  expect(externalRequests).toEqual(['https://openrouter.ai/api/v1/models'])
-  // Caught as expected; empty it so this test itself passes.
+  await expect.poll(() => csp).toEqual(['connect-src blocked https://openrouter.ai/api/v1/models'])
+  // Caught as expected; empty both so this test itself passes.
   externalRequests.length = 0
+  csp.length = 0
 })

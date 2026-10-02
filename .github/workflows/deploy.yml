@@ -1,0 +1,36 @@
+# Database migrations, function settings and edge functions to one Supabase project (D35, docs/deploy.md).
+# Migrations must be backward compatible (expand/contract): Vercel may ship the frontend first.
+name: Deploy Supabase
+
+on:
+  workflow_call:
+    inputs:
+      environment: { required: true, type: string }
+      # Prefix of the repository variables for this project: STAGING or PROD.
+      prefix: { required: true, type: string }
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: ${{ inputs.environment }}
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+      PROJECT_REF: ${{ vars[format('{0}_SUPABASE_PROJECT_REF', inputs.prefix)] }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 24 }
+      - uses: supabase/setup-cli@v1
+        with: { version: 2.119.0 }
+      - run: supabase link --project-ref "$PROJECT_REF"
+      - run: supabase db push
+      - name: Function settings (not secrets; OpenRouter keys live in Vault per user)
+        run: supabase secrets set --project-ref "$PROJECT_REF" APP_ORIGINS="${{ vars[format('{0}_APP_ORIGINS', inputs.prefix)] }}" RECOMMENDED_MODEL="${{ vars.RECOMMENDED_MODEL }}"
+      - run: supabase functions deploy --project-ref "$PROJECT_REF"
+      - name: Auth settings are safe (Google only, sign-ups open)
+        run: node scripts/check-auth-settings.ts
+        env:
+          SUPABASE_URL: https://${{ vars[format('{0}_SUPABASE_PROJECT_REF', inputs.prefix)] }}.supabase.co
+          SUPABASE_PUBLISHABLE_KEY: ${{ vars[format('{0}_SUPABASE_PUBLISHABLE_KEY', inputs.prefix)] }}

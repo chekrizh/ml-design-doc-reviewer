@@ -57,3 +57,7 @@ AT-31 step 1 expects "a message that OpenRouter rejected the key" for `sk-or-v1-
 ## ui-01: "Desktop only" replaced by a responsive layout (owner request, 2026-10-02)
 - Conflict: `features.json` ui-01 still says "Below 1280px … 'Open on desktop'"; the owner asked for a responsive design, so the gate is removed (D34, mvp-spec updated). I may change only `passes`, so the ui-01 text is out of date.
 - What I did meanwhile: kept `passes: true` (setting it to false would make the next run restore the gate); `e2e/ui.spec.ts` now checks 375/768/1024/1280px without a horizontal scroll. Please update the ui-01 description and steps.
+
+## D38: Privacy and Delete account are not in the account menu (AT-43)
+- Conflict: AT-43 p.4 fixes the account menu to exactly My designs, AI Review settings, Sign out. Account deletion (needed for a public Google OAuth app) would naturally sit there.
+- What I did meanwhile: the menu is unchanged; Delete account is a button on `/privacy` (signed in only), and `/privacy` is linked from the home footer. If you want Privacy / Delete account in the account menu, AT-43 p.4 needs an update.

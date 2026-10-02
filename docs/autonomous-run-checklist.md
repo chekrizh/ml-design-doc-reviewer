@@ -71,6 +71,8 @@
 
 ### B. Перед деплоем и ручной приёмкой
 
+> Заменено на `docs/deploy.md` (два окружения, GitHub Actions, публичный вход; D35). Ниже — исторический вариант с одним проектом.
+
 **1. Supabase-проект**
 - [ ] Создать проект на supabase.com (Free), регион ближе к пользователям. Записать project ref, URL проекта и publishable (anon) key: Project Settings → API.
 

@@ -20,7 +20,7 @@ export default defineConfig({
   projects: [
     { name: 'chromium', testIgnore: M2, use: chrome },
     // Safari engine: the acceptance scenarios plus the canvas layout check.
-    { name: 'webkit', testMatch: ['acceptance/**/*.spec.ts', 'layout.spec.ts'], testIgnore: M2, use: safari },
+    { name: 'webkit', testMatch: ['acceptance/**/*.spec.ts', 'layout.spec.ts', 'csp.spec.ts'], testIgnore: M2, use: safari },
     { name: 'm2-chromium', testMatch: M2, workers: 1, use: chrome },
     { name: 'm2-webkit', testMatch: 'acceptance/m2/**/*.spec.ts', workers: 1, dependencies: ['m2-chromium'], use: safari },
   ],

@@ -84,7 +84,7 @@ export function Header({ mode, setMode, onReview, lastRunAt }: { mode: Mode; set
           </svg>
         </a>
         <h1 className="flex min-w-0 text-lg font-semibold">
-          <InlineText label="Design title" value={title} placeholder="Untitled design" onSave={a.setTitle} inputClassName="w-full max-w-80" />
+          <InlineText label="Design title" value={title} placeholder="Untitled design" onSave={a.setTitle} maxLength={200} inputClassName="w-full max-w-80" />
         </h1>
         <span data-testid="header-save-state" className={`shrink-0 text-xs max-sm:sr-only ${saveState === 'error' ? 'font-medium text-red-600' : 'text-slate-400'}`}>
           {SAVE_LABEL[saveState]}

@@ -63,3 +63,4 @@ For each feature:
 
 - `README.md` and `CONTRIBUTING.md` still describe the earlier "ML Design Doc Reviewer" idea and are out of date.
 - Pre-autonomous-run checklist: `docs/autonomous-run-checklist.md`.
+- Cloud deploy (staging + prod, GitHub Actions, human steps): `docs/deploy.md`. The agent never runs cloud commands; CI does.

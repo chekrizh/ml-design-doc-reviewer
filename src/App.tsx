@@ -5,6 +5,7 @@ import { DocumentView } from './document/DocumentView'
 import { loadLocal, startLocalPersistence, stopLocalPersistence } from './store/persist'
 import { useLastExport } from './export/gdocs'
 import { Home } from './home/Home'
+import { Privacy } from './home/Privacy'
 import { Toaster } from './ui/toast'
 import { SettingsDialog } from './review/SettingsDialog'
 import { DocComments } from './review/DocComments'
@@ -21,7 +22,7 @@ export function App() {
   return (
     <>
       <div className="min-h-dvh bg-slate-50 text-slate-900 print:bg-white">
-        {route.name === 'home' ? <Home /> : route.name === 'local' ? <LocalDesign /> : <CloudDesign route={route} />}
+        {route.name === 'home' ? <Home /> : route.name === 'privacy' ? <Privacy /> : route.name === 'local' ? <LocalDesign /> : <CloudDesign route={route} />}
       </div>
       <Toaster />
       <SettingsDialog onReview={route.name === 'cloud' || route.name === 'library' ? () => void startReview('design') : undefined} />

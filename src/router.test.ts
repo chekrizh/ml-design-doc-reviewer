@@ -4,9 +4,10 @@ vi.stubGlobal('window', { addEventListener: () => {} })
 const { parseRoute, routePath } = await import('./router')
 
 describe('parseRoute', () => {
-  it('maps the four routes and sends anything else home', () => {
+  it('maps the five routes and sends anything else home', () => {
     expect(parseRoute('/')).toEqual({ name: 'home' })
     expect(parseRoute('/local')).toEqual({ name: 'local' })
+    expect(parseRoute('/privacy')).toEqual({ name: 'privacy' })
     expect(parseRoute('/d/1b2c')).toEqual({ name: 'cloud', id: '1b2c' })
     expect(parseRoute('/library/retail-demand-forecasting')).toEqual({ name: 'library', itemId: 'retail-demand-forecasting' })
     expect(parseRoute('/nope/x/y')).toEqual({ name: 'home' })
@@ -14,6 +15,6 @@ describe('parseRoute', () => {
   })
 
   it('round-trips through routePath', () => {
-    for (const p of ['/', '/local', '/d/abc', '/library/superpay-fraud']) expect(routePath(parseRoute(p))).toBe(p)
+    for (const p of ['/', '/local', '/privacy', '/d/abc', '/library/superpay-fraud']) expect(routePath(parseRoute(p))).toBe(p)
   })
 })

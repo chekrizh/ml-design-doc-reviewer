@@ -1,7 +1,7 @@
-import { cpSync } from 'node:fs'
+import { cpSync, readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import type { Plugin } from 'vite'
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
@@ -18,7 +18,18 @@ const excalidrawFonts = (): Plugin => ({
   },
 })
 
-export default defineConfig({
+// `vite preview` (and so every e2e run) serves the production headers from vercel.json (D37), with the local
+// Supabase added to connect-src. Not in `vite dev`: its HMR client needs inline scripts and a websocket.
+const productionHeaders = (supabaseUrl: string | undefined) => {
+  const vercel = JSON.parse(readFileSync(new URL('./vercel.json', import.meta.url), 'utf8'))
+  const headers: Record<string, string> = Object.fromEntries(vercel.headers[0].headers.map((h: { key: string; value: string }) => [h.key, h.value]))
+  if (supabaseUrl && !supabaseUrl.startsWith('https://'))
+    headers['Content-Security-Policy'] = headers['Content-Security-Policy'].replace("connect-src 'self'", `connect-src 'self' ${supabaseUrl}`)
+  return headers
+}
+
+export default defineConfig(({ mode }) => ({
   plugins: [react(), tailwindcss(), excalidrawFonts()],
   resolve: { alias },
-})
+  preview: { headers: productionHeaders(process.env.VITE_SUPABASE_URL ?? loadEnv(mode, process.cwd(), 'VITE_').VITE_SUPABASE_URL) },
+}))

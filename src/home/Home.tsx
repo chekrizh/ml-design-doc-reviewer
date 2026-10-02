@@ -11,6 +11,7 @@ import { designHasContent, designSummary, type DesignSummary } from '../model/su
 import { navigate } from '../router'
 import { loadLocal, replaceLocal } from '../store/persist'
 import { formatEdited } from './edited'
+import { quotaMessage } from '../backend/quota'
 
 const primary = 'shrink-0 rounded-lg bg-slate-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-slate-700'
 const CHIP: Record<Origin, [string, string]> = {
@@ -64,6 +65,18 @@ export function Home() {
         </div>
         {ready && (account ? <YourDesigns /> : <GuestDesigns />)}
       </main>
+      <footer className="shrink-0 px-4 pb-4 text-xs text-slate-400 sm:px-6">
+        <a
+          href="/privacy"
+          onClick={(e) => {
+            e.preventDefault()
+            navigate('/privacy')
+          }}
+          className="hover:text-slate-700"
+        >
+          Privacy
+        </a>
+      </footer>
     </div>
   )
 }
@@ -86,8 +99,8 @@ async function start(design: Design, origin: Origin, sourceId: string | null, ct
     if (origin === 'example') return navigate(`/library/${sourceId}`)
     try {
       navigate(`/d/${await createDesign(design, origin, sourceId)}`)
-    } catch {
-      await alertDialog('The design could not be created. Please try again.')
+    } catch (e) {
+      await alertDialog(quotaMessage(e) ?? 'The design could not be created. Please try again.')
     }
     return
   }

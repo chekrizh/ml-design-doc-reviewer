@@ -2,9 +2,12 @@ import { create } from 'zustand'
 import type { Session } from '@supabase/supabase-js'
 import { navigate } from '../router'
 import { importGuestDesign } from './designs'
+import { quotaMessage } from './quota'
 import { showToast } from '../ui/toast'
 import { refreshSettings, resetReview } from '../review/store'
 import { getSupabase } from './supabase'
+import { callFunction } from './functions'
+import { confirmDialog } from '../dialogs'
 
 export type Account = { id: string; email: string; name: string; avatarUrl: string | null }
 
@@ -50,6 +53,7 @@ async function enter(account: Account) {
     showToast({
       kind: 'error',
       text: `“${name}” could not be moved to your account. It stays in this browser.`,
+      detail: quotaMessage(e) ?? undefined,
       actions: [{ label: 'Try again', onClick: () => void enter(account) }],
     })
   }
@@ -81,4 +85,21 @@ export async function signInWithGoogle() {
 export async function signOut() {
   await getSupabase()?.auth.signOut()
   navigate('/')
+}
+
+/** Delete account on /privacy (D38): the server removes the user and everything they own. */
+export async function deleteAccount() {
+  const ok = await confirmDialog(
+    'Your account, designs, reviews and OpenRouter key are removed for good. A design in this browser (not signed in) stays.',
+    'Delete account',
+    'Delete your account?',
+  )
+  if (!ok) return
+  showToast({ kind: 'progress', text: 'Deleting your account…' })
+  const res = await callFunction('delete-account', {}).catch(() => null)
+  if (res?.status !== 200) return showToast({ kind: 'error', text: 'Your account could not be deleted. Please try again.', actions: [{ label: 'Try again', onClick: () => void deleteAccount() }] })
+  // The user no longer exists: drop the session locally only.
+  await getSupabase()?.auth.signOut({ scope: 'local' })
+  navigate('/')
+  showToast({ kind: 'success', text: 'Your account was deleted' })
 }

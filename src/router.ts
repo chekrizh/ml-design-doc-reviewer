@@ -4,18 +4,20 @@ import { useSyncExternalStore } from 'react'
 export type Route =
   | { name: 'home' }
   | { name: 'local' }
+  | { name: 'privacy' }
   | { name: 'cloud'; id: string }
   | { name: 'library'; itemId: string }
 
 export function parseRoute(path: string): Route {
   if (path === '/local') return { name: 'local' }
+  if (path === '/privacy') return { name: 'privacy' }
   const m = path.match(/^\/(d|library)\/([^/]+)$/)
   if (m) return m[1] === 'd' ? { name: 'cloud', id: decodeURIComponent(m[2]) } : { name: 'library', itemId: decodeURIComponent(m[2]) }
   return { name: 'home' }
 }
 
 export const routePath = (r: Route) =>
-  r.name === 'home' ? '/' : r.name === 'local' ? '/local' : r.name === 'cloud' ? `/d/${encodeURIComponent(r.id)}` : `/library/${encodeURIComponent(r.itemId)}`
+  r.name === 'home' ? '/' : r.name === 'local' ? '/local' : r.name === 'privacy' ? '/privacy' : r.name === 'cloud' ? `/d/${encodeURIComponent(r.id)}` : `/library/${encodeURIComponent(r.itemId)}`
 
 const listeners = new Set<() => void>()
 const notify = () => listeners.forEach((l) => l())

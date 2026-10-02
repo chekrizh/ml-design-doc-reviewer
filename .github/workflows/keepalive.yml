@@ -1,0 +1,21 @@
+# A Free Supabase project pauses after a week without requests (docs/deploy.md). Until prod moves to Pro,
+# a request twice a week keeps both projects awake. Repository variables, not environments: a job in the
+# "production" environment would wait for an approval. Delete this workflow after the upgrade.
+name: Keep Supabase awake
+
+on:
+  schedule: [{ cron: '0 6 * * 1,4' }]
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - { ref: '${{ vars.STAGING_SUPABASE_PROJECT_REF }}', key: '${{ vars.STAGING_SUPABASE_PUBLISHABLE_KEY }}' }
+          - { ref: '${{ vars.PROD_SUPABASE_PROJECT_REF }}', key: '${{ vars.PROD_SUPABASE_PUBLISHABLE_KEY }}' }
+    steps:
+      - run: |
+          curl -fsS -o /dev/null "https://${{ matrix.ref }}.supabase.co/auth/v1/settings" -H "apikey: ${{ matrix.key }}"
+          curl -sS -o /dev/null "https://${{ matrix.ref }}.supabase.co/rest/v1/designs?select=id&limit=1" -H "apikey: ${{ matrix.key }}"

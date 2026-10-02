@@ -111,7 +111,7 @@ export function DocumentView({ comments }: { comments?: ReactNode }) {
       </nav>
       <article data-testid="document" className="min-w-0 rounded-3xl bg-white px-5 py-8 shadow-sm sm:px-10 sm:py-10 lg:px-16 lg:py-14 print:rounded-none print:p-0 print:shadow-none">
         <h1 data-field="design" className="flex text-3xl font-bold tracking-tight sm:text-5xl">
-          <InlineText label="Document title" value={title} placeholder="Untitled design" onSave={setTitle} className="w-full" inputClassName="w-full" wrap />
+          <InlineText label="Document title" value={title} placeholder="Untitled design" onSave={setTitle} maxLength={200} className="w-full" inputClassName="w-full" wrap />
         </h1>
         <p className="mt-2 text-lg text-slate-500 sm:text-xl">ML System Architecture Spec</p>
         <p className="mt-2 mb-12 text-sm text-slate-400">

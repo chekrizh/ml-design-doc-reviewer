@@ -8,6 +8,8 @@ import { useLastExport, type LastExport } from '../export/gdocs'
 import { navigate } from '../router'
 import { createDesign } from './designs'
 import { getSupabase } from './supabase'
+import { quotaMessage } from './quota'
+import { showToast } from '../ui/toast'
 import { openDesignReview, setEnsureDesignId, useReview } from '../review/store'
 
 /** The open cloud design: its row id, the version this tab last saw, and whether a save hit a conflict (D23). */
@@ -27,7 +29,18 @@ let pendingItem: { id: string; kind: 'example' | 'task' } | null = null
  */
 export const editorKey = new Map<string, string>()
 
+/** A quota error (D36) is the user's to fix, so it is shown; autosave still marks the design Not saved. */
 async function save(d: Design) {
+  try {
+    await write(d)
+  } catch (e) {
+    const text = quotaMessage(e)
+    if (text) showToast({ kind: 'error', text })
+    throw e
+  }
+}
+
+async function write(d: Design) {
   if (pendingItem) {
     const item = pendingItem
     const id = await createDesign(d, item.kind, item.id)

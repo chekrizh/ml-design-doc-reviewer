@@ -17,7 +17,7 @@
 Браузер (Vite SPA, Vercel)
  ├─ Supabase Auth (Google OAuth; тестовый вход по паролю только локально)
  ├─ PostgREST под RLS: designs, review_runs (чтение, отмена), findings (чтение, статус), user_settings (модель)
- ├─ Edge functions: review, openrouter-key, openrouter-models ──► OpenRouter API
+ ├─ Edge functions: review, openrouter-key, openrouter-models ──► OpenRouter API; delete-account (D38)
  └─ Google Identity Services + Drive API (экспорт в Google Docs, без бэкенда)
 ```
 
@@ -46,6 +46,7 @@ supabase/
     review/index.ts
     openrouter-key/index.ts
     openrouter-models/index.ts
+    delete-account/index.ts    удаление аккаунта (D38)
 scripts/gen-skill.ts           vendor/ml-system-design-review → skill.generated.ts
 src/backend/                   клиент Supabase, вход, репозитории designs / findings / settings, вызовы функций
 src/review/                    слой UI ревью (store, производные состояния)
@@ -447,6 +448,8 @@ Diagram: attached as image [section:validation]   ← только если ди
 | | `SUPABASE_URL`, `SUPABASE_SECRET_KEYS` | дают сами Supabase |
 
 Секретов в коде и в `config.toml` нет. Client Secret Google хранится только в дашборде Supabase.
+
+Облако: два проекта (staging, prod), значения по окружениям и порядок деплоя — `docs/deploy.md` (D35). Квоты хранения — D36, заголовки безопасности и CSP — D37.
 
 ## 11. Версии и история
 
