@@ -32,8 +32,8 @@ export function Home() {
   const ready = useAuth((s) => s.ready)
   return (
     <div className="flex h-screen flex-col">
-      <header className="shrink-0 border-b border-slate-200 bg-white px-4">
-        <div className="mx-auto flex h-14 max-w-6xl items-center gap-3">
+      <header className="shrink-0 border-b border-slate-200 bg-white px-6">
+        <div className="flex h-14 items-center gap-3">
           <div className="grid h-8 w-8 place-items-center rounded-lg bg-slate-900 text-white">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
               <rect x="1.5" y="1.5" width="5" height="5" rx="1" />
@@ -47,8 +47,8 @@ export function Home() {
           </div>
         </div>
       </header>
-      <main className="mx-auto flex min-h-0 w-full max-w-6xl flex-1 flex-col gap-6 px-4 py-5">
-        <div className="grid shrink-0 grid-cols-[2fr_1fr] gap-6">
+      <main className="flex min-h-0 w-full flex-1 flex-col gap-6 px-6 py-5">
+        <div className="grid shrink-0 grid-cols-[fit-content(66%)_fit-content(34%)] justify-start gap-10">
           <Gallery title="Design a system" text="Start empty or take a task with the problem already set.">
             <BlankCard />
             {LIBRARY.filter((i) => i.kind === 'task').map((i) => (

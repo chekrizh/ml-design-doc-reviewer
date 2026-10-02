@@ -1,4 +1,4 @@
-import { cpSync, existsSync } from 'node:fs'
+import { cpSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import type { Plugin } from 'vite'
 import { defineConfig } from 'vite'
@@ -14,7 +14,7 @@ const excalidrawFonts = (): Plugin => ({
   name: 'excalidraw-fonts',
   buildStart() {
     const to = fileURLToPath(new URL('./public/fonts', import.meta.url))
-    if (!existsSync(to)) cpSync(fileURLToPath(new URL('./node_modules/@excalidraw/excalidraw/dist/prod/fonts', import.meta.url)), to, { recursive: true })
+    cpSync(fileURLToPath(new URL('./node_modules/@excalidraw/excalidraw/dist/prod/fonts', import.meta.url)), to, { recursive: true, force: true })
   },
 })
 

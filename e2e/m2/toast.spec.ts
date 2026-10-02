@@ -16,7 +16,7 @@ test('m2-ui-01: one toast at a time, bottom center, role=status; progress, succe
     if (fail) return route.fulfill({ status: 500, json: { message: 'down' } })
     return route.fallback()
   })
-  await page.getByRole('button', { name: 'Sign in as test user' }).click()
+  await page.getByRole('button', { name: 'Dev: sign in as test user' }).click()
 
   const status = page.getByRole('status')
   const toast = page.getByTestId('toast')

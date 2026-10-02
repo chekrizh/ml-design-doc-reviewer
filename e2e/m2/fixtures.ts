@@ -74,7 +74,7 @@ export const localStore = (page: import('@playwright/test').Page) =>
   )
 
 export const signInAsTestUser = async (page: import('@playwright/test').Page) => {
-  await page.getByRole('button', { name: 'Sign in as test user' }).click()
+  await page.getByRole('button', { name: 'Dev: sign in as test user' }).click()
   await page.getByRole('img', { name: 'Google profile photo' }).waitFor()
 }
 

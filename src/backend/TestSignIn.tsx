@@ -7,10 +7,10 @@ import { getSupabase } from './supabase'
  */
 export const TestSignIn =
   import.meta.env.VITE_TEST_SIGNIN === 'true'
-    ? function TestSignIn({ className }: { className: string }) {
+    ? function TestSignIn() {
         return (
-          <button type="button" className={className} onClick={() => void getSupabase()?.auth.signInWithPassword({ email: 'test-a@example.test', password: 'test-password' })}>
-            Sign in as test user
+          <button type="button" title="Local development only: a shared account with a known password" className="rounded-lg border border-dashed border-slate-300 px-3 py-1.5 text-sm text-slate-500 hover:bg-slate-50" onClick={() => void getSupabase()?.auth.signInWithPassword({ email: 'test-a@example.test', password: 'test-password' })}>
+            Dev: sign in as test user
           </button>
         )
       }

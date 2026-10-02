@@ -57,8 +57,25 @@ async function enter(account: Account) {
   void refreshSettings().catch(() => null)
 }
 
+/** Whether the Supabase project has the Google provider on. Unknown (network error) counts as on: let OAuth report it. */
+async function googleEnabled() {
+  try {
+    const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/auth/v1/settings`, { headers: { apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ?? '' } })
+    return (await res.json()).external?.google !== false
+  } catch {
+    return true
+  }
+}
+
 export async function signInWithGoogle() {
-  await getSupabase()?.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: location.href } })
+  const supabase = getSupabase()
+  if (!supabase) return
+  // Without this check the browser lands on Supabase's raw JSON error page.
+  if (!(await googleEnabled())) {
+    showToast({ kind: 'error', text: 'Google sign-in is not set up on this server yet.' })
+    return
+  }
+  await supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: location.href } })
 }
 
 export async function signOut() {

@@ -17,7 +17,7 @@ export function Account() {
           <span className="grid h-4 w-4 place-items-center rounded-full border border-slate-300 text-[10px] font-bold text-slate-500">G</span>
           Sign in with Google
         </button>
-        <TestSignIn className={outline} />
+        <TestSignIn />
       </>
     )
   return (
