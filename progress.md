@@ -396,3 +396,7 @@ Format:
 ## m2-home-05
 - [x] Opening an example without editing creates nothing (`/library/:itemId`)
 - [x] The first edit saves a copy with origin Example to 'Your designs' and moves the URL to `/d/:id` without remounting the editor; the library example stays unchanged
+
+## m2-doc-01
+- [x] The outline is left of the sheet, styled as in M1; the comments column is right of the sheet, always, with or without a review (`e2e/m2/document.spec.ts`; doc-01 updated: superseded TOC position)
+- [x] Matches the column layout of docs/mockups/review-document.png (playwright MCP screenshot; the comments themselves come with m2-review-10)

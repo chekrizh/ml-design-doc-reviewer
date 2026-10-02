@@ -859,7 +859,7 @@
         "The outline is left of the sheet, styled as in M1; the comments column is right of the sheet, always, with or without a review",
         "Matches docs/mockups/review-document.png"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-ui-01",

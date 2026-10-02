@@ -19,7 +19,8 @@ test('doc-01 toggle keeps state; heading, subtitle, last updated; document colum
   await expect(toc).toBeVisible()
   const docBox = (await doc.boundingBox())!
   const tocBox = (await toc.boundingBox())!
-  expect(tocBox.x).toBeGreaterThan(docBox.x + docBox.width)
+  // M2 (m2-doc-01): the outline sits left of the sheet.
+  expect(tocBox.x + tocBox.width).toBeLessThanOrEqual(docBox.x)
   await toMode(page, 'Canvas')
   await expect(card(page, 'problem-space').getByRole('button', { name: 'Edit Domain' })).toHaveText('Payments')
   await expect(page.getByRole('button', { name: 'Edit Design title' })).toHaveText('Fraud Detection')
