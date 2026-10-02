@@ -1044,7 +1044,7 @@
         "Your tests for AT-11 point 2 and AT-18 points 3–4 follow the 'Что из M1 заменено' section",
         "All acceptance tests, M1 and M2, pass in Chromium and WebKit"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-final-01",

@@ -485,3 +485,8 @@ Format:
 ## m2-security-01
 - [x] No page or response exposes the full OpenRouter key (`e2e/m2/settings.spec.ts` checks page text and every Supabase response, also after reload; `key-fn.spec.ts` checks the save response; `review-fn.spec.ts` checks function logs); the built bundle contains no service-role key (new or legacy), Google client secret or OpenRouter key, and no secret is committed in src/, config.toml, migrations, functions or .env files (`e2e/m2/security.spec.ts`)
 - [x] RLS tests pass for designs, findings and settings (`pnpm test:db`: 71 pgTAP tests)
+
+## m2-acceptance-01
+- [x] Each scenario AT-22..AT-43 has its own Playwright test in `e2e/acceptance/m2/` named with its ID (AT-41 twice: guest and signed-in), checking every expected outcome (`at-22-25`, `at-26-29`, `at-30-35`, `at-36-43`, shared steps in `setup.ts`)
+- [x] My tests for AT-11 point 2 and AT-18 points 3–4 follow 'Что из M1 заменено' (Supermegaretail; Share order per AT-43; AI Review per AT-30)
+- [x] All acceptance tests, M1 and M2, pass in Chromium and WebKit (`pnpm e2e`: 230 passed; repeated ×2: M2 acceptance 46 + 46, M1 acceptance 84)

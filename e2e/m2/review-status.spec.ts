@@ -56,7 +56,8 @@ test('m2-review-11: Resolve, Dismiss and Reopen in the panel, the editor and the
   await expect(badge(page)).toHaveText('2 findings')
   await expect(ind(page)).toHaveAttribute('data-state', 'red')
 
-  // Statuses survive reload.
+  // Statuses survive reload (once their saves have answered).
+  await page.waitForLoadState('networkidle')
   await page.reload()
   await expect(badge(page)).toHaveText('2 findings')
   await badge(page).click()
