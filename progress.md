@@ -420,3 +420,7 @@ Format:
 - [x] Every row of the §6.4 error table returns its code and status (mock scenarios 401, 402, 429, no_images, 408, 500, bad_output); after a failure the run is `failed` with that code
 - [x] A canceled run's results are discarded (`svc_complete_review_run` returns `canceled` → 409), previous findings stay
 - [x] Logs contain no headers, bodies or keys: unit test of `logLine` and an e2e test that reads the edge runtime's docker logs after a review; CORS origin filtering is unit-tested (`cors.test.ts`) because the local gateway rewrites CORS headers; Supabase is reached with fetch (D32)
+
+## m2-review-04
+- [x] `openrouter-key` and `openrouter-models` follow §6.2 and §6.3: format check, free `GET /key` check, Vault via `svc_set_openrouter_key`, only last 4 and date back; a rejected key (422) or malformed key (400) is not stored; delete removes it (`e2e/m2/key-fn.spec.ts`)
+- [x] The model list has only image-capable models with structured outputs, recommended first and default, the rest by name, no prices; cached for an hour in the function (`review/models.ts` + unit test)

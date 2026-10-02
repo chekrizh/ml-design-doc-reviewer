@@ -913,7 +913,7 @@
         "`openrouter-key` and `openrouter-models` follow §6.2 and §6.3; a rejected key is not stored",
         "The model list has only image-capable models with structured outputs, recommended first and default; no prices"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-review-05",
