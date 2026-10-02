@@ -1,6 +1,8 @@
 -- user_settings and the OpenRouter key in Vault (docs/backend-spec.md §3.4, §4, §4.1; D16).
 begin;
 create extension if not exists pgtap with schema extensions;
+-- Start from no app data (e2e runs leave rows behind); rolled back at the end.
+select public.test_reset();
 select plan(22);
 
 -- Service side (the edge functions run these as service_role).

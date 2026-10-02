@@ -1,6 +1,8 @@
 -- designs: RLS, grants and the version trigger (docs/backend-spec.md §3.1, §4).
 begin;
 create extension if not exists pgtap with schema extensions;
+-- Start from no app data (e2e runs leave rows behind); rolled back at the end.
+select public.test_reset();
 select plan(21);
 
 -- Seed users: A = ...0a, B = ...0b.

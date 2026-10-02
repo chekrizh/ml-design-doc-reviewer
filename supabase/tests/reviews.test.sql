@@ -1,6 +1,8 @@
 -- review_runs, findings, design_open_findings and the run service functions (docs/backend-spec.md §3.2–3.5, §4, §4.1).
 begin;
 create extension if not exists pgtap with schema extensions;
+-- Start from no app data (e2e runs leave rows behind); rolled back at the end.
+select public.test_reset();
 select plan(28);
 
 -- As postgres (service side): A's design, a first full run with three findings.
