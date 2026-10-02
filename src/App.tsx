@@ -4,6 +4,7 @@ import { Header, type Mode } from './canvas/Header'
 import { DocumentView } from './document/DocumentView'
 import { startLocalPersistence, stopLocalPersistence } from './store/persist'
 import { Home } from './home/Home'
+import { Toaster } from './ui/toast'
 import { useAuth } from './backend/auth'
 import { closeCloudDesign, editorKey, openCloudDesign, openLibraryDesign, useCloud } from './backend/cloud'
 import { navigate, parseRoute, routePath, usePath, type Route } from './router'
@@ -23,6 +24,7 @@ export function App() {
       <div className="min-h-screen bg-slate-50 text-slate-900 max-xl:hidden print:block! print:bg-white">
         {route.name === 'home' ? <Home /> : route.name === 'local' ? <LocalDesign /> : <CloudDesign route={route} />}
       </div>
+      <Toaster />
     </>
   )
 }

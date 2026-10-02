@@ -400,3 +400,7 @@ Format:
 ## m2-doc-01
 - [x] The outline is left of the sheet, styled as in M1; the comments column is right of the sheet, always, with or without a review (`e2e/m2/document.spec.ts`; doc-01 updated: superseded TOC position)
 - [x] Matches the column layout of docs/mockups/review-document.png (playwright MCP screenshot; the comments themselves come with m2-review-10)
+
+## m2-ui-01
+- [x] One toast at a time, bottom center, role=status, classes from docs/design-system.md (`src/ui/toast.tsx`, `e2e/m2/toast.spec.ts`)
+- [x] Success, error and progress variants; actions and a dismiss button (used for moving the guest design on sign-in: progress → error with Try again → success)

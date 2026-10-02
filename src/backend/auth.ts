@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import type { Session } from '@supabase/supabase-js'
 import { navigate } from '../router'
 import { importGuestDesign } from './designs'
+import { showToast } from '../ui/toast'
 import { getSupabase } from './supabase'
 
 export type Account = { id: string; email: string; name: string; avatarUrl: string | null }
@@ -30,12 +31,22 @@ export function startAuth() {
 
 /** On sign-in (and on load with a session, which retries a failed move) the guest design moves first. */
 async function enter(account: Account) {
+  let name = ''
   try {
-    const id = await importGuestDesign()
+    const id = await importGuestDesign((title) => {
+      name = title.trim() || 'Untitled design'
+      showToast({ kind: 'progress', text: `Moving “${name}” to your account…` })
+    })
+    if (id) showToast({ kind: 'success', text: `“${name}” is now in your account` })
     if (id && location.pathname === '/local') navigate(`/d/${id}`, { replace: true })
   } catch (e) {
     // The local design stays in IndexedDB and is moved on the next sign-in.
     console.warn('Could not move the guest design to the account', e)
+    showToast({
+      kind: 'error',
+      text: `“${name}” could not be moved to your account. It stays in this browser.`,
+      actions: [{ label: 'Try again', onClick: () => void enter(account) }],
+    })
   }
   useAuth.setState({ account, ready: true })
 }

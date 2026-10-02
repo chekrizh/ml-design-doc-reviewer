@@ -869,7 +869,7 @@
         "One toast at a time, bottom center, role=status, classes from docs/design-system.md",
         "Success, error and progress variants; actions and a dismiss button"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-review-01",

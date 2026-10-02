@@ -14,10 +14,11 @@ const db = () => {
  * idempotent through client_id = meta.id; IndexedDB is cleared only after the insert succeeded.
  * Returns the cloud id, or null when there was nothing worth moving. Throws if the insert fails.
  */
-export async function importGuestDesign(): Promise<string | null> {
+export async function importGuestDesign(onStart: (title: string) => void = () => {}): Promise<string | null> {
   await flushLocal()
   const design: Design | undefined = await loadDesign().catch(() => undefined)
   if (!design || !designHasContent(design)) return null
+  onStart(design.title)
   const meta = await loadMeta()
   const row = {
     client_id: meta.id,
