@@ -7,6 +7,7 @@ import { libraryDesign, libraryItem } from '../fixtures/library'
 import { navigate } from '../router'
 import { createDesign } from './designs'
 import { getSupabase } from './supabase'
+import { openDesignReview, setEnsureDesignId, useReview } from '../review/store'
 
 /** The open cloud design: its row id, the version this tab last saw, and whether a save hit a conflict (D23). */
 export const useCloud = create<{ id: string | null; version: number; conflict: boolean }>(() => ({ id: null, version: 0, conflict: false }))
@@ -31,6 +32,7 @@ async function save(d: Design) {
     const id = await createDesign(d, item.kind, item.id)
     pendingItem = null
     useCloud.setState({ id, version: 1, conflict: false })
+    useReview.setState({ designId: id })
     editorKey.set(id, `library:${item.id}`)
     navigate(`/d/${id}`, { replace: true })
     return
@@ -62,6 +64,7 @@ export async function openCloudDesign(id: string): Promise<boolean> {
   useDesign.getState().setDesign(data.data as Design)
   useDesign.getState().setSaveState('saved')
   saver = autosave(save, 800)
+  void openDesignReview(id)
   return true
 }
 
@@ -78,6 +81,7 @@ export async function openLibraryDesign(itemId: string): Promise<boolean> {
   useDesign.getState().setDesign(libraryDesign(itemId))
   useDesign.getState().setSaveState('saved')
   saver = autosave(save, 800)
+  void openDesignReview(null)
   return true
 }
 
@@ -87,3 +91,10 @@ export async function closeCloudDesign() {
   saver = null
   await s?.stop()
 }
+
+// A review needs the design in the cloud: an unsaved Library item is saved now; pending edits are written first.
+setEnsureDesignId(async () => {
+  if (pendingItem) await save(useDesign.getState().design)
+  else await saver?.flush()
+  return useCloud.getState().id
+})

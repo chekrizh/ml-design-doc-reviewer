@@ -6,6 +6,7 @@ import { startLocalPersistence, stopLocalPersistence } from './store/persist'
 import { Home } from './home/Home'
 import { Toaster } from './ui/toast'
 import { SettingsDialog } from './review/SettingsDialog'
+import { lastRunAt, openDesignReview, startReview, useReview } from './review/store'
 import { useAuth } from './backend/auth'
 import { closeCloudDesign, editorKey, openCloudDesign, openLibraryDesign, useCloud } from './backend/cloud'
 import { navigate, parseRoute, routePath, usePath, type Route } from './router'
@@ -26,7 +27,7 @@ export function App() {
         {route.name === 'home' ? <Home /> : route.name === 'local' ? <LocalDesign /> : <CloudDesign route={route} />}
       </div>
       <Toaster />
-      <SettingsDialog />
+      <SettingsDialog onReview={route.name === 'cloud' || route.name === 'library' ? () => void startReview('design') : undefined} />
     </>
   )
 }
@@ -66,7 +67,10 @@ function LocalDesign() {
 }
 
 function LocalEditor() {
-  const opened = useDesignSource(startLocalPersistence, () => stopLocalPersistence())
+  const opened = useDesignSource(async () => {
+    void openDesignReview(null)
+    await startLocalPersistence()
+  }, () => stopLocalPersistence())
   return opened ? <Editor /> : null
 }
 
@@ -104,13 +108,14 @@ function ConflictBanner() {
 
 function Editor({ banner }: { banner?: ReactNode }) {
   const [mode, setModeState] = useState<Mode>('canvas')
+  const lastRun = useReview((s) => lastRunAt(s.runs))
   const setMode = (m: Mode) => {
     setModeState(m)
     window.scrollTo(0, 0)
   }
   return (
     <>
-      <Header mode={mode} setMode={setMode} />
+      <Header mode={mode} setMode={setMode} onReview={(scope) => void startReview(scope)} lastRunAt={lastRun} />
       {banner}
       {mode === 'canvas' ? <Canvas /> : <DocumentView />}
     </>

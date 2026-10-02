@@ -17,7 +17,10 @@ test('AT-15 trade-offs indicator and Details button', async ({ page }) => {
   // 1. Grey scales in the top-right corner; not a button, clicking opens nothing.
   const hb = (await c.locator('header').boundingBox())!
   const ib = (await ind.boundingBox())!
-  expect(hb.x + hb.width - (ib.x + ib.width)).toBeLessThan(24)
+  // M2: the review indicator sits right next to it, so the pair takes the top-right corner.
+  const rb = (await c.locator('[data-indicator="Review"]').boundingBox())!
+  expect(hb.x + hb.width - (rb.x + rb.width)).toBeLessThan(24)
+  expect(rb.x - (ib.x + ib.width)).toBeLessThan(16)
   expect(ib.y - hb.y).toBeLessThan(hb.height / 2)
   await expect(ind).toHaveAttribute('data-state', 'off')
   await expect(ind.locator('[data-check]')).toHaveCount(0)

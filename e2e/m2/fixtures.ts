@@ -111,3 +111,29 @@ export async function serviceInsert(table: string, rows: object[]) {
 }
 
 export const TEST_A = '00000000-0000-4000-a000-00000000000a'
+
+/** Saves the valid test key for test user A, as the settings dialog would. */
+export const saveTestKey = async () => {
+  const { VALID_KEY } = await import('../mocks/openrouter/server')
+  await serviceRpc('svc_set_openrouter_key', { p_user: TEST_A, p_key: VALID_KEY })
+}
+
+/** Signed in as A, with the key, on a cloud copy of the example. Returns the design id. */
+export async function openExampleWithKey(page: import('@playwright/test').Page) {
+  const { exampleDesign } = await import('../helpers')
+  const design = await exampleDesign()
+  const db = await signedInClient()
+  const { data } = await db.from('designs').insert({ origin: 'example', source_id: 'retail-demand-forecasting', title: design.title, data: design, summary: { filledSections: [], tradeoffs: 7, mlTask: null } }).select('id').single()
+  await saveTestKey()
+  await openCloud(page, data!.id)
+  return data!.id as string
+}
+
+/** AI Review → Review whole design, or one section by name. */
+export async function runReview(page: import('@playwright/test').Page, section?: string) {
+  await page.getByRole('button', { name: 'AI Review', exact: true }).click()
+  const menu = page.getByRole('menu', { name: 'AI Review' })
+  await menu.getByRole('menuitem', { name: section ?? 'Review whole design', exact: true }).click()
+}
+
+export const reviewPanel = (page: import('@playwright/test').Page) => page.getByRole('complementary', { name: 'Review' })

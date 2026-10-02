@@ -6,6 +6,8 @@ import { ComponentEditor } from '../editor/ComponentEditor'
 import { useDesign } from '../store/store'
 import { Card } from './Card'
 import { flow } from './flow'
+import { ReviewPanel } from '../review/ReviewPanel'
+import { useReview } from '../review/store'
 
 const flowCompactor: Compactor = {
   type: 'wrap',
@@ -34,12 +36,14 @@ export function Canvas() {
   const setLayout = useDesign((s) => s.setLayout)
   const { width, containerRef, mounted } = useContainerWidth()
   const [open, setOpen] = useState<SectionId | null>(null)
+  const panelOpen = useReview((s) => s.panelOpen)
   // Card heights follow content; the stored h is only a starting guess until the card is measured.
   const [heights, setHeights] = useState<Partial<Record<SectionId, number>>>({})
   const onHeight = (sid: SectionId) => (px: number) => setHeights((h) => (h[sid] === px ? h : { ...h, [sid]: px }))
 
   return (
-    <main className="px-4 py-4">
+    <div className="flex items-start">
+    <main className="min-w-0 flex-1 px-4 py-4">
       <div ref={containerRef}>
       {mounted && (
         <GridLayout
@@ -65,5 +69,11 @@ export function Canvas() {
       </div>
       {open && <ComponentEditor sid={open} onClose={() => setOpen(null)} />}
     </main>
+      {panelOpen && (
+        <div className="sticky top-16 h-[calc(100vh-4rem)] self-start">
+          <ReviewPanel />
+        </div>
+      )}
+    </div>
   )
 }

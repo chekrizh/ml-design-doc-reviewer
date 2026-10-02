@@ -429,3 +429,14 @@ Format:
 - [x] 'AI Review settings' opens from the account menu, the Settings link of the AI Review menu and 'Add key' (`src/review/SettingsDialog.tsx`, `e2e/m2/settings.spec.ts`)
 - [x] Password field and Save with 'Checking…'; the saved key shows only its last 4 characters, '✓ Works', Replace, Delete (M1 confirm); a rejected key shows a red field and a hint; the full key is in no page text or response, also after reload; the model choice is saved (`user_settings.model`)
 - [x] Matches docs/mockups/review-run-settings.png (playwright MCP screenshot); note on AT-31 vs the §6.2 format check in open-questions.md
+
+## m2-review-07
+- [x] Review indicator next to Trade-offs, same size: grey not reviewed, red with '!' if open critical/major, green with a check otherwise; pulses while a review in its scope runs (`src/review/CardSignals.tsx`, `e2e/m2/review-run.spec.ts`)
+- [x] Footer badge left of Details '● N findings' with the worst severity dot, only with open findings; it opens the Review panel at that section with its worst finding expanded
+- [x] Matches docs/mockups/review-canvas.png (playwright MCP screenshot); the indicator position vs AT-15 is noted in open-questions.md
+
+## m2-review-08
+- [x] Counts by severity, tabs Open / Resolved / Dismissed, groups in canonical order with 'Whole design' first, severity order inside, minor collapsed as 'N minor — show' when the group has more serious findings (`src/review/ReviewPanel.tsx`)
+- [x] Expanded finding: 'What the design says', 'Why it matters', Fix behind 'Show fix', Dismiss and Resolve; closed findings show Reopen; stale ones are faded with their label (`src/review/Finding.tsx`)
+- [x] Expanding a finding highlights its card and scrolls it into view
+- [x] Excalidraw fonts are served by the app (D33): the network guard caught the CDN request during PNG export

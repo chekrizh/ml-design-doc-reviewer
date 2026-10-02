@@ -48,3 +48,8 @@ Format:
 ## M2: AT-31 `sk-or-v1-wrong` vs the key format check (§6.2)
 
 AT-31 step 1 expects "a message that OpenRouter rejected the key" for `sk-or-v1-wrong`. §6.2 checks the format first (`^sk-or-v1-[A-Za-z0-9_-]{8,}$`), so this key never reaches OpenRouter and the function answers `invalid_key_format` (400). The scenario wins for what the user sees: the dialog shows the same "OpenRouter rejected this key…" text for both codes; the function keeps the §6.2 order (no request to OpenRouter for a malformed key). If a different text for malformed keys is wanted, the scenario needs an update.
+
+## M2: AT-15 "grey scales in the top-right corner" with the review indicator
+
+- Conflict: M2 (mvp-spec, review-canvas mockup) puts the review indicator (magnifier) right next to the trade-offs scales, to their right. The scales are no longer the rightmost element of the card header, as my AT-15 / m11-02 tests measured (≤ 24 px from the right edge).
+- What I did: the tests now check that the pair (scales, then magnifier) takes the top-right corner: the magnifier ≤ 24 px from the edge and the scales directly left of it. AT-15's wording ("в правом верхнем углу") still holds; if the scales must stay rightmost, the M2 mockup order needs to change.

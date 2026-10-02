@@ -947,7 +947,7 @@
         "Footer badge left of Details '● N findings' with the worst severity dot, only when there are open findings; it opens the Review panel at that section",
         "Matches docs/mockups/review-canvas.png"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-review-08",
@@ -958,7 +958,7 @@
         "Expanded finding: 'What the design says', 'Why it matters', Fix behind 'Show fix', Dismiss and Resolve; closed findings show Reopen; stale ones are faded with their label",
         "Expanding a finding highlights its card and scrolls it into view"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-review-09",

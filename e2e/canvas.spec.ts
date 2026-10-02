@@ -270,7 +270,10 @@ test('m11-02 trade-offs status icon: top-right, not a button, two states, toolti
     await expect(ind).toHaveAccessibleName('Trade-offs not filled')
     const hb = (await c.locator('header').boundingBox())!
     const ib = (await ind.boundingBox())!
-    expect(hb.x + hb.width - (ib.x + ib.width)).toBeLessThan(24)
+    // M2: the review indicator sits right next to it, so the pair takes the top-right corner.
+    const rb = (await c.locator('[data-indicator="Review"]').boundingBox())!
+    expect(hb.x + hb.width - (rb.x + rb.width)).toBeLessThan(24)
+    expect(rb.x - (ib.x + ib.width)).toBeLessThan(16)
     expect(ib.y - hb.y).toBeLessThan(hb.height / 2)
     await expect(c.getByRole('button', { name: /trade-offs/i })).toHaveCount(0)
   }

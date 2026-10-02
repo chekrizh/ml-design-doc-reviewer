@@ -34,7 +34,7 @@ test('m2-auth-01: after sign-in the header shows the photo and the account menu;
   await page.getByRole('button', { name: 'Account menu' }).click()
   const menu = page.getByRole('menu', { name: 'Account menu' })
   await expect(menu).toContainText('test-a@example.test')
-  await expect(menu.getByRole('menuitem')).toHaveText(['My designs', 'Sign out'])
+  await expect(menu.getByRole('menuitem')).toHaveText(['My designs', 'AI Review settings', 'Sign out'])
   await menu.getByRole('menuitem', { name: 'Sign out' }).click()
 
   await expect(page).toHaveURL('http://localhost:4173/')
