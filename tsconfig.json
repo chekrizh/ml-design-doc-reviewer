@@ -12,7 +12,9 @@
     "skipLibCheck": true,
     "isolatedModules": true,
     "noEmit": true,
-    "types": ["vite/client", "node"]
+    "types": ["vite/client", "node"],
+    "allowImportingTsExtensions": true,
+    "paths": { "@review/*": ["./supabase/functions/_shared/review/*"] }
   },
-  "include": ["src", "e2e", "vite.config.ts", "vitest.config.ts", "playwright.config.ts"]
+  "include": ["src", "e2e", "supabase/functions/_shared/review", "supabase/functions/_shared/skill.generated.ts", "supabase/functions/_shared/skill.test.ts", "scripts", "vite.config.ts", "vitest.config.ts", "playwright.config.ts"]
 }

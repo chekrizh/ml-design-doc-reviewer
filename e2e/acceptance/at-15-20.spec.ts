@@ -17,7 +17,10 @@ test('AT-15 trade-offs indicator and Details button', async ({ page }) => {
   // 1. Grey scales in the top-right corner; not a button, clicking opens nothing.
   const hb = (await c.locator('header').boundingBox())!
   const ib = (await ind.boundingBox())!
-  expect(hb.x + hb.width - (ib.x + ib.width)).toBeLessThan(24)
+  // M2: the review indicator sits right next to it, so the pair takes the top-right corner.
+  const rb = (await c.locator('[data-indicator="Review"]').boundingBox())!
+  expect(hb.x + hb.width - (rb.x + rb.width)).toBeLessThan(24)
+  expect(rb.x - (ib.x + ib.width)).toBeLessThan(16)
   expect(ib.y - hb.y).toBeLessThan(hb.height / 2)
   await expect(ind).toHaveAttribute('data-state', 'off')
   await expect(ind.locator('[data-check]')).toHaveCount(0)
@@ -120,19 +123,19 @@ test('AT-18 header: Share, AI Review, ⋯ menu, save status', async ({ page }) =
   expect(Math.abs(sb.y + sb.height / 2 - (tb.y + tb.height / 2))).toBeLessThan(12)
   // 3. Share menu; Export Markdown from it downloads a .md after one value in Problem Space.
   await header.getByRole('button', { name: 'Share', exact: true }).click()
-  await expect(page.getByRole('menu', { name: 'Share' }).getByRole('menuitem')).toHaveText(['Export PDF', 'Export Markdown'])
+  // Point 3 follows AT-43 in M2 ('Что из M1 заменено'): PDF and Markdown keep their order in Share.
+  const items = await page.getByRole('menu', { name: 'Share' }).getByRole('menuitem').allInnerTexts()
+  expect(items.filter((t) => t === 'Export PDF' || t === 'Export Markdown')).toEqual(['Export PDF', 'Export Markdown'])
   await page.keyboard.press('Escape')
   await setCardValue(page, 'problem-space', 'Domain', 'Payments')
   const { warning, download } = await exportMarkdown(page, 'accept')
   expect(warning).toMatch(/empty/)
   expect(download!.suggestedFilename()).toMatch(/\.md$/)
-  // 4. AI Review: one disabled "Full review" with a "Coming soon" tooltip.
+  // 4. Follows AT-30 in M2: a guest's AI Review asks to sign in; no 'Coming soon'.
   await header.getByRole('button', { name: 'AI Review', exact: true }).click()
   const ai = page.getByRole('menu', { name: 'AI Review' })
-  await expect(ai.getByRole('menuitem')).toHaveText(['Full review'])
-  await expect(ai.getByRole('menuitem', { name: 'Full review' })).toBeDisabled()
-  await ai.getByRole('menuitem', { name: 'Full review' }).hover()
-  await expect(page.getByRole('tooltip', { name: 'Coming soon' })).toBeVisible()
+  await expect(ai).toContainText('Sign in to run AI review')
+  await expect(ai).not.toContainText('Coming soon')
   await page.keyboard.press('Escape')
   // 5. "⋯" has Load example and Reset layout; Load example loads after confirmation.
   await header.getByRole('button', { name: 'More', exact: true }).click()

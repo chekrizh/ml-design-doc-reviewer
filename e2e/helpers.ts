@@ -14,7 +14,7 @@ export const SECTION_ORDER: [SectionId, string][] = [
 ]
 
 export async function openApp(page: Page) {
-  await page.goto('/')
+  await page.goto('/local')
   await expect(page.getByRole('button', { name: 'Canvas', exact: true })).toBeVisible()
   // Cards measure their content and the rows reflow for a moment after load.
   await settledBox(page.locator('.react-grid-layout'))
@@ -67,7 +67,7 @@ export async function answerDialog(page: Page, button: string) {
 export async function loadExample(page: Page) {
   await menuAction(page, 'More', 'Load example')
   await answerDialog(page, 'Load example')
-  await expect(page.getByRole('button', { name: 'Edit Design title' })).toHaveText('Churn Prediction (Telecom)')
+  await expect(page.getByRole('button', { name: 'Edit Design title' })).toHaveText('Supermegaretail Demand Forecasting')
 }
 
 export async function openDetails(page: Page, sid: SectionId) {
@@ -263,3 +263,10 @@ export async function expectRowsFitContent(page: Page) {
     .toBe('ok')
 }
 
+
+/** The example design (Supermegaretail) as the app builds it, for Node-side test expectations. */
+export async function exampleDesign() {
+  const { readFileSync } = await import('node:fs')
+  const { itemDesign, parseLibraryItem } = await import('../src/fixtures/library-parse')
+  return itemDesign(parseLibraryItem('retail-demand-forecasting', readFileSync('docs/library/retail-demand-forecasting.md', 'utf8')))
+}

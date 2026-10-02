@@ -1,10 +1,9 @@
 import { expect, test } from '@playwright/test'
 import { designToMarkdown } from '../src/export/markdown'
 import { diagramNonEmpty, sectionEmpty } from '../src/model/rules'
-import { exampleDesign } from '../src/fixtures/example'
 import {
   answerDialog, closeEditor, downloadText, drawRectangle, exportMarkdown, loadExample, openApp, openDetails, pdfText, readZip,
-  SECTION_ORDER, savedDesign, setCardValue, setTitle, toMode, menuAction,
+  SECTION_ORDER, savedDesign, setCardValue, setTitle, toMode, menuAction, exampleDesign,
 } from './helpers'
 
 test('export-02 without diagrams: single <title-slug>.md equal to the generator output', async ({ page }) => {
@@ -22,13 +21,13 @@ test('export-03 with diagrams: <title-slug>.zip with the .md and one svg per dia
   await loadExample(page)
   const design = await savedDesign(page)
   const { download } = await exportMarkdown(page, 'none')
-  expect(download!.suggestedFilename()).toBe('churn-prediction-telecom.zip')
+  expect(download!.suggestedFilename()).toBe('supermegaretail-demand-forecasting.zip')
   const zip = await readZip(download!)
   const files = Object.keys(zip.files).filter((f) => !zip.files[f].dir)
   const svgs = files.filter((f) => /^images\/.+\.svg$/.test(f))
-  expect(files.sort()).toEqual(['churn-prediction-telecom.md', ...svgs].sort())
+  expect(files.sort()).toEqual(['supermegaretail-demand-forecasting.md', ...svgs].sort())
   expect(svgs).toHaveLength(design.sections.filter((s) => diagramNonEmpty(s.diagram)).length)
-  const md = await zip.file('churn-prediction-telecom.md')!.async('string')
+  const md = await zip.file('supermegaretail-demand-forecasting.md')!.async('string')
   expect(md).toBe(designToMarkdown(design))
   const links = [...md.matchAll(/!\[[^\]]*\]\(([^)]+)\)/g)].map((m) => m[1])
   expect(links.length).toBe(svgs.length)
@@ -54,9 +53,8 @@ test('export-04 Export PDF opens print for the document; print styles hide chrom
   await expect(page.getByTestId('document')).toBeVisible()
 
   const text = await pdfText(page)
-  exampleDesign().sections.forEach((s, i) => {
+  for (const [i, s] of (await exampleDesign()).sections.entries())
     if (!sectionEmpty(s)) expect(text).toContain(`${i + 1}. ${SECTION_ORDER[i][1]}`)
-  })
   expect(text).not.toContain('On this page')
   expect(text).not.toContain('Export Markdown')
 })

@@ -1,0 +1,118 @@
+# Supermegaretail Demand Forecasting
+
+## Problem Space [section:problem-space]
+Key properties:
+- [kp:problem-space-p0] Domain: Retail, grocery chain
+- [kp:problem-space-p1] Business Goal: Narrow the delivered vs sold gap without out-of-stock
+- [kp:problem-space-p2] ML Task: Demand forecast per SKU × store × day
+- [kp:problem-space-p3] Constraints: Perishables; delivery every 2 days; data delay ≤ 48 h
+- [kp:problem-space-p4] Horizon: 4 weeks (1 year for suppliers)
+- [kp:problem-space-p5] Current Loss: ≈ $800M per year
+Rationale [rationale]:
+Supermegaretail runs thousands of stores and must buy goods before it sells them. Leftovers mean waste of perishables; selling out means lost revenue, customers going to competitors, and unknown real demand.
+- Suppliers sign one-year deals that can be adjusted 90 days ahead.
+- 47 distribution centers send a truck to each store about every two days; stores keep stock in the loading bay for 2–3 days.
+- The distribution center plans deliveries, a store manager can override them.
+- Owners: logistics, procurement, and store operations.
+Out-of-stock costs more than overstock, so errors are asymmetric. Overstock loss is easy to count, out-of-stock loss needs A/B tests or expert estimates.
+Trade-offs: none
+
+## Evaluation (Offline) [section:evaluation-offline]
+Key properties:
+- [kp:evaluation-offline-p0] Offline Metric: Quantile loss at 1.5, 25, 50, 75, 95, 99
+- [kp:evaluation-offline-p1] Loss: Quantile loss, same as metric
+- [kp:evaluation-offline-p2] Target Value: Beat baseline on every quantile, 95% CI
+- [kp:evaluation-offline-p3] Weighting: Plain and weighted by SKU price
+Rationale [rationale]:
+Sales are count data: low, integer, often zero, with asymmetric distributions. A point forecast is not enough, the business keeps stock to a service level, so it needs quantiles of the predictive distribution. Quantile loss lets the loss equal the metric: six models, one per quantile. Tweedie loss is the second line of experiments. Metrics are reported with 95% confidence intervals from bootstrap or cross-validation.
+Trade-offs (criteria: Works on count data with zeros | Serves a stock service level | Can equal the loss):
+- [opt:o0] MAE / wMAPE: Biased on skewed low counts | No, optimizes the median | Yes
+- [opt:o1] MAPE / sMAPE: No, undefined or fixed at zero actuals | No | No
+- [opt:o2] MSE: No, dominated by large errors | No | Yes
+- [opt:o3] Quantile loss (chosen): Yes | Yes, a quantile per service level | Yes
+
+## Baseline [section:baseline]
+Key properties:
+- [kp:baseline-p0] Approach: Per-SKU sales quantiles over a yearly window
+- [kp:baseline-p1] Baseline Metric: Same quantile losses as offline evaluation
+- [kp:baseline-p2] Next Steps: Quantile linear regression, then SARIMA / Prophet
+Rationale [rationale]:
+The simplest bar is the same day last week per SKU and store: a week back rather than a day back because data can be late and sales have a strong weekly cycle. The advanced constant baseline computes the same six quantiles from a yearly window, so it is directly comparable with the target models. A quantile linear regression on lags and rolling aggregates, and time-series models (SARIMA, Prophet), are the next steps. Beating these baselines shows whether modeling and features move in the right direction.
+Trade-offs (criteria: Effort | Comparable with quantile metrics | Also a fallback):
+- [opt:o0] Same day last week: Minimal | No, a point forecast | Yes, last-resort fallback
+- [opt:o1] Yearly-window quantiles (chosen): Low | Yes | No
+- [opt:o2] Quantile linear regression: Medium, needs features | Yes | No
+- [opt:o3] SARIMA / Prophet: Medium, tuning or none with Prophet | Partly | Yes, secondary fallback
+
+## Validation [section:validation]
+Key properties:
+- [kp:validation-p0] Scheme: Rolling CV: 5 outer folds, 3 inner folds
+- [kp:validation-p1] Windows: 2 years train, 28 days test, 3-day gap, 7-day step
+- [kp:validation-p2] Golden Set: Holdout refreshed every 3 months
+Rationale [rationale]:
+New data and labels arrive daily with up to 48 hours delay, recent data matters most, the assortment changes by 15% a month, and there are weekly and annual cycles. The split must mirror inference: train on the last two years, predict the next four weeks, with a 3-day gap for the data delay. The outer loop estimates quality, the inner loop tunes hyperparameters and selects features. The split moves weekly with new data; a golden set tracks long-term progress.
+Trade-offs (criteria: Respects time order | Handles 48 h data delay | Gives variance of the estimate):
+- [opt:o0] Random K-fold: No, leaks the future | No | Yes
+- [opt:o1] Single time holdout: Yes | Yes, with a gap | No
+- [opt:o2] Rolling CV with a gap (chosen): Yes | Yes | Yes
+Diagram: attached as image [section:validation]
+
+## Data & Features [section:data-features]
+Key properties:
+- [kp:data-features-p0] Sources: Transactions, stock, promo calendar, metadata
+- [kp:data-features-p1] Key Features: Sales lags and rolling stats, prices, promo, penetration
+- [kp:data-features-p2] Object: (date, store, SKU) → units sold
+- [kp:data-features-p3] External Data: Competitor prices, weather, traffic
+Rationale [rationale]:
+Transactions are the primary source of truth, stock history shows how much could be sold, the promo calendar drives spikes. Purchased weather and traffic data and manually gathered competitor prices (about 25% of SKUs, with gaps) come from outside. History covers more than three years; labels come from transactions, so no extra labeling is needed.
+Features are kept only if they pass four criteria: prediction quality, interpretability, computation time, and stability of their sources. A feature that improves quality but takes two days to compute is rejected. Each feature is a hypothesis, importance is checked with SHAP and shuffle importance, and feature tests run before and after training.
+Trade-offs: none
+Diagram: attached as image [section:data-features]
+
+## Evaluation (Online) [section:evaluation-online]
+Key properties:
+- [kp:evaluation-online-p0] Evaluation Type: A/B test split by distribution center
+- [kp:evaluation-online-p1] Key Metric: Average check, proxy for revenue
+- [kp:evaluation-online-p2] Hypothesis: Revenue +0.3% or more
+- [kp:evaluation-online-p3] Design: Welch's t-test, α 5%, β 10%, 1 month
+Rationale [rationale]:
+Offline gains translate into an expected 0.3–0.7% revenue increase in the pilot group, based on earlier A/B tests. The split unit is the distribution center: each center serves a cluster of stores, so splitting by store would mix groups within one replenishment chain. Two weeks are enough statistically, but replenishment runs weekly, so the test lasts a full month. Control metrics: checks per day, model update frequency, offline metrics. Auxiliary: daily revenue and profit.
+Trade-offs (criteria: Groups independent | Enough units for power):
+- [opt:o0] Split by store: No, stores share a distribution center | Yes
+- [opt:o1] Split by distribution center (chosen): Yes | Enough with matched store subsets
+
+## Integration [section:integration]
+Key properties:
+- [kp:integration-p0] Inference Pattern: Scheduled batch jobs, on-demand via API
+- [kp:integration-p1] Output: Demand per SKU × entity × period, JSON
+- [kp:integration-p2] Latency Budget: Not critical, batch throughput matters
+- [kp:integration-p3] Fallback: 3 tiers down to last week's sales
+Rationale [rationale]:
+Forecasts run daily, weekly, and monthly on large volumes: batch containers on AWS Batch read from S3 and write back to S3, a small API serves on-demand requests. When drift or data problems appear, the system switches automatically: a model on the most important features, then SARIMA or Prophet, then last week's sales adjusted for holidays. The wrapper and the model are released separately; a new model runs in shadow mode first. Users are internal, so blue-green deployment is not needed; overrides and feedback stay with business users.
+Trade-offs (criteria: Risk for users | Effort):
+- [opt:o0] Blue-green deployment: Low | High
+- [opt:o1] Standard rollout + shadow mode for models (chosen): Low, users are internal | Low
+Diagram: attached as image [section:integration]
+
+## Monitoring [section:monitoring]
+Key properties:
+- [kp:monitoring-p0] Data Drift: Wasserstein distance, mean drift score
+- [kp:monitoring-p1] Model Quality: Quantile losses daily, labels in 15 min
+- [kp:monitoring-p2] Alerting: z-score on missing data, prediction drift
+- [kp:monitoring-p3] Tooling: Evidently AI, ClickHouse, Prometheus, Grafana
+Rationale [rationale]:
+This is one of the first ML projects at Supermegaretail, so there is no ML monitoring yet. Labels arrive 15 minutes after a sale, so model quality is monitored directly: the six quantile losses, RMSE, and MAE, with thresholds set after the first three months. Data quality alerts fire at 3 z-scores for important features and 4 for the rest; schema, ranges, and correlations are checked too. Prediction drift is an early alarm (PSI > 0.2 and Wasserstein > 0.1 are both tested). Business metrics stay on rotating A/B groups.
+Trade-offs (criteria: Time to start | Covers quality, data and target drift | Control):
+- [opt:o0] Evidently AI (open source) (chosen): Days | Yes | Medium
+- [opt:o1] Own monitoring platform: Months | Whatever we build | Full
+
+## Target Solution & Architecture [section:target-solution]
+Key properties:
+- [kp:target-solution-p0] Model Type: Gradient boosting, one model per quantile
+- [kp:target-solution-p1] Scope: One model for all categories
+- [kp:target-solution-p2] Training Stack: Python, Spark, MLflow, Docker, SageMaker
+Rationale [rationale]:
+Six gradient-boosting models, one per quantile, trained with quantile loss on the feature store. Replacing per-category models with one unified model improved offline metrics across most folds; small categories gained most, large ones did not lose, and the result held across seasons and regions. One model is also much easier to maintain. Learning curves pick the number of trees, lags, and window sizes; MLflow tracks experiments, CI/CD retrains on new data.
+Trade-offs (criteria: Small categories | Large categories | Maintenance):
+- [opt:o0] One model per category: Weak, too little data | Good | Many models
+- [opt:o1] One unified model (chosen): Better offline metrics | No significant change | One model

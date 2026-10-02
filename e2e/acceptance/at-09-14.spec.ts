@@ -66,8 +66,9 @@ test('AT-11 load example asks first', async ({ page }) => {
   await answerDialog(page, 'Cancel')
   await expect(page.getByRole('button', { name: 'Edit Design title' })).toHaveText('Mine')
 
+  // Point 2 follows AT-25 in M2 ('Что из M1 заменено'): the example is Supermegaretail; exact counts are in AT-25.
   await loadExample(page)
-  await expect(page.getByRole('button', { name: 'Edit Design title' })).toHaveText('Churn Prediction (Telecom)')
+  await expect(page.getByRole('button', { name: 'Edit Design title' })).toHaveText('Supermegaretail Demand Forecasting')
   for (const sid of ids) {
     const values = await card(page, sid).getByRole('button', { name: /^Edit / }).allInnerTexts()
     expect(values.length, sid).toBeGreaterThan(0)

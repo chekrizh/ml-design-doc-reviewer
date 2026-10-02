@@ -641,7 +641,7 @@
         "`pnpm e2e` checks that local Supabase is running and fails with a clear message if not; the database is reset to a known state before each M2 test",
         "CLAUDE.md lists the commands to start, reset and stop local Supabase"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-setup-02",
@@ -652,7 +652,7 @@
         "`.env.example` names the variables: Supabase URL, publishable key, Google client ID; local values point to local Supabase",
         "With Supabase stopped, the guest app still works: all M1 and M1.1 acceptance tests pass"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-setup-03",
@@ -663,7 +663,7 @@
         "Google stubs via page.route: GIS script with grant / deny / popup-blocked outcomes, Drive upload that records requests (create vs update) and can fail",
         "A Playwright fixture fails the test on any request to a non-local host that is not stubbed"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-setup-04",
@@ -673,7 +673,7 @@
         "Routes `/`, `/d/:id`, `/local`, `/library/:itemId` on the History API without a dependency (D27); back/forward works",
         "Reloading a design URL opens the same design (cloud for signed-in, the local one for guests)"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-db-01",
@@ -684,7 +684,7 @@
         "RLS and grants as §4; pgTAP tests prove a user cannot read, update or delete another user's designs",
         "Inserting or updating stores and returns the same JSON the client sent"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-db-02",
@@ -695,7 +695,7 @@
         "`svc_complete_review_run` replaces findings in the run's scope atomically and keeps the replaced ones; it does nothing for a canceled run (pgTAP)",
         "Clients can change only `findings.status`/`status_changed_at` and cancel their own running run; pgTAP proves inserts and other updates are refused"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-db-03",
@@ -706,7 +706,7 @@
         "`authenticated` can neither select `key_secret_id` nor execute any `svc_*` function (pgTAP)",
         "Only the edge functions read the key"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-auth-01",
@@ -717,7 +717,7 @@
         "A test sign-in that skips Google exists only when the app runs against local Supabase; the production build contains no way to reach it (a test checks the built bundle)",
         "Sign out returns to the guest home screen"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-auth-02",
@@ -728,7 +728,7 @@
         "IndexedDB is cleared after a successful import; a failed import keeps the local design",
         "An empty local design (nothing filled) is not imported"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-designs-01",
@@ -739,7 +739,7 @@
         "Reload restores title, values, rationale, matrices, diagrams and layout",
         "Guests keep the M1 IndexedDB autosave"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-designs-02",
@@ -750,7 +750,7 @@
         "The tab shows a banner that the design changed elsewhere, with a reload action; autosave of that design stops until reload",
         "After reload the tab shows the stored version"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-designs-03",
@@ -761,7 +761,7 @@
         "Opening a design from 'Your designs' loads it; Delete asks for confirmation with the M1 dialog and removes it for good",
         "No folders, search or rename from the list"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-lib-01",
@@ -773,7 +773,7 @@
         "The task has only Problem Space filled and an empty ML Task value",
         "Load example loads Supermegaretail (AT-25); your own M1 tests that expect Churn are updated (supersedes the example part of m11 and earlier features)"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-lib-02",
@@ -783,7 +783,7 @@
         "The three sections have Excalidraw diagrams built from the descriptions in the markdown file",
         "Exactly these 3 cards show a thumbnail after Load example; other sections follow the default diagram rules from M1.1"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-home-01",
@@ -794,7 +794,7 @@
         "At 1440×900 the page itself does not scroll",
         "Matches docs/mockups/home-signed-in.png and home-guest.png"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-home-02",
@@ -805,7 +805,7 @@
         "The task's ML Task reads 'Your first decision'; the example shows its Source",
         "New design, Start task and Open example open the matching design"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-home-03",
@@ -816,7 +816,7 @@
         "Last edited first",
         "Empty state when there are no designs"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-home-04",
@@ -827,7 +827,7 @@
         "With a local design, 'Current work · in this browser' shows it with Continue",
         "Opening an example or task over a local design asks 'Replace your current work?' with the M1 dialog; Cancel keeps it"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-home-05",
@@ -837,7 +837,7 @@
         "Opening an example without editing creates nothing",
         "The first edit saves a copy with origin Example to 'Your designs'; the library example stays unchanged"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-header-01",
@@ -849,7 +849,7 @@
         "Share: Export to Google Docs (with its subtitle), Export PDF, Export Markdown, in this order",
         "AI Review menu: guest → 'Sign in to run AI review'; no key → 'Add your OpenRouter key' and 'Add key'; with key → 'Review whole design', 'Review one section' with the 9 sections, model, last run time, Settings"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-doc-01",
@@ -859,7 +859,7 @@
         "The outline is left of the sheet, styled as in M1; the comments column is right of the sheet, always, with or without a review",
         "Matches docs/mockups/review-document.png"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-ui-01",
@@ -869,7 +869,7 @@
         "One toast at a time, bottom center, role=status, classes from docs/design-system.md",
         "Success, error and progress variants; actions and a dismiss button"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-review-01",
@@ -880,7 +880,7 @@
         "Review indicator per section (not reviewed / red / green), worst severity, counts",
         "Stale is derived (D25): field text differs from `anchor_value` → 'Field changed since review'; field not found → whole design, 'Field removed'"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-review-02",
@@ -891,7 +891,7 @@
         "Serializer output for the example matches a committed snapshot (§6.7); anchor resolution follows the §6.8 table",
         "Request built for the example has the instruction, the skill with cache_control, the design text and exactly 3 PNG images after it (§6.4 step 6)"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-review-03",
@@ -903,7 +903,7 @@
         "A canceled run's results are discarded (`svc_complete_review_run` returns `canceled`)",
         "Logs contain no headers, bodies or keys (a test inspects the log output)"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-review-04",
@@ -913,7 +913,7 @@
         "`openrouter-key` and `openrouter-models` follow §6.2 and §6.3; a rejected key is not stored",
         "The model list has only image-capable models with structured outputs, recommended first and default; no prices"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-review-05",
@@ -924,7 +924,7 @@
         "Password field and Save with 'Checking…'; saved key shows only its last 4 characters, 'Works', Replace, Delete; a rejected key shows a red field and a hint",
         "Matches docs/mockups/review-run-settings.png"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-review-06",
@@ -936,7 +936,7 @@
         "On success new findings replace those in the run's scope only; on error or Cancel previous findings are unchanged and the panel shows the error with its action",
         "Editing during a run is allowed; fields changed meanwhile get stale findings"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-review-07",
@@ -947,7 +947,7 @@
         "Footer badge left of Details '● N findings' with the worst severity dot, only when there are open findings; it opens the Review panel at that section",
         "Matches docs/mockups/review-canvas.png"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-review-08",
@@ -958,7 +958,7 @@
         "Expanded finding: 'What the design says', 'Why it matters', Fix behind 'Show fix', Dismiss and Resolve; closed findings show Reopen; stale ones are faded with their label",
         "Expanding a finding highlights its card and scrolls it into view"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-review-09",
@@ -970,7 +970,7 @@
         "Marker click expands the finding; finding click highlights and scrolls to the field",
         "Matches docs/mockups/review-editor.png"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-review-10",
@@ -981,7 +981,7 @@
         "The expanded comment aligns with its field and the field is highlighted",
         "Tabs Open / Resolved / Dismissed as on the canvas"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-review-11",
@@ -991,7 +991,7 @@
         "Resolve, Dismiss or Reopen in the panel, the editor or the document updates badges, indicators, markers, comments and counts everywhere without reload",
         "Statuses survive reload"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-review-12",
@@ -1000,7 +1000,7 @@
       "steps": [
         "Markdown, PDF and Google Docs export contain no finding text or review labels"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-export-01",
@@ -1010,7 +1010,7 @@
         "Each non-empty diagram rasterizes to PNG (shared by the review request and the Google Docs export)",
         "A unit test checks the PNG signature and size for the example diagrams"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-export-02",
@@ -1023,7 +1023,7 @@
         "Toasts: 'Continue in the Google window…', 'Exporting to Google Docs…', 'Google Doc created' with Open and Copy link; errors with Try again for denied access, blocked popup, Drive failure",
         "Works for guests and signed-in users"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-security-01",
@@ -1033,7 +1033,7 @@
         "No test, page or response exposes the full OpenRouter key; the built bundle contains no service-role key or Google client secret",
         "RLS tests pass for designs, findings and settings"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-acceptance-01",
@@ -1044,7 +1044,7 @@
         "Your tests for AT-11 point 2 and AT-18 points 3–4 follow the 'Что из M1 заменено' section",
         "All acceptance tests, M1 and M2, pass in Chromium and WebKit"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-final-01",
@@ -1055,7 +1055,7 @@
         "The palette checks in docs/design-system.md print nothing",
         "No TODOs left for features marked as passing"
       ],
-      "passes": false
+      "passes": true
     }
   ],
   "acceptance": "docs/acceptance-tests.md"

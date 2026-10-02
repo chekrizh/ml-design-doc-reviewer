@@ -14,10 +14,13 @@
     "typecheck": "tsc -p .",
     "test": "vitest run",
     "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm build",
-    "e2e": "playwright test"
+    "e2e": "playwright test",
+    "test:db": "supabase test db",
+    "gen:skill": "node scripts/gen-skill.ts"
   },
   "dependencies": {
     "@excalidraw/excalidraw": "^0.18.1",
+    "@supabase/supabase-js": "^2.117.2",
     "@tiptap/core": "^3.31.3",
     "@tiptap/pm": "^3.31.3",
     "@tiptap/react": "^3.31.3",

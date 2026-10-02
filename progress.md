@@ -300,3 +300,203 @@ Format:
 ## Run result: DONE
 - Features passing: 57 / 57
 - Stuck features: none
+
+# M2
+
+## m2-setup-01
+- [x] `supabase init` config is committed; `supabase start` and `supabase db reset` succeed on a clean checkout (seed: test users, sign-ups closed, password sign-in on; `e2e/m2/supabase.spec.ts`)
+- [x] `pnpm e2e` checks that local Supabase is running and fails with "Local Supabase is not running: run `supabase start`" if not (`e2e/global-setup.ts`); every M2 test resets the database via `test_reset()` (`e2e/m2/fixtures.ts`, D28)
+- [x] CLAUDE.md lists the commands to start, reset and stop local Supabase
+
+## m2-setup-02
+- [x] `@supabase/supabase-js` added with D29 in docs/decisions.md (alternatives include no dependency); lazy client in `src/backend/supabase.ts` (`supabase.test.ts`)
+- [x] `.env.example` names `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`, `VITE_GOOGLE_CLIENT_ID`, `VITE_TEST_SIGNIN`; local values point to local Supabase (e2e build gets the same via playwright.config.ts)
+- [x] With Supabase stopped, all M1 and M1.1 acceptance tests pass in Chromium and WebKit (`E2E_WITHOUT_SUPABASE=1 pnpm exec playwright test e2e/acceptance --project=chromium --project=webkit`: 42/42)
+
+## m2-setup-03
+- [x] OpenRouter mock (`e2e/mocks/openrouter/server.ts`, started by global setup on 127.0.0.1:4010, reachable from edge functions via `host.docker.internal`): /key accepts only `sk-or-v1-test-valid-0000a3f9`, /models, /chat/completions with R1, R2, 401, 402, 429, bad_output, no_images and a delay; records the last request without Authorization (`e2e/m2/mocks.spec.ts`)
+- [x] Google stubs via page.route (`e2e/mocks/google/google.ts`): GIS script with grant / deny / popup-blocked / popup-closed, Drive upload that records create vs update and can fail (500, or 401 once)
+- [x] The M2 Playwright fixture fails the test on any request to a non-local host that is not stubbed (`e2e/m2/fixtures.ts`)
+
+## m2-db-01
+- [x] Migration creates `designs` as §3.1, with the version trigger: only `data`/`title` changes bump `version` and `updated_at` (`supabase/tests/designs.test.sql`)
+- [x] RLS and grants as §4 (anon nothing; authenticated only own rows; `version`, `user_id` not updatable by the client); pgTAP proves a user cannot read, update or delete another user's designs (`pnpm test:db`)
+- [x] Insert and update store and return the same JSON the client sent (pgTAP and `e2e/m2/db.spec.ts` through supabase-js)
+
+## m2-db-02
+- [x] Migration creates `review_runs`, `findings` and the view `design_open_findings` (security_invoker) as §3.2–3.5 (`supabase/tests/reviews.test.sql`)
+- [x] `svc_complete_review_run` replaces findings in the run's scope in one transaction (row lock on the run) and keeps the replaced ones with `replaced_by_run_id`; a section run leaves whole-design findings; a canceled run changes nothing (pgTAP)
+- [x] Clients can change only `findings.status`/`status_changed_at` and cancel their own running run; pgTAP proves inserts, other updates and `svc_*` calls are refused
+
+## m2-db-03
+- [x] `user_settings` and the `svc_*` key functions as §3.4 and §4.1; the key lives in Vault (`vault.create_secret` / `update_secret`), `user_settings` holds only the secret id and last 4 (`supabase/tests/settings.test.sql`)
+- [x] `authenticated` can neither select `key_secret_id` nor execute any `svc_*` function nor read Vault (pgTAP)
+- [x] Only the edge functions read the key: `svc_get_openrouter_key` is executable by `service_role` only (pgTAP)
+
+## m2-auth-01
+- [x] 'Sign in with Google' starts Supabase Google OAuth (PKCE, redirect back to the current URL); after sign-in the header shows the Google photo and the account menu (`e2e/m2/auth.spec.ts`)
+- [x] The test sign-in ('Sign in as test user', seed users) exists only with `VITE_TEST_SIGNIN=true`; the gate and the button live in one module (`src/backend/TestSignIn.tsx`) so a production build drops them; a test builds without the flag and checks the bundle has no button text, password or test emails
+- [x] Sign out returns to the guest home screen
+
+## m2-auth-02
+- [x] On sign-in (and on load with a session, which retries a failed move) the local design is imported as a new cloud design with `client_id = meta.id` (`on conflict do nothing`, so a repeat never duplicates); existing cloud designs are untouched (`e2e/m2/auth-import.spec.ts`)
+- [x] IndexedDB is cleared after a successful import; a failed import keeps the local design
+- [x] An empty local design (no title, no filled section) is not imported (`designHasContent`, `src/model/summary.test.ts`)
+
+## m2-designs-01
+- [x] Edits on `/d/:id` autosave to Supabase (800 ms debounce, `update … where version = :seen`); the header save status works as in M1: Saving / Saved / Not saved (`e2e/m2/cloud.spec.ts`)
+- [x] Reload restores title, values, rationale, matrices, diagrams and layout; opening a design does not write it
+- [x] Guests keep the M1 IndexedDB autosave on `/local` (M1 persist tests); local and cloud autosave share `autosave()` in `src/store/persist.ts`
+
+## m2-setup-04
+- [x] Routes `/`, `/d/:id`, `/local`, `/library/:itemId` on the History API without a dependency (`src/router.ts`, D27); back/forward works; unknown paths go home (`e2e/m2/routes.spec.ts`, `src/router.test.ts`); `vercel.json` rewrites deep links to the SPA
+- [x] Reloading a design URL opens the same design: the cloud one for its signed-in owner (`e2e/m2/cloud.spec.ts`), the local one for guests (`e2e/m2/routes.spec.ts`); others are sent home
+
+## m2-designs-02
+- [x] Saves use `update … where version = :seen` (D23); zero updated rows is a conflict (`src/backend/cloud.ts`, pgTAP in designs.test.sql)
+- [x] The tab shows a banner that the design changed elsewhere, with Reload; autosave of that design stops until reload (`e2e/m2/conflict.spec.ts`)
+- [x] After reload the tab shows the stored version, and autosave works again
+- [x] Opening a design writes nothing: measured card heights are not edits (D30), so a second tab does not bump the version
+
+## m2-lib-01
+- [x] `src/fixtures` holds Supermegaretail Demand Forecasting (example) and SuperPay Real-Time Fraud Detection (task), each with Source, parsed from `docs/library/*.md` (D31: `library-parse.ts`, `library.ts`)
+- [x] A unit test checks every key property, rationale text, trade-off matrix and chosen option against the markdown files line by line (`src/fixtures/library.test.ts`)
+- [x] The task has only Problem Space filled and an empty ML Task value
+- [x] Load example loads Supermegaretail (`exampleDesign`); my M1 tests that expected Churn are updated (helpers, canvas-12, persist-02, doc-03, doc-08, export-03, ui-02, AT-11 point 2 per 'Что из M1 заменено', markdown snapshot)
+
+## m2-lib-02
+- [x] Validation, Data & Features and Integration have Excalidraw diagrams built from the descriptions in the markdown (`src/fixtures/diagram.ts`: rows of [boxes] joined by arrows, row labels, wrapped labels); a unit test checks every box, arrow and fold label against the file (`library.test.ts`)
+- [x] Exactly these 3 cards show a thumbnail after Load example; Target Solution keeps the default diagram per M1.1 (`e2e/m2/library.spec.ts`, persist-02)
+
+## m2-designs-03
+- [x] New design and Start task create a cloud design at once; the first edit of an example creates one too (`e2e/m2/home.spec.ts`)
+- [x] Opening a design from 'Your designs' loads it; Delete asks with the M1 dialog (Cancel keeps) and removes it for good, findings included (cascade)
+- [x] No folders, search or rename from the list (only Delete in '⋯')
+
+## m2-home-01
+- [x] 'Design a system' and 'Examples' share one row, each a horizontal strip of cards; 'Your designs' fills the rest of the height and scrolls inside (`e2e/m2/home.spec.ts`, 14 designs)
+- [x] At 1440×900 the page itself does not scroll
+- [x] Matches docs/mockups/home-signed-in.png and home-guest.png (compared with playwright MCP screenshots; differences: the Source line reads 'Source: ML System Design · MIT')
+
+## m2-home-02
+- [x] Each card: Problem Space preview (Domain, Goal, Constraints, ML Task), title, one sentence, chip Blank / Task / Example, action button
+- [x] The task's ML Task reads 'Your first decision'; the example shows its Source (link to the original)
+- [x] New design, Start task and Open example open the matching design (guest in `/local`, signed-in in `/d/:id` or `/library/:itemId`)
+
+## m2-home-03
+- [x] Row: 3×3 section map in canvas layout (filled / empty), title, origin chip, ML Task, 'N / 9 sections', trade-offs count, open findings (from `design_open_findings`), last edit date (`src/home/edited.ts` + unit test), '⋯' with Delete
+- [x] Last edited first
+- [x] Empty state when there are no designs
+
+## m2-home-04
+- [x] 'Your designs' is inactive for guests with 'Sign in to keep several designs and run AI review' and Sign in with Google
+- [x] With a local design, 'Current work · in this browser' shows it with Continue
+- [x] Opening an example or task over a local design asks 'Replace your current work?' with the M1 dialog (title added to `confirmDialog`); Cancel keeps it
+
+## m2-home-05
+- [x] Opening an example without editing creates nothing (`/library/:itemId`)
+- [x] The first edit saves a copy with origin Example to 'Your designs' and moves the URL to `/d/:id` without remounting the editor; the library example stays unchanged
+
+## m2-doc-01
+- [x] The outline is left of the sheet, styled as in M1; the comments column is right of the sheet, always, with or without a review (`e2e/m2/document.spec.ts`; doc-01 updated: superseded TOC position)
+- [x] Matches the column layout of docs/mockups/review-document.png (playwright MCP screenshot; the comments themselves come with m2-review-10)
+
+## m2-ui-01
+- [x] One toast at a time, bottom center, role=status, classes from docs/design-system.md (`src/ui/toast.tsx`, `e2e/m2/toast.spec.ts`)
+- [x] Success, error and progress variants; actions and a dismiss button (used for moving the guest design on sign-in: progress → error with Try again → success)
+
+## m2-review-01
+- [x] Types and pure rules in `supabase/functions/_shared/review/` (`types.ts`, `anchors.ts`: field texts §5.6) and `src/model/review.ts`, imported by the app through the `@review` alias (D24), with unit tests (`anchors.test.ts`, `src/model/review.test.ts`)
+- [x] Review indicator per section (not reviewed / red / green), worst severity, counts by severity, groups with 'Whole design' first
+- [x] Stale is derived (D25): field text differs from `anchor_value` → 'Field changed since review'; field not found → whole design, 'Field removed'
+
+## m2-review-02
+- [x] `pnpm gen:skill` (`scripts/gen-skill.ts`) builds `supabase/functions/_shared/skill.generated.ts` from vendor (SKILL.md + references, rubric dimensions); a unit test fails if it is out of date (`skill.test.ts`)
+- [x] Serializer output for the example matches a committed snapshot (§6.7, `review/__snapshots__/example-design.txt`); anchor resolution follows the §6.8 table; a section run keeps only its section, at most 40 findings (`review/review.test.ts`)
+- [x] Request built for the example has the instruction, the skill with cache_control, the design text and exactly 3 PNG images after it (§6.4 step 6; `src/review/request.ts`, `review/prompt.ts`); model answers are validated against the strict schema (§6.5); provider errors map to §6.4 codes (`review/errors.ts`)
+
+## m2-review-03
+- [x] `review` follows §6.4 step by step: auth, ownership (RLS), key, limits (one running run, stale runs time out, 20 per hour, payload size), run row with snapshot, OpenRouter call with a 120 s timeout (`supabase/functions/review/index.ts`, `e2e/m2/review-fn.spec.ts`)
+- [x] Every row of the §6.4 error table returns its code and status (mock scenarios 401, 402, 429, no_images, 408, 500, bad_output); after a failure the run is `failed` with that code
+- [x] A canceled run's results are discarded (`svc_complete_review_run` returns `canceled` → 409), previous findings stay
+- [x] Logs contain no headers, bodies or keys: unit test of `logLine` and an e2e test that reads the edge runtime's docker logs after a review; CORS origin filtering is unit-tested (`cors.test.ts`) because the local gateway rewrites CORS headers; Supabase is reached with fetch (D32)
+
+## m2-review-04
+- [x] `openrouter-key` and `openrouter-models` follow §6.2 and §6.3: format check, free `GET /key` check, Vault via `svc_set_openrouter_key`, only last 4 and date back; a rejected key (422) or malformed key (400) is not stored; delete removes it (`e2e/m2/key-fn.spec.ts`)
+- [x] The model list has only image-capable models with structured outputs, recommended first and default, the rest by name, no prices; cached for an hour in the function (`review/models.ts` + unit test)
+
+## m2-review-05
+- [x] 'AI Review settings' opens from the account menu, the Settings link of the AI Review menu and 'Add key' (`src/review/SettingsDialog.tsx`, `e2e/m2/settings.spec.ts`)
+- [x] Password field and Save with 'Checking…'; the saved key shows only its last 4 characters, '✓ Works', Replace, Delete (M1 confirm); a rejected key shows a red field and a hint; the full key is in no page text or response, also after reload; the model choice is saved (`user_settings.model`)
+- [x] Matches docs/mockups/review-run-settings.png (playwright MCP screenshot); note on AT-31 vs the §6.2 format check in open-questions.md
+
+## m2-review-07
+- [x] Review indicator next to Trade-offs, same size: grey not reviewed, red with '!' if open critical/major, green with a check otherwise; pulses while a review in its scope runs (`src/review/CardSignals.tsx`, `e2e/m2/review-run.spec.ts`)
+- [x] Footer badge left of Details '● N findings' with the worst severity dot, only with open findings; it opens the Review panel at that section with its worst finding expanded
+- [x] Matches docs/mockups/review-canvas.png (playwright MCP screenshot); the indicator position vs AT-15 is noted in open-questions.md
+
+## m2-review-08
+- [x] Counts by severity, tabs Open / Resolved / Dismissed, groups in canonical order with 'Whole design' first, severity order inside, minor collapsed as 'N minor — show' when the group has more serious findings (`src/review/ReviewPanel.tsx`)
+- [x] Expanded finding: 'What the design says', 'Why it matters', Fix behind 'Show fix', Dismiss and Resolve; closed findings show Reopen; stale ones are faded with their label (`src/review/Finding.tsx`)
+- [x] Expanding a finding highlights its card and scrolls it into view
+- [x] Excalidraw fonts are served by the app (D33): the network guard caught the CDN request during PNG export
+
+## m2-review-06
+- [x] Whole design or one section from the AI Review menu; 'Review this section' in the Component Editor (`e2e/m2/review-run.spec.ts`, `review-editor.spec.ts`)
+- [x] While running: Review panel with 'Reviewing…', elapsed time and Cancel; indicators in scope pulse; previous findings stay, dimmed (`src/review/store.ts` `startReview`, `ReviewPanel.tsx`)
+- [x] On success new findings replace those in the run's scope only; on error or Cancel previous findings are unchanged and the panel shows the error with its action (Replace key, Run again, Choose model)
+- [x] Editing during a run is allowed; fields changed meanwhile get stale findings (derived, D25; stale test in review-run.spec.ts); an unsaved Library item is saved before its review
+
+## m2-review-09
+- [x] Findings column with the same tabs for this section only, and the review indicator in the editor header (signed-in only; `src/review/EditorFindings.tsx`)
+- [x] Markers: key property right of its value, trade-off row after the option name, Rationale next to its heading
+- [x] Marker click expands the finding; finding click highlights and scrolls to the field
+- [x] Matches docs/mockups/review-editor.png (MCP screenshot; the highlight covers the whole key property row, the mockup outlines only the value)
+
+## m2-review-10
+- [x] Each comment sits at its field's height and moves down on overlap; whole-design comments sit at the document title (`src/review/DocComments.tsx`, `e2e/m2/review-document.spec.ts`)
+- [x] The expanded comment aligns with its field (±4px) and the field is highlighted
+- [x] Tabs Open / Resolved / Dismissed as on the canvas
+
+## m2-review-11
+- [x] Resolve, Dismiss or Reopen in the panel, the editor or the document updates badges, indicators, markers, comments and counts everywhere without reload: one store (`src/review/store.ts`), optimistic with rollback and a toast on failure (`e2e/m2/review-status.spec.ts`)
+- [x] Statuses survive reload (saved to `findings.status`, read back with the design)
+
+## m2-header-01
+- [x] Avatar left of AI Review and Share: a guest sees the default avatar (docs/mockups/assets/default-avatar.png, served as /default-avatar.png) and 'Sign in with Google'; signed-in shows the Google photo (`e2e/m2/header.spec.ts`)
+- [x] Account menu: My designs, AI Review settings, Sign out
+- [x] Share: Export to Google Docs (with its subtitle), Export PDF, Export Markdown, in this order (MCP screenshot vs export-gdocs-menu.png); my M1 tests of the Share list and 'Full review / Coming soon' follow AT-43 / AT-30
+- [x] AI Review menu: guest → 'Sign in to run AI review'; no key → 'Add your OpenRouter key' and 'Add key'; with key → 'Review whole design', 'Review one section' with the 9 sections, model, last run time, Settings (`src/review/ReviewMenu.tsx`)
+
+## m2-review-12
+- [x] Markdown, PDF and Google Docs export contain no finding text or review labels (`e2e/m2/exports.spec.ts`; the comments column and the panel are print-hidden, exporters read only the design)
+
+## m2-export-01
+- [x] Each non-empty diagram rasterizes to PNG (`src/export/png.ts`, Excalidraw exportToBlob, white background, long side ≤ 1600 px), shared by the review request and the Google Docs export
+- [x] The PNG signature and size are checked for the example diagrams, and the review and the export carry the same images (`e2e/m2/exports.spec.ts`; Excalidraw needs a real canvas, so this check runs in the browser)
+
+## m2-export-02
+- [x] Google Identity Services (loaded on first export) asks for `drive.file`; the token lives in memory only until it expires; the backend is not involved (`src/export/gdocs.ts`)
+- [x] The document HTML has explicit table borders and PNG images as data URIs (`src/export/html.ts` + unit test); the upload creates a Google Doc (`application/vnd.google-apps.document`)
+- [x] Every export creates a new file; Share shows 'Last exported …' with Open (cloud: `designs.last_export`, without a new version; guest: IndexedDB meta)
+- [x] Toasts: 'Continue in the Google window…', 'Exporting to Google Docs…', 'Google Doc created' with Open and Copy link; errors with Try again for denied access, blocked popup and a Drive failure; a 401 asks for a token once more (`e2e/m2/gdocs.spec.ts`)
+- [x] Works for guests and signed-in users
+
+## m2-security-01
+- [x] No page or response exposes the full OpenRouter key (`e2e/m2/settings.spec.ts` checks page text and every Supabase response, also after reload; `key-fn.spec.ts` checks the save response; `review-fn.spec.ts` checks function logs); the built bundle contains no service-role key (new or legacy), Google client secret or OpenRouter key, and no secret is committed in src/, config.toml, migrations, functions or .env files (`e2e/m2/security.spec.ts`)
+- [x] RLS tests pass for designs, findings and settings (`pnpm test:db`: 71 pgTAP tests)
+
+## m2-acceptance-01
+- [x] Each scenario AT-22..AT-43 has its own Playwright test in `e2e/acceptance/m2/` named with its ID (AT-41 twice: guest and signed-in), checking every expected outcome (`at-22-25`, `at-26-29`, `at-30-35`, `at-36-43`, shared steps in `setup.ts`)
+- [x] My tests for AT-11 point 2 and AT-18 points 3–4 follow 'Что из M1 заменено' (Supermegaretail; Share order per AT-43; AI Review per AT-30)
+- [x] All acceptance tests, M1 and M2, pass in Chromium and WebKit (`pnpm e2e`: 230 passed; repeated ×2: M2 acceptance 46 + 46, M1 acceptance 84)
+
+## m2-final-01
+- [x] `pnpm check` and `pnpm e2e` pass on a clean checkout (`git clone` + `pnpm install --frozen-lockfile`) with local Supabase running: 111 unit tests, 230 e2e tests (M1 + M2, Chromium; acceptance also WebKit); `pnpm test:db`: 71 pgTAP tests
+- [x] The palette checks in docs/design-system.md print nothing
+- [x] No TODO/FIXME or skip/fixme/only left in src, e2e, supabase or scripts
+
+## Run result: DONE
+- Features passing: 96 / 96 (M2: 39 / 39)
+- Stuck features: none
+- Open questions added: 2 (AT-31 key format check vs the rejection message; AT-15 trade-offs position next to the review indicator)

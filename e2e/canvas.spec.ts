@@ -23,7 +23,9 @@ test('canvas-01 / m11-06 header: logo, title and save status left, toggle center
   for (const name of ['Export PDF', 'Export Markdown', 'Load example', 'Reset layout'])
     await expect(header.getByRole('button', { name })).toHaveCount(0)
   await expect(header.getByText(/contributor/i)).toHaveCount(0)
-  await expect(header.locator('img')).toHaveCount(0)
+  // M2 (m2-header-01) adds the account avatar; no other images (no contributor avatars).
+  await expect(header.locator('img')).toHaveCount(1)
+  await expect(header.getByRole('img', { name: 'Guest' })).toBeVisible()
 })
 
 test('m11-06 Share and ⋯ menus: items, close on outside click and Escape, Reset layout only on canvas', async ({ page }) => {
@@ -31,7 +33,8 @@ test('m11-06 Share and ⋯ menus: items, close on outside click and Escape, Rese
   const share = page.getByRole('menu', { name: 'Share' })
   const more = page.getByRole('menu', { name: 'More' })
   await page.getByRole('button', { name: 'Share', exact: true }).click()
-  await expect(share.getByRole('menuitem')).toHaveText(['Export PDF', 'Export Markdown'])
+  // M2 (AT-43): Export to Google Docs first.
+  await expect(share.getByRole('menuitem')).toHaveText(['Export to Google DocsCreates a new Google Doc in your Drive', 'Export PDF', 'Export Markdown'])
   await page.mouse.click(700, 500)
   await expect(share).toBeHidden()
   await page.getByRole('button', { name: 'Share', exact: true }).click()
@@ -119,7 +122,7 @@ test('canvas-12 Clear design asks first, then starts an empty design', async ({ 
   await loadExample(page)
   await menuAction(page, 'More', 'Clear design')
   expect(await answerDialog(page, 'Cancel')).toMatch(/Clear the design/)
-  await expect(page.getByRole('button', { name: 'Edit Design title' })).toHaveText('Churn Prediction (Telecom)')
+  await expect(page.getByRole('button', { name: 'Edit Design title' })).toHaveText('Supermegaretail Demand Forecasting')
   await menuAction(page, 'More', 'Clear design')
   await answerDialog(page, 'Clear design')
   await expect(card(page, 'problem-space').getByRole('button', { name: 'Edit Domain' })).toHaveText('Not set')
@@ -268,7 +271,10 @@ test('m11-02 trade-offs status icon: top-right, not a button, two states, toolti
     await expect(ind).toHaveAccessibleName('Trade-offs not filled')
     const hb = (await c.locator('header').boundingBox())!
     const ib = (await ind.boundingBox())!
-    expect(hb.x + hb.width - (ib.x + ib.width)).toBeLessThan(24)
+    // M2: the review indicator sits right next to it, so the pair takes the top-right corner.
+    const rb = (await c.locator('[data-indicator="Review"]').boundingBox())!
+    expect(hb.x + hb.width - (rb.x + rb.width)).toBeLessThan(24)
+    expect(rb.x - (ib.x + ib.width)).toBeLessThan(16)
     expect(ib.y - hb.y).toBeLessThan(hb.height / 2)
     await expect(c.getByRole('button', { name: /trade-offs/i })).toHaveCount(0)
   }
@@ -355,23 +361,14 @@ test('m11-04 card height follows content, rows share the tallest height; resize 
   await expectRowsFitContent(page)
 })
 
-test('m11-07 AI Review popover: one disabled Full review item with a Coming soon tooltip', async ({ page }) => {
+test('m11-07 / m2-header-01 AI Review popover for a guest: sign in, no Coming soon', async ({ page }) => {
   await openApp(page)
   await page.getByRole('button', { name: 'AI Review', exact: true }).click()
   const menu = page.getByRole('menu', { name: 'AI Review' })
-  await expect(menu).toBeVisible()
-  await expect(menu.getByRole('menuitem')).toHaveText(['Full review'])
-  const item = menu.getByRole('menuitem', { name: 'Full review' })
-  await expect(item).toBeDisabled()
-  const tip = page.getByRole('tooltip', { name: 'Coming soon' })
-  await expect(tip).toBeHidden()
-  await item.hover()
-  await expect(tip).toBeVisible()
-  await expect(item).toHaveAccessibleDescription('Coming soon')
-  await item.click({ force: true })
-  await expect(dialog(page)).toHaveCount(0)
-  await page.keyboard.press('Escape')
-  await expect(menu).toBeHidden()
+  await expect(menu).toContainText('Sign in to run AI review')
+  await expect(menu.getByRole('button', { name: 'Sign in with Google' })).toBeVisible()
+  await expect(menu).not.toContainText('Coming soon')
+  await expect(menu).not.toContainText('Review whole design')
 })
 
 test('m11-10 section icons: flag, anchor, flask, target; scales only for the trade-offs status', async ({ page }) => {

@@ -12,3 +12,9 @@
 
 /* Lift the hovered/focused card so its trade-offs tooltip paints over the neighbours. */
 .react-grid-item:hover, .react-grid-item:focus-within { z-index: 10; }
+
+/* A field focused from a review comment in the document (set from src/review/DocComments.tsx). */
+[data-hl] {
+  outline: 2px solid var(--color-indigo-300);
+  outline-offset: 4px;
+}

@@ -22,9 +22,11 @@ describe('designToMarkdown', () => {
 
   it('marks the chosen option and links diagrams to images/<section-id>.svg', () => {
     const md = designToMarkdown(exampleDesign())
-    expect(md).toContain('| ✅ Rules (chosen) | Low | 1 week |')
+    expect(md).toContain('| ✅ Split by distribution center (chosen) | Yes | Enough with matched store subsets |')
     expect(md).toContain('![Validation diagram](images/validation.svg)')
-    expect(md).toContain('![Target Solution & Architecture diagram](images/target-solution.svg)')
+    expect(md).toContain('![Integration diagram](images/integration.svg)')
+    // Target Solution has only the default diagram in the example: not exported.
+    expect(md).not.toContain('images/target-solution.svg')
   })
 
   it('escapes pipes in table cells', () => {

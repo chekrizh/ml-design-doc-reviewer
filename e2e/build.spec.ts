@@ -9,7 +9,7 @@ test('pnpm dev serves the app without console errors', async ({ page }) => {
     const errors: string[] = []
     page.on('console', (m) => m.type() === 'error' && errors.push(m.text()))
     page.on('pageerror', (e) => errors.push(e.message))
-    await page.goto('http://localhost:5199/')
+    await page.goto('http://localhost:5199/local')
     await expect(page.getByRole('button', { name: 'Canvas', exact: true })).toBeVisible()
     expect(errors).toEqual([])
   } finally {
@@ -26,8 +26,12 @@ test('build output is a static dist/ with no server code', () => {
   expect(existsSync('api')).toBe(false)
 })
 
-test('app code reads no environment variables', () => {
-  const src = readdirSync('src', { recursive: true }).map(String).filter((f) => /\.tsx?$/.test(f))
-  const offenders = src.filter((f) => readFileSync(`src/${f}`, 'utf8').includes('import.meta.env'))
-  expect(offenders).toEqual([])
+test('only src/backend reads environment variables, and only the documented VITE_ ones', () => {
+  // M2 supersedes M1's "no environment variables": Supabase, Google and the test sign-in flag (.env.example).
+  const src = readdirSync('src', { recursive: true }).map(String).filter((f) => /\.tsx?$/.test(f) && !f.endsWith('.d.ts'))
+  const readers = src.filter((f) => readFileSync(`src/${f}`, 'utf8').includes('import.meta.env'))
+  expect(readers.every((f) => f.startsWith('backend/'))).toBe(true)
+  const names = readers.flatMap((f) => [...readFileSync(`src/${f}`, 'utf8').matchAll(/import\.meta\.env\.(\w+)/g)].map((m) => m[1]))
+  const allowed = ['VITE_SUPABASE_URL', 'VITE_SUPABASE_PUBLISHABLE_KEY', 'VITE_GOOGLE_CLIENT_ID', 'VITE_TEST_SIGNIN']
+  expect(names.filter((n) => !allowed.includes(n))).toEqual([])
 })

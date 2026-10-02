@@ -22,7 +22,7 @@ test('editor-01 modal title, close by X/Escape/outside, saved indicator, parts i
   await dialog(page).getByRole('textbox', { name: 'Property 1 value' }).fill('Rules')
   await expect(saved).toHaveText('Saving…')
   await expect(saved).toContainText('Saved')
-  await expect(dialog(page).locator('section:has(> div > h3) > div > h3')).toHaveText([
+  await expect(dialog(page).locator('section[aria-label] > div:first-child h3')).toHaveText([
     'Decisions & Properties',
     'Rationale & Notes',
     'Trade-off Matrix',

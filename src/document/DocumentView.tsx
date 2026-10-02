@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import { SECTIONS, type SectionId } from '../model/design'
 import { diagramNonEmpty, sectionEmpty } from '../model/rules'
 import { InlineText } from '../editor/InlineText'
@@ -25,7 +25,7 @@ function DocSection({ sid, n, name }: { sid: SectionId; n: number; name: string 
         {hasValues && (
           <dl data-testid="key-properties" className="flex flex-wrap gap-x-8 gap-y-3 rounded-2xl border border-slate-100 bg-slate-50 px-5 py-4 break-inside-avoid">
             {s.keyProperties.map((p) => (
-              <div key={p.id} className="min-w-0">
+              <div key={p.id} data-field={`${sid}:kp:${p.id}`} className="min-w-0 rounded-lg">
                 <dt className="text-xs font-medium tracking-wide text-slate-400 uppercase">{p.key}</dt>
                 <dd className="flex">
                   <InlineText label={p.key || 'value'} value={p.value} placeholder="—" onSave={(value) => a.updateKeyProperty(sid, p.id, { value })} />
@@ -35,7 +35,7 @@ function DocSection({ sid, n, name }: { sid: SectionId; n: number; name: string 
           </dl>
         )}
         {/* Free text of the section, also for empty sections: it is the section's Rationale & Notes. */}
-        <div data-testid="rationale" className="leading-relaxed text-slate-700">
+        <div data-testid="rationale" data-field={`${sid}:rationale`} className="rounded-lg leading-relaxed text-slate-700">
           <RichTextEditor
             bare
             label={`${name} rationale`}
@@ -78,27 +78,16 @@ function useActiveSection() {
   return [active, setActive] as const
 }
 
-export function DocumentView() {
+export function DocumentView({ comments }: { comments?: ReactNode }) {
   const title = useDesign((s) => s.design.title)
   const updatedAt = useDesign((s) => s.design.updatedAt)
   const setTitle = useDesign((s) => s.setTitle)
   const [active, setActive] = useActiveSection()
 
+  // Outline left, sheet, comments right (Google Docs-like, M2): always, with or without a review.
   return (
-    <main className="mx-auto flex max-w-6xl gap-10 px-6 py-8 print:block print:p-0">
-      <article data-testid="document" className="min-w-0 flex-1 rounded-3xl bg-white px-16 py-14 shadow-sm print:rounded-none print:p-0 print:shadow-none">
-        <h1 className="flex text-5xl font-bold tracking-tight">
-          <InlineText label="Document title" value={title} placeholder="Untitled design" onSave={setTitle} className="w-full" inputClassName="w-full" wrap />
-        </h1>
-        <p className="mt-2 text-xl text-slate-500">ML System Architecture Spec</p>
-        <p className="mt-2 mb-12 text-sm text-slate-400">
-          Last updated: {new Date(updatedAt).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' })}
-        </p>
-        {SECTIONS.map((s, i) => (
-          <DocSection key={s.id} sid={s.id} n={i + 1} name={s.name} />
-        ))}
-      </article>
-      <nav aria-label="On this page" className="sticky top-24 hidden w-64 shrink-0 self-start lg:block print:hidden">
+    <main className="mx-auto grid max-w-[1440px] grid-cols-[14rem_minmax(0,1fr)_20rem] gap-8 px-6 py-8 print:block print:p-0">
+      <nav aria-label="On this page" className="sticky top-24 self-start print:hidden">
         <h2 className="mb-3 text-xs font-semibold tracking-wide text-slate-400 uppercase">On this page</h2>
         <ul className="space-y-1">
           {SECTIONS.map((s) => (
@@ -119,6 +108,21 @@ export function DocumentView() {
           ))}
         </ul>
       </nav>
+      <article data-testid="document" className="min-w-0 rounded-3xl bg-white px-16 py-14 shadow-sm print:rounded-none print:p-0 print:shadow-none">
+        <h1 data-field="design" className="flex text-5xl font-bold tracking-tight">
+          <InlineText label="Document title" value={title} placeholder="Untitled design" onSave={setTitle} className="w-full" inputClassName="w-full" wrap />
+        </h1>
+        <p className="mt-2 text-xl text-slate-500">ML System Architecture Spec</p>
+        <p className="mt-2 mb-12 text-sm text-slate-400">
+          Last updated: {new Date(updatedAt).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' })}
+        </p>
+        {SECTIONS.map((s, i) => (
+          <DocSection key={s.id} sid={s.id} n={i + 1} name={s.name} />
+        ))}
+      </article>
+      <aside aria-label="Comments" data-testid="comments" className="print:hidden">
+        {comments}
+      </aside>
     </main>
   )
 }

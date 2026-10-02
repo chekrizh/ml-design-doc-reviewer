@@ -6,6 +6,8 @@ import { ComponentEditor } from '../editor/ComponentEditor'
 import { useDesign } from '../store/store'
 import { Card } from './Card'
 import { flow } from './flow'
+import { ReviewPanel } from '../review/ReviewPanel'
+import { useReview } from '../review/store'
 
 const flowCompactor: Compactor = {
   type: 'wrap',
@@ -24,19 +26,24 @@ const pick = (prev: LayoutItem[], next: Layout): LayoutItem[] =>
     const { x, y, w, h } = next.find((n) => n.i === p.i) ?? p
     return { i: p.i, x, y, w, h }
   })
-const same = (a: LayoutItem[], b: LayoutItem[]) => JSON.stringify(a) === JSON.stringify(b)
+// What the user decides: card order in rows and widths. Heights (and so y) follow measured content,
+// so they never count as an edit: opening a design must not write it (M2 autosave, version check).
+const shape = (l: LayoutItem[]) => [...l].sort((a, b) => a.y - b.y || a.x - b.x).map((c) => `${c.i}:${c.x}:${c.w}`).join()
+const same = (a: LayoutItem[], b: LayoutItem[]) => shape(a) === shape(b)
 
 export function Canvas() {
   const layout = useDesign((s) => s.design.layout)
   const setLayout = useDesign((s) => s.setLayout)
   const { width, containerRef, mounted } = useContainerWidth()
   const [open, setOpen] = useState<SectionId | null>(null)
+  const panelOpen = useReview((s) => s.panelOpen)
   // Card heights follow content; the stored h is only a starting guess until the card is measured.
   const [heights, setHeights] = useState<Partial<Record<SectionId, number>>>({})
   const onHeight = (sid: SectionId) => (px: number) => setHeights((h) => (h[sid] === px ? h : { ...h, [sid]: px }))
 
   return (
-    <main className="px-4 py-4">
+    <div className="flex items-start">
+    <main className="min-w-0 flex-1 px-4 py-4">
       <div ref={containerRef}>
       {mounted && (
         <GridLayout
@@ -62,5 +69,11 @@ export function Canvas() {
       </div>
       {open && <ComponentEditor sid={open} onClose={() => setOpen(null)} />}
     </main>
+      {panelOpen && (
+        <div className="sticky top-16 h-[calc(100vh-4rem)] self-start">
+          <ReviewPanel />
+        </div>
+      )}
+    </div>
   )
 }

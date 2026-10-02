@@ -5,14 +5,20 @@
  */
 const btn = 'rounded-lg px-3 py-1.5 text-sm font-medium outline-none focus-visible:ring-2 focus-visible:ring-indigo-400'
 
-function open(message: string, ok: string, cancel: string | null, input: boolean): Promise<string | null> {
+function open(message: string, ok: string, cancel: string | null, input: boolean, title?: string): Promise<string | null> {
   const d = document.createElement('dialog')
   d.setAttribute('role', 'alertdialog')
-  d.setAttribute('aria-label', message)
+  d.setAttribute('aria-label', title ?? message)
   d.className = 'm-auto w-full max-w-md rounded-2xl bg-white p-6 text-slate-700 shadow-lg backdrop:bg-slate-900/30'
 
   const form = document.createElement('form')
   form.method = 'dialog'
+  if (title) {
+    const h = document.createElement('h2')
+    h.className = 'mb-2 font-semibold text-slate-900'
+    h.textContent = title
+    form.append(h)
+  }
   const p = document.createElement('p')
   p.className = 'text-sm'
   p.textContent = message
@@ -50,6 +56,6 @@ function open(message: string, ok: string, cancel: string | null, input: boolean
   })
 }
 
-export const confirmDialog = (message: string, ok = 'OK') => open(message, ok, 'Cancel', false).then((v) => v !== null)
+export const confirmDialog = (message: string, ok = 'OK', title?: string) => open(message, ok, 'Cancel', false, title).then((v) => v !== null)
 export const alertDialog = (message: string) => open(message, 'OK', null, false).then(() => undefined)
 export const promptDialog = (message: string) => open(message, 'OK', 'Cancel', true)

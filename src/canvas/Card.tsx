@@ -5,6 +5,8 @@ import { InlineText } from '../editor/InlineText'
 import { useDiagramImage } from '../export/svg'
 import { useDesign, useSection } from '../store/store'
 import { SectionIcon } from './SectionIcon'
+import { FindingsBadge, ReviewIndicator } from '../review/CardSignals'
+import { useReview } from '../review/store'
 
 const MAX_PROPS = 4
 
@@ -78,13 +80,15 @@ export function Card({ sid, onDetails, onHeight }: { sid: SectionId; onDetails: 
   const shown = section.keyProperties.slice(0, MAX_PROPS)
   const hidden = section.keyProperties.length - shown.length
   const hasDiagram = diagramDrawn(section.diagram)
+  const highlight = useReview((s) => s.highlight === sid && s.panelOpen)
 
   return (
-    <article ref={article} data-testid={`card-${sid}`} aria-label={sectionName(sid)} className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <article ref={article} data-testid={`card-${sid}`} aria-label={sectionName(sid)} data-highlight={highlight || undefined} className={`flex h-full flex-col rounded-2xl border border-slate-200 bg-white shadow-sm ${highlight ? 'ring-2 ring-indigo-300' : ''}`}>
       <header className="card-drag flex cursor-move items-center gap-3 border-b border-slate-100 px-4 py-3">
         <SectionIcon id={sid} className="h-5 w-5 text-slate-700" />
         <h2 className="text-sm font-semibold tracking-wide uppercase">{sectionName(sid)}</h2>
         <TradeoffsStatus sid={sid} on={tradeoffsComplete(section.tradeoffs)} />
+        <ReviewIndicator sid={sid} />
       </header>
       <div ref={body} className="min-h-0 flex-1 overflow-hidden px-4 pt-3 pb-2">
         <div ref={inner} className="flex items-start gap-4">
@@ -107,8 +111,9 @@ export function Card({ sid, onDetails, onHeight }: { sid: SectionId; onDetails: 
         )}
         </div>
       </div>
-      <footer className="flex items-center justify-end gap-2 border-t border-slate-100 px-4 py-3">
-        <button type="button" onClick={onDetails} className="rounded-lg bg-slate-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-slate-700">
+      <footer className="flex items-center gap-2 border-t border-slate-100 px-4 py-3">
+        <FindingsBadge sid={sid} />
+        <button type="button" onClick={onDetails} className="ml-auto rounded-lg bg-slate-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-slate-700">
           Details
         </button>
       </footer>

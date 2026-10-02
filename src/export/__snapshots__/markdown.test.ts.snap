@@ -1,7 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`designToMarkdown > renders the example fixture 1`] = `
-"# Churn Prediction (Telecom)
+"# Supermegaretail Demand Forecasting
 
 _ML System Architecture Spec_
 
@@ -9,55 +9,78 @@ _ML System Architecture Spec_
 
 | Property | Value |
 | --- | --- |
-| Domain | Telecom (Prepaid) |
-| Business Goal | Reduce churn by 5% |
-| ML Task | Binary classification |
-| Constraints | Fixed discount budget |
-| Horizon | 30 days |
+| Domain | Retail, grocery chain |
+| Business Goal | Narrow the delivered vs sold gap without out-of-stock |
+| ML Task | Demand forecast per SKU × store × day |
+| Constraints | Perishables; delivery every 2 days; data delay ≤ 48 h |
+| Horizon | 4 weeks (1 year for suppliers) |
+| Current Loss | ≈ $800M per year |
 
-Prepaid subscribers can leave at any time without notice. Retention offers cost money, so the model must rank who to target within a fixed budget.
+Supermegaretail runs thousands of stores and must buy goods before it sells them. Leftovers mean waste of perishables; selling out means lost revenue, customers going to competitors, and unknown real demand.
+
+- Suppliers sign one-year deals that can be adjusted 90 days ahead.
+- 47 distribution centers send a truck to each store about every two days; stores keep stock in the loading bay for 2–3 days.
+- The distribution center plans deliveries, a store manager can override them.
+- Owners: logistics, procurement, and store operations.
+
+Out-of-stock costs more than overstock, so errors are asymmetric. Overstock loss is easy to count, out-of-stock loss needs A/B tests or expert estimates.
 
 ## 2. Evaluation (Offline)
 
 | Property | Value |
 | --- | --- |
-| Offline Metric | Precision@Top-10% |
-| Loss | LogLoss |
-| Target Value | > 0.35 |
+| Offline Metric | Quantile loss at 1.5, 25, 50, 75, 95, 99 |
+| Loss | Quantile loss, same as metric |
+| Target Value | Beat baseline on every quantile, 95% CI |
+| Weighting | Plain and weighted by SKU price |
 
-The retention team can only call the top decile, so precision in that slice matters more than global AUC.
+Sales are count data: low, integer, often zero, with asymmetric distributions. A point forecast is not enough, the business keeps stock to a service level, so it needs quantiles of the predictive distribution. Quantile loss lets the loss equal the metric: six models, one per quantile. Tweedie loss is the second line of experiments. Metrics are reported with 95% confidence intervals from bootstrap or cross-validation.
 
 **Trade-off Matrix**
 
-| Option | Matches business action | Stable on imbalance |
-| --- | --- | --- |
-| ✅ Precision@Top-10% (chosen) | Yes | Yes |
-| ROC AUC | No, global ranking | Yes |
-| Accuracy | No | No, 95% trivial |
+| Option | Works on count data with zeros | Serves a stock service level | Can equal the loss |
+| --- | --- | --- | --- |
+| MAE / wMAPE | Biased on skewed low counts | No, optimizes the median | Yes |
+| MAPE / sMAPE | No, undefined or fixed at zero actuals | No | No |
+| MSE | No, dominated by large errors | No | Yes |
+| ✅ Quantile loss (chosen) | Yes | Yes, a quantile per service level | Yes |
 
 ## 3. Baseline
 
 | Property | Value |
 | --- | --- |
-| Approach | Rule-based |
-| Baseline Metric | 12.4% Prec@Top-10% |
+| Approach | Per-SKU sales quantiles over a yearly window |
+| Baseline Metric | Same quantile losses as offline evaluation |
+| Next Steps | Quantile linear regression, then SARIMA / Prophet |
 
-Rules on tenure and recent top-ups are what the retention team uses today, so they are the bar to beat.
+The simplest bar is the same day last week per SKU and store: a week back rather than a day back because data can be late and sales have a strong weekly cycle. The advanced constant baseline computes the same six quantiles from a yearly window, so it is directly comparable with the target models. A quantile linear regression on lags and rolling aggregates, and time-series models (SARIMA, Prophet), are the next steps. Beating these baselines shows whether modeling and features move in the right direction.
 
 **Trade-off Matrix**
 
-| Option | Cost | Time to ship |
-| --- | --- | --- |
-| ✅ Rules (chosen) | Low | 1 week |
-| Logistic Regression | Low | 3 weeks |
+| Option | Effort | Comparable with quantile metrics | Also a fallback |
+| --- | --- | --- | --- |
+| Same day last week | Minimal | No, a point forecast | Yes, last-resort fallback |
+| ✅ Yearly-window quantiles (chosen) | Low | Yes | No |
+| Quantile linear regression | Medium, needs features | Yes | No |
+| SARIMA / Prophet | Medium, tuning or none with Prophet | Partly | Yes, secondary fallback |
 
 ## 4. Validation
 
 | Property | Value |
 | --- | --- |
-| Strategy | OOT Split |
+| Scheme | Rolling CV: 5 outer folds, 3 inner folds |
+| Windows | 2 years train, 28 days test, 3-day gap, 7-day step |
+| Golden Set | Holdout refreshed every 3 months |
 
-Train on 12 months, validate on the following month to mimic production drift.
+New data and labels arrive daily with up to 48 hours delay, recent data matters most, the assortment changes by 15% a month, and there are weekly and annual cycles. The split must mirror inference: train on the last two years, predict the next four weeks, with a 3-day gap for the data delay. The outer loop estimates quality, the inner loop tunes hyperparameters and selects features. The split moves weekly with new data; a golden set tracks long-term progress.
+
+**Trade-off Matrix**
+
+| Option | Respects time order | Handles 48 h data delay | Gives variance of the estimate |
+| --- | --- | --- | --- |
+| Random K-fold | No, leaks the future | No | Yes |
+| Single time holdout | Yes | Yes, with a gap | No |
+| ✅ Rolling CV with a gap (chosen) | Yes | Yes | Yes |
 
 ![Validation diagram](images/validation.svg)
 
@@ -65,70 +88,88 @@ Train on 12 months, validate on the following month to mimic production drift.
 
 | Property | Value |
 | --- | --- |
-| Sources | CRM, Clicks |
-| Key Features | Usage, Demographics, Network |
-| Volume | 50M/mo |
+| Sources | Transactions, stock, promo calendar, metadata |
+| Key Features | Sales lags and rolling stats, prices, promo, penetration |
+| Object | (date, store, SKU) → units sold |
+| External Data | Competitor prices, weather, traffic |
 
-Usage aggregates over 7/30/90 days carry most of the signal.
+Transactions are the primary source of truth, stock history shows how much could be sold, the promo calendar drives spikes. Purchased weather and traffic data and manually gathered competitor prices (about 25% of SKUs, with gaps) come from outside. History covers more than three years; labels come from transactions, so no extra labeling is needed.
 
-- Usage features
-- Demographics
-- Network quality
+Features are kept only if they pass four criteria: prediction quality, interpretability, computation time, and stability of their sources. A feature that improves quality but takes two days to compute is rejected. Each feature is a hypothesis, importance is checked with SHAP and shuffle importance, and feature tests run before and after training.
+
+![Data & Features diagram](images/data-features.svg)
 
 ## 6. Evaluation (Online)
 
 | Property | Value |
 | --- | --- |
-| Evaluation Type | A/B test, 10% |
-| Key Metric | -2% churn |
+| Evaluation Type | A/B test split by distribution center |
+| Key Metric | Average check, proxy for revenue |
+| Hypothesis | Revenue +0.3% or more |
+| Design | Welch's t-test, α 5%, β 10%, 1 month |
 
-A 10% holdout gives enough power to detect a 2% churn change in four weeks.
+Offline gains translate into an expected 0.3–0.7% revenue increase in the pilot group, based on earlier A/B tests. The split unit is the distribution center: each center serves a cluster of stores, so splitting by store would mix groups within one replenishment chain. Two weeks are enough statistically, but replenishment runs weekly, so the test lasts a full month. Control metrics: checks per day, model update frequency, offline metrics. Auxiliary: daily revenue and profit.
+
+**Trade-off Matrix**
+
+| Option | Groups independent | Enough units for power |
+| --- | --- | --- |
+| Split by store | No, stores share a distribution center | Yes |
+| ✅ Split by distribution center (chosen) | Yes | Enough with matched store subsets |
 
 ## 7. Integration
 
 | Property | Value |
 | --- | --- |
-| Inference Pattern | Batch Inference |
-| Output | Redis Cache |
-| Latency Budget | Nightly, < 2h |
+| Inference Pattern | Scheduled batch jobs, on-demand via API |
+| Output | Demand per SKU × entity × period, JSON |
+| Latency Budget | Not critical, batch throughput matters |
+| Fallback | 3 tiers down to last week's sales |
 
-Offers are sent once a day, so nightly batch scoring is enough.
+Forecasts run daily, weekly, and monthly on large volumes: batch containers on AWS Batch read from S3 and write back to S3, a small API serves on-demand requests. When drift or data problems appear, the system switches automatically: a model on the most important features, then SARIMA or Prophet, then last week's sales adjusted for holidays. The wrapper and the model are released separately; a new model runs in shadow mode first. Users are internal, so blue-green deployment is not needed; overrides and feedback stay with business users.
 
 **Trade-off Matrix**
 
-| Option | Cost | Freshness |
+| Option | Risk for users | Effort |
 | --- | --- | --- |
-| ✅ Batch (chosen) | Low | Daily |
-| Streaming | High | Minutes |
+| Blue-green deployment | Low | High |
+| ✅ Standard rollout + shadow mode for models (chosen) | Low, users are internal | Low |
+
+![Integration diagram](images/integration.svg)
 
 ## 8. Monitoring
 
 | Property | Value |
 | --- | --- |
-| Data Drift | PSI < 0.2 |
-| Model Quality | Weekly Prec@Top-10% |
-| Alerting | Slack on breach |
+| Data Drift | Wasserstein distance, mean drift score |
+| Model Quality | Quantile losses daily, labels in 15 min |
+| Alerting | z-score on missing data, prediction drift |
+| Tooling | Evidently AI, ClickHouse, Prometheus, Grafana |
 
-Labels arrive with a 30-day delay, so input drift is the early signal.
+This is one of the first ML projects at Supermegaretail, so there is no ML monitoring yet. Labels arrive 15 minutes after a sale, so model quality is monitored directly: the six quantile losses, RMSE, and MAE, with thresholds set after the first three months. Data quality alerts fire at 3 z-scores for important features and 4 for the rest; schema, ranges, and correlations are checked too. Prediction drift is an early alarm (PSI > 0.2 and Wasserstein > 0.1 are both tested). Business metrics stay on rotating A/B groups.
+
+**Trade-off Matrix**
+
+| Option | Time to start | Covers quality, data and target drift | Control |
+| --- | --- | --- | --- |
+| ✅ Evidently AI (open source) (chosen) | Days | Yes | Medium |
+| Own monitoring platform | Months | Whatever we build | Full |
 
 ## 9. Target Solution & Architecture
 
 | Property | Value |
 | --- | --- |
-| Model Type | Gradient Boosted Machine |
-| Algorithm | XGBoost Classifier |
-| Environment | Python / Kubernetes |
+| Model Type | Gradient boosting, one model per quantile |
+| Scope | One model for all categories |
+| Training Stack | Python, Spark, MLflow, Docker, SageMaker |
 
-Gradient boosting handles tabular, mixed-type features well and is cheap to serve in batch.
+Six gradient-boosting models, one per quantile, trained with quantile loss on the feature store. Replacing per-category models with one unified model improved offline metrics across most folds; small categories gained most, large ones did not lose, and the result held across seasons and regions. One model is also much easier to maintain. Learning curves pick the number of trees, lags, and window sizes; MLflow tracks experiments, CI/CD retrains on new data.
 
 **Trade-off Matrix**
 
-| Option | Accuracy | Explainability | Training cost |
+| Option | Small categories | Large categories | Maintenance |
 | --- | --- | --- | --- |
-| ✅ XGBoost (chosen) | High | SHAP | Low |
-| Neural net | High | Weak | High |
-| Logistic Regression | Medium | Native | Low |
-
-![Target Solution & Architecture diagram](images/target-solution.svg)
+| One model per category | Weak, too little data | Good | Many models |
+| ✅ One unified model (chosen) | Better offline metrics | No significant change | One model |
 "
 `;
