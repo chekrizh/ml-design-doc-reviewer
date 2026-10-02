@@ -1055,7 +1055,7 @@
         "The palette checks in docs/design-system.md print nothing",
         "No TODOs left for features marked as passing"
       ],
-      "passes": false
+      "passes": true
     }
   ],
   "acceptance": "docs/acceptance-tests.md"
