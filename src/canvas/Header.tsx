@@ -8,6 +8,8 @@ import { diagramNonEmpty } from '../model/rules'
 import { useDesign } from '../store/store'
 import { navigate } from '../router'
 import { Account } from './Account'
+import { ReviewMenu } from '../review/ReviewMenu'
+import type { SectionId } from '../model/design'
 import { Menu, MenuItem } from './Menu'
 
 export type Mode = 'canvas' | 'document'
@@ -18,7 +20,7 @@ const tab = (on: boolean) =>
   `rounded-lg px-4 py-1.5 text-sm font-medium ${on ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`
 const action = 'shrink-0 whitespace-nowrap rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium hover:bg-slate-50'
 
-export function Header({ mode, setMode }: { mode: Mode; setMode: (m: Mode) => void }) {
+export function Header({ mode, setMode, onReview, lastRunAt }: { mode: Mode; setMode: (m: Mode) => void; onReview?: (scope: 'design' | SectionId) => void; lastRunAt?: string | null }) {
   const title = useDesign((s) => s.design.title)
   const saveState = useDesign((s) => s.saveState)
   const a = useDesign.getState()
@@ -85,17 +87,7 @@ export function Header({ mode, setMode }: { mode: Mode; setMode: (m: Mode) => vo
       </div>
       <div className="flex flex-1 items-center justify-end gap-2">
         <Account />
-        <Menu label="AI Review" button="AI Review" className={action}>
-          {/* Wiring it to the review skill is M2. */}
-          <span className="group relative block">
-            <button type="button" role="menuitem" aria-disabled="true" aria-describedby="full-review-tip" className="flex w-full cursor-not-allowed items-center rounded-lg px-3 py-2 text-left font-medium text-slate-400">
-              Full review
-            </button>
-            <span id="full-review-tip" role="tooltip" className="pointer-events-none absolute top-1/2 right-full mr-2 hidden -translate-y-1/2 rounded-lg bg-slate-900 px-2 py-1 text-xs whitespace-nowrap text-white group-focus-within:block group-hover:block">
-              Coming soon
-            </span>
-          </span>
-        </Menu>
+        <ReviewMenu className={action} onRun={(scope) => onReview?.(scope)} lastRunAt={lastRunAt} />
         <Menu label="Share" button={<><ShareIcon /> Share</>} className="flex shrink-0 items-center gap-2 whitespace-nowrap rounded-lg bg-slate-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-slate-700">
           <MenuItem onClick={() => void exportPdf()}>Export PDF</MenuItem>
           <MenuItem onClick={exportMd}>Export Markdown</MenuItem>

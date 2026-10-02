@@ -1,6 +1,7 @@
 import { signInWithGoogle, signOut, useAuth } from '../backend/auth'
 import { TestSignIn } from '../backend/TestSignIn'
 import { navigate } from '../router'
+import { openSettings } from '../review/store'
 import { Menu, MenuItem } from './Menu'
 
 const outline = 'flex shrink-0 items-center gap-2 whitespace-nowrap rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-900 hover:bg-slate-50'
@@ -39,6 +40,7 @@ export function Account() {
       </div>
       <div className="my-1 border-t border-slate-100" />
       <MenuItem onClick={() => navigate('/')}>My designs</MenuItem>
+      <MenuItem onClick={openSettings}>AI Review settings</MenuItem>
       <div className="my-1 border-t border-slate-100" />
       <MenuItem onClick={() => void signOut()}>Sign out</MenuItem>
     </Menu>

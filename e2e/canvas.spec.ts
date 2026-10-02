@@ -357,23 +357,14 @@ test('m11-04 card height follows content, rows share the tallest height; resize 
   await expectRowsFitContent(page)
 })
 
-test('m11-07 AI Review popover: one disabled Full review item with a Coming soon tooltip', async ({ page }) => {
+test('m11-07 / m2-header-01 AI Review popover for a guest: sign in, no Coming soon', async ({ page }) => {
   await openApp(page)
   await page.getByRole('button', { name: 'AI Review', exact: true }).click()
   const menu = page.getByRole('menu', { name: 'AI Review' })
-  await expect(menu).toBeVisible()
-  await expect(menu.getByRole('menuitem')).toHaveText(['Full review'])
-  const item = menu.getByRole('menuitem', { name: 'Full review' })
-  await expect(item).toBeDisabled()
-  const tip = page.getByRole('tooltip', { name: 'Coming soon' })
-  await expect(tip).toBeHidden()
-  await item.hover()
-  await expect(tip).toBeVisible()
-  await expect(item).toHaveAccessibleDescription('Coming soon')
-  await item.click({ force: true })
-  await expect(dialog(page)).toHaveCount(0)
-  await page.keyboard.press('Escape')
-  await expect(menu).toBeHidden()
+  await expect(menu).toContainText('Sign in to run AI review')
+  await expect(menu.getByRole('button', { name: 'Sign in with Google' })).toBeVisible()
+  await expect(menu).not.toContainText('Coming soon')
+  await expect(menu).not.toContainText('Review whole design')
 })
 
 test('m11-10 section icons: flag, anchor, flask, target; scales only for the trade-offs status', async ({ page }) => {

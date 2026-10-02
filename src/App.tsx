@@ -5,6 +5,7 @@ import { DocumentView } from './document/DocumentView'
 import { startLocalPersistence, stopLocalPersistence } from './store/persist'
 import { Home } from './home/Home'
 import { Toaster } from './ui/toast'
+import { SettingsDialog } from './review/SettingsDialog'
 import { useAuth } from './backend/auth'
 import { closeCloudDesign, editorKey, openCloudDesign, openLibraryDesign, useCloud } from './backend/cloud'
 import { navigate, parseRoute, routePath, usePath, type Route } from './router'
@@ -25,6 +26,7 @@ export function App() {
         {route.name === 'home' ? <Home /> : route.name === 'local' ? <LocalDesign /> : <CloudDesign route={route} />}
       </div>
       <Toaster />
+      <SettingsDialog />
     </>
   )
 }

@@ -924,7 +924,7 @@
         "Password field and Save with 'Checking…'; saved key shows only its last 4 characters, 'Works', Replace, Delete; a rejected key shows a red field and a hint",
         "Matches docs/mockups/review-run-settings.png"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-review-06",

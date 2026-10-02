@@ -424,3 +424,8 @@ Format:
 ## m2-review-04
 - [x] `openrouter-key` and `openrouter-models` follow §6.2 and §6.3: format check, free `GET /key` check, Vault via `svc_set_openrouter_key`, only last 4 and date back; a rejected key (422) or malformed key (400) is not stored; delete removes it (`e2e/m2/key-fn.spec.ts`)
 - [x] The model list has only image-capable models with structured outputs, recommended first and default, the rest by name, no prices; cached for an hour in the function (`review/models.ts` + unit test)
+
+## m2-review-05
+- [x] 'AI Review settings' opens from the account menu, the Settings link of the AI Review menu and 'Add key' (`src/review/SettingsDialog.tsx`, `e2e/m2/settings.spec.ts`)
+- [x] Password field and Save with 'Checking…'; the saved key shows only its last 4 characters, '✓ Works', Replace, Delete (M1 confirm); a rejected key shows a red field and a hint; the full key is in no page text or response, also after reload; the model choice is saved (`user_settings.model`)
+- [x] Matches docs/mockups/review-run-settings.png (playwright MCP screenshot); note on AT-31 vs the §6.2 format check in open-questions.md

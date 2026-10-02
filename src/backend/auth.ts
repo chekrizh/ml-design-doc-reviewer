@@ -3,6 +3,7 @@ import type { Session } from '@supabase/supabase-js'
 import { navigate } from '../router'
 import { importGuestDesign } from './designs'
 import { showToast } from '../ui/toast'
+import { refreshSettings, resetReview } from '../review/store'
 import { getSupabase } from './supabase'
 
 export type Account = { id: string; email: string; name: string; avatarUrl: string | null }
@@ -25,7 +26,11 @@ export function startAuth() {
     // Token refreshes keep the same user; only a change of user re-renders.
     if (useAuth.getState().ready && account?.id === useAuth.getState().account?.id) return
     // Outside the callback: supabase-js calls inside it would wait on the auth lock.
-    setTimeout(() => void (account ? enter(account) : useAuth.setState({ account: null, ready: true })))
+    setTimeout(() => {
+      if (account) return void enter(account)
+      resetReview()
+      useAuth.setState({ account: null, ready: true })
+    })
   })
 }
 
@@ -49,6 +54,7 @@ async function enter(account: Account) {
     })
   }
   useAuth.setState({ account, ready: true })
+  void refreshSettings().catch(() => null)
 }
 
 export async function signInWithGoogle() {
