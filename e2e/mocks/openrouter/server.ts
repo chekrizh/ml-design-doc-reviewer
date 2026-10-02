@@ -9,7 +9,7 @@ import { readFileSync } from 'node:fs'
 
 export const MOCK_PORT = 4010
 export const VALID_KEY = 'sk-or-v1-test-valid-0000a3f9'
-export type ChatScenario = 'R1' | 'R2' | '401' | '402' | '429' | 'bad_output' | 'no_images'
+export type ChatScenario = 'R1' | 'R2' | '401' | '402' | '408' | '429' | '500' | 'bad_output' | 'no_images'
 
 type AnswerFinding = { section: string | null; anchor: string | null; [k: string]: unknown }
 const answer = (name: 'R1' | 'R2') =>
@@ -40,7 +40,9 @@ export const MODELS = [
 const ERRORS: Record<string, [number, string]> = {
   '401': [401, 'User not found.'],
   '402': [402, 'Insufficient credits. Add more using https://openrouter.ai/settings/credits'],
+  '408': [408, 'Request timed out'],
   '429': [429, 'Rate limit exceeded: free-models-per-min.'],
+  '500': [500, 'Internal Server Error'],
   no_images: [404, 'No endpoints found that support image input'],
 }
 

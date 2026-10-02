@@ -414,3 +414,7 @@ Format:
 - [x] `pnpm gen:skill` (`scripts/gen-skill.ts`) builds `supabase/functions/_shared/skill.generated.ts` from vendor (SKILL.md + references, rubric dimensions); a unit test fails if it is out of date (`skill.test.ts`)
 - [x] Serializer output for the example matches a committed snapshot (§6.7, `review/__snapshots__/example-design.txt`); anchor resolution follows the §6.8 table; a section run keeps only its section, at most 40 findings (`review/review.test.ts`)
 - [x] Request built for the example has the instruction, the skill with cache_control, the design text and exactly 3 PNG images after it (§6.4 step 6; `src/review/request.ts`, `review/prompt.ts`); model answers are validated against the strict schema (§6.5); provider errors map to §6.4 codes (`review/errors.ts`)
+
+## m2-review-03 (in progress, passes: false)
+- Function `supabase/functions/review/index.ts` and shared server helpers written; tests in `e2e/m2/review-fn.spec.ts` (3 of 8 failing at handoff).
+- Open: the run insert answers 400 inside the function (the service insert itself works from outside: check the `insert()` call and the body sent); the local Kong gateway answers CORS preflight with `*`, so the CORS test must check the POST response header instead.
