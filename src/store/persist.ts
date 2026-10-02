@@ -119,3 +119,17 @@ export async function clearLocal() {
   await stopLocalPersistence({ flush: false })
   await run('readwrite', (s) => s.clear())
 }
+
+/** The guest's design and meta, or null when there is none (Current work on the home screen). */
+export async function loadLocal(): Promise<{ design: Design; meta: LocalMeta } | null> {
+  const design = await loadDesign().catch(() => undefined)
+  if (!design) return null
+  return { design, meta: await loadMeta() }
+}
+
+/** Replaces the guest's design: New design, Start task, Open example (after confirmation if needed). */
+export async function replaceLocal(design: Design, origin: LocalMeta['origin'], sourceId: string | null = null) {
+  await clearLocal()
+  await saveDesign(design)
+  await saveMeta({ id: newId(), origin, sourceId, lastExport: null })
+}

@@ -367,3 +367,32 @@ Format:
 ## m2-lib-02
 - [x] Validation, Data & Features and Integration have Excalidraw diagrams built from the descriptions in the markdown (`src/fixtures/diagram.ts`: rows of [boxes] joined by arrows, row labels, wrapped labels); a unit test checks every box, arrow and fold label against the file (`library.test.ts`)
 - [x] Exactly these 3 cards show a thumbnail after Load example; Target Solution keeps the default diagram per M1.1 (`e2e/m2/library.spec.ts`, persist-02)
+
+## m2-designs-03
+- [x] New design and Start task create a cloud design at once; the first edit of an example creates one too (`e2e/m2/home.spec.ts`)
+- [x] Opening a design from 'Your designs' loads it; Delete asks with the M1 dialog (Cancel keeps) and removes it for good, findings included (cascade)
+- [x] No folders, search or rename from the list (only Delete in '⋯')
+
+## m2-home-01
+- [x] 'Design a system' and 'Examples' share one row, each a horizontal strip of cards; 'Your designs' fills the rest of the height and scrolls inside (`e2e/m2/home.spec.ts`, 14 designs)
+- [x] At 1440×900 the page itself does not scroll
+- [x] Matches docs/mockups/home-signed-in.png and home-guest.png (compared with playwright MCP screenshots; differences: the Source line reads 'Source: ML System Design · MIT')
+
+## m2-home-02
+- [x] Each card: Problem Space preview (Domain, Goal, Constraints, ML Task), title, one sentence, chip Blank / Task / Example, action button
+- [x] The task's ML Task reads 'Your first decision'; the example shows its Source (link to the original)
+- [x] New design, Start task and Open example open the matching design (guest in `/local`, signed-in in `/d/:id` or `/library/:itemId`)
+
+## m2-home-03
+- [x] Row: 3×3 section map in canvas layout (filled / empty), title, origin chip, ML Task, 'N / 9 sections', trade-offs count, open findings (from `design_open_findings`), last edit date (`src/home/edited.ts` + unit test), '⋯' with Delete
+- [x] Last edited first
+- [x] Empty state when there are no designs
+
+## m2-home-04
+- [x] 'Your designs' is inactive for guests with 'Sign in to keep several designs and run AI review' and Sign in with Google
+- [x] With a local design, 'Current work · in this browser' shows it with Continue
+- [x] Opening an example or task over a local design asks 'Replace your current work?' with the M1 dialog (title added to `confirmDialog`); Cancel keeps it
+
+## m2-home-05
+- [x] Opening an example without editing creates nothing (`/library/:itemId`)
+- [x] The first edit saves a copy with origin Example to 'Your designs' and moves the URL to `/d/:id` without remounting the editor; the library example stays unchanged

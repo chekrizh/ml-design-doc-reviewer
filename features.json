@@ -761,7 +761,7 @@
         "Opening a design from 'Your designs' loads it; Delete asks for confirmation with the M1 dialog and removes it for good",
         "No folders, search or rename from the list"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-lib-01",
@@ -794,7 +794,7 @@
         "At 1440×900 the page itself does not scroll",
         "Matches docs/mockups/home-signed-in.png and home-guest.png"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-home-02",
@@ -805,7 +805,7 @@
         "The task's ML Task reads 'Your first decision'; the example shows its Source",
         "New design, Start task and Open example open the matching design"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-home-03",
@@ -816,7 +816,7 @@
         "Last edited first",
         "Empty state when there are no designs"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-home-04",
@@ -827,7 +827,7 @@
         "With a local design, 'Current work · in this browser' shows it with Continue",
         "Opening an example or task over a local design asks 'Replace your current work?' with the M1 dialog; Cancel keeps it"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-home-05",
@@ -837,7 +837,7 @@
         "Opening an example without editing creates nothing",
         "The first edit saves a copy with origin Example to 'Your designs'; the library example stays unchanged"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-header-01",

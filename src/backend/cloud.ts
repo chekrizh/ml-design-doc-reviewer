@@ -3,6 +3,9 @@ import type { Design } from '../model/design'
 import { designSummary } from '../model/summary'
 import { autosave } from '../store/persist'
 import { useDesign } from '../store/store'
+import { libraryDesign, libraryItem } from '../fixtures/library'
+import { navigate } from '../router'
+import { createDesign } from './designs'
 import { getSupabase } from './supabase'
 
 /** The open cloud design: its row id, the version this tab last saw, and whether a save hit a conflict (D23). */
@@ -13,7 +16,25 @@ let saver: ReturnType<typeof autosave> | null = null
 /** Thrown by a save whose `version` is stale: someone else saved first. */
 export class ConflictError extends Error {}
 
+/** Set while a Library item is open but not yet saved: its first edit creates the design. */
+let pendingItem: { id: string; kind: 'example' | 'task' } | null = null
+
+/**
+ * The editor key of a design that started as a Library item: keeps the same editor mounted
+ * when the URL moves from /library/:itemId to /d/:id, so nothing reloads after the first edit.
+ */
+export const editorKey = new Map<string, string>()
+
 async function save(d: Design) {
+  if (pendingItem) {
+    const item = pendingItem
+    const id = await createDesign(d, item.kind, item.id)
+    pendingItem = null
+    useCloud.setState({ id, version: 1, conflict: false })
+    editorKey.set(id, `library:${item.id}`)
+    navigate(`/d/${id}`, { replace: true })
+    return
+  }
   const { id, version } = useCloud.getState()
   const { data, error } = await getSupabase()!
     .from('designs')
@@ -44,7 +65,24 @@ export async function openCloudDesign(id: string): Promise<boolean> {
   return true
 }
 
+/**
+ * A Library item for a signed-in user (/library/:itemId): shown as is, nothing is created
+ * until the first edit, which saves a copy (§5.2, AT-28).
+ */
+export async function openLibraryDesign(itemId: string): Promise<boolean> {
+  await closeCloudDesign()
+  const item = libraryItem(itemId)
+  if (!item) return false
+  pendingItem = { id: item.id, kind: item.kind }
+  useCloud.setState({ id: null, version: 0, conflict: false })
+  useDesign.getState().setDesign(libraryDesign(itemId))
+  useDesign.getState().setSaveState('saved')
+  saver = autosave(save, 800)
+  return true
+}
+
 export async function closeCloudDesign() {
+  pendingItem = null
   const s = saver
   saver = null
   await s?.stop()

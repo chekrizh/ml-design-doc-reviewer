@@ -98,3 +98,16 @@ export async function openCloud(page: import('@playwright/test').Page, id: strin
   await page.goto(`/d/${id}`)
   await page.getByRole('button', { name: 'Canvas', exact: true }).waitFor()
 }
+
+/** Service-role REST insert, bypassing RLS: seeds rows only the server may write (runs, findings). */
+export async function serviceInsert(table: string, rows: object[]) {
+  const key = process.env.SUPABASE_SECRET_KEY!
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
+    method: 'POST',
+    headers: { apikey: key, Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify(rows),
+  })
+  if (!res.ok) throw new Error(`${table}: ${res.status} ${await res.text()}`)
+}
+
+export const TEST_A = '00000000-0000-4000-a000-00000000000a'

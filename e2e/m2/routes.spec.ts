@@ -6,7 +6,7 @@ const editor = (page: import('@playwright/test').Page) => page.getByRole('button
 test('m2-setup-04: /, /local and back/forward on the History API', async ({ page }) => {
   await page.goto('/')
   await expect(editor(page)).toBeHidden()
-  await page.getByRole('button', { name: 'Continue' }).click()
+  await page.getByRole('button', { name: 'New design' }).click()
   await expect(page).toHaveURL(/\/local$/)
   await setCardValue(page, 'problem-space', 'Domain', 'Payments')
   await waitSaved(page)

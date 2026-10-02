@@ -36,3 +36,44 @@ export async function importGuestDesign(): Promise<string | null> {
   await clearLocal()
   return found.data.id as string
 }
+
+export type Origin = 'blank' | 'task' | 'example'
+
+export interface DesignRow {
+  id: string
+  title: string
+  origin: Origin
+  summary: import('../model/summary').DesignSummary
+  updated_at: string
+  openFindings: number
+}
+
+/** 'Your designs': last edited first, with open findings from design_open_findings (§5.3). */
+export async function listDesigns(): Promise<DesignRow[]> {
+  const [rows, open] = await Promise.all([
+    db().from('designs').select('id, title, origin, summary, updated_at').order('updated_at', { ascending: false }),
+    db().from('design_open_findings').select('design_id, count'),
+  ])
+  if (rows.error) throw rows.error
+  if (open.error) throw open.error
+  const counts = new Map<string, number>()
+  for (const r of open.data) counts.set(r.design_id, (counts.get(r.design_id) ?? 0) + r.count)
+  return rows.data.map((r) => ({ ...r, openFindings: counts.get(r.id) ?? 0 }) as DesignRow)
+}
+
+/** New design, Start task and the first edit of an example insert a cloud design (§5.3). */
+export async function createDesign(design: Design, origin: Origin, sourceId: string | null = null): Promise<string> {
+  const { data, error } = await db()
+    .from('designs')
+    .insert({ origin, source_id: sourceId, title: design.title, data: design, summary: designSummary(design) })
+    .select('id')
+    .single()
+  if (error) throw error
+  return data.id as string
+}
+
+/** Runs and findings go with it (on delete cascade). */
+export async function deleteDesign(id: string) {
+  const { error } = await db().from('designs').delete().eq('id', id)
+  if (error) throw error
+}

@@ -5,8 +5,8 @@ import { DocumentView } from './document/DocumentView'
 import { startLocalPersistence, stopLocalPersistence } from './store/persist'
 import { Home } from './home/Home'
 import { useAuth } from './backend/auth'
-import { closeCloudDesign, openCloudDesign, useCloud } from './backend/cloud'
-import { navigate, parseRoute, routePath, usePath } from './router'
+import { closeCloudDesign, editorKey, openCloudDesign, openLibraryDesign, useCloud } from './backend/cloud'
+import { navigate, parseRoute, routePath, usePath, type Route } from './router'
 
 export function App() {
   const path = usePath()
@@ -21,7 +21,7 @@ export function App() {
         <p className="text-slate-500">ML System Design Trainer needs a screen at least 1280px wide.</p>
       </div>
       <div className="min-h-screen bg-slate-50 text-slate-900 max-xl:hidden print:block! print:bg-white">
-        {route.name === 'home' ? <Home /> : route.name === 'local' ? <LocalDesign /> : route.name === 'cloud' ? <CloudDesign key={route.id} id={route.id} /> : <Redirect to="/" />}
+        {route.name === 'home' ? <Home /> : route.name === 'local' ? <LocalDesign /> : <CloudDesign route={route} />}
       </div>
     </>
   )
@@ -66,16 +66,18 @@ function LocalEditor() {
   return opened ? <Editor /> : null
 }
 
-/** A signed-in user's design from Supabase (/d/:id). */
-function CloudDesign({ id }: { id: string }) {
+/** A signed-in user's design (/d/:id) or a Library item not saved yet (/library/:itemId). */
+function CloudDesign({ route }: { route: Extract<Route, { name: 'cloud' | 'library' }> }) {
   const { account, ready } = useAuth()
   if (!ready) return null
   if (!account) return <Redirect to="/" />
-  return <CloudEditor id={id} />
+  // A Library item's first edit moves the URL to /d/:id; the same editor stays mounted.
+  const key = route.name === 'library' ? `library:${route.itemId}` : (editorKey.get(route.id) ?? route.id)
+  return <CloudEditor key={key} open={route.name === 'library' ? () => openLibraryDesign(route.itemId) : () => openCloudDesign(route.id)} />
 }
 
-function CloudEditor({ id }: { id: string }) {
-  const opened = useDesignSource(() => openCloudDesign(id), closeCloudDesign)
+function CloudEditor({ open }: { open: () => Promise<boolean> }) {
+  const opened = useDesignSource(open, closeCloudDesign)
   if (opened === false) return <Redirect to="/" />
   return opened ? <Editor banner={<ConflictBanner />} /> : null
 }

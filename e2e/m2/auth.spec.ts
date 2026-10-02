@@ -13,7 +13,7 @@ test('m2-auth-01: Sign in with Google starts Supabase Google OAuth with PKCE', a
   })
   await page.goto('/')
   await expect(page.getByRole('img', { name: 'Guest' })).toBeVisible()
-  await page.getByRole('button', { name: 'Sign in with Google' }).click()
+  await page.locator('header').getByRole('button', { name: 'Sign in with Google' }).click()
   await expect(page.getByText('Google')).toBeVisible()
   expect(authorize!.searchParams.get('provider')).toBe('google')
   expect(authorize!.searchParams.get('redirect_to')).toBe('http://localhost:4173/')
@@ -38,10 +38,10 @@ test('m2-auth-01: after sign-in the header shows the photo and the account menu;
   await menu.getByRole('menuitem', { name: 'Sign out' }).click()
 
   await expect(page).toHaveURL('http://localhost:4173/')
-  await expect(page.getByRole('button', { name: 'Sign in with Google' })).toBeVisible()
+  await expect(page.locator('header').getByRole('button', { name: 'Sign in with Google' })).toBeVisible()
   await expect(page.getByRole('img', { name: 'Guest' })).toBeVisible()
   await page.reload()
-  await expect(page.getByRole('button', { name: 'Sign in with Google' })).toBeVisible()
+  await expect(page.locator('header').getByRole('button', { name: 'Sign in with Google' })).toBeVisible()
 })
 
 test('m2-auth-01: the production build has no test sign-in', async () => {
