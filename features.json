@@ -991,7 +991,7 @@
         "Resolve, Dismiss or Reopen in the panel, the editor or the document updates badges, indicators, markers, comments and counts everywhere without reload",
         "Statuses survive reload"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-review-12",

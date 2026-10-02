@@ -457,3 +457,7 @@ Format:
 - [x] Each comment sits at its field's height and moves down on overlap; whole-design comments sit at the document title (`src/review/DocComments.tsx`, `e2e/m2/review-document.spec.ts`)
 - [x] The expanded comment aligns with its field (±4px) and the field is highlighted
 - [x] Tabs Open / Resolved / Dismissed as on the canvas
+
+## m2-review-11
+- [x] Resolve, Dismiss or Reopen in the panel, the editor or the document updates badges, indicators, markers, comments and counts everywhere without reload: one store (`src/review/store.ts`), optimistic with rollback and a toast on failure (`e2e/m2/review-status.spec.ts`)
+- [x] Statuses survive reload (saved to `findings.status`, read back with the design)
