@@ -33,7 +33,8 @@ test('m11-06 Share and ⋯ menus: items, close on outside click and Escape, Rese
   const share = page.getByRole('menu', { name: 'Share' })
   const more = page.getByRole('menu', { name: 'More' })
   await page.getByRole('button', { name: 'Share', exact: true }).click()
-  await expect(share.getByRole('menuitem')).toHaveText(['Export PDF', 'Export Markdown'])
+  // M2 (AT-43): Export to Google Docs first.
+  await expect(share.getByRole('menuitem')).toHaveText(['Export to Google DocsCreates a new Google Doc in your Drive', 'Export PDF', 'Export Markdown'])
   await page.mouse.click(700, 500)
   await expect(share).toBeHidden()
   await page.getByRole('button', { name: 'Share', exact: true }).click()

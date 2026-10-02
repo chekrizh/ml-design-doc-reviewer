@@ -8,6 +8,16 @@ import { diagramNonEmpty } from '../model/rules'
 import { useDesign } from '../store/store'
 import { navigate } from '../router'
 import { Account } from './Account'
+import { useLastExport } from '../export/gdocs'
+import { exportOpenDesignToGoogleDocs } from '../export/gdocs-open'
+
+/** 'today, 14:05' or '12 Sep, 14:05'. */
+const formatExportTime = (iso: string) => {
+  const d = new Date(iso)
+  const time = d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })
+  const today = d.toDateString() === new Date().toDateString()
+  return `${today ? 'today' : `${d.getDate()} ${d.toLocaleDateString('en-US', { month: 'short' })}`}, ${time}`
+}
 import { ReviewMenu } from '../review/ReviewMenu'
 import type { SectionId } from '../model/design'
 import { Menu, MenuItem } from './Menu'
@@ -38,6 +48,8 @@ export function Header({ mode, setMode, onReview, lastRunAt }: { mode: Mode; set
     if (await confirmEmptySections(d))
       exportMarkdown(d).catch(() => alertDialog('Export failed: a diagram could not be rendered. Please try again.'))
   }
+  const lastExport = useLastExport((s) => s.last)
+  const exportGdocs = () => void exportOpenDesignToGoogleDocs()
   const exportPdf = async () => {
     const d = useDesign.getState().design
     if (!(await confirmEmptySections(d))) return
@@ -89,8 +101,20 @@ export function Header({ mode, setMode, onReview, lastRunAt }: { mode: Mode; set
         <Account />
         <ReviewMenu className={action} onRun={(scope) => onReview?.(scope)} lastRunAt={lastRunAt} />
         <Menu label="Share" button={<><ShareIcon /> Share</>} className="flex shrink-0 items-center gap-2 whitespace-nowrap rounded-lg bg-slate-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-slate-700">
+          <MenuItem onClick={exportGdocs} className="flex w-full flex-col items-start gap-0.5 rounded-lg px-3 py-2 text-left font-medium hover:bg-slate-100">
+            <span>Export to Google Docs</span>
+            <span className="text-xs font-normal text-slate-500">Creates a new Google Doc in your Drive</span>
+          </MenuItem>
           <MenuItem onClick={() => void exportPdf()}>Export PDF</MenuItem>
           <MenuItem onClick={exportMd}>Export Markdown</MenuItem>
+          {lastExport && (
+            <div data-testid="last-export" className="mx-3 mt-1 mb-1 flex items-center gap-2 border-t border-slate-100 pt-2 text-xs text-slate-500">
+              <span>Last exported {formatExportTime(lastExport.at)}</span>
+              <a href={lastExport.url} target="_blank" rel="noopener noreferrer" className="ml-auto font-semibold text-indigo-600 hover:text-indigo-700">
+                Open
+              </a>
+            </div>
+          )}
         </Menu>
         <Menu label="More" button="⋯" className={`${action} px-2.5 leading-none`}>
           <MenuItem onClick={loadExample}>Load example</MenuItem>

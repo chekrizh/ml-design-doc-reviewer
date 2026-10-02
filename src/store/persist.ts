@@ -133,3 +133,8 @@ export async function replaceLocal(design: Design, origin: LocalMeta['origin'], 
   await saveDesign(design)
   await saveMeta({ id: newId(), origin, sourceId, lastExport: null })
 }
+
+/** The guest's last Google Docs export, kept in meta (§8.3). */
+export async function recordLocalExport(lastExport: LocalMeta['lastExport']) {
+  await saveMeta({ ...(await loadMeta()), lastExport })
+}

@@ -849,7 +849,7 @@
         "Share: Export to Google Docs (with its subtitle), Export PDF, Export Markdown, in this order",
         "AI Review menu: guest → 'Sign in to run AI review'; no key → 'Add your OpenRouter key' and 'Add key'; with key → 'Review whole design', 'Review one section' with the 9 sections, model, last run time, Settings"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-doc-01",
@@ -1000,7 +1000,7 @@
       "steps": [
         "Markdown, PDF and Google Docs export contain no finding text or review labels"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-export-01",
@@ -1010,7 +1010,7 @@
         "Each non-empty diagram rasterizes to PNG (shared by the review request and the Google Docs export)",
         "A unit test checks the PNG signature and size for the example diagrams"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-export-02",
@@ -1023,7 +1023,7 @@
         "Toasts: 'Continue in the Google window…', 'Exporting to Google Docs…', 'Google Doc created' with Open and Copy link; errors with Try again for denied access, blocked popup, Drive failure",
         "Works for guests and signed-in users"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-security-01",

@@ -2,7 +2,8 @@ import { useEffect, useState, type ReactNode } from 'react'
 import { Canvas } from './canvas/Canvas'
 import { Header, type Mode } from './canvas/Header'
 import { DocumentView } from './document/DocumentView'
-import { startLocalPersistence, stopLocalPersistence } from './store/persist'
+import { loadLocal, startLocalPersistence, stopLocalPersistence } from './store/persist'
+import { useLastExport } from './export/gdocs'
 import { Home } from './home/Home'
 import { Toaster } from './ui/toast'
 import { SettingsDialog } from './review/SettingsDialog'
@@ -71,6 +72,7 @@ function LocalEditor() {
   const opened = useDesignSource(async () => {
     void openDesignReview(null)
     await startLocalPersistence()
+    useLastExport.setState({ last: (await loadLocal().catch(() => null))?.meta.lastExport ?? null })
   }, () => stopLocalPersistence())
   return opened ? <Editor /> : null
 }

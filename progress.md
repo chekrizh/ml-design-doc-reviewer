@@ -461,3 +461,23 @@ Format:
 ## m2-review-11
 - [x] Resolve, Dismiss or Reopen in the panel, the editor or the document updates badges, indicators, markers, comments and counts everywhere without reload: one store (`src/review/store.ts`), optimistic with rollback and a toast on failure (`e2e/m2/review-status.spec.ts`)
 - [x] Statuses survive reload (saved to `findings.status`, read back with the design)
+
+## m2-header-01
+- [x] Avatar left of AI Review and Share: a guest sees the default avatar (docs/mockups/assets/default-avatar.png, served as /default-avatar.png) and 'Sign in with Google'; signed-in shows the Google photo (`e2e/m2/header.spec.ts`)
+- [x] Account menu: My designs, AI Review settings, Sign out
+- [x] Share: Export to Google Docs (with its subtitle), Export PDF, Export Markdown, in this order (MCP screenshot vs export-gdocs-menu.png); my M1 tests of the Share list and 'Full review / Coming soon' follow AT-43 / AT-30
+- [x] AI Review menu: guest → 'Sign in to run AI review'; no key → 'Add your OpenRouter key' and 'Add key'; with key → 'Review whole design', 'Review one section' with the 9 sections, model, last run time, Settings (`src/review/ReviewMenu.tsx`)
+
+## m2-review-12
+- [x] Markdown, PDF and Google Docs export contain no finding text or review labels (`e2e/m2/exports.spec.ts`; the comments column and the panel are print-hidden, exporters read only the design)
+
+## m2-export-01
+- [x] Each non-empty diagram rasterizes to PNG (`src/export/png.ts`, Excalidraw exportToBlob, white background, long side ≤ 1600 px), shared by the review request and the Google Docs export
+- [x] The PNG signature and size are checked for the example diagrams, and the review and the export carry the same images (`e2e/m2/exports.spec.ts`; Excalidraw needs a real canvas, so this check runs in the browser)
+
+## m2-export-02
+- [x] Google Identity Services (loaded on first export) asks for `drive.file`; the token lives in memory only until it expires; the backend is not involved (`src/export/gdocs.ts`)
+- [x] The document HTML has explicit table borders and PNG images as data URIs (`src/export/html.ts` + unit test); the upload creates a Google Doc (`application/vnd.google-apps.document`)
+- [x] Every export creates a new file; Share shows 'Last exported …' with Open (cloud: `designs.last_export`, without a new version; guest: IndexedDB meta)
+- [x] Toasts: 'Continue in the Google window…', 'Exporting to Google Docs…', 'Google Doc created' with Open and Copy link; errors with Try again for denied access, blocked popup and a Drive failure; a 401 asks for a token once more (`e2e/m2/gdocs.spec.ts`)
+- [x] Works for guests and signed-in users
