@@ -29,7 +29,8 @@
 ## 2. Vercel
 
 - [ ] Add New → Project → импорт репозитория. Framework Vite, build `pnpm build`, output `dist`. Production Branch оставить `main`: пока `main` не трогаем, в production ничего важного не выходит.
-- Собираются только ветки `staging` и `main`: `ignoreCommand` в `vercel.json`. Ветки других участников не деплоятся и не получают переменные staging.
+- [ ] Собирается только ветка `staging`. В нашем `vercel.json` это `ignoreCommand`, но Vercel читает `vercel.json` из собираемого коммита, а в `main` и ветках коллег его нет. Поэтому ещё и Settings → Git → **Ignored Build Step** → Custom: `[ "$VERCEL_GIT_COMMIT_REF" != "staging" ]` (код выхода 0 = не собирать).
+- Первый деплой `main` Vercel запускает сам при импорте, до этой настройки: соберётся старый код без переменных (гостевое приложение без бэкенда). Безобидно, можно удалить в Deployments. При запуске prod (раздел 7) добавить `main` в обе команды.
 - [ ] Settings → Environment Variables, окружение **Preview** (можно ограничить веткой `staging`):
 
 | Переменная | Значение |
@@ -96,6 +97,7 @@
 - Vercel: переменные окружения **Production** с prod-значениями;
 - Google: в тот же клиент добавить origin `https://<project>.vercel.app` и redirect `https://<prod-ref>.supabase.co/auth/v1/callback`; Branding — prod Home page и Privacy; Audience → **In production**;
 - GitHub: variables `PROD_SUPABASE_PROJECT_REF`, `PROD_SUPABASE_PUBLISHABLE_KEY`, `PROD_APP_ORIGINS`; environment `production` с secret `SUPABASE_DB_PASSWORD`, **Required reviewers: владелец**, Deployment branches: только `main`; защита `main` с обязательным check `test`;
+- Vercel: добавить `main` в `ignoreCommand` и в Ignored Build Step;
 - выпуск: влить `staging` в `main` → `deploy-production` ждёт approve;
 - до анонса перевести prod на **Pro** (нет пауз, ежедневные бэкапы) и убрать его из `keepalive.yml`.
 
