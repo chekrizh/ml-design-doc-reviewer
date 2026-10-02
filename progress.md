@@ -404,3 +404,8 @@ Format:
 ## m2-ui-01
 - [x] One toast at a time, bottom center, role=status, classes from docs/design-system.md (`src/ui/toast.tsx`, `e2e/m2/toast.spec.ts`)
 - [x] Success, error and progress variants; actions and a dismiss button (used for moving the guest design on sign-in: progress → error with Try again → success)
+
+## m2-review-01
+- [x] Types and pure rules in `supabase/functions/_shared/review/` (`types.ts`, `anchors.ts`: field texts §5.6) and `src/model/review.ts`, imported by the app through the `@review` alias (D24), with unit tests (`anchors.test.ts`, `src/model/review.test.ts`)
+- [x] Review indicator per section (not reviewed / red / green), worst severity, counts by severity, groups with 'Whole design' first
+- [x] Stale is derived (D25): field text differs from `anchor_value` → 'Field changed since review'; field not found → whole design, 'Field removed'

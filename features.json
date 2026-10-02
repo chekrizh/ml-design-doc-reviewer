@@ -880,7 +880,7 @@
         "Review indicator per section (not reviewed / red / green), worst severity, counts",
         "Stale is derived (D25): field text differs from `anchor_value` → 'Field changed since review'; field not found → whole design, 'Field removed'"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-review-02",
