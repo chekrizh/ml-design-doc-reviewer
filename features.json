@@ -1033,7 +1033,7 @@
         "No test, page or response exposes the full OpenRouter key; the built bundle contains no service-role key or Google client secret",
         "RLS tests pass for designs, findings and settings"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "m2-acceptance-01",

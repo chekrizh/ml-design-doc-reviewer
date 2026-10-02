@@ -481,3 +481,7 @@ Format:
 - [x] Every export creates a new file; Share shows 'Last exported …' with Open (cloud: `designs.last_export`, without a new version; guest: IndexedDB meta)
 - [x] Toasts: 'Continue in the Google window…', 'Exporting to Google Docs…', 'Google Doc created' with Open and Copy link; errors with Try again for denied access, blocked popup and a Drive failure; a 401 asks for a token once more (`e2e/m2/gdocs.spec.ts`)
 - [x] Works for guests and signed-in users
+
+## m2-security-01
+- [x] No page or response exposes the full OpenRouter key (`e2e/m2/settings.spec.ts` checks page text and every Supabase response, also after reload; `key-fn.spec.ts` checks the save response; `review-fn.spec.ts` checks function logs); the built bundle contains no service-role key (new or legacy), Google client secret or OpenRouter key, and no secret is committed in src/, config.toml, migrations, functions or .env files (`e2e/m2/security.spec.ts`)
+- [x] RLS tests pass for designs, findings and settings (`pnpm test:db`: 71 pgTAP tests)
