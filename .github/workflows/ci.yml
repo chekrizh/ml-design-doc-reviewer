@@ -1,6 +1,8 @@
-# Tests on every push and PR; on main, then deploys the database and edge functions (D35):
-# staging at once, production after a manual approval (GitHub environment "production").
-# The frontend is deployed by Vercel's Git integration (Preview → staging, Production → prod).
+# Tests on every push and PR, then deploys the database and edge functions (D35):
+# - branch `staging` → the staging project;
+# - branch `main` → production, after a manual approval (GitHub environment "production"). Dormant for now.
+# A deploy is skipped while its project's variables are not set, so pushing is always safe.
+# The frontend is deployed by Vercel's Git integration (Preview of `staging` → staging, Production → prod).
 name: CI
 
 on:
@@ -36,13 +38,14 @@ jobs:
 
   deploy-staging:
     needs: test
-    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/staging' && vars.STAGING_SUPABASE_PROJECT_REF != ''
     uses: ./.github/workflows/deploy.yml
     with: { environment: staging, prefix: STAGING }
     secrets: inherit
 
   deploy-production:
-    needs: deploy-staging
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.PROD_SUPABASE_PROJECT_REF != ''
     uses: ./.github/workflows/deploy.yml
     with: { environment: production, prefix: PROD }
     secrets: inherit

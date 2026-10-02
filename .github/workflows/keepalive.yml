@@ -16,6 +16,8 @@ jobs:
           - { ref: '${{ vars.STAGING_SUPABASE_PROJECT_REF }}', key: '${{ vars.STAGING_SUPABASE_PUBLISHABLE_KEY }}' }
           - { ref: '${{ vars.PROD_SUPABASE_PROJECT_REF }}', key: '${{ vars.PROD_SUPABASE_PUBLISHABLE_KEY }}' }
     steps:
-      - run: |
+      # A project whose variables are not set yet (prod, for now) is skipped.
+      - if: matrix.ref != ''
+        run: |
           curl -fsS -o /dev/null "https://${{ matrix.ref }}.supabase.co/auth/v1/settings" -H "apikey: ${{ matrix.key }}"
           curl -sS -o /dev/null "https://${{ matrix.ref }}.supabase.co/rest/v1/designs?select=id&limit=1" -H "apikey: ${{ matrix.key }}"
