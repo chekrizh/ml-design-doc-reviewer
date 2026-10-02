@@ -27,7 +27,7 @@ export type Mode = 'canvas' | 'document'
 const SAVE_LABEL = { saved: 'Saved', saving: 'Saving…', error: 'Not saved' }
 
 const tab = (on: boolean) =>
-  `rounded-lg px-4 py-1.5 text-sm font-medium ${on ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`
+  `flex-1 rounded-lg px-4 py-1.5 text-sm font-medium lg:flex-none ${on ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`
 const action = 'shrink-0 whitespace-nowrap rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium hover:bg-slate-50'
 
 export function Header({ mode, setMode, onReview, lastRunAt }: { mode: Mode; setMode: (m: Mode) => void; onReview?: (scope: 'design' | SectionId) => void; lastRunAt?: string | null }) {
@@ -64,9 +64,10 @@ export function Header({ mode, setMode, onReview, lastRunAt }: { mode: Mode; set
     setTimeout(() => window.print(), 300)
   }
 
+  // One row (h-16) from lg up: the review panel and the document outline stick right under it.
   return (
-    <header className="sticky top-0 z-40 flex items-center gap-4 border-b border-slate-200 bg-white/90 px-6 py-3 backdrop-blur print:hidden">
-      <div className="flex min-w-0 flex-1 items-center gap-3">
+    <header className="sticky top-0 z-40 flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-slate-200 bg-white/90 px-4 py-3 backdrop-blur sm:px-6 lg:h-16 lg:flex-nowrap lg:py-0 print:hidden">
+      <div className="flex min-w-0 flex-1 basis-48 items-center gap-3 lg:basis-0">
         <a
           href="/"
           aria-label="ML System Design Trainer: home"
@@ -83,13 +84,13 @@ export function Header({ mode, setMode, onReview, lastRunAt }: { mode: Mode; set
           </svg>
         </a>
         <h1 className="flex min-w-0 text-lg font-semibold">
-          <InlineText label="Design title" value={title} placeholder="Untitled design" onSave={a.setTitle} inputClassName="w-80" />
+          <InlineText label="Design title" value={title} placeholder="Untitled design" onSave={a.setTitle} inputClassName="w-full max-w-80" />
         </h1>
-        <span data-testid="header-save-state" className={`shrink-0 text-xs ${saveState === 'error' ? 'font-medium text-red-600' : 'text-slate-400'}`}>
+        <span data-testid="header-save-state" className={`shrink-0 text-xs max-sm:sr-only ${saveState === 'error' ? 'font-medium text-red-600' : 'text-slate-400'}`}>
           {SAVE_LABEL[saveState]}
         </span>
       </div>
-      <div role="group" aria-label="Mode" className="flex rounded-xl bg-slate-100 p-1">
+      <div role="group" aria-label="Mode" className="order-last flex basis-full justify-center rounded-xl bg-slate-100 p-1 lg:order-none lg:shrink-0 lg:basis-auto">
         <button type="button" aria-pressed={mode === 'canvas'} className={tab(mode === 'canvas')} onClick={() => setMode('canvas')}>
           Canvas
         </button>
@@ -97,10 +98,10 @@ export function Header({ mode, setMode, onReview, lastRunAt }: { mode: Mode; set
           Document
         </button>
       </div>
-      <div className="flex flex-1 items-center justify-end gap-2">
+      <div className="ml-auto flex flex-wrap items-center justify-end gap-2 lg:flex-1 lg:flex-nowrap">
         <Account />
         <ReviewMenu className={action} onRun={(scope) => onReview?.(scope)} lastRunAt={lastRunAt} />
-        <Menu label="Share" button={<><ShareIcon /> Share</>} className="flex shrink-0 items-center gap-2 whitespace-nowrap rounded-lg bg-slate-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-slate-700">
+        <Menu label="Share" button={<><ShareIcon /> <span className="max-sm:sr-only">Share</span></>} className="flex shrink-0 items-center gap-2 whitespace-nowrap rounded-lg bg-slate-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-slate-700">
           <MenuItem onClick={exportGdocs} className="flex w-full flex-col items-start gap-0.5 rounded-lg px-3 py-2 text-left font-medium hover:bg-slate-100">
             <span>Export to Google Docs</span>
             <span className="text-xs font-normal text-slate-500">Creates a new Google Doc in your Drive</span>

@@ -73,7 +73,7 @@ export function DocComments() {
   return (
     <>
       {/* Kept shorter than the sheet's top padding, so the title's comments start level with the title. */}
-      <div data-testid="comments-header" className="sticky top-16 z-10 -mx-1 flex flex-col gap-1.5 bg-slate-50 px-1 pb-1">
+      <div data-testid="comments-header" className="z-10 xl:sticky xl:top-16 -mx-1 flex flex-col gap-1.5 bg-slate-50 px-1 pb-1">
         <SeverityCounts findings={findings} />
         <StatusTabs findings={findings} />
       </div>

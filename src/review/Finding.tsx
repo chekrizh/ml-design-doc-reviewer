@@ -52,7 +52,7 @@ export function FindingCard({ f, onExpand, withSection, comment }: { f: F; onExp
             <span>{cap(f.severity)}</span>
             <span>·</span>
             <span>{where}</span>
-            {stale && <span className="rounded-md bg-slate-100 px-1.5 py-0.5 text-[11px] font-medium text-slate-500">{STALE_LABEL[stale]}</span>}
+            {stale && <span className="rounded-md bg-slate-100 px-1.5 py-0.5 text-[0.6875rem] font-medium text-slate-500">{STALE_LABEL[stale]}</span>}
           </span>
         </span>
       </button>

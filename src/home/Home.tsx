@@ -30,25 +30,26 @@ const Chip = ({ origin }: { origin: Origin }) => (
 export function Home() {
   const account = useAuth((s) => s.account)
   const ready = useAuth((s) => s.ready)
+  // From lg the page fits the window and only the list scrolls; narrower, the whole page scrolls.
   return (
-    <div className="flex h-screen flex-col">
-      <header className="shrink-0 border-b border-slate-200 bg-white px-6">
+    <div className="flex min-h-dvh flex-col lg:h-dvh">
+      <header className="shrink-0 border-b border-slate-200 bg-white px-4 sm:px-6">
         <div className="flex h-14 items-center gap-3">
-          <div className="grid h-8 w-8 place-items-center rounded-lg bg-slate-900 text-white">
+          <div className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-slate-900 text-white">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
               <rect x="1.5" y="1.5" width="5" height="5" rx="1" />
               <rect x="9.5" y="9.5" width="5" height="5" rx="1" />
               <path d="M4 6.5v5.5h5.5" />
             </svg>
           </div>
-          <span className="font-semibold text-slate-900">ML System Design Trainer</span>
+          <span className="truncate font-semibold text-slate-900">ML System Design Trainer</span>
           <div className="ml-auto flex items-center gap-2">
             <Account />
           </div>
         </div>
       </header>
-      <main className="flex min-h-0 w-full flex-1 flex-col gap-6 px-6 py-5">
-        <div className="grid shrink-0 grid-cols-[fit-content(66%)_fit-content(34%)] justify-start gap-10">
+      <main className="flex min-h-0 w-full flex-1 flex-col gap-6 px-4 py-5 sm:px-6">
+        <div className="grid shrink-0 gap-6 lg:grid-cols-[fit-content(66%)_fit-content(34%)] lg:justify-start lg:gap-10">
           <Gallery title="Design a system" text="Start empty or take a task with the problem already set.">
             <BlankCard />
             {LIBRARY.filter((i) => i.kind === 'task').map((i) => (
@@ -102,9 +103,9 @@ async function start(design: Design, origin: Origin, sourceId: string | null, ct
 
 function Card({ preview, origin, title, text, source, cta, onClick }: { preview: [string, string, boolean?][]; origin: Origin; title: string; text: string; source?: ReactNode; cta: string; onClick: () => void }) {
   return (
-    <article aria-label={title} className="flex w-72 shrink-0 snap-start flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-3 shadow-sm">
+    <article aria-label={title} className="flex w-72 max-w-[85vw] shrink-0 snap-start flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-3 shadow-sm">
       <div className="rounded-xl border border-slate-100 bg-slate-50 px-3 py-2.5">
-        <div className="mb-1.5 text-[10px] font-semibold tracking-wide text-slate-500 uppercase">Problem Space</div>
+        <div className="mb-1.5 text-[0.625rem] font-semibold tracking-wide text-slate-500 uppercase">Problem Space</div>
         <dl className="flex flex-col gap-0.5 text-xs">
           {preview.map(([k, v, accent]) => (
             <div key={k} className="flex gap-2">
@@ -184,13 +185,13 @@ const ORDER = INITIAL_LAYOUT.map((l) => [l.i, l.w] as [SectionId, number])
 /** The design's section map in the canvas layout, filled vs empty. */
 function SectionMap({ filled }: { filled: SectionId[] }) {
   return (
-    <div aria-hidden className="grid h-9 w-12 shrink-0 grid-cols-12 grid-rows-3 gap-[2px]">
+    <div aria-hidden className="grid h-9 w-12 shrink-0 grid-cols-12 grid-rows-3 gap-0.5">
       {ORDER.map(([id, w]) => (
         <div
           key={id}
           data-filled={filled.includes(id)}
           style={{ gridColumn: `span ${w}` }}
-          className={`rounded-[3px] ${filled.includes(id) ? 'border border-slate-200 bg-slate-200' : 'border border-dashed border-slate-300'}`}
+          className={`rounded-xs ${filled.includes(id) ? 'border border-slate-200 bg-slate-200' : 'border border-dashed border-slate-300'}`}
         />
       ))}
     </div>
@@ -200,7 +201,7 @@ function SectionMap({ filled }: { filled: SectionId[] }) {
 function Row({ title, summary, origin, openFindings, edited, onOpen, action }: { title: string; summary: DesignSummary; origin?: Origin; openFindings?: number; edited: Date; onOpen: () => void; action: ReactNode }) {
   const name = title.trim() || 'Untitled design'
   return (
-    <div data-testid="design-row" className="flex items-center gap-4 px-4 py-3 hover:bg-slate-50">
+    <div data-testid="design-row" className="flex items-center gap-3 px-4 py-3 sm:gap-4 hover:bg-slate-50">
       <button type="button" className="flex min-w-0 flex-1 items-center gap-4 text-left" onClick={onOpen} aria-label={`Open ${name}`}>
         <SectionMap filled={summary.filledSections} />
         <div className="min-w-0 flex-1">
@@ -221,7 +222,7 @@ function Row({ title, summary, origin, openFindings, edited, onOpen, action }: {
           </div>
         </div>
       </button>
-      <span className="shrink-0 text-xs text-slate-400">{formatEdited(edited)}</span>
+      <span className="shrink-0 text-xs text-slate-400 max-sm:hidden">{formatEdited(edited)}</span>
       {action}
     </div>
   )

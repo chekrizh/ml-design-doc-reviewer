@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import type { SectionId } from '../model/design'
 import { useDesign, useSection } from '../store/store'
 
-const cellInput = 'w-full min-w-20 rounded bg-transparent px-2 py-1 outline-none focus:bg-white focus:ring-1 focus:ring-indigo-300'
+const cellInput = 'w-full min-w-28 rounded bg-transparent px-2 py-1 outline-none focus:bg-white focus:ring-1 focus:ring-indigo-300'
 
 /** Editable trade-off matrix: rows are options, columns are criteria, one option can be chosen. */
 export function TradeoffMatrix({ sid, editable = true, marker, focused }: { sid: SectionId; editable?: boolean; marker?: (optionId: string) => ReactNode; focused?: string | null }) {
@@ -12,7 +12,7 @@ export function TradeoffMatrix({ sid, editable = true, marker, focused }: { sid:
   return (
     <div>
       {editable && (
-        <div className="mb-3 flex justify-end gap-2 print:hidden">
+        <div className="mb-3 flex flex-wrap justify-end gap-2 print:hidden">
           <button type="button" onClick={() => a.addOption(sid)} className="rounded-full border border-slate-200 px-3 py-1 text-sm font-medium hover:bg-slate-50">
             Add Option (Row)
           </button>
@@ -59,7 +59,7 @@ export function TradeoffMatrix({ sid, editable = true, marker, focused }: { sid:
                         >
                           ✓
                         </button>
-                        <input aria-label={`Option ${i + 1} name`} placeholder="Option" value={o.name} onChange={(e) => a.renameOption(sid, o.id, e.target.value)} className={`${cellInput} ${chosen ? 'font-semibold text-indigo-700' : ''}`} />
+                        <input aria-label={`Option ${i + 1} name`} placeholder="Option" value={o.name} onChange={(e) => a.renameOption(sid, o.id, e.target.value)} className={`${cellInput} min-w-36 ${chosen ? 'font-semibold text-indigo-700' : ''}`} />
                         {chosen && <span className="sr-only">(chosen)</span>}
                         {marker?.(o.id)}
                       </div>

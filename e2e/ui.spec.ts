@@ -1,23 +1,25 @@
 import { expect, test } from '@playwright/test'
-import { card, loadExample, openDetails, setCardValue, toMode } from './helpers'
+import { card, closeEditor, loadExample, openDetails, setCardValue, toMode } from './helpers'
 
-test('ui-01 below 1280px shows Open on desktop instead of the editor', async ({ page }) => {
-  await page.setViewportSize({ width: 1279, height: 800 })
-  await page.goto('/local')
-  await expect(page.getByRole('heading', { name: 'Open on desktop' })).toBeVisible()
-  await expect(page.getByRole('button', { name: 'Canvas', exact: true })).toBeHidden()
-  await expect(page.getByTestId('card-problem-space')).toBeHidden()
-})
-
-test('ui-01 at 1280px the app works normally', async ({ page }) => {
-  await page.setViewportSize({ width: 1280, height: 800 })
-  await page.goto('/local')
-  await expect(page.getByRole('heading', { name: 'Open on desktop' })).toBeHidden()
-  await setCardValue(page, 'problem-space', 'Domain', 'Payments')
-  await expect(card(page, 'problem-space').getByRole('button', { name: 'Edit Domain' })).toHaveText('Payments')
-  await toMode(page, 'Document')
-  await expect(page.getByTestId('document')).toContainText('Payments')
-})
+// Responsive layout (D34): no desktop-only gate; every screen fits the window without a horizontal scroll.
+for (const width of [375, 768, 1024, 1280])
+  test(`responsive at ${width}px: canvas, editor and document fit the window and work`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 800 })
+    const noSideScroll = async () => expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width)
+    await page.goto('/')
+    await noSideScroll()
+    await page.goto('/local')
+    await loadExample(page)
+    await noSideScroll()
+    await setCardValue(page, 'problem-space', 'Domain', 'Payments')
+    await expect(card(page, 'problem-space').getByRole('button', { name: 'Edit Domain' })).toHaveText('Payments')
+    await openDetails(page, 'problem-space')
+    await noSideScroll()
+    await closeEditor(page)
+    await toMode(page, 'Document')
+    await expect(page.getByTestId('document')).toContainText('Payments')
+    await noSideScroll()
+  })
 
 test('ui-02 screenshots of canvas, component editor and document with the example', async ({ page }) => {
   await page.goto('/local')

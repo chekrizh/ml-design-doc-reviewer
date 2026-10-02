@@ -20,12 +20,7 @@ export function App() {
   if (routePath(route) !== path) return <Redirect to={routePath(route)} />
   return (
     <>
-      {/* Desktop only. A CSS media query, not JS, so printing (narrow paper) still renders the app. */}
-      <div className="hidden min-h-screen flex-col items-center justify-center gap-3 bg-slate-50 p-8 text-center max-xl:flex print:hidden!">
-        <h1 className="text-2xl font-semibold">Open on desktop</h1>
-        <p className="text-slate-500">ML System Design Trainer needs a screen at least 1280px wide.</p>
-      </div>
-      <div className="min-h-screen bg-slate-50 text-slate-900 max-xl:hidden print:block! print:bg-white">
+      <div className="min-h-dvh bg-slate-50 text-slate-900 print:bg-white">
         {route.name === 'home' ? <Home /> : route.name === 'local' ? <LocalDesign /> : <CloudDesign route={route} />}
       </div>
       <Toaster />
@@ -98,7 +93,7 @@ function ConflictBanner() {
   const conflict = useCloud((s) => s.conflict)
   if (!conflict) return null
   return (
-    <div role="alert" className="flex items-center justify-center gap-3 border-b border-red-200 bg-red-50 px-6 py-2 text-sm text-red-700 print:hidden">
+    <div role="alert" className="flex flex-wrap items-center justify-center gap-3 border-b border-red-200 bg-red-50 px-4 py-2 text-sm sm:px-6 text-red-700 print:hidden">
       <span>
         <span className="font-semibold">This design was changed in another tab or device.</span> Your latest edits here are not saved.
       </span>

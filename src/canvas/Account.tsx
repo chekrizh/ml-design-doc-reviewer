@@ -12,10 +12,10 @@ export function Account() {
   if (!account)
     return (
       <>
-        <img src="/default-avatar.png" alt="Guest" className="mr-1 h-8 w-8 rounded-full object-cover ring-1 ring-slate-200" />
-        <button type="button" className={outline} onClick={() => void signInWithGoogle()}>
-          <span className="grid h-4 w-4 place-items-center rounded-full border border-slate-300 text-[10px] font-bold text-slate-500">G</span>
-          Sign in with Google
+        <img src="/default-avatar.png" alt="Guest" className="mr-1 h-8 w-8 rounded-full object-cover ring-1 ring-slate-200 max-sm:hidden" />
+        <button type="button" aria-label="Sign in with Google" className={outline} onClick={() => void signInWithGoogle()}>
+          <span className="grid h-4 w-4 place-items-center rounded-full border border-slate-300 text-[0.625rem] font-bold text-slate-500">G</span>
+          <span>Sign in<span className="max-md:hidden"> with Google</span></span>
         </button>
         <TestSignIn />
       </>

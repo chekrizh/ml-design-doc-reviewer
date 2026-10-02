@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/* Reserve the scrollbar's space up front: the page width no longer jumps when content grows past the window
+   (classic scrollbars in Chrome/Firefox on Windows, Linux and headless; macOS overlay scrollbars take none). */
+html { scrollbar-gutter: stable; }
+
 /* Rich text (rationale) typography, shared by the editor and the document. */
 .prose-rt p { margin: 0.4em 0; }
 .prose-rt ul { list-style: disc; padding-left: 1.5em; }

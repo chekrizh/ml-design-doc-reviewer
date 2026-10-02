@@ -9,8 +9,8 @@ export const TestSignIn =
   import.meta.env.VITE_TEST_SIGNIN === 'true'
     ? function TestSignIn() {
         return (
-          <button type="button" title="Local development only: a shared account with a known password" className="rounded-lg border border-dashed border-slate-300 px-3 py-1.5 text-sm text-slate-500 hover:bg-slate-50" onClick={() => void getSupabase()?.auth.signInWithPassword({ email: 'test-a@example.test', password: 'test-password' })}>
-            Dev: sign in as test user
+          <button type="button" aria-label="Dev: sign in as test user" title="Local development only: a shared account with a known password" className="shrink-0 whitespace-nowrap rounded-lg border border-dashed border-slate-300 px-3 py-1.5 text-sm text-slate-500 hover:bg-slate-50" onClick={() => void getSupabase()?.auth.signInWithPassword({ email: 'test-a@example.test', password: 'test-password' })}>
+            Dev<span className="max-2xl:hidden">: sign in as test user</span>
           </button>
         )
       }

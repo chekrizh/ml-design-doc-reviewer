@@ -18,8 +18,12 @@ const flowCompactor: Compactor = {
 
 const ROW = 4
 const GAP = 16
-/** Grid rows for a card of `px` pixels: h rows span h*ROW + (h-1)*GAP. */
-const rows = (px: number) => Math.ceil((px + GAP) / (ROW + GAP))
+// Rows are a fine 8px step (heights round up by at most 7px); the rest of the 16px gap between rows is
+// padding at the bottom of each grid item.
+const ROW_GAP = 4
+const ITEM_PAD = GAP - ROW_GAP
+/** Grid rows for a card of `px` pixels plus its bottom padding: h rows span h*ROW + (h-1)*ROW_GAP. */
+const rows = (px: number) => Math.ceil((px + ITEM_PAD + ROW_GAP) / (ROW + ROW_GAP))
 // Keep the stored item order; take only positions and sizes from the grid.
 const pick = (prev: LayoutItem[], next: Layout): LayoutItem[] =>
   prev.map((p) => {
@@ -30,6 +34,8 @@ const pick = (prev: LayoutItem[], next: Layout): LayoutItem[] =>
 // so they never count as an edit: opening a design must not write it (M2 autosave, version check).
 const shape = (l: LayoutItem[]) => [...l].sort((a, b) => a.y - b.y || a.x - b.x).map((c) => `${c.i}:${c.x}:${c.w}`).join()
 const same = (a: LayoutItem[], b: LayoutItem[]) => shape(a) === shape(b)
+/** Below this card-area width a 12-column row of 3 cards gets too narrow: cards stack in reading order, no drag. */
+const GRID_MIN = 960
 
 export function Canvas() {
   const layout = useDesign((s) => s.design.layout)
@@ -44,12 +50,22 @@ export function Canvas() {
   return (
     <div className="flex items-start">
     <main className="min-w-0 flex-1 px-4 py-4">
-      <div ref={containerRef}>
-      {mounted && (
+      {/* clip, not hidden: no scroll box, so tooltips still overflow vertically; hides cards animating across the right edge on reflow. */}
+      <div ref={containerRef} className="overflow-x-clip">
+      {mounted && width < GRID_MIN && (
+        <div className="grid gap-4 sm:grid-cols-2">
+          {[...layout].sort((a, b) => a.y - b.y || a.x - b.x).map((l) => (
+            <div key={l.i} data-grid-item={l.i}>
+              <Card sid={l.i} onDetails={() => setOpen(l.i)} onHeight={onHeight(l.i)} />
+            </div>
+          ))}
+        </div>
+      )}
+      {mounted && width >= GRID_MIN && (
         <GridLayout
           width={width}
           layout={layout.map((l) => ({ ...l, h: heights[l.i] ? rows(heights[l.i]!) : l.h, minW: 3 }))}
-          gridConfig={{ cols: 12, rowHeight: ROW, margin: [GAP, GAP], containerPadding: [0, 0] }}
+          gridConfig={{ cols: 12, rowHeight: ROW, margin: [GAP, ROW_GAP], containerPadding: [0, 0] }}
           compactor={flowCompactor}
           dragConfig={{ handle: '.card-drag' }}
           resizeConfig={{ handles: ['w', 'e'] }}
@@ -60,7 +76,7 @@ export function Canvas() {
           }}
         >
           {layout.map((l) => (
-            <div key={l.i} data-grid-item={l.i}>
+            <div key={l.i} data-grid-item={l.i} style={{ paddingBottom: ITEM_PAD }}>
               <Card sid={l.i} onDetails={() => setOpen(l.i)} onHeight={onHeight(l.i)} />
             </div>
           ))}
@@ -70,7 +86,8 @@ export function Canvas() {
       {open && <ComponentEditor sid={open} onClose={() => setOpen(null)} />}
     </main>
       {panelOpen && (
-        <div className="sticky top-16 h-[calc(100vh-4rem)] self-start">
+        // Beside the cards under the one-row header from lg up; a full-height overlay on narrower screens.
+        <div className="fixed inset-y-0 right-0 z-50 flex w-full max-w-md shadow-2xl lg:sticky lg:top-16 lg:z-auto lg:h-[calc(100dvh-4rem)] lg:w-auto lg:max-w-none lg:self-start lg:shadow-none">
           <ReviewPanel />
         </div>
       )}

@@ -241,7 +241,8 @@ test('canvas-09 resize changes width only, respects min width, persists (m11-04)
   await resizeCard(page, 'integration', -1000, 0)
   const min = await cardBox(page, 'integration')
   expect(min.w).toBeGreaterThanOrEqual(200)
-  expect(min.h).toBe(start.h)
+  // Height still follows content (D9): at min width the diagram moves under the values (D34), so the card may grow.
+  expect(min.h).toBeGreaterThanOrEqual(start.h)
 })
 
 test('canvas-10 reset layout restores initial layout, content unchanged', async ({ page }) => {

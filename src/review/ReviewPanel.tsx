@@ -70,7 +70,7 @@ function ErrorBlock() {
   return (
     <div role="alert" className="flex flex-col gap-2 rounded-xl border border-red-200 bg-white px-4 py-3">
       <div className="flex items-center gap-2">
-        <span className="grid h-4 w-4 place-items-center rounded-full bg-red-600 text-[10px] font-bold text-white">!</span>
+        <span className="grid h-4 w-4 place-items-center rounded-full bg-red-600 text-[0.625rem] font-bold text-white">!</span>
         <span className="text-sm font-medium text-slate-900">{errorText(error.code, name)}</span>
       </div>
       <p className="text-sm text-slate-600">
@@ -144,7 +144,7 @@ export function ReviewPanel() {
         : 'Not run yet'
   const list = groups(withStatus(findings, tab), design)
   return (
-    <aside aria-label="Review" className="flex w-[420px] shrink-0 flex-col border-l border-slate-200 bg-white print:hidden">
+    <aside aria-label="Review" className="flex w-full shrink-0 lg:w-105 flex-col border-l border-slate-200 bg-white print:hidden">
       <div className="flex flex-col gap-3 border-b border-slate-100 px-5 py-4">
         <div className="flex items-center gap-2">
           <h2 className="font-semibold text-slate-900">Review</h2>

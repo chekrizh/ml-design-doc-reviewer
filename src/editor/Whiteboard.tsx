@@ -14,7 +14,7 @@ export default function Whiteboard({ sid }: { sid: SectionId }) {
   const last = useRef(signature(initial.elements as never))
 
   return (
-    <div className="h-[420px] overflow-hidden rounded-xl border border-slate-200" data-testid="whiteboard">
+    <div className="h-[min(26rem,60dvh)] overflow-hidden rounded-xl border border-slate-200" data-testid="whiteboard">
       <Excalidraw
         initialData={{ elements: initial.elements as never, files: initial.files as never, scrollToContent: true }}
         UIOptions={{ canvasActions: { loadScene: false, saveToActiveFile: false, export: false, saveAsImage: false } }}

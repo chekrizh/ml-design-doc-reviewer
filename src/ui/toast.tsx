@@ -30,7 +30,7 @@ const Icon = ({ kind }: { kind: Toast['kind'] }) =>
       </svg>
     </span>
   ) : (
-    <span aria-hidden className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-red-600 text-[11px] font-bold text-white">
+    <span aria-hidden className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-red-600 text-[0.6875rem] font-bold text-white">
       !
     </span>
   )
@@ -43,7 +43,7 @@ export function Toaster() {
     return () => clearTimeout(t)
   }, [toast, id])
   return (
-    <div role="status" aria-live="polite" className="fixed bottom-6 left-1/2 z-50 w-[440px] max-w-[calc(100%-32px)] -translate-x-1/2 print:hidden">
+    <div role="status" aria-live="polite" className="fixed inset-x-4 bottom-6 z-50 mx-auto max-w-md print:hidden">
       {toast && (
         <div data-testid="toast" data-kind={toast.kind} className="flex items-center gap-3 rounded-xl bg-slate-900 px-4 py-3 text-sm text-white shadow-lg">
           <Icon kind={toast.kind} />

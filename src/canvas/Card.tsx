@@ -84,15 +84,15 @@ export function Card({ sid, onDetails, onHeight }: { sid: SectionId; onDetails: 
 
   return (
     <article ref={article} data-testid={`card-${sid}`} aria-label={sectionName(sid)} data-highlight={highlight || undefined} className={`flex h-full flex-col rounded-2xl border border-slate-200 bg-white shadow-sm ${highlight ? 'ring-2 ring-indigo-300' : ''}`}>
-      <header className="card-drag flex cursor-move items-center gap-3 border-b border-slate-100 px-4 py-3">
+      <header className="card-drag flex cursor-move items-center gap-3 border-b border-slate-100 px-4 py-2">
         <SectionIcon id={sid} className="h-5 w-5 text-slate-700" />
         <h2 className="text-sm font-semibold tracking-wide uppercase">{sectionName(sid)}</h2>
         <TradeoffsStatus sid={sid} on={tradeoffsComplete(section.tradeoffs)} />
         <ReviewIndicator sid={sid} />
       </header>
-      <div ref={body} className="min-h-0 flex-1 overflow-hidden px-4 pt-3 pb-2">
-        <div ref={inner} className="flex items-start gap-4">
-        <dl className="grid min-w-0 flex-1 auto-rows-min grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 text-sm">
+      <div ref={body} className="min-h-0 flex-1 overflow-hidden px-4 pt-2.5 pb-2">
+        <div ref={inner} className="flex items-start gap-3">
+        <dl className="grid min-w-0 flex-1 auto-rows-min grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-sm">
           {shown.map((p) => (
             <div key={p.id} className="contents">
               <dt className="truncate text-slate-500">{p.key || 'Key'}</dt>
@@ -101,18 +101,19 @@ export function Card({ sid, onDetails, onHeight }: { sid: SectionId; onDetails: 
               </dd>
             </div>
           ))}
-          {hidden > 0 && <dd className="col-span-2 text-xs font-medium text-slate-400">+{hidden}</dd>}
         </dl>
         {hasDiagram && (
           // Clicking the picture opens the whiteboard; the Details button stays the accessible way in.
-          <div data-testid={diagramNonEmpty(section.diagram) ? 'thumbnail' : 'default-diagram'} onClick={onDetails} className="flex h-36 max-w-[60%] min-w-0 flex-1 cursor-pointer items-center justify-center rounded-xl border border-slate-100 bg-slate-50 p-2">
+          <div data-testid={diagramNonEmpty(section.diagram) ? 'thumbnail' : 'default-diagram'} onClick={onDetails} className="flex h-24 w-2/5 shrink-0 cursor-pointer items-center justify-center rounded-xl border border-slate-100 bg-slate-50 p-2">
             {thumb && <img src={thumb} alt={`${sectionName(sid)} diagram`} className="max-h-full max-w-full object-contain" />}
           </div>
         )}
         </div>
       </div>
-      <footer className="flex items-center gap-2 border-t border-slate-100 px-4 py-3">
+      <footer className="flex items-center gap-2 border-t border-slate-100 px-4 py-2">
         <FindingsBadge sid={sid} />
+        {/* In the footer, not under the list: a line of its own would make the whole row taller. */}
+        {hidden > 0 && <span title={`${hidden} more in Details`} className="text-xs font-medium text-slate-400">+{hidden}</span>}
         <button type="button" onClick={onDetails} className="ml-auto rounded-lg bg-slate-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-slate-700">
           Details
         </button>

@@ -84,10 +84,11 @@ export function DocumentView({ comments }: { comments?: ReactNode }) {
   const setTitle = useDesign((s) => s.setTitle)
   const [active, setActive] = useActiveSection()
 
-  // Outline left, sheet, comments right (Google Docs-like, M2): always, with or without a review.
+  // Outline left, sheet, comments right (Google Docs-like, M2), with or without a review.
+  // Below xl: the sheet alone, the comments listed under it.
   return (
-    <main className="mx-auto grid max-w-[1440px] grid-cols-[14rem_minmax(0,1fr)_20rem] gap-8 px-6 py-8 print:block print:p-0">
-      <nav aria-label="On this page" className="sticky top-24 self-start print:hidden">
+    <main className="mx-auto grid max-w-360 gap-8 px-4 py-6 sm:px-6 sm:py-8 xl:grid-cols-[14rem_minmax(0,1fr)_20rem] print:block print:p-0">
+      <nav aria-label="On this page" className="sticky top-24 self-start max-xl:hidden print:hidden">
         <h2 className="mb-3 text-xs font-semibold tracking-wide text-slate-400 uppercase">On this page</h2>
         <ul className="space-y-1">
           {SECTIONS.map((s) => (
@@ -108,11 +109,11 @@ export function DocumentView({ comments }: { comments?: ReactNode }) {
           ))}
         </ul>
       </nav>
-      <article data-testid="document" className="min-w-0 rounded-3xl bg-white px-16 py-14 shadow-sm print:rounded-none print:p-0 print:shadow-none">
-        <h1 data-field="design" className="flex text-5xl font-bold tracking-tight">
+      <article data-testid="document" className="min-w-0 rounded-3xl bg-white px-5 py-8 shadow-sm sm:px-10 sm:py-10 lg:px-16 lg:py-14 print:rounded-none print:p-0 print:shadow-none">
+        <h1 data-field="design" className="flex text-3xl font-bold tracking-tight sm:text-5xl">
           <InlineText label="Document title" value={title} placeholder="Untitled design" onSave={setTitle} className="w-full" inputClassName="w-full" wrap />
         </h1>
-        <p className="mt-2 text-xl text-slate-500">ML System Architecture Spec</p>
+        <p className="mt-2 text-lg text-slate-500 sm:text-xl">ML System Architecture Spec</p>
         <p className="mt-2 mb-12 text-sm text-slate-400">
           Last updated: {new Date(updatedAt).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' })}
         </p>

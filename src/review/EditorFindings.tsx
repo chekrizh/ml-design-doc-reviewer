@@ -54,7 +54,7 @@ export function FindingsColumn({ sid }: { sid: SectionId }) {
   const last = runs.find((r) => r.status === 'succeeded' && (r.scope === 'design' || r.scope === sid))
   const list = withStatus(findings, tab).sort(bySeverity)
   return (
-    <aside aria-label="Findings" className="flex w-[360px] shrink-0 flex-col border-l border-slate-100">
+    <aside aria-label="Findings" className="flex shrink-0 flex-col border-t border-slate-100 lg:w-90 lg:border-t-0 lg:border-l">
       <div className="flex flex-col gap-3 border-b border-slate-100 px-5 py-4">
         <div className="flex items-center gap-2">
           <h3 className="font-semibold text-slate-900">Findings</h3>

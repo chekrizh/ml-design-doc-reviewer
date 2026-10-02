@@ -53,3 +53,7 @@ AT-31 step 1 expects "a message that OpenRouter rejected the key" for `sk-or-v1-
 
 - Conflict: M2 (mvp-spec, review-canvas mockup) puts the review indicator (magnifier) right next to the trade-offs scales, to their right. The scales are no longer the rightmost element of the card header, as my AT-15 / m11-02 tests measured (≤ 24 px from the right edge).
 - What I did: the tests now check that the pair (scales, then magnifier) takes the top-right corner: the magnifier ≤ 24 px from the edge and the scales directly left of it. AT-15's wording ("в правом верхнем углу") still holds; if the scales must stay rightmost, the M2 mockup order needs to change.
+
+## ui-01: "Desktop only" replaced by a responsive layout (owner request, 2026-10-02)
+- Conflict: `features.json` ui-01 still says "Below 1280px … 'Open on desktop'"; the owner asked for a responsive design, so the gate is removed (D34, mvp-spec updated). I may change only `passes`, so the ui-01 text is out of date.
+- What I did meanwhile: kept `passes: true` (setting it to false would make the next run restore the gate); `e2e/ui.spec.ts` now checks 375/768/1024/1280px without a horizontal scroll. Please update the ui-01 description and steps.
